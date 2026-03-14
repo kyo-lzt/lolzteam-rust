@@ -2,20 +2,7061 @@
 
 use std::sync::Arc;
 
-use crate::runtime::{ClientConfig, HttpClient, LolzteamError, RateLimitConfig, RetryConfig};
-use super::auto_payments::AutoPaymentsApi;
-use super::batch::BatchApi;
-use super::cart::CartApi;
-use super::category::CategoryApi;
-use super::custom_discounts::CustomDiscountsApi;
-use super::imap::ImapApi;
-use super::list::ListApi;
-use super::managing::ManagingApi;
-use super::payments::PaymentsApi;
-use super::profile::ProfileApi;
-use super::proxy::ProxyApi;
-use super::publishing::PublishingApi;
-use super::purchasing::PurchasingApi;
+use super::types::*;
+use crate::runtime::{
+	ClientConfig, HttpClient, LolzteamError, ParamValue, RateLimitConfig, RetryConfig, StringOrInt,
+};
+
+pub struct AutoPaymentsApi {
+	http: Arc<HttpClient>,
+}
+
+impl AutoPaymentsApi {
+	pub(crate) fn new(http: Arc<HttpClient>) -> Self {
+		Self { http }
+	}
+
+	/// Delete Auto Payment
+	pub async fn delete(
+		&self,
+		body: Option<&AutoPaymentsDeleteBody>,
+	) -> Result<AutoPaymentsDeleteResponse, LolzteamError> {
+		self.http
+			.request_json("DELETE", "/auto-payment", None, body)
+			.await
+	}
+
+	/// Create Auto Payment
+	pub async fn create(
+		&self,
+		body: Option<&AutoPaymentsCreateBody>,
+	) -> Result<AutoPaymentsCreateResponse, LolzteamError> {
+		self.http
+			.request_json("POST", "/auto-payment", None, body)
+			.await
+	}
+
+	/// Get Auto Payments
+	pub async fn list(&self) -> Result<AutoPaymentsListResponse, LolzteamError> {
+		self.http.request("GET", "/auto-payments", None, None).await
+	}
+}
+
+pub struct BatchApi {
+	http: Arc<HttpClient>,
+}
+
+impl BatchApi {
+	pub(crate) fn new(http: Arc<HttpClient>) -> Self {
+		Self { http }
+	}
+
+	/// Batch
+	pub async fn execute(
+		&self,
+		body: serde_json::Value,
+	) -> Result<BatchExecuteResponse, LolzteamError> {
+		self.http
+			.request_json("POST", "/batch", None, Some(&body))
+			.await
+	}
+}
+
+pub struct CartApi {
+	http: Arc<HttpClient>,
+}
+
+impl CartApi {
+	pub(crate) fn new(http: Arc<HttpClient>) -> Self {
+		Self { http }
+	}
+
+	/// Delete Item From Cart
+	pub async fn delete(
+		&self,
+		body: Option<&CartDeleteBody>,
+	) -> Result<CartDeleteResponse, LolzteamError> {
+		self.http.request_json("DELETE", "/cart", None, body).await
+	}
+
+	/// Get Cart Items
+	pub async fn get(
+		&self,
+		params: Option<&CartGetParams>,
+	) -> Result<CartGetResponse, LolzteamError> {
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.category_id {
+				query.push(("category_id".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.page {
+				query.push(("page".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pmin {
+				query.push(("pmin".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pmax {
+				query.push(("pmax".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.title {
+				query.push(("title".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.order_by {
+				query.push(("order_by".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.tag_id {
+				for item in v {
+					query.push(("tag_id[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_tag_id {
+				for item in v {
+					query.push(("not_tag_id[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.public_tag_id {
+				for item in v {
+					query.push((
+						"public_tag_id[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.not_public_tag_id {
+				for item in v {
+					query.push((
+						"not_public_tag_id[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.origin {
+				for item in v {
+					query.push(("origin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_origin {
+				for item in v {
+					query.push(("not_origin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.user_id {
+				query.push(("user_id".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.nsb {
+				query.push(("nsb".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.sb {
+				query.push(("sb".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.nsb_by_me {
+				query.push(("nsb_by_me".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.sb_by_me {
+				query.push(("sb_by_me".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.currency {
+				query.push(("currency".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.email_login_data {
+				query.push(("email_login_data".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.email_provider {
+				for item in v {
+					query.push((
+						"email_provider[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.not_email_provider {
+				for item in v {
+					query.push((
+						"not_email_provider[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.parse_same_item_ids {
+				query.push(("parse_same_item_ids".into(), ParamValue::Bool(*v)));
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				"/cart",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Add Item to Cart
+	pub async fn add(&self, body: Option<&CartAddBody>) -> Result<CartAddResponse, LolzteamError> {
+		self.http.request_json("POST", "/cart", None, body).await
+	}
+}
+
+pub struct CategoryApi {
+	http: Arc<HttpClient>,
+}
+
+impl CategoryApi {
+	pub(crate) fn new(http: Arc<HttpClient>) -> Self {
+		Self { http }
+	}
+
+	/// Get Last Accounts
+	pub async fn all(
+		&self,
+		params: Option<&CategoryAllParams>,
+	) -> Result<CategoryAllResponse, LolzteamError> {
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.page {
+				query.push(("page".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pmin {
+				query.push(("pmin".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pmax {
+				query.push(("pmax".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.title {
+				query.push(("title".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.order_by {
+				query.push(("order_by".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.tag_id {
+				for item in v {
+					query.push(("tag_id[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_tag_id {
+				for item in v {
+					query.push(("not_tag_id[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.public_tag_id {
+				for item in v {
+					query.push((
+						"public_tag_id[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.not_public_tag_id {
+				for item in v {
+					query.push((
+						"not_public_tag_id[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.origin {
+				for item in v {
+					query.push(("origin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_origin {
+				for item in v {
+					query.push(("not_origin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.user_id {
+				query.push(("user_id".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.nsb {
+				query.push(("nsb".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.sb {
+				query.push(("sb".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.nsb_by_me {
+				query.push(("nsb_by_me".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.sb_by_me {
+				query.push(("sb_by_me".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.currency {
+				query.push(("currency".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.email_login_data {
+				query.push(("email_login_data".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.email_provider {
+				for item in v {
+					query.push((
+						"email_provider[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.not_email_provider {
+				for item in v {
+					query.push((
+						"not_email_provider[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.parse_same_item_ids {
+				query.push(("parse_same_item_ids".into(), ParamValue::Bool(*v)));
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				"/",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// BattleNet
+	pub async fn battle_net(
+		&self,
+		params: Option<&CategoryBattleNetParams>,
+	) -> Result<CategoryBattleNetResponse, LolzteamError> {
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.page {
+				query.push(("page".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pmin {
+				query.push(("pmin".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pmax {
+				query.push(("pmax".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.title {
+				query.push(("title".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.order_by {
+				query.push(("order_by".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.tag_id {
+				for item in v {
+					query.push(("tag_id[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_tag_id {
+				for item in v {
+					query.push(("not_tag_id[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.public_tag_id {
+				for item in v {
+					query.push((
+						"public_tag_id[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.not_public_tag_id {
+				for item in v {
+					query.push((
+						"not_public_tag_id[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.origin {
+				for item in v {
+					query.push(("origin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_origin {
+				for item in v {
+					query.push(("not_origin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.user_id {
+				query.push(("user_id".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.nsb {
+				query.push(("nsb".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.sb {
+				query.push(("sb".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.nsb_by_me {
+				query.push(("nsb_by_me".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.sb_by_me {
+				query.push(("sb_by_me".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.currency {
+				query.push(("currency".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.email_login_data {
+				query.push(("email_login_data".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.email_provider {
+				for item in v {
+					query.push((
+						"email_provider[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.not_email_provider {
+				for item in v {
+					query.push((
+						"not_email_provider[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.parse_same_item_ids {
+				query.push(("parse_same_item_ids".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.email_type {
+				for item in v {
+					query.push(("email_type[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.item_domain {
+				query.push(("item_domain".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.eg {
+				query.push(("eg".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.game {
+				for item in v {
+					query.push(("game[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.daybreak {
+				query.push(("daybreak".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.country {
+				for item in v {
+					query.push(("country[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_country {
+				for item in v {
+					query.push(("not_country[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.tel {
+				query.push(("tel".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.edit_btag {
+				query.push(("edit_btag".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.changeable_fn {
+				query.push(("changeable_fn".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.real_id {
+				query.push(("real_id".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.parent_control {
+				query.push(("parent_control".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.no_bans {
+				query.push(("no_bans".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.balance_min {
+				query.push(("balance_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.balance_max {
+				query.push(("balance_max".into(), ParamValue::Integer(*v)));
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				"/battlenet",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Get Categories
+	pub async fn list(
+		&self,
+		params: Option<&CategoryListParams>,
+	) -> Result<CategoryListResponse, LolzteamError> {
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.top_queries {
+				query.push(("top_queries".into(), ParamValue::Bool(*v)));
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				"/category",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// ChatGPT
+	pub async fn chat_gpt(
+		&self,
+		params: Option<&CategoryChatGptParams>,
+	) -> Result<CategoryChatGptResponse, LolzteamError> {
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.page {
+				query.push(("page".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pmin {
+				query.push(("pmin".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pmax {
+				query.push(("pmax".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.title {
+				query.push(("title".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.order_by {
+				query.push(("order_by".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.tag_id {
+				for item in v {
+					query.push(("tag_id[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_tag_id {
+				for item in v {
+					query.push(("not_tag_id[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.public_tag_id {
+				for item in v {
+					query.push((
+						"public_tag_id[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.not_public_tag_id {
+				for item in v {
+					query.push((
+						"not_public_tag_id[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.origin {
+				for item in v {
+					query.push(("origin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_origin {
+				for item in v {
+					query.push(("not_origin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.user_id {
+				query.push(("user_id".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.nsb {
+				query.push(("nsb".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.sb {
+				query.push(("sb".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.nsb_by_me {
+				query.push(("nsb_by_me".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.sb_by_me {
+				query.push(("sb_by_me".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.currency {
+				query.push(("currency".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.email_login_data {
+				query.push(("email_login_data".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.email_provider {
+				for item in v {
+					query.push((
+						"email_provider[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.not_email_provider {
+				for item in v {
+					query.push((
+						"not_email_provider[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.parse_same_item_ids {
+				query.push(("parse_same_item_ids".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.email_type {
+				for item in v {
+					query.push(("email_type[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.item_domain {
+				query.push(("item_domain".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.subscription {
+				for item in v {
+					query.push((
+						"subscription[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.subscription_length {
+				query.push(("subscription_length".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.subscription_period {
+				query.push(("subscription_period".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.autorenewal {
+				query.push(("autorenewal".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.tel {
+				query.push(("tel".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.transactions {
+				query.push(("transactions".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.reg {
+				query.push(("reg".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.reg_period {
+				query.push(("reg_period".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.openai_tier {
+				for item in v {
+					query.push(("openai_tier[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.openai_balance_min {
+				query.push(("openai_balance_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.openai_balance_max {
+				query.push(("openai_balance_max".into(), ParamValue::Integer(*v)));
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				"/chatgpt",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Discord
+	pub async fn discord(
+		&self,
+		params: Option<&CategoryDiscordParams>,
+	) -> Result<CategoryDiscordResponse, LolzteamError> {
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.page {
+				query.push(("page".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pmin {
+				query.push(("pmin".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pmax {
+				query.push(("pmax".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.title {
+				query.push(("title".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.order_by {
+				query.push(("order_by".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.tag_id {
+				for item in v {
+					query.push(("tag_id[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_tag_id {
+				for item in v {
+					query.push(("not_tag_id[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.public_tag_id {
+				for item in v {
+					query.push((
+						"public_tag_id[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.not_public_tag_id {
+				for item in v {
+					query.push((
+						"not_public_tag_id[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.origin {
+				for item in v {
+					query.push(("origin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_origin {
+				for item in v {
+					query.push(("not_origin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.user_id {
+				query.push(("user_id".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.nsb {
+				query.push(("nsb".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.sb {
+				query.push(("sb".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.nsb_by_me {
+				query.push(("nsb_by_me".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.sb_by_me {
+				query.push(("sb_by_me".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.currency {
+				query.push(("currency".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.email_login_data {
+				query.push(("email_login_data".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.email_provider {
+				for item in v {
+					query.push((
+						"email_provider[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.not_email_provider {
+				for item in v {
+					query.push((
+						"not_email_provider[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.parse_same_item_ids {
+				query.push(("parse_same_item_ids".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.email_type {
+				for item in v {
+					query.push(("email_type[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.item_domain {
+				query.push(("item_domain".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.tel {
+				query.push(("tel".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.nitro {
+				query.push(("nitro".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.nitro_type {
+				for item in v {
+					query.push(("nitro_type[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.nitro_length {
+				query.push(("nitro_length".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.nitro_period {
+				query.push(("nitro_period".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.boosts_min {
+				query.push(("boosts_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.boosts_max {
+				query.push(("boosts_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.billing {
+				query.push(("billing".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.gifts {
+				query.push(("gifts".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.transactions {
+				query.push(("transactions".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.badge {
+				for item in v {
+					query.push(("badge[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.condition {
+				for item in v {
+					query.push(("condition[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.chat_min {
+				query.push(("chat_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.chat_max {
+				query.push(("chat_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.min_admin_members {
+				query.push(("min_admin_members".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.max_admin_members {
+				query.push(("max_admin_members".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.min_admin {
+				query.push(("min_admin".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.max_admin {
+				query.push(("max_admin".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.reg {
+				query.push(("reg".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.reg_period {
+				query.push(("reg_period".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.language {
+				for item in v {
+					query.push(("language[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_language {
+				for item in v {
+					query.push((
+						"not_language[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.clans {
+				query.push(("clans".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.min_admin_clans {
+				query.push(("min_admin_clans".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.max_admin_clans {
+				query.push(("max_admin_clans".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.min_owner_clans {
+				query.push(("min_owner_clans".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.max_owner_clans {
+				query.push(("max_owner_clans".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.country {
+				for item in v {
+					query.push(("country[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_country {
+				for item in v {
+					query.push(("not_country[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.min_servers {
+				query.push(("min_servers".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.max_servers {
+				query.push(("max_servers".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p._2fa {
+				query.push(("2fa".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.min_full_credits {
+				query.push(("min_full_credits".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.max_full_credits {
+				query.push(("max_full_credits".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.min_basic_credits {
+				query.push(("min_basic_credits".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.max_basic_credits {
+				query.push(("max_basic_credits".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.min_orbs {
+				query.push(("min_orbs".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.max_orbs {
+				query.push(("max_orbs".into(), ParamValue::Integer(*v)));
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				"/discord",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// EA (Origin)
+	pub async fn ea(
+		&self,
+		params: Option<&CategoryEaParams>,
+	) -> Result<CategoryEaResponse, LolzteamError> {
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.page {
+				query.push(("page".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pmin {
+				query.push(("pmin".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pmax {
+				query.push(("pmax".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.title {
+				query.push(("title".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.order_by {
+				query.push(("order_by".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.tag_id {
+				for item in v {
+					query.push(("tag_id[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_tag_id {
+				for item in v {
+					query.push(("not_tag_id[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.public_tag_id {
+				for item in v {
+					query.push((
+						"public_tag_id[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.not_public_tag_id {
+				for item in v {
+					query.push((
+						"not_public_tag_id[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.origin {
+				for item in v {
+					query.push(("origin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_origin {
+				for item in v {
+					query.push(("not_origin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.user_id {
+				query.push(("user_id".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.nsb {
+				query.push(("nsb".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.sb {
+				query.push(("sb".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.nsb_by_me {
+				query.push(("nsb_by_me".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.sb_by_me {
+				query.push(("sb_by_me".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.currency {
+				query.push(("currency".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.email_login_data {
+				query.push(("email_login_data".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.email_provider {
+				for item in v {
+					query.push((
+						"email_provider[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.not_email_provider {
+				for item in v {
+					query.push((
+						"not_email_provider[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.parse_same_item_ids {
+				query.push(("parse_same_item_ids".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.email_type {
+				for item in v {
+					query.push(("email_type[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.item_domain {
+				query.push(("item_domain".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.game {
+				for item in v {
+					query.push(("game[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.country {
+				for item in v {
+					query.push(("country[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_country {
+				for item in v {
+					query.push(("not_country[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.gmin {
+				query.push(("gmin".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.gmax {
+				query.push(("gmax".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.al_rank_min {
+				query.push(("al_rank_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.al_rank_max {
+				query.push(("al_rank_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.al_level_min {
+				query.push(("al_level_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.al_level_max {
+				query.push(("al_level_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.has_ban {
+				query.push(("has_ban".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.xbox_connected {
+				query.push(("xbox_connected".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.steam_connected {
+				query.push(("steam_connected".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.psn_connected {
+				query.push(("psn_connected".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.subscription {
+				query.push(("subscription".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.subscription_length {
+				query.push(("subscription_length".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.subscription_period {
+				query.push(("subscription_period".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref map) = p.hours_played {
+				for (key, val) in map {
+					query.push((format!("hours_played[{key}]"), ParamValue::Integer(*val)));
+				}
+			}
+			if let Some(ref map) = p.hours_played_max {
+				for (key, val) in map {
+					query.push((
+						format!("hours_played_max[{key}]"),
+						ParamValue::Integer(*val),
+					));
+				}
+			}
+			if let Some(ref v) = p.transactions {
+				query.push(("transactions".into(), ParamValue::String(v.clone())));
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				"/ea",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Epic Games
+	pub async fn epic_games(
+		&self,
+		params: Option<&CategoryEpicGamesParams>,
+	) -> Result<CategoryEpicGamesResponse, LolzteamError> {
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.page {
+				query.push(("page".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pmin {
+				query.push(("pmin".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pmax {
+				query.push(("pmax".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.title {
+				query.push(("title".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.order_by {
+				query.push(("order_by".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.tag_id {
+				for item in v {
+					query.push(("tag_id[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_tag_id {
+				for item in v {
+					query.push(("not_tag_id[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.public_tag_id {
+				for item in v {
+					query.push((
+						"public_tag_id[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.not_public_tag_id {
+				for item in v {
+					query.push((
+						"not_public_tag_id[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.origin {
+				for item in v {
+					query.push(("origin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_origin {
+				for item in v {
+					query.push(("not_origin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.user_id {
+				query.push(("user_id".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.nsb {
+				query.push(("nsb".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.sb {
+				query.push(("sb".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.nsb_by_me {
+				query.push(("nsb_by_me".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.sb_by_me {
+				query.push(("sb_by_me".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.currency {
+				query.push(("currency".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.email_login_data {
+				query.push(("email_login_data".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.email_provider {
+				for item in v {
+					query.push((
+						"email_provider[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.not_email_provider {
+				for item in v {
+					query.push((
+						"not_email_provider[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.parse_same_item_ids {
+				query.push(("parse_same_item_ids".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.email_type {
+				for item in v {
+					query.push(("email_type[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.item_domain {
+				query.push(("item_domain".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.eg {
+				query.push(("eg".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.game {
+				for item in v {
+					query.push(("game[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.change_email {
+				query.push(("change_email".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.rl_purchases {
+				query.push(("rl_purchases".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.balance_min {
+				query.push(("balance_min".into(), ParamValue::Float(*v)));
+			}
+			if let Some(ref v) = p.balance_max {
+				query.push(("balance_max".into(), ParamValue::Float(*v)));
+			}
+			if let Some(ref v) = p.rewards_balance_min {
+				query.push(("rewards_balance_min".into(), ParamValue::Float(*v)));
+			}
+			if let Some(ref v) = p.rewards_balance_max {
+				query.push(("rewards_balance_max".into(), ParamValue::Float(*v)));
+			}
+			if let Some(ref v) = p.gmin {
+				query.push(("gmin".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.gmax {
+				query.push(("gmax".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.country {
+				for item in v {
+					query.push(("country[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_country {
+				for item in v {
+					query.push(("not_country[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.daybreak {
+				query.push(("daybreak".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref map) = p.hours_played {
+				for (key, val) in map {
+					query.push((format!("hours_played[{key}]"), ParamValue::Integer(*val)));
+				}
+			}
+			if let Some(ref map) = p.hours_played_max {
+				for (key, val) in map {
+					query.push((
+						format!("hours_played_max[{key}]"),
+						ParamValue::Integer(*val),
+					));
+				}
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				"/epicgames",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Escape from Tarkov
+	pub async fn escape_from_tarkov(
+		&self,
+		params: Option<&CategoryEscapeFromTarkovParams>,
+	) -> Result<CategoryEscapeFromTarkovResponse, LolzteamError> {
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.page {
+				query.push(("page".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pmin {
+				query.push(("pmin".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pmax {
+				query.push(("pmax".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.title {
+				query.push(("title".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.order_by {
+				query.push(("order_by".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.tag_id {
+				for item in v {
+					query.push(("tag_id[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_tag_id {
+				for item in v {
+					query.push(("not_tag_id[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.public_tag_id {
+				for item in v {
+					query.push((
+						"public_tag_id[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.not_public_tag_id {
+				for item in v {
+					query.push((
+						"not_public_tag_id[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.origin {
+				for item in v {
+					query.push(("origin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_origin {
+				for item in v {
+					query.push(("not_origin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.user_id {
+				query.push(("user_id".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.nsb {
+				query.push(("nsb".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.sb {
+				query.push(("sb".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.nsb_by_me {
+				query.push(("nsb_by_me".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.sb_by_me {
+				query.push(("sb_by_me".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.currency {
+				query.push(("currency".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.email_login_data {
+				query.push(("email_login_data".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.email_provider {
+				for item in v {
+					query.push((
+						"email_provider[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.not_email_provider {
+				for item in v {
+					query.push((
+						"not_email_provider[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.parse_same_item_ids {
+				query.push(("parse_same_item_ids".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.email_type {
+				for item in v {
+					query.push(("email_type[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.item_domain {
+				query.push(("item_domain".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.region {
+				query.push(("region".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.version {
+				for item in v {
+					query.push(("version[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.reg {
+				query.push(("reg".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.reg_period {
+				query.push(("reg_period".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.level_min {
+				query.push(("level_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.level_max {
+				query.push(("level_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pve {
+				query.push(("pve".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.side {
+				query.push(("side".into(), ParamValue::String(v.clone())));
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				"/escape-from-tarkov",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Fortnite
+	pub async fn fortnite(
+		&self,
+		params: Option<&CategoryFortniteParams>,
+	) -> Result<CategoryFortniteResponse, LolzteamError> {
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.page {
+				query.push(("page".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pmin {
+				query.push(("pmin".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pmax {
+				query.push(("pmax".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.title {
+				query.push(("title".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.order_by {
+				query.push(("order_by".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.tag_id {
+				for item in v {
+					query.push(("tag_id[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_tag_id {
+				for item in v {
+					query.push(("not_tag_id[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.public_tag_id {
+				for item in v {
+					query.push((
+						"public_tag_id[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.not_public_tag_id {
+				for item in v {
+					query.push((
+						"not_public_tag_id[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.origin {
+				for item in v {
+					query.push(("origin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_origin {
+				for item in v {
+					query.push(("not_origin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.user_id {
+				query.push(("user_id".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.nsb {
+				query.push(("nsb".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.sb {
+				query.push(("sb".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.nsb_by_me {
+				query.push(("nsb_by_me".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.sb_by_me {
+				query.push(("sb_by_me".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.currency {
+				query.push(("currency".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.email_login_data {
+				query.push(("email_login_data".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.email_provider {
+				for item in v {
+					query.push((
+						"email_provider[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.email_type {
+				for item in v {
+					query.push(("email_type[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_email_provider {
+				for item in v {
+					query.push((
+						"not_email_provider[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.parse_same_item_ids {
+				query.push(("parse_same_item_ids".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.temp_email {
+				query.push(("temp_email".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.item_domain {
+				query.push(("item_domain".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.eg {
+				query.push(("eg".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.smin {
+				query.push(("smin".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.smax {
+				query.push(("smax".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.vbmin {
+				query.push(("vbmin".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.vbmax {
+				query.push(("vbmax".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.skin {
+				for item in v {
+					query.push(("skin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.pickaxe {
+				for item in v {
+					query.push(("pickaxe[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.glider {
+				for item in v {
+					query.push(("glider[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.dance {
+				for item in v {
+					query.push(("dance[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.change_email {
+				query.push(("change_email".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.platform {
+				for item in v {
+					query.push(("platform[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.skins_shop_min {
+				query.push(("skins_shop_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.skins_shop_max {
+				query.push(("skins_shop_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pickaxes_shop_min {
+				query.push(("pickaxes_shop_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pickaxes_shop_max {
+				query.push(("pickaxes_shop_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.dances_shop_min {
+				query.push(("dances_shop_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.dances_shop_max {
+				query.push(("dances_shop_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.gliders_shop_min {
+				query.push(("gliders_shop_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.gliders_shop_max {
+				query.push(("gliders_shop_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.skins_shop_vbmin {
+				query.push(("skins_shop_vbmin".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.skins_shop_vbmax {
+				query.push(("skins_shop_vbmax".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pickaxes_shop_vbmin {
+				query.push(("pickaxes_shop_vbmin".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pickaxes_shop_vbmax {
+				query.push(("pickaxes_shop_vbmax".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.dances_shop_vbmin {
+				query.push(("dances_shop_vbmin".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.dances_shop_vbmax {
+				query.push(("dances_shop_vbmax".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.gliders_shop_vbmin {
+				query.push(("gliders_shop_vbmin".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.gliders_shop_vbmax {
+				query.push(("gliders_shop_vbmax".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.bp {
+				query.push(("bp".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.lmin {
+				query.push(("lmin".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.lmax {
+				query.push(("lmax".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.bp_lmin {
+				query.push(("bp_lmin".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.bp_lmax {
+				query.push(("bp_lmax".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.last_trans_date {
+				query.push(("last_trans_date".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.last_trans_date_period {
+				query.push((
+					"last_trans_date_period".into(),
+					ParamValue::String(v.clone()),
+				));
+			}
+			if let Some(ref v) = p.no_trans {
+				query.push(("no_trans".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.xbox_linkable {
+				query.push(("xbox_linkable".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.psn_linkable {
+				query.push(("psn_linkable".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.daybreak {
+				query.push(("daybreak".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.rl_purchases {
+				query.push(("rl_purchases".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.reg {
+				query.push(("reg".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.reg_period {
+				query.push(("reg_period".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.refund_credits_min {
+				query.push(("refund_credits_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.refund_credits_max {
+				query.push(("refund_credits_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pickaxe_min {
+				query.push(("pickaxe_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pickaxe_max {
+				query.push(("pickaxe_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.dmin {
+				query.push(("dmin".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.dmax {
+				query.push(("dmax".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.gmin {
+				query.push(("gmin".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.gmax {
+				query.push(("gmax".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.country {
+				for item in v {
+					query.push(("country[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_country {
+				for item in v {
+					query.push(("not_country[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				"/fortnite",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Gifts
+	pub async fn gifts(
+		&self,
+		params: Option<&CategoryGiftsParams>,
+	) -> Result<CategoryGiftsResponse, LolzteamError> {
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.page {
+				query.push(("page".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pmin {
+				query.push(("pmin".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pmax {
+				query.push(("pmax".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.title {
+				query.push(("title".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.order_by {
+				query.push(("order_by".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.tag_id {
+				for item in v {
+					query.push(("tag_id[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_tag_id {
+				for item in v {
+					query.push(("not_tag_id[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.public_tag_id {
+				for item in v {
+					query.push((
+						"public_tag_id[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.not_public_tag_id {
+				for item in v {
+					query.push((
+						"not_public_tag_id[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.origin {
+				for item in v {
+					query.push(("origin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_origin {
+				for item in v {
+					query.push(("not_origin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.user_id {
+				query.push(("user_id".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.nsb {
+				query.push(("nsb".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.sb {
+				query.push(("sb".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.nsb_by_me {
+				query.push(("nsb_by_me".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.sb_by_me {
+				query.push(("sb_by_me".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.currency {
+				query.push(("currency".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.email_login_data {
+				query.push(("email_login_data".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.email_provider {
+				for item in v {
+					query.push((
+						"email_provider[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.not_email_provider {
+				for item in v {
+					query.push((
+						"not_email_provider[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.parse_same_item_ids {
+				query.push(("parse_same_item_ids".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.subscription {
+				query.push(("subscription".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.subscription_length {
+				query.push(("subscription_length".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.subscription_period {
+				query.push(("subscription_period".into(), ParamValue::String(v.clone())));
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				"/gifts",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Hytale
+	pub async fn hytale(
+		&self,
+		params: Option<&CategoryHytaleParams>,
+	) -> Result<CategoryHytaleResponse, LolzteamError> {
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.page {
+				query.push(("page".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pmin {
+				query.push(("pmin".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pmax {
+				query.push(("pmax".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.title {
+				query.push(("title".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.order_by {
+				query.push(("order_by".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.tag_id {
+				for item in v {
+					query.push(("tag_id[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_tag_id {
+				for item in v {
+					query.push(("not_tag_id[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.public_tag_id {
+				for item in v {
+					query.push((
+						"public_tag_id[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.not_public_tag_id {
+				for item in v {
+					query.push((
+						"not_public_tag_id[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.origin {
+				for item in v {
+					query.push(("origin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_origin {
+				for item in v {
+					query.push(("not_origin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.user_id {
+				query.push(("user_id".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.nsb {
+				query.push(("nsb".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.sb {
+				query.push(("sb".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.nsb_by_me {
+				query.push(("nsb_by_me".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.sb_by_me {
+				query.push(("sb_by_me".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.currency {
+				query.push(("currency".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.email_login_data {
+				query.push(("email_login_data".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.email_provider {
+				for item in v {
+					query.push((
+						"email_provider[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.not_email_provider {
+				for item in v {
+					query.push((
+						"not_email_provider[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.parse_same_item_ids {
+				query.push(("parse_same_item_ids".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.edition {
+				for item in v {
+					query.push(("edition[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.profiles_min {
+				query.push(("profiles_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.profiles_max {
+				query.push(("profiles_max".into(), ParamValue::Integer(*v)));
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				"/hytale",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Instagram
+	pub async fn instagram(
+		&self,
+		params: Option<&CategoryInstagramParams>,
+	) -> Result<CategoryInstagramResponse, LolzteamError> {
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.page {
+				query.push(("page".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pmin {
+				query.push(("pmin".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pmax {
+				query.push(("pmax".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.title {
+				query.push(("title".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.order_by {
+				query.push(("order_by".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.tag_id {
+				for item in v {
+					query.push(("tag_id[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_tag_id {
+				for item in v {
+					query.push(("not_tag_id[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.public_tag_id {
+				for item in v {
+					query.push((
+						"public_tag_id[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.not_public_tag_id {
+				for item in v {
+					query.push((
+						"not_public_tag_id[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.origin {
+				for item in v {
+					query.push(("origin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_origin {
+				for item in v {
+					query.push(("not_origin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.user_id {
+				query.push(("user_id".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.nsb {
+				query.push(("nsb".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.sb {
+				query.push(("sb".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.nsb_by_me {
+				query.push(("nsb_by_me".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.sb_by_me {
+				query.push(("sb_by_me".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.currency {
+				query.push(("currency".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.email_login_data {
+				query.push(("email_login_data".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.email_provider {
+				for item in v {
+					query.push((
+						"email_provider[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.not_email_provider {
+				for item in v {
+					query.push((
+						"not_email_provider[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.parse_same_item_ids {
+				query.push(("parse_same_item_ids".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.email_type {
+				for item in v {
+					query.push(("email_type[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.item_domain {
+				query.push(("item_domain".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.tel {
+				query.push(("tel".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.country {
+				for item in v {
+					query.push(("country[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_country {
+				for item in v {
+					query.push(("not_country[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.cookies {
+				query.push(("cookies".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.login_without_cookies {
+				query.push((
+					"login_without_cookies".into(),
+					ParamValue::String(v.clone()),
+				));
+			}
+			if let Some(ref v) = p.followers_min {
+				query.push(("followers_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.followers_max {
+				query.push(("followers_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.post_min {
+				query.push(("post_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.post_max {
+				query.push(("post_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.reg {
+				query.push(("reg".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.reg_period {
+				query.push(("reg_period".into(), ParamValue::String(v.clone())));
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				"/instagram",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// miHoYo
+	pub async fn mihoyo(
+		&self,
+		params: Option<&CategoryMihoyoParams>,
+	) -> Result<CategoryMihoyoResponse, LolzteamError> {
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.page {
+				query.push(("page".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pmin {
+				query.push(("pmin".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pmax {
+				query.push(("pmax".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.title {
+				query.push(("title".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.order_by {
+				query.push(("order_by".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.tag_id {
+				for item in v {
+					query.push(("tag_id[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_tag_id {
+				for item in v {
+					query.push(("not_tag_id[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.public_tag_id {
+				for item in v {
+					query.push((
+						"public_tag_id[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.not_public_tag_id {
+				for item in v {
+					query.push((
+						"not_public_tag_id[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.origin {
+				for item in v {
+					query.push(("origin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_origin {
+				for item in v {
+					query.push(("not_origin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.user_id {
+				query.push(("user_id".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.nsb {
+				query.push(("nsb".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.sb {
+				query.push(("sb".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.nsb_by_me {
+				query.push(("nsb_by_me".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.sb_by_me {
+				query.push(("sb_by_me".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.currency {
+				query.push(("currency".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.email_login_data {
+				query.push(("email_login_data".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.email_provider {
+				for item in v {
+					query.push((
+						"email_provider[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.not_email_provider {
+				for item in v {
+					query.push((
+						"not_email_provider[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.email_type {
+				for item in v {
+					query.push(("email_type[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.parse_same_item_ids {
+				query.push(("parse_same_item_ids".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.item_domain {
+				query.push(("item_domain".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.email {
+				query.push(("email".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.ea {
+				query.push(("ea".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.region {
+				for item in v {
+					query.push(("region".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_region {
+				for item in v {
+					query.push(("not_region".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.genshin_character {
+				for item in v {
+					query.push((
+						"genshin_character[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref map) = p.genshin_character_constellations {
+				for (key, val) in map {
+					query.push((
+						format!("genshin_character_constellations[{key}]"),
+						ParamValue::Integer(*val),
+					));
+				}
+			}
+			if let Some(ref map) = p.genshin_character_constellations_max {
+				for (key, val) in map {
+					query.push((
+						format!("genshin_character_constellations_max[{key}]"),
+						ParamValue::Integer(*val),
+					));
+				}
+			}
+			if let Some(ref v) = p.genshin_weapon {
+				for item in v {
+					query.push((
+						"genshin_weapon[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.genshin_char_min {
+				query.push(("genshin_char_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.genshin_char_max {
+				query.push(("genshin_char_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.genshin_legendary_min {
+				query.push(("genshin_legendary_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.genshin_legendary_max {
+				query.push(("genshin_legendary_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.genshin_level_min {
+				query.push(("genshin_level_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.genshin_level_max {
+				query.push(("genshin_level_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.genshin_legendary_weapon_min {
+				query.push((
+					"genshin_legendary_weapon_min".into(),
+					ParamValue::Integer(*v),
+				));
+			}
+			if let Some(ref v) = p.genshin_legendary_weapon_max {
+				query.push((
+					"genshin_legendary_weapon_max".into(),
+					ParamValue::Integer(*v),
+				));
+			}
+			if let Some(ref v) = p.constellations_min {
+				query.push(("constellations_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.constellations_max {
+				query.push(("constellations_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.genshin_achievement_min {
+				query.push(("genshin_achievement_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.genshin_achievement_max {
+				query.push(("genshin_achievement_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.genshin_currency_min {
+				query.push(("genshin_currency_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.genshin_currency_max {
+				query.push(("genshin_currency_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.honkai_character {
+				for item in v {
+					query.push((
+						"honkai_character[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref map) = p.honkai_character_eidolons {
+				for (key, val) in map {
+					query.push((
+						format!("honkai_character_eidolons[{key}]"),
+						ParamValue::Integer(*val),
+					));
+				}
+			}
+			if let Some(ref map) = p.honkai_character_eidolons_max {
+				for (key, val) in map {
+					query.push((
+						format!("honkai_character_eidolons_max[{key}]"),
+						ParamValue::Integer(*val),
+					));
+				}
+			}
+			if let Some(ref v) = p.honkai_weapon {
+				for item in v {
+					query.push((
+						"honkai_weapon[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.honkai_char_min {
+				query.push(("honkai_char_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.honkai_char_max {
+				query.push(("honkai_char_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.honkai_legendary_min {
+				query.push(("honkai_legendary_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.honkai_legendary_max {
+				query.push(("honkai_legendary_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.honkai_level_min {
+				query.push(("honkai_level_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.honkai_level_max {
+				query.push(("honkai_level_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.honkai_legendary_weapon_min {
+				query.push((
+					"honkai_legendary_weapon_min".into(),
+					ParamValue::Integer(*v),
+				));
+			}
+			if let Some(ref v) = p.honkai_legendary_weapon_max {
+				query.push((
+					"honkai_legendary_weapon_max".into(),
+					ParamValue::Integer(*v),
+				));
+			}
+			if let Some(ref v) = p.eidolons_min {
+				query.push(("eidolons_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.eidolons_max {
+				query.push(("eidolons_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.honkai_achievement_min {
+				query.push(("honkai_achievement_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.honkai_achievement_max {
+				query.push(("honkai_achievement_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.honkai_currency_min {
+				query.push(("honkai_currency_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.honkai_currency_max {
+				query.push(("honkai_currency_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.zenless_character {
+				for item in v {
+					query.push((
+						"zenless_character[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref map) = p.zenless_character_cinemas {
+				for (key, val) in map {
+					query.push((
+						format!("zenless_character_cinemas[{key}]"),
+						ParamValue::Integer(*val),
+					));
+				}
+			}
+			if let Some(ref map) = p.zenless_character_cinemas_max {
+				for (key, val) in map {
+					query.push((
+						format!("zenless_character_cinemas_max[{key}]"),
+						ParamValue::Integer(*val),
+					));
+				}
+			}
+			if let Some(ref v) = p.zenless_weapon {
+				for item in v {
+					query.push((
+						"zenless_weapon[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.zenless_legendary_min {
+				query.push(("zenless_legendary_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.zenless_legendary_max {
+				query.push(("zenless_legendary_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.cinemas_min {
+				query.push(("cinemas_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.cinemas_max {
+				query.push(("cinemas_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.zenless_legendary_weapon_min {
+				query.push((
+					"zenless_legendary_weapon_min".into(),
+					ParamValue::Integer(*v),
+				));
+			}
+			if let Some(ref v) = p.zenless_legendary_weapon_max {
+				query.push((
+					"zenless_legendary_weapon_max".into(),
+					ParamValue::Integer(*v),
+				));
+			}
+			if let Some(ref v) = p.zenless_char_min {
+				query.push(("zenless_char_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.zenless_char_max {
+				query.push(("zenless_char_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.zenless_level_min {
+				query.push(("zenless_level_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.zenless_level_max {
+				query.push(("zenless_level_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.zenless_achievement_min {
+				query.push(("zenless_achievement_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.zenless_achievement_max {
+				query.push(("zenless_achievement_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.zenless_currency_min {
+				query.push(("zenless_currency_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.zenless_currency_max {
+				query.push(("zenless_currency_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.daybreak {
+				query.push(("daybreak".into(), ParamValue::Integer(*v)));
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				"/mihoyo",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Minecraft
+	pub async fn minecraft(
+		&self,
+		params: Option<&CategoryMinecraftParams>,
+	) -> Result<CategoryMinecraftResponse, LolzteamError> {
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.page {
+				query.push(("page".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pmin {
+				query.push(("pmin".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pmax {
+				query.push(("pmax".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.title {
+				query.push(("title".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.order_by {
+				query.push(("order_by".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.tag_id {
+				for item in v {
+					query.push(("tag_id[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_tag_id {
+				for item in v {
+					query.push(("not_tag_id[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.public_tag_id {
+				for item in v {
+					query.push((
+						"public_tag_id[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.not_public_tag_id {
+				for item in v {
+					query.push((
+						"not_public_tag_id[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.origin {
+				for item in v {
+					query.push(("origin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_origin {
+				for item in v {
+					query.push(("not_origin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.user_id {
+				query.push(("user_id".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.nsb {
+				query.push(("nsb".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.sb {
+				query.push(("sb".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.nsb_by_me {
+				query.push(("nsb_by_me".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.sb_by_me {
+				query.push(("sb_by_me".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.currency {
+				query.push(("currency".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.email_login_data {
+				query.push(("email_login_data".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.email_provider {
+				for item in v {
+					query.push((
+						"email_provider[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.not_email_provider {
+				for item in v {
+					query.push((
+						"not_email_provider[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.parse_same_item_ids {
+				query.push(("parse_same_item_ids".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.subscription {
+				query.push(("subscription".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.subscription_length {
+				query.push(("subscription_length".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.subscription_period {
+				query.push(("subscription_period".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.autorenewal {
+				query.push(("autorenewal".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.java {
+				query.push(("java".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.bedrock {
+				query.push(("bedrock".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.dungeons {
+				query.push(("dungeons".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.legends {
+				query.push(("legends".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.change_nickname {
+				query.push(("change_nickname".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.capes {
+				for item in v {
+					query.push(("capes[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.capes_min {
+				query.push(("capes_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.capes_max {
+				query.push(("capes_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.country {
+				for item in v {
+					query.push(("country[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_country {
+				for item in v {
+					query.push(("not_country[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.hypixel_ban {
+				query.push(("hypixel_ban".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.hypixel_skyblock_api_enabled {
+				query.push((
+					"hypixel_skyblock_api_enabled".into(),
+					ParamValue::String(v.clone()),
+				));
+			}
+			if let Some(ref v) = p.rank_hypixel {
+				for item in v {
+					query.push((
+						"rank_hypixel[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.level_hypixel_min {
+				query.push(("level_hypixel_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.level_hypixel_max {
+				query.push(("level_hypixel_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.achievement_hypixel_min {
+				query.push(("achievement_hypixel_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.achievement_hypixel_max {
+				query.push(("achievement_hypixel_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.level_hypixel_skyblock_min {
+				query.push(("level_hypixel_skyblock_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.level_hypixel_skyblock_max {
+				query.push(("level_hypixel_skyblock_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.net_worth_hypixel_skyblock_min {
+				query.push((
+					"net_worth_hypixel_skyblock_min".into(),
+					ParamValue::Integer(*v),
+				));
+			}
+			if let Some(ref v) = p.net_worth_hypixel_skyblock_max {
+				query.push((
+					"net_worth_hypixel_skyblock_max".into(),
+					ParamValue::Integer(*v),
+				));
+			}
+			if let Some(ref v) = p.reg {
+				query.push(("reg".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.reg_period {
+				query.push(("reg_period".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.last_login_hypixel {
+				query.push(("last_login_hypixel".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.last_login_hypixel_period {
+				query.push((
+					"last_login_hypixel_period".into(),
+					ParamValue::String(v.clone()),
+				));
+			}
+			if let Some(ref v) = p.can_change_details {
+				query.push(("can_change_details".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.nickname_length_min {
+				query.push(("nickname_length_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.nickname_length_max {
+				query.push(("nickname_length_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.hypixel_ban_parsed {
+				query.push(("hypixel_ban_parsed".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.minecoins_min {
+				query.push(("minecoins_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.minecoins_max {
+				query.push(("minecoins_max".into(), ParamValue::Integer(*v)));
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				"/minecraft",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Riot
+	pub async fn riot(
+		&self,
+		params: Option<&CategoryRiotParams>,
+	) -> Result<CategoryRiotResponse, LolzteamError> {
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.page {
+				query.push(("page".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pmin {
+				query.push(("pmin".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pmax {
+				query.push(("pmax".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.title {
+				query.push(("title".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.order_by {
+				query.push(("order_by".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.tag_id {
+				for item in v {
+					query.push(("tag_id[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_tag_id {
+				for item in v {
+					query.push(("not_tag_id[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.public_tag_id {
+				for item in v {
+					query.push((
+						"public_tag_id[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.not_public_tag_id {
+				for item in v {
+					query.push((
+						"not_public_tag_id[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.origin {
+				for item in v {
+					query.push(("origin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_origin {
+				for item in v {
+					query.push(("not_origin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.user_id {
+				query.push(("user_id".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.nsb {
+				query.push(("nsb".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.sb {
+				query.push(("sb".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.nsb_by_me {
+				query.push(("nsb_by_me".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.sb_by_me {
+				query.push(("sb_by_me".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.currency {
+				query.push(("currency".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.email_login_data {
+				query.push(("email_login_data".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.email_provider {
+				for item in v {
+					query.push((
+						"email_provider[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.not_email_provider {
+				for item in v {
+					query.push((
+						"not_email_provider[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.parse_same_item_ids {
+				query.push(("parse_same_item_ids".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.email_type {
+				for item in v {
+					query.push(("email_type[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.item_domain {
+				query.push(("item_domain".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.rmin {
+				query.push(("rmin".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.rmax {
+				query.push(("rmax".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.last_rmin {
+				query.push(("last_rmin".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.last_rmax {
+				query.push(("last_rmax".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.previous_rmin {
+				query.push(("previous_rmin".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.previous_rmax {
+				query.push(("previous_rmax".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.weapon_skin {
+				for item in v {
+					query.push(("weaponSkin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.buddy {
+				for item in v {
+					query.push(("buddy[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.agent {
+				for item in v {
+					query.push(("agent[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.champion {
+				for item in v {
+					query.push(("champion[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.skin {
+				for item in v {
+					query.push(("skin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.country {
+				for item in v {
+					query.push(("country[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_country {
+				for item in v {
+					query.push(("not_country[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.daybreak {
+				query.push(("daybreak".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.valorant_level_min {
+				query.push(("valorant_level_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.valorant_level_max {
+				query.push(("valorant_level_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.lol_level_min {
+				query.push(("lol_level_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.lol_level_max {
+				query.push(("lol_level_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.inv_min {
+				query.push(("inv_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.inv_max {
+				query.push(("inv_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.vp_min {
+				query.push(("vp_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.vp_max {
+				query.push(("vp_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.valorant_smin {
+				query.push(("valorant_smin".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.valorant_smax {
+				query.push(("valorant_smax".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.valorant_rank_type {
+				for item in v {
+					query.push((
+						"valorant_rank_type[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.amin {
+				query.push(("amin".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.amax {
+				query.push(("amax".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.valorant_region {
+				for item in v {
+					query.push((
+						"valorant_region[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.valorant_not_region {
+				for item in v {
+					query.push((
+						"valorant_not_region[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.lol_region {
+				for item in v {
+					query.push(("lol_region[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.lol_not_region {
+				for item in v {
+					query.push((
+						"lol_not_region[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.knife {
+				query.push(("knife".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.lol_smin {
+				query.push(("lol_smin".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.lol_smax {
+				query.push(("lol_smax".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.champion_min {
+				query.push(("champion_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.champion_max {
+				query.push(("champion_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.win_rate_min {
+				query.push(("win_rate_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.win_rate_max {
+				query.push(("win_rate_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.blue_min {
+				query.push(("blue_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.blue_max {
+				query.push(("blue_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.orange_min {
+				query.push(("orange_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.orange_max {
+				query.push(("orange_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.mythic_min {
+				query.push(("mythic_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.mythic_max {
+				query.push(("mythic_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.riot_min {
+				query.push(("riot_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.riot_max {
+				query.push(("riot_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.email {
+				query.push(("email".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.tel {
+				query.push(("tel".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.valorant_knife_min {
+				query.push(("valorant_knife_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.valorant_knife_max {
+				query.push(("valorant_knife_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.rp_min {
+				query.push(("rp_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.rp_max {
+				query.push(("rp_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.fa_min {
+				query.push(("fa_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.fa_max {
+				query.push(("fa_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.lol_rank {
+				for item in v {
+					query.push(("lol_rank[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				"/riot",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Roblox
+	pub async fn roblox(
+		&self,
+		params: Option<&CategoryRobloxParams>,
+	) -> Result<CategoryRobloxResponse, LolzteamError> {
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.page {
+				query.push(("page".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pmin {
+				query.push(("pmin".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pmax {
+				query.push(("pmax".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.title {
+				query.push(("title".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.order_by {
+				query.push(("order_by".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.tag_id {
+				for item in v {
+					query.push(("tag_id[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_tag_id {
+				for item in v {
+					query.push(("not_tag_id[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.public_tag_id {
+				for item in v {
+					query.push((
+						"public_tag_id[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.not_public_tag_id {
+				for item in v {
+					query.push((
+						"not_public_tag_id[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.origin {
+				for item in v {
+					query.push(("origin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_origin {
+				for item in v {
+					query.push(("not_origin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.user_id {
+				query.push(("user_id".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.nsb {
+				query.push(("nsb".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.sb {
+				query.push(("sb".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.nsb_by_me {
+				query.push(("nsb_by_me".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.sb_by_me {
+				query.push(("sb_by_me".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.currency {
+				query.push(("currency".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.email_login_data {
+				query.push(("email_login_data".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.email_provider {
+				for item in v {
+					query.push((
+						"email_provider[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.not_email_provider {
+				for item in v {
+					query.push((
+						"not_email_provider[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.parse_same_item_ids {
+				query.push(("parse_same_item_ids".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.email {
+				query.push(("email".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.robux_min {
+				query.push(("robux_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.robux_max {
+				query.push(("robux_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.friends_min {
+				query.push(("friends_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.friends_max {
+				query.push(("friends_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.followers_min {
+				query.push(("followers_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.followers_max {
+				query.push(("followers_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.country {
+				for item in v {
+					query.push(("country".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_country {
+				for item in v {
+					query.push(("not_country".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.reg {
+				query.push(("reg".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.reg_period {
+				query.push(("reg_period".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.subscription {
+				query.push(("subscription".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.subscription_length {
+				query.push(("subscription_length".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.subscription_period {
+				query.push(("subscription_period".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.autorenewal {
+				query.push(("autorenewal".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.xbox_connected {
+				query.push(("xbox_connected".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.psn_connected {
+				query.push(("psn_connected".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.verified {
+				query.push(("verified".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.age_verified {
+				query.push(("age_verified".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.incoming_robux_total_min {
+				query.push(("incoming_robux_total_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.incoming_robux_total_max {
+				query.push(("incoming_robux_total_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.limited_price_min {
+				query.push(("limited_price_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.limited_price_max {
+				query.push(("limited_price_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.gamepass_min {
+				query.push(("gamepass_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.gamepass_max {
+				query.push(("gamepass_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.game_donations {
+				query.push(("game_donations".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.inv_min {
+				query.push(("inv_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.inv_max {
+				query.push(("inv_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.ugc_limited_price_min {
+				query.push(("ugc_limited_price_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.ugc_limited_price_max {
+				query.push(("ugc_limited_price_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.credit_balance_min {
+				query.push(("credit_balance_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.credit_balance_max {
+				query.push(("credit_balance_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.offsale_min {
+				query.push(("offsale_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.offsale_max {
+				query.push(("offsale_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.voice {
+				query.push(("voice".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.age_group {
+				for item in v {
+					query.push(("age_group[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_age_group {
+				for item in v {
+					query.push((
+						"not_age_group[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				"/roblox",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Social Club
+	pub async fn social_club(
+		&self,
+		params: Option<&CategorySocialClubParams>,
+	) -> Result<CategorySocialClubResponse, LolzteamError> {
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.page {
+				query.push(("page".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pmin {
+				query.push(("pmin".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pmax {
+				query.push(("pmax".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.title {
+				query.push(("title".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.order_by {
+				query.push(("order_by".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.tag_id {
+				for item in v {
+					query.push(("tag_id[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_tag_id {
+				for item in v {
+					query.push(("not_tag_id[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.public_tag_id {
+				for item in v {
+					query.push((
+						"public_tag_id[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.not_public_tag_id {
+				for item in v {
+					query.push((
+						"not_public_tag_id[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.origin {
+				for item in v {
+					query.push(("origin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_origin {
+				for item in v {
+					query.push(("not_origin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.user_id {
+				query.push(("user_id".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.nsb {
+				query.push(("nsb".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.sb {
+				query.push(("sb".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.nsb_by_me {
+				query.push(("nsb_by_me".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.sb_by_me {
+				query.push(("sb_by_me".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.currency {
+				query.push(("currency".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.email_login_data {
+				query.push(("email_login_data".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.email_provider {
+				for item in v {
+					query.push((
+						"email_provider[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.not_email_provider {
+				for item in v {
+					query.push((
+						"not_email_provider[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.parse_same_item_ids {
+				query.push(("parse_same_item_ids".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.daybreak {
+				query.push(("daybreak".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.level_min {
+				query.push(("level_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.level_max {
+				query.push(("level_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.cash_min {
+				query.push(("cash_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.cash_max {
+				query.push(("cash_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.bank_cash_min {
+				query.push(("bank_cash_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.bank_cash_max {
+				query.push(("bank_cash_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.game {
+				for item in v {
+					query.push(("game[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				"/socialclub",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Steam
+	pub async fn steam(
+		&self,
+		params: Option<&CategorySteamParams>,
+	) -> Result<CategorySteamResponse, LolzteamError> {
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.page {
+				query.push(("page".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pmin {
+				query.push(("pmin".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pmax {
+				query.push(("pmax".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.title {
+				query.push(("title".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.order_by {
+				query.push(("order_by".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.tag_id {
+				for item in v {
+					query.push(("tag_id[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_tag_id {
+				for item in v {
+					query.push(("not_tag_id[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.public_tag_id {
+				for item in v {
+					query.push((
+						"public_tag_id[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.not_public_tag_id {
+				for item in v {
+					query.push((
+						"not_public_tag_id[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.origin {
+				for item in v {
+					query.push(("origin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_origin {
+				for item in v {
+					query.push(("not_origin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.user_id {
+				query.push(("user_id".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.nsb {
+				query.push(("nsb".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.sb {
+				query.push(("sb".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.nsb_by_me {
+				query.push(("nsb_by_me".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.sb_by_me {
+				query.push(("sb_by_me".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.currency {
+				query.push(("currency".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.email_login_data {
+				query.push(("email_login_data".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.email_type {
+				for item in v {
+					query.push(("email_type[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.email_provider {
+				for item in v {
+					query.push((
+						"email_provider[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.not_email_provider {
+				for item in v {
+					query.push((
+						"not_email_provider[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.parse_same_item_ids {
+				query.push(("parse_same_item_ids".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.item_domain {
+				query.push(("item_domain".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.game {
+				for item in v {
+					query.push(("game[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref map) = p.hours_played {
+				for (key, val) in map {
+					query.push((format!("hours_played[{key}]"), ParamValue::Integer(*val)));
+				}
+			}
+			if let Some(ref map) = p.hours_played_max {
+				for (key, val) in map {
+					query.push((
+						format!("hours_played_max[{key}]"),
+						ParamValue::Integer(*val),
+					));
+				}
+			}
+			if let Some(ref v) = p.eg {
+				query.push(("eg".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.vac {
+				for item in v {
+					query.push(("vac[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.vac_skip_game_check {
+				query.push(("vac_skip_game_check".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.rt {
+				query.push(("rt".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.trade_ban {
+				query.push(("trade_ban".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.trade_limit {
+				query.push(("trade_limit".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.daybreak {
+				query.push(("daybreak".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.limit {
+				query.push(("limit".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.mafile {
+				query.push(("mafile".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.reg {
+				query.push(("reg".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.reg_period {
+				query.push(("reg_period".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.lmin {
+				query.push(("lmin".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.lmax {
+				query.push(("lmax".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.rmin {
+				query.push(("rmin".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.rmax {
+				query.push(("rmax".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.wingman_rmin {
+				query.push(("wingman_rmin".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.wingman_rmax {
+				query.push(("wingman_rmax".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.no_vac {
+				query.push(("no_vac".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.mm_ban {
+				query.push(("mm_ban".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.balance_min {
+				query.push(("balance_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.balance_max {
+				query.push(("balance_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.inv_game {
+				query.push(("inv_game".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.inv_min {
+				query.push(("inv_min".into(), ParamValue::Float(*v)));
+			}
+			if let Some(ref v) = p.inv_max {
+				query.push(("inv_max".into(), ParamValue::Float(*v)));
+			}
+			if let Some(ref v) = p.friends_min {
+				query.push(("friends_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.friends_max {
+				query.push(("friends_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.gmin {
+				query.push(("gmin".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.gmax {
+				query.push(("gmax".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.win_count_min {
+				query.push(("win_count_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.win_count_max {
+				query.push(("win_count_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.medal_id {
+				for item in v {
+					query.push(("medal_id[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.medal_operator_or {
+				query.push(("medal_operator_or".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.medal_min {
+				query.push(("medal_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.medal_max {
+				query.push(("medal_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.gift {
+				for item in v {
+					query.push(("gift[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.gift_min {
+				query.push(("gift_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.gift_max {
+				query.push(("gift_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.recently_hours_min {
+				query.push(("recently_hours_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.recently_hours_max {
+				query.push(("recently_hours_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.country {
+				for item in v {
+					query.push(("country[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_country {
+				for item in v {
+					query.push(("not_country[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.cs2_profile_rank_min {
+				query.push(("cs2_profile_rank_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.cs2_profile_rank_max {
+				query.push(("cs2_profile_rank_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.solommr_min {
+				query.push(("solommr_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.solommr_max {
+				query.push(("solommr_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.d2_game_count_min {
+				query.push(("d2_game_count_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.d2_game_count_max {
+				query.push(("d2_game_count_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.d2_win_count_min {
+				query.push(("d2_win_count_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.d2_win_count_max {
+				query.push(("d2_win_count_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.d2_behavior_min {
+				query.push(("d2_behavior_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.d2_behavior_max {
+				query.push(("d2_behavior_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.faceit_lvl_min {
+				query.push(("faceit_lvl_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.faceit_lvl_max {
+				query.push(("faceit_lvl_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.points_min {
+				query.push(("points_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.points_max {
+				query.push(("points_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.relevant_gmin {
+				query.push(("relevant_gmin".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.relevant_gmax {
+				query.push(("relevant_gmax".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.last_trans_date {
+				query.push(("last_trans_date".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.last_trans_date_period {
+				query.push((
+					"last_trans_date_period".into(),
+					ParamValue::String(v.clone()),
+				));
+			}
+			if let Some(ref v) = p.last_trans_date_later {
+				query.push(("last_trans_date_later".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.last_trans_date_period_later {
+				query.push((
+					"last_trans_date_period_later".into(),
+					ParamValue::String(v.clone()),
+				));
+			}
+			if let Some(ref v) = p.no_trans {
+				query.push(("no_trans".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.trans {
+				query.push(("trans".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.gifts_purchase_min {
+				query.push(("gifts_purchase_min".into(), ParamValue::Float(*v)));
+			}
+			if let Some(ref v) = p.gifts_purchase_max {
+				query.push(("gifts_purchase_max".into(), ParamValue::Float(*v)));
+			}
+			if let Some(ref v) = p.refunds_purchase_min {
+				query.push(("refunds_purchase_min".into(), ParamValue::Float(*v)));
+			}
+			if let Some(ref v) = p.refunds_purchase_max {
+				query.push(("refunds_purchase_max".into(), ParamValue::Float(*v)));
+			}
+			if let Some(ref v) = p.ingame_purchase_min {
+				query.push(("ingame_purchase_min".into(), ParamValue::Float(*v)));
+			}
+			if let Some(ref v) = p.ingame_purchase_max {
+				query.push(("ingame_purchase_max".into(), ParamValue::Float(*v)));
+			}
+			if let Some(ref v) = p.games_purchase_min {
+				query.push(("games_purchase_min".into(), ParamValue::Float(*v)));
+			}
+			if let Some(ref v) = p.games_purchase_max {
+				query.push(("games_purchase_max".into(), ParamValue::Float(*v)));
+			}
+			if let Some(ref v) = p.purchase_min {
+				query.push(("purchase_min".into(), ParamValue::Float(*v)));
+			}
+			if let Some(ref v) = p.purchase_max {
+				query.push(("purchase_max".into(), ParamValue::Float(*v)));
+			}
+			if let Some(ref v) = p.has_activated_keys {
+				query.push(("has_activated_keys".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.elo_min {
+				query.push(("elo_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.elo_max {
+				query.push(("elo_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.cs2_map_rank {
+				query.push(("cs2_map_rank".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.cs2_map_rmin {
+				query.push(("cs2_map_rmin".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.cs2_map_rmax {
+				query.push(("cs2_map_rmax".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.has_faceit {
+				query.push(("has_faceit".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.faceit_csgo_lvl_min {
+				query.push(("faceit_csgo_lvl_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.faceit_csgo_lvl_max {
+				query.push(("faceit_csgo_lvl_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.rust_deaths_min {
+				query.push(("rust_deaths_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.rust_deaths_max {
+				query.push(("rust_deaths_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.rust_kills_min {
+				query.push(("rust_kills_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.rust_kills_max {
+				query.push(("rust_kills_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.d2_last_match_date {
+				query.push(("d2_last_match_date".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.d2_last_match_date_period {
+				query.push((
+					"d2_last_match_date_period".into(),
+					ParamValue::String(v.clone()),
+				));
+			}
+			if let Some(ref v) = p.cards_min {
+				query.push(("cards_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.cards_max {
+				query.push(("cards_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.cards_games_min {
+				query.push(("cards_games_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.cards_games_max {
+				query.push(("cards_games_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.skip_vac_inv {
+				query.push(("skip_vac_inv".into(), ParamValue::Bool(*v)));
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				"/steam",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Supercell
+	pub async fn supercell(
+		&self,
+		params: Option<&CategorySupercellParams>,
+	) -> Result<CategorySupercellResponse, LolzteamError> {
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.page {
+				query.push(("page".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pmin {
+				query.push(("pmin".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pmax {
+				query.push(("pmax".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.title {
+				query.push(("title".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.order_by {
+				query.push(("order_by".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.tag_id {
+				for item in v {
+					query.push(("tag_id[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_tag_id {
+				for item in v {
+					query.push(("not_tag_id[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.public_tag_id {
+				for item in v {
+					query.push((
+						"public_tag_id[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.not_public_tag_id {
+				for item in v {
+					query.push((
+						"not_public_tag_id[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.origin {
+				for item in v {
+					query.push(("origin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_origin {
+				for item in v {
+					query.push(("not_origin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.user_id {
+				query.push(("user_id".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.nsb {
+				query.push(("nsb".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.sb {
+				query.push(("sb".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.nsb_by_me {
+				query.push(("nsb_by_me".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.sb_by_me {
+				query.push(("sb_by_me".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.currency {
+				query.push(("currency".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.email_login_data {
+				query.push(("email_login_data".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.email_provider {
+				for item in v {
+					query.push((
+						"email_provider[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.not_email_provider {
+				for item in v {
+					query.push((
+						"not_email_provider[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.parse_same_item_ids {
+				query.push(("parse_same_item_ids".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.daybreak {
+				query.push(("daybreak".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.email_type {
+				for item in v {
+					query.push(("email_type[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.item_domain {
+				query.push(("item_domain".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.eg {
+				query.push(("eg".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.tel {
+				query.push(("tel".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.brawl_level_min {
+				query.push(("brawl_level_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.brawl_level_max {
+				query.push(("brawl_level_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.brawl_cup_min {
+				query.push(("brawl_cup_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.brawl_cup_max {
+				query.push(("brawl_cup_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.brawl_wins_min {
+				query.push(("brawl_wins_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.brawl_wins_max {
+				query.push(("brawl_wins_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.brawl_pass {
+				query.push(("brawl_pass".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.brawler {
+				for item in v {
+					query.push(("brawler[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.brawlers_min {
+				query.push(("brawlers_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.brawlers_max {
+				query.push(("brawlers_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.legendary_brawlers_min {
+				query.push(("legendary_brawlers_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.legendary_brawlers_max {
+				query.push(("legendary_brawlers_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.royale_level_min {
+				query.push(("royale_level_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.royale_level_max {
+				query.push(("royale_level_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.royale_cup_min {
+				query.push(("royale_cup_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.royale_cup_max {
+				query.push(("royale_cup_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.royale_wins_min {
+				query.push(("royale_wins_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.royale_wins_max {
+				query.push(("royale_wins_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.king_level_min {
+				query.push(("king_level_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.king_level_max {
+				query.push(("king_level_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.royale_pass {
+				query.push(("royale_pass".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.clash_level_min {
+				query.push(("clash_level_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.clash_level_max {
+				query.push(("clash_level_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.clash_cup_min {
+				query.push(("clash_cup_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.clash_cup_max {
+				query.push(("clash_cup_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.clash_wins_min {
+				query.push(("clash_wins_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.clash_wins_max {
+				query.push(("clash_wins_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.clash_pass {
+				query.push(("clash_pass".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.total_heroes_level_min {
+				query.push(("total_heroes_level_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.total_heroes_level_max {
+				query.push(("total_heroes_level_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.total_troops_level_min {
+				query.push(("total_troops_level_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.total_troops_level_max {
+				query.push(("total_troops_level_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.total_spells_level_min {
+				query.push(("total_spells_level_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.total_spells_level_max {
+				query.push(("total_spells_level_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.total_builder_heroes_level_min {
+				query.push((
+					"total_builder_heroes_level_min".into(),
+					ParamValue::Integer(*v),
+				));
+			}
+			if let Some(ref v) = p.total_builder_heroes_level_max {
+				query.push((
+					"total_builder_heroes_level_max".into(),
+					ParamValue::Integer(*v),
+				));
+			}
+			if let Some(ref v) = p.total_builder_troops_level_min {
+				query.push((
+					"total_builder_troops_level_min".into(),
+					ParamValue::Integer(*v),
+				));
+			}
+			if let Some(ref v) = p.total_builder_troops_level_max {
+				query.push((
+					"total_builder_troops_level_max".into(),
+					ParamValue::Integer(*v),
+				));
+			}
+			if let Some(ref v) = p.town_hall_level_min {
+				query.push(("town_hall_level_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.town_hall_level_max {
+				query.push(("town_hall_level_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.builder_hall_level_min {
+				query.push(("builder_hall_level_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.builder_hall_level_max {
+				query.push(("builder_hall_level_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.builder_hall_cup_min {
+				query.push(("builder_hall_cup_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.builder_hall_cup_max {
+				query.push(("builder_hall_cup_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.creation_year_min {
+				query.push(("creation_year_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.creation_year_max {
+				query.push(("creation_year_max".into(), ParamValue::Integer(*v)));
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				"/supercell",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Telegram
+	pub async fn telegram(
+		&self,
+		params: Option<&CategoryTelegramParams>,
+	) -> Result<CategoryTelegramResponse, LolzteamError> {
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.page {
+				query.push(("page".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pmin {
+				query.push(("pmin".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pmax {
+				query.push(("pmax".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.title {
+				query.push(("title".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.order_by {
+				query.push(("order_by".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.tag_id {
+				for item in v {
+					query.push(("tag_id[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_tag_id {
+				for item in v {
+					query.push(("not_tag_id[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.public_tag_id {
+				for item in v {
+					query.push((
+						"public_tag_id[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.not_public_tag_id {
+				for item in v {
+					query.push((
+						"not_public_tag_id[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.origin {
+				for item in v {
+					query.push(("origin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_origin {
+				for item in v {
+					query.push(("not_origin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.user_id {
+				query.push(("user_id".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.nsb {
+				query.push(("nsb".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.sb {
+				query.push(("sb".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.nsb_by_me {
+				query.push(("nsb_by_me".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.sb_by_me {
+				query.push(("sb_by_me".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.currency {
+				query.push(("currency".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.email_login_data {
+				query.push(("email_login_data".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.email_provider {
+				for item in v {
+					query.push((
+						"email_provider[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.not_email_provider {
+				for item in v {
+					query.push((
+						"not_email_provider[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.parse_same_item_ids {
+				query.push(("parse_same_item_ids".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.spam {
+				query.push(("spam".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.password {
+				query.push(("password".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.premium {
+				query.push(("premium".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.premium_expiration {
+				query.push(("premium_expiration".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.premium_expiration_period {
+				query.push((
+					"premium_expiration_period".into(),
+					ParamValue::String(v.clone()),
+				));
+			}
+			if let Some(ref v) = p.country {
+				for item in v {
+					query.push(("country[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_country {
+				for item in v {
+					query.push(("not_country[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.daybreak {
+				query.push(("daybreak".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.min_channels {
+				query.push(("min_channels".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.max_channels {
+				query.push(("max_channels".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.min_chats {
+				query.push(("min_chats".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.max_chats {
+				query.push(("max_chats".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.min_conversations {
+				query.push(("min_conversations".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.max_conversations {
+				query.push(("max_conversations".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.min_admin {
+				query.push(("min_admin".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.max_admin {
+				query.push(("max_admin".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.min_admin_sub {
+				query.push(("min_admin_sub".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.max_admin_sub {
+				query.push(("max_admin_sub".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.dig_min {
+				query.push(("dig_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.dig_max {
+				query.push(("dig_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.min_contacts {
+				query.push(("min_contacts".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.max_contacts {
+				query.push(("max_contacts".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.min_stars {
+				query.push(("min_stars".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.max_stars {
+				query.push(("max_stars".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.birthday {
+				query.push(("birthday".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.birthday_period {
+				query.push(("birthday_period".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.birthday_after {
+				query.push(("birthday_after".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.birthday_after_period {
+				query.push((
+					"birthday_after_period".into(),
+					ParamValue::String(v.clone()),
+				));
+			}
+			if let Some(ref v) = p.min_id {
+				query.push(("min_id".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.max_id {
+				query.push(("max_id".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.allow_geo_spamblock {
+				query.push(("allow_geo_spamblock".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.min_gifts {
+				query.push(("min_gifts".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.max_gifts {
+				query.push(("max_gifts".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.min_nft_gifts {
+				query.push(("min_nft_gifts".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.max_nft_gifts {
+				query.push(("max_nft_gifts".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.min_gifts_stars {
+				query.push(("min_gifts_stars".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.max_gifts_stars {
+				query.push(("max_gifts_stars".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.min_gifts_convert_stars {
+				query.push(("min_gifts_convert_stars".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.max_gifts_convert_stars {
+				query.push(("max_gifts_convert_stars".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.dc_id {
+				for item in v {
+					query.push(("dc_id[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_dc_id {
+				for item in v {
+					query.push(("not_dc_id[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.email {
+				query.push(("email".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.min_bots {
+				query.push(("min_bots".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.max_bots {
+				query.push(("max_bots".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.min_bot_active_users {
+				query.push(("min_bot_active_users".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.max_bot_active_users {
+				query.push(("max_bot_active_users".into(), ParamValue::Integer(*v)));
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				"/telegram",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// TikTok
+	pub async fn tik_tok(
+		&self,
+		params: Option<&CategoryTikTokParams>,
+	) -> Result<CategoryTikTokResponse, LolzteamError> {
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.page {
+				query.push(("page".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pmin {
+				query.push(("pmin".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pmax {
+				query.push(("pmax".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.title {
+				query.push(("title".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.order_by {
+				query.push(("order_by".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.tag_id {
+				for item in v {
+					query.push(("tag_id[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_tag_id {
+				for item in v {
+					query.push(("not_tag_id[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.public_tag_id {
+				for item in v {
+					query.push((
+						"public_tag_id[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.not_public_tag_id {
+				for item in v {
+					query.push((
+						"not_public_tag_id[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.origin {
+				for item in v {
+					query.push(("origin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_origin {
+				for item in v {
+					query.push(("not_origin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.user_id {
+				query.push(("user_id".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.nsb {
+				query.push(("nsb".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.sb {
+				query.push(("sb".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.nsb_by_me {
+				query.push(("nsb_by_me".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.sb_by_me {
+				query.push(("sb_by_me".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.currency {
+				query.push(("currency".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.email_login_data {
+				query.push(("email_login_data".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.email_provider {
+				for item in v {
+					query.push((
+						"email_provider[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.not_email_provider {
+				for item in v {
+					query.push((
+						"not_email_provider[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.parse_same_item_ids {
+				query.push(("parse_same_item_ids".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.email_type {
+				for item in v {
+					query.push(("email_type[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.item_domain {
+				query.push(("item_domain".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.tel {
+				query.push(("tel".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.reg {
+				query.push(("reg".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.reg_period {
+				query.push(("reg_period".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.followers_min {
+				query.push(("followers_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.followers_max {
+				query.push(("followers_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.post_min {
+				query.push(("post_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.post_max {
+				query.push(("post_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.like_min {
+				query.push(("like_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.like_max {
+				query.push(("like_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.coins_min {
+				query.push(("coins_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.coins_max {
+				query.push(("coins_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.cookie_login {
+				query.push(("cookie_login".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.verified {
+				query.push(("verified".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.email {
+				query.push(("email".into(), ParamValue::String(v.clone())));
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				"/tiktok",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Uplay
+	pub async fn uplay(
+		&self,
+		params: Option<&CategoryUplayParams>,
+	) -> Result<CategoryUplayResponse, LolzteamError> {
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.page {
+				query.push(("page".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pmin {
+				query.push(("pmin".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pmax {
+				query.push(("pmax".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.title {
+				query.push(("title".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.order_by {
+				query.push(("order_by".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.tag_id {
+				for item in v {
+					query.push(("tag_id[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_tag_id {
+				for item in v {
+					query.push(("not_tag_id[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.public_tag_id {
+				for item in v {
+					query.push((
+						"public_tag_id[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.not_public_tag_id {
+				for item in v {
+					query.push((
+						"not_public_tag_id[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.origin {
+				for item in v {
+					query.push(("origin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_origin {
+				for item in v {
+					query.push(("not_origin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.user_id {
+				query.push(("user_id".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.nsb {
+				query.push(("nsb".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.sb {
+				query.push(("sb".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.nsb_by_me {
+				query.push(("nsb_by_me".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.sb_by_me {
+				query.push(("sb_by_me".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.currency {
+				query.push(("currency".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.email_login_data {
+				query.push(("email_login_data".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.email_provider {
+				for item in v {
+					query.push((
+						"email_provider[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.not_email_provider {
+				for item in v {
+					query.push((
+						"not_email_provider[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.parse_same_item_ids {
+				query.push(("parse_same_item_ids".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.email_type {
+				for item in v {
+					query.push(("email_type[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.item_domain {
+				query.push(("item_domain".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.game {
+				for item in v {
+					query.push(("game[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.country {
+				for item in v {
+					query.push(("country[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_country {
+				for item in v {
+					query.push(("not_country[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.daybreak {
+				query.push(("daybreak".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.gmin {
+				query.push(("gmin".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.gmax {
+				query.push(("gmax".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.subscription {
+				query.push(("subscription".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.subscription_length {
+				query.push(("subscription_length".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.subscription_period {
+				query.push(("subscription_period".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.r6_level_min {
+				query.push(("r6_level_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.r6_level_max {
+				query.push(("r6_level_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.r6_rank_min {
+				query.push(("r6_rank_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.r6_rank_max {
+				query.push(("r6_rank_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.r6_operators_min {
+				query.push(("r6_operators_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.r6_operators_max {
+				query.push(("r6_operators_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.r6_ban {
+				query.push(("r6_ban".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.r6_smin {
+				query.push(("r6_smin".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.r6_smax {
+				query.push(("r6_smax".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.r6_skin {
+				for item in v {
+					query.push(("r6_skin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.r6_operator {
+				for item in v {
+					query.push(("r6_operator[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.xbox_connected {
+				query.push(("xbox_connected".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.psn_connected {
+				query.push(("psn_connected".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.steam_connected {
+				query.push(("steam_connected".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.balance_min {
+				query.push(("balance_min".into(), ParamValue::Float(*v)));
+			}
+			if let Some(ref v) = p.balance_max {
+				query.push(("balance_max".into(), ParamValue::Float(*v)));
+			}
+			if let Some(ref v) = p.transactions {
+				query.push(("transactions".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.reg {
+				query.push(("reg".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.reg_period {
+				query.push(("reg_period".into(), ParamValue::String(v.clone())));
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				"/uplay",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// VPN
+	pub async fn vpn(
+		&self,
+		params: Option<&CategoryVpnParams>,
+	) -> Result<CategoryVpnResponse, LolzteamError> {
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.page {
+				query.push(("page".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pmin {
+				query.push(("pmin".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pmax {
+				query.push(("pmax".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.title {
+				query.push(("title".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.order_by {
+				query.push(("order_by".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.tag_id {
+				for item in v {
+					query.push(("tag_id[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_tag_id {
+				for item in v {
+					query.push(("not_tag_id[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.public_tag_id {
+				for item in v {
+					query.push((
+						"public_tag_id[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.not_public_tag_id {
+				for item in v {
+					query.push((
+						"not_public_tag_id[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.origin {
+				for item in v {
+					query.push(("origin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_origin {
+				for item in v {
+					query.push(("not_origin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.user_id {
+				query.push(("user_id".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.nsb {
+				query.push(("nsb".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.sb {
+				query.push(("sb".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.nsb_by_me {
+				query.push(("nsb_by_me".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.sb_by_me {
+				query.push(("sb_by_me".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.currency {
+				query.push(("currency".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.email_login_data {
+				query.push(("email_login_data".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.email_provider {
+				for item in v {
+					query.push((
+						"email_provider[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.not_email_provider {
+				for item in v {
+					query.push((
+						"not_email_provider[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.parse_same_item_ids {
+				query.push(("parse_same_item_ids".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.service {
+				for item in v {
+					query.push(("service[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.subscription_length {
+				query.push(("subscription_length".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.subscription_period {
+				query.push(("subscription_period".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.autorenewal {
+				query.push(("autorenewal".into(), ParamValue::String(v.clone())));
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				"/vpn",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Warface
+	pub async fn warface(
+		&self,
+		params: Option<&CategoryWarfaceParams>,
+	) -> Result<CategoryWarfaceResponse, LolzteamError> {
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.page {
+				query.push(("page".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pmin {
+				query.push(("pmin".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pmax {
+				query.push(("pmax".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.title {
+				query.push(("title".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.order_by {
+				query.push(("order_by".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.tag_id {
+				for item in v {
+					query.push(("tag_id[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_tag_id {
+				for item in v {
+					query.push(("not_tag_id[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.public_tag_id {
+				for item in v {
+					query.push((
+						"public_tag_id[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.not_public_tag_id {
+				for item in v {
+					query.push((
+						"not_public_tag_id[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.origin {
+				for item in v {
+					query.push(("origin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_origin {
+				for item in v {
+					query.push(("not_origin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.user_id {
+				query.push(("user_id".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.nsb {
+				query.push(("nsb".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.sb {
+				query.push(("sb".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.nsb_by_me {
+				query.push(("nsb_by_me".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.sb_by_me {
+				query.push(("sb_by_me".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.currency {
+				query.push(("currency".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.email_login_data {
+				query.push(("email_login_data".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.email_provider {
+				for item in v {
+					query.push((
+						"email_provider[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.not_email_provider {
+				for item in v {
+					query.push((
+						"not_email_provider[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.parse_same_item_ids {
+				query.push(("parse_same_item_ids".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.rank_min {
+				query.push(("rank_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.rank_max {
+				query.push(("rank_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.bonus_rank_min {
+				query.push(("bonus_rank_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.bonus_rank_max {
+				query.push(("bonus_rank_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.tel {
+				query.push(("tel".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.daybreak {
+				query.push(("daybreak".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.kredits_min {
+				query.push(("kredits_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.kredits_max {
+				query.push(("kredits_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.total_kredits_min {
+				query.push(("total_kredits_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.total_kredits_max {
+				query.push(("total_kredits_max".into(), ParamValue::Integer(*v)));
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				"/warface",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// World of Tanks
+	pub async fn wot(
+		&self,
+		params: Option<&CategoryWotParams>,
+	) -> Result<CategoryWotResponse, LolzteamError> {
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.page {
+				query.push(("page".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pmin {
+				query.push(("pmin".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pmax {
+				query.push(("pmax".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.title {
+				query.push(("title".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.order_by {
+				query.push(("order_by".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.tag_id {
+				for item in v {
+					query.push(("tag_id[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_tag_id {
+				for item in v {
+					query.push(("not_tag_id[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.public_tag_id {
+				for item in v {
+					query.push((
+						"public_tag_id[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.not_public_tag_id {
+				for item in v {
+					query.push((
+						"not_public_tag_id[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.origin {
+				for item in v {
+					query.push(("origin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_origin {
+				for item in v {
+					query.push(("not_origin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.user_id {
+				query.push(("user_id".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.nsb {
+				query.push(("nsb".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.sb {
+				query.push(("sb".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.nsb_by_me {
+				query.push(("nsb_by_me".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.sb_by_me {
+				query.push(("sb_by_me".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.currency {
+				query.push(("currency".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.email_login_data {
+				query.push(("email_login_data".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.email_provider {
+				for item in v {
+					query.push((
+						"email_provider[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.not_email_provider {
+				for item in v {
+					query.push((
+						"not_email_provider[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.parse_same_item_ids {
+				query.push(("parse_same_item_ids".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.email_type {
+				for item in v {
+					query.push(("email_type[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.item_domain {
+				query.push(("item_domain".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.tel {
+				query.push(("tel".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.daybreak {
+				query.push(("daybreak".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.battles_min {
+				query.push(("battles_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.battles_max {
+				query.push(("battles_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.gold_min {
+				query.push(("gold_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.gold_max {
+				query.push(("gold_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.silver_min {
+				query.push(("silver_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.silver_max {
+				query.push(("silver_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.top_min {
+				query.push(("top_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.top_max {
+				query.push(("top_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.prem_min {
+				query.push(("prem_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.prem_max {
+				query.push(("prem_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.top_prem_min {
+				query.push(("top_prem_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.top_prem_max {
+				query.push(("top_prem_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.win_pmin {
+				query.push(("win_pmin".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.win_pmax {
+				query.push(("win_pmax".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.tank {
+				for item in v {
+					query.push(("tank[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.region {
+				for item in v {
+					query.push(("region[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_region {
+				for item in v {
+					query.push(("not_region[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.premium {
+				query.push(("premium".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.premium_expiration {
+				query.push(("premium_expiration".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.premium_expiration_period {
+				query.push((
+					"premium_expiration_period".into(),
+					ParamValue::String(v.clone()),
+				));
+			}
+			if let Some(ref v) = p.clan {
+				query.push(("clan".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.clan_role {
+				for item in v {
+					query.push(("clan_role[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_clan_role {
+				for item in v {
+					query.push((
+						"not_clan_role[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.clan_gold_min {
+				query.push(("clan_gold_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.clan_gold_max {
+				query.push(("clan_gold_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.clan_credits_min {
+				query.push(("clan_credits_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.clan_credits_max {
+				query.push(("clan_credits_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.clan_crystal_min {
+				query.push(("clan_crystal_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.clan_crystal_max {
+				query.push(("clan_crystal_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.country {
+				for item in v {
+					query.push(("country[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_country {
+				for item in v {
+					query.push(("not_country[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				"/world-of-tanks",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// WoT Blitz
+	pub async fn wot_blitz(
+		&self,
+		params: Option<&CategoryWotBlitzParams>,
+	) -> Result<CategoryWotBlitzResponse, LolzteamError> {
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.page {
+				query.push(("page".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pmin {
+				query.push(("pmin".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pmax {
+				query.push(("pmax".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.title {
+				query.push(("title".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.order_by {
+				query.push(("order_by".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.tag_id {
+				for item in v {
+					query.push(("tag_id[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_tag_id {
+				for item in v {
+					query.push(("not_tag_id[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.public_tag_id {
+				for item in v {
+					query.push((
+						"public_tag_id[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.not_public_tag_id {
+				for item in v {
+					query.push((
+						"not_public_tag_id[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.origin {
+				for item in v {
+					query.push(("origin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_origin {
+				for item in v {
+					query.push(("not_origin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.user_id {
+				query.push(("user_id".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.nsb {
+				query.push(("nsb".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.sb {
+				query.push(("sb".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.nsb_by_me {
+				query.push(("nsb_by_me".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.sb_by_me {
+				query.push(("sb_by_me".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.currency {
+				query.push(("currency".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.email_login_data {
+				query.push(("email_login_data".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.email_provider {
+				for item in v {
+					query.push((
+						"email_provider[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.not_email_provider {
+				for item in v {
+					query.push((
+						"not_email_provider[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.parse_same_item_ids {
+				query.push(("parse_same_item_ids".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.email_type {
+				for item in v {
+					query.push(("email_type[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.item_domain {
+				query.push(("item_domain".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.tel {
+				query.push(("tel".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.daybreak {
+				query.push(("daybreak".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.battles_min {
+				query.push(("battles_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.battles_max {
+				query.push(("battles_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.gold_min {
+				query.push(("gold_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.gold_max {
+				query.push(("gold_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.silver_min {
+				query.push(("silver_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.silver_max {
+				query.push(("silver_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.top_min {
+				query.push(("top_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.top_max {
+				query.push(("top_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.prem_min {
+				query.push(("prem_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.prem_max {
+				query.push(("prem_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.top_prem_min {
+				query.push(("top_prem_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.top_prem_max {
+				query.push(("top_prem_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.win_pmin {
+				query.push(("win_pmin".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.win_pmax {
+				query.push(("win_pmax".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.tank {
+				for item in v {
+					query.push(("tank[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.region {
+				for item in v {
+					query.push(("region[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_region {
+				for item in v {
+					query.push(("not_region[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.premium {
+				query.push(("premium".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.premium_expiration {
+				query.push(("premium_expiration".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.premium_expiration_period {
+				query.push((
+					"premium_expiration_period".into(),
+					ParamValue::String(v.clone()),
+				));
+			}
+			if let Some(ref v) = p.clan {
+				query.push(("clan".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.clan_role {
+				for item in v {
+					query.push(("clan_role[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_clan_role {
+				for item in v {
+					query.push((
+						"not_clan_role[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.clan_gold_min {
+				query.push(("clan_gold_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.clan_gold_max {
+				query.push(("clan_gold_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.clan_credits_min {
+				query.push(("clan_credits_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.clan_credits_max {
+				query.push(("clan_credits_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.clan_crystal_min {
+				query.push(("clan_crystal_min".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.clan_crystal_max {
+				query.push(("clan_crystal_max".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.country {
+				for item in v {
+					query.push(("country[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_country {
+				for item in v {
+					query.push(("not_country[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				"/wot-blitz",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Get Category Games
+	pub async fn games(
+		&self,
+		category_name: String,
+	) -> Result<CategoryGamesResponse, LolzteamError> {
+		let path = format!("/{category_name}/games");
+		self.http.request("GET", &path, None, None).await
+	}
+
+	/// Get Category Search Params
+	pub async fn params(
+		&self,
+		category_name: String,
+	) -> Result<CategoryParamsResponse, LolzteamError> {
+		let path = format!("/{category_name}/params");
+		self.http.request("GET", &path, None, None).await
+	}
+}
+
+pub struct CustomDiscountsApi {
+	http: Arc<HttpClient>,
+}
+
+impl CustomDiscountsApi {
+	pub(crate) fn new(http: Arc<HttpClient>) -> Self {
+		Self { http }
+	}
+
+	/// Delete Custom Discount
+	pub async fn delete(
+		&self,
+		body: Option<&CustomDiscountsDeleteBody>,
+	) -> Result<CustomDiscountsDeleteResponse, LolzteamError> {
+		self.http
+			.request_json("DELETE", "/custom-discounts", None, body)
+			.await
+	}
+
+	/// Get Custom Discounts
+	pub async fn get(&self) -> Result<CustomDiscountsGetResponse, LolzteamError> {
+		self.http
+			.request("GET", "/custom-discounts", None, None)
+			.await
+	}
+
+	/// Create Custom Discount
+	pub async fn create(
+		&self,
+		body: Option<&CustomDiscountsCreateBody>,
+	) -> Result<CustomDiscountsCreateResponse, LolzteamError> {
+		self.http
+			.request_json("POST", "/custom-discounts", None, body)
+			.await
+	}
+
+	/// Edit Custom Discount
+	pub async fn edit(
+		&self,
+		body: Option<&CustomDiscountsEditBody>,
+	) -> Result<CustomDiscountsEditResponse, LolzteamError> {
+		self.http
+			.request_json("PUT", "/custom-discounts", None, body)
+			.await
+	}
+}
+
+pub struct ImapApi {
+	http: Arc<HttpClient>,
+}
+
+impl ImapApi {
+	pub(crate) fn new(http: Arc<HttpClient>) -> Self {
+		Self { http }
+	}
+
+	/// Delete IMAP Configuration
+	pub async fn delete(
+		&self,
+		body: Option<&ImapDeleteBody>,
+	) -> Result<ImapDeleteResponse, LolzteamError> {
+		self.http.request_json("DELETE", "/imap", None, body).await
+	}
+
+	/// Create IMAP Configuration
+	pub async fn create(
+		&self,
+		body: Option<&ImapCreateBody>,
+	) -> Result<ImapCreateResponse, LolzteamError> {
+		self.http.request_json("POST", "/imap", None, body).await
+	}
+}
+
+pub struct ListApi {
+	http: Arc<HttpClient>,
+}
+
+impl ListApi {
+	pub(crate) fn new(http: Arc<HttpClient>) -> Self {
+		Self { http }
+	}
+
+	/// Get All Favourites Accounts
+	pub async fn favorites(
+		&self,
+		params: Option<&ListFavoritesParams>,
+	) -> Result<ListFavoritesResponse, LolzteamError> {
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.page {
+				query.push(("page".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.show {
+				query.push(("show".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.title {
+				query.push(("title".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.pmin {
+				query.push(("pmin".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pmax {
+				query.push(("pmax".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.origin {
+				for item in v {
+					query.push(("origin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_origin {
+				for item in v {
+					query.push(("not_origin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.order_by {
+				query.push(("order_by".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.sb {
+				query.push(("sb".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.sb_by_me {
+				query.push(("sb_by_me".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.nsb {
+				query.push(("nsb".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.nsb_by_me {
+				query.push(("nsb_by_me".into(), ParamValue::Bool(*v)));
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				"/fave",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Get User Items States
+	pub async fn states(
+		&self,
+		params: Option<&ListStatesParams>,
+	) -> Result<ListStatesResponse, LolzteamError> {
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.user_id {
+				match v {
+					StringOrInt::String(s) => {
+						query.push(("user_id".into(), ParamValue::String(s.clone())))
+					}
+					StringOrInt::Int(n) => query.push(("user_id".into(), ParamValue::Integer(*n))),
+				}
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				"/user/item-states",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Get All User Accounts
+	pub async fn user(
+		&self,
+		params: Option<&ListUserParams>,
+	) -> Result<ListUserResponse, LolzteamError> {
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.user_id {
+				query.push(("user_id".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.category_id {
+				query.push(("category_id".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.page {
+				query.push(("page".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.show {
+				query.push(("show".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.delete_reason {
+				query.push(("delete_reason".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.title {
+				query.push(("title".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.pmin {
+				query.push(("pmin".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pmax {
+				query.push(("pmax".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.login {
+				query.push(("login".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.origin {
+				for item in v {
+					query.push(("origin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_origin {
+				for item in v {
+					query.push(("not_origin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.order_by {
+				query.push(("order_by".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.sb {
+				query.push(("sb".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.sb_by_me {
+				query.push(("sb_by_me".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.nsb {
+				query.push(("nsb".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.nsb_by_me {
+				query.push(("nsb_by_me".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.username {
+				query.push(("username".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.published_start_date {
+				query.push(("published_startDate".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.published_end_date {
+				query.push(("published_endDate".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.filter_by_published_date {
+				query.push(("filter_by_published_date".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.paid_start_date {
+				query.push(("paid_startDate".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.paid_end_date {
+				query.push(("paid_endDate".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.filter_by_buyer_operation_date {
+				query.push((
+					"filter_by_buyer_operation_date".into(),
+					ParamValue::Bool(*v),
+				));
+			}
+			if let Some(ref v) = p.delete_start_date {
+				query.push(("delete_startDate".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.delete_end_date {
+				query.push(("delete_endDate".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.filter_by_delete_date {
+				query.push(("filter_by_delete_date".into(), ParamValue::Bool(*v)));
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				"/user/items",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Get All Purchased Accounts
+	pub async fn orders(
+		&self,
+		params: Option<&ListOrdersParams>,
+	) -> Result<ListOrdersResponse, LolzteamError> {
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.user_id {
+				query.push(("user_id".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.category_id {
+				query.push(("category_id".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.page {
+				query.push(("page".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.show {
+				query.push(("show".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.title {
+				query.push(("title".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.pmin {
+				query.push(("pmin".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pmax {
+				query.push(("pmax".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.login {
+				query.push(("login".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.origin {
+				for item in v {
+					query.push(("origin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_origin {
+				for item in v {
+					query.push(("not_origin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.order_by {
+				query.push(("order_by".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.sb {
+				query.push(("sb".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.sb_by_me {
+				query.push(("sb_by_me".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.nsb {
+				query.push(("nsb".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.nsb_by_me {
+				query.push(("nsb_by_me".into(), ParamValue::Bool(*v)));
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				"/user/orders",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Download Accounts Data
+	pub async fn download(
+		&self,
+		r#type: String,
+		params: Option<&ListDownloadParams>,
+	) -> Result<String, LolzteamError> {
+		let param_type = r#type;
+		let path = format!("/user/{param_type}/download");
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.format {
+				query.push(("format".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.custom_format {
+				query.push(("custom_format".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.category_id {
+				query.push(("category_id".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.page {
+				query.push(("page".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.show {
+				query.push(("show".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.delete_reason {
+				query.push(("delete_reason".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.title {
+				query.push(("title".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.pmin {
+				query.push(("pmin".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pmax {
+				query.push(("pmax".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.origin {
+				for item in v {
+					query.push(("origin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_origin {
+				for item in v {
+					query.push(("not_origin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.order_by {
+				query.push(("order_by".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.sb {
+				query.push(("sb".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.sb_by_me {
+				query.push(("sb_by_me".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.nsb {
+				query.push(("nsb".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.nsb_by_me {
+				query.push(("nsb_by_me".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.username {
+				query.push(("username".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.published_start_date {
+				query.push(("published_startDate".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.published_end_date {
+				query.push(("published_endDate".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.filter_by_published_date {
+				query.push(("filter_by_published_date".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.paid_start_date {
+				query.push(("paid_startDate".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.paid_end_date {
+				query.push(("paid_endDate".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.filter_by_buyer_operation_date {
+				query.push((
+					"filter_by_buyer_operation_date".into(),
+					ParamValue::Bool(*v),
+				));
+			}
+			if let Some(ref v) = p.delete_start_date {
+				query.push(("delete_startDate".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.delete_end_date {
+				query.push(("delete_endDate".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.filter_by_delete_date {
+				query.push(("filter_by_delete_date".into(), ParamValue::Bool(*v)));
+			}
+		}
+		self.http
+			.request_text(
+				"GET",
+				&path,
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+			)
+			.await
+	}
+
+	/// Get All Viewed Accounts
+	pub async fn viewed(
+		&self,
+		params: Option<&ListViewedParams>,
+	) -> Result<ListViewedResponse, LolzteamError> {
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.page {
+				query.push(("page".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.show {
+				query.push(("show".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.title {
+				query.push(("title".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.pmin {
+				query.push(("pmin".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pmax {
+				query.push(("pmax".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.origin {
+				for item in v {
+					query.push(("origin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.not_origin {
+				for item in v {
+					query.push(("not_origin[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.order_by {
+				query.push(("order_by".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.sb {
+				query.push(("sb".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.sb_by_me {
+				query.push(("sb_by_me".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.nsb {
+				query.push(("nsb".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.nsb_by_me {
+				query.push(("nsb_by_me".into(), ParamValue::Bool(*v)));
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				"/viewed",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+}
+
+pub struct ManagingApi {
+	http: Arc<HttpClient>,
+}
+
+impl ManagingApi {
+	pub(crate) fn new(http: Arc<HttpClient>) -> Self {
+		Self { http }
+	}
+
+	/// Bulk Get Accounts
+	pub async fn bulk_get(
+		&self,
+		body: Option<&ManagingBulkGetBody>,
+	) -> Result<ManagingBulkGetResponse, LolzteamError> {
+		self.http
+			.request_json("POST", "/bulk/items", None, body)
+			.await
+	}
+
+	/// Create Claim
+	pub async fn create_claim(
+		&self,
+		body: Option<&ManagingCreateClaimBody>,
+	) -> Result<ManagingCreateClaimResponse, LolzteamError> {
+		self.http.request_json("POST", "/claims", None, body).await
+	}
+
+	/// Get Email Letters
+	pub async fn get_letters2(
+		&self,
+		params: Option<&ManagingGetLetters2Params>,
+	) -> Result<ManagingGetLetters2Response, LolzteamError> {
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.email_password {
+				query.push(("email_password".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.email {
+				query.push(("email".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.password {
+				query.push(("password".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.limit {
+				query.push(("limit".into(), ParamValue::Integer(*v)));
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				"/letters2",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Get Steam Inventory Value
+	pub async fn steam_value(
+		&self,
+		link: String,
+		params: Option<&ManagingSteamValueParams>,
+	) -> Result<ManagingSteamValueResponse, LolzteamError> {
+		let mut query = Vec::new();
+		query.push(("link".into(), ParamValue::String(link.clone())));
+		if let Some(p) = params {
+			if let Some(ref v) = p.app_id {
+				query.push(("app_id".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.currency {
+				query.push(("currency".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.ignore_cache {
+				query.push(("ignore_cache".into(), ParamValue::Bool(*v)));
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				"/steam-value",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Delete Account
+	pub async fn delete(
+		&self,
+		item_id: i64,
+		body: Option<&ManagingDeleteBody>,
+	) -> Result<ManagingDeleteResponse, LolzteamError> {
+		let path = format!("/{item_id}");
+		self.http.request_json("DELETE", &path, None, body).await
+	}
+
+	/// Get Account
+	pub async fn get(
+		&self,
+		item_id: i64,
+		params: Option<&ManagingGetParams>,
+	) -> Result<ManagingGetResponse, LolzteamError> {
+		let path = format!("/{item_id}");
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.parse_same_item_ids {
+				query.push(("parse_same_item_ids".into(), ParamValue::Bool(*v)));
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				&path,
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Get AI Price
+	pub async fn ai_price(&self, item_id: i64) -> Result<ManagingAiPriceResponse, LolzteamError> {
+		let path = format!("/{item_id}/ai-price");
+		self.http.request("GET", &path, None, None).await
+	}
+
+	/// Disable Auto Bump
+	pub async fn auto_bump_disable(
+		&self,
+		item_id: i64,
+	) -> Result<ManagingAutoBumpDisableResponse, LolzteamError> {
+		let path = format!("/{item_id}/auto-bump");
+		self.http.request("DELETE", &path, None, None).await
+	}
+
+	/// Auto Bump
+	pub async fn auto_bump(
+		&self,
+		item_id: i64,
+		body: Option<&ManagingAutoBumpBody>,
+	) -> Result<ManagingAutoBumpResponse, LolzteamError> {
+		let path = format!("/{item_id}/auto-bump");
+		self.http.request_json("POST", &path, None, body).await
+	}
+
+	/// Get Auto Buy Price
+	pub async fn auto_buy_price(
+		&self,
+		item_id: i64,
+	) -> Result<ManagingAutoBuyPriceResponse, LolzteamError> {
+		let path = format!("/{item_id}/auto-buy-price");
+		self.http.request("GET", &path, None, None).await
+	}
+
+	/// Bump Account
+	pub async fn bump(&self, item_id: i64) -> Result<ManagingBumpResponse, LolzteamError> {
+		let path = format!("/{item_id}/bump");
+		self.http.request("POST", &path, None, None).await
+	}
+
+	/// Change Account Owner
+	pub async fn transfer(
+		&self,
+		item_id: i64,
+		body: Option<&ManagingTransferBody>,
+	) -> Result<ManagingTransferResponse, LolzteamError> {
+		let path = format!("/{item_id}/change-owner");
+		self.http.request_json("POST", &path, None, body).await
+	}
+
+	/// Change Password
+	pub async fn change_password(
+		&self,
+		item_id: i64,
+		body: Option<&ManagingChangePasswordBody>,
+	) -> Result<ManagingChangePasswordResponse, LolzteamError> {
+		let path = format!("/{item_id}/change-password");
+		self.http.request_json("POST", &path, None, body).await
+	}
+
+	/// Check Guarantee
+	pub async fn check_guarantee(
+		&self,
+		item_id: i64,
+	) -> Result<ManagingCheckGuaranteeResponse, LolzteamError> {
+		let path = format!("/{item_id}/check-guarantee");
+		self.http.request("POST", &path, None, None).await
+	}
+
+	/// Close Account
+	pub async fn close(&self, item_id: i64) -> Result<ManagingCloseResponse, LolzteamError> {
+		let path = format!("/{item_id}/close");
+		self.http.request("POST", &path, None, None).await
+	}
+
+	/// Confirm SDA
+	pub async fn steam_sda(
+		&self,
+		item_id: i64,
+		body: Option<&ManagingSteamSdaBody>,
+	) -> Result<ManagingSteamSdaResponse, LolzteamError> {
+		let path = format!("/{item_id}/confirm-sda");
+		self.http.request_json("POST", &path, None, body).await
+	}
+
+	/// Decline Video Recording Request
+	pub async fn decline_video_recording(
+		&self,
+		item_id: i64,
+		body: Option<&ManagingDeclineVideoRecordingBody>,
+	) -> Result<ManagingDeclineVideoRecordingResponse, LolzteamError> {
+		let path = format!("/{item_id}/decline-video-recording");
+		self.http.request_json("POST", &path, None, body).await
+	}
+
+	/// Edit Account
+	pub async fn edit(
+		&self,
+		item_id: i64,
+		body: Option<&ManagingEditBody>,
+	) -> Result<ManagingEditResponse, LolzteamError> {
+		let path = format!("/{item_id}/edit");
+		self.http.request_json("PUT", &path, None, body).await
+	}
+
+	/// Get Email Confirmation Code
+	pub async fn email_code(
+		&self,
+		item_id: i64,
+	) -> Result<ManagingEmailCodeResponse, LolzteamError> {
+		let path = format!("/{item_id}/email-code");
+		self.http.request("GET", &path, None, None).await
+	}
+
+	/// Get Mafile Confirmation Code
+	pub async fn steam_mafile_code(
+		&self,
+		item_id: i64,
+	) -> Result<ManagingSteamMafileCodeResponse, LolzteamError> {
+		let path = format!("/{item_id}/guard-code");
+		self.http.request("GET", &path, None, None).await
+	}
+
+	/// Get Account Image
+	pub async fn image(
+		&self,
+		item_id: i64,
+		r#type: String,
+	) -> Result<ManagingImageResponse, LolzteamError> {
+		let path = format!("/{item_id}/image");
+		let mut query = Vec::new();
+		query.push(("type".into(), ParamValue::String(r#type.clone())));
+		self.http
+			.request(
+				"GET",
+				&path,
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Get Account Steam Inventory Value
+	pub async fn steam_inventory_value(
+		&self,
+		item_id: i64,
+		params: Option<&ManagingSteamInventoryValueParams>,
+	) -> Result<ManagingSteamInventoryValueResponse, LolzteamError> {
+		let path = format!("/{item_id}/inventory-value");
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.app_id {
+				query.push(("app_id".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.currency {
+				query.push(("currency".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.ignore_cache {
+				query.push(("ignore_cache".into(), ParamValue::Bool(*v)));
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				&path,
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Remove Mafile
+	pub async fn steam_remove_mafile(
+		&self,
+		item_id: i64,
+	) -> Result<ManagingSteamRemoveMafileResponse, LolzteamError> {
+		let path = format!("/{item_id}/mafile");
+		self.http.request("DELETE", &path, None, None).await
+	}
+
+	/// Get Mafile
+	pub async fn steam_get_mafile(
+		&self,
+		item_id: i64,
+	) -> Result<ManagingSteamGetMafileResponse, LolzteamError> {
+		let path = format!("/{item_id}/mafile");
+		self.http.request("GET", &path, None, None).await
+	}
+
+	/// Add Mafile
+	pub async fn steam_add_mafile(
+		&self,
+		item_id: i64,
+	) -> Result<ManagingSteamAddMafileResponse, LolzteamError> {
+		let path = format!("/{item_id}/mafile");
+		self.http.request("POST", &path, None, None).await
+	}
+
+	/// Edit Note
+	pub async fn note(
+		&self,
+		item_id: i64,
+		body: Option<&ManagingNoteBody>,
+	) -> Result<ManagingNoteResponse, LolzteamError> {
+		let path = format!("/{item_id}/note-save");
+		self.http.request_json("POST", &path, None, body).await
+	}
+
+	/// Open Account
+	pub async fn open(&self, item_id: i64) -> Result<ManagingOpenResponse, LolzteamError> {
+		let path = format!("/{item_id}/open");
+		self.http.request("POST", &path, None, None).await
+	}
+
+	/// Remove a Public Tag
+	pub async fn public_untag(
+		&self,
+		item_id: i64,
+		body: Option<&ManagingPublicUntagBody>,
+	) -> Result<ManagingPublicUntagResponse, LolzteamError> {
+		let path = format!("/{item_id}/public-tag");
+		self.http.request_json("DELETE", &path, None, body).await
+	}
+
+	/// Add a Public Tag
+	pub async fn public_tag(
+		&self,
+		item_id: i64,
+		body: Option<&ManagingPublicTagBody>,
+	) -> Result<ManagingPublicTagResponse, LolzteamError> {
+		let path = format!("/{item_id}/public-tag");
+		self.http.request_json("POST", &path, None, body).await
+	}
+
+	/// Cancel Guarantee
+	pub async fn refuse_guarantee(
+		&self,
+		item_id: i64,
+	) -> Result<ManagingRefuseGuaranteeResponse, LolzteamError> {
+		let path = format!("/{item_id}/refuse-guarantee");
+		self.http.request("POST", &path, None, None).await
+	}
+
+	/// Unfavorite
+	pub async fn unfavorite(
+		&self,
+		item_id: i64,
+	) -> Result<ManagingUnfavoriteResponse, LolzteamError> {
+		let path = format!("/{item_id}/star");
+		self.http.request("DELETE", &path, None, None).await
+	}
+
+	/// Favorite
+	pub async fn favorite(&self, item_id: i64) -> Result<ManagingFavoriteResponse, LolzteamError> {
+		let path = format!("/{item_id}/star");
+		self.http.request("POST", &path, None, None).await
+	}
+
+	/// Get Steam HTML
+	pub async fn steam_preview(
+		&self,
+		item_id: i64,
+		params: Option<&ManagingSteamPreviewParams>,
+	) -> Result<String, LolzteamError> {
+		let path = format!("/{item_id}/steam-preview");
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.r#type {
+				query.push(("type".into(), ParamValue::String(v.clone())));
+			}
+		}
+		self.http
+			.request_text(
+				"GET",
+				&path,
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+			)
+			.await
+	}
+
+	/// Unstick Account
+	pub async fn unstick(&self, item_id: i64) -> Result<ManagingUnstickResponse, LolzteamError> {
+		let path = format!("/{item_id}/stick");
+		self.http.request("DELETE", &path, None, None).await
+	}
+
+	/// Stick Account
+	pub async fn stick(&self, item_id: i64) -> Result<ManagingStickResponse, LolzteamError> {
+		let path = format!("/{item_id}/stick");
+		self.http.request("POST", &path, None, None).await
+	}
+
+	/// Remove a Tag
+	pub async fn untag(
+		&self,
+		item_id: i64,
+		body: Option<&ManagingUntagBody>,
+	) -> Result<ManagingUntagResponse, LolzteamError> {
+		let path = format!("/{item_id}/tag");
+		self.http.request_json("DELETE", &path, None, body).await
+	}
+
+	/// Add a Tag
+	pub async fn tag(
+		&self,
+		item_id: i64,
+		body: Option<&ManagingTagBody>,
+	) -> Result<ManagingTagResponse, LolzteamError> {
+		let path = format!("/{item_id}/tag");
+		self.http.request_json("POST", &path, None, body).await
+	}
+
+	/// Get Telegram Confirmation Code
+	pub async fn telegram_code(
+		&self,
+		item_id: i64,
+	) -> Result<ManagingTelegramCodeResponse, LolzteamError> {
+		let path = format!("/{item_id}/telegram-login-code");
+		self.http.request("GET", &path, None, None).await
+	}
+
+	/// Telegram Reset Auth
+	pub async fn telegram_reset_auth(
+		&self,
+		item_id: i64,
+	) -> Result<ManagingTelegramResetAuthResponse, LolzteamError> {
+		let path = format!("/{item_id}/telegram-reset-authorizations");
+		self.http.request("POST", &path, None, None).await
+	}
+
+	/// Get Temp Email Password
+	pub async fn temp_email_password(
+		&self,
+		item_id: i64,
+	) -> Result<ManagingTempEmailPasswordResponse, LolzteamError> {
+		let path = format!("/{item_id}/temp-email-password");
+		self.http.request("GET", &path, None, None).await
+	}
+
+	/// Update Inventory Value
+	pub async fn steam_update_value(
+		&self,
+		item_id: i64,
+		body: Option<&ManagingSteamUpdateValueBody>,
+	) -> Result<ManagingSteamUpdateValueResponse, LolzteamError> {
+		let path = format!("/{item_id}/update-inventory");
+		self.http.request_json("POST", &path, None, body).await
+	}
+}
+
+pub struct PaymentsApi {
+	http: Arc<HttpClient>,
+}
+
+impl PaymentsApi {
+	pub(crate) fn new(http: Arc<HttpClient>) -> Self {
+		Self { http }
+	}
+
+	/// Get List Of Balances
+	pub async fn balance_list(&self) -> Result<PaymentsBalanceListResponse, LolzteamError> {
+		self.http
+			.request("GET", "/balance/exchange", None, None)
+			.await
+	}
+
+	/// Exchange Balance
+	pub async fn balance_exchange(
+		&self,
+		body: Option<&PaymentsBalanceExchangeBody>,
+	) -> Result<PaymentsBalanceExchangeResponse, LolzteamError> {
+		self.http
+			.request_json("POST", "/balance/exchange", None, body)
+			.await
+	}
+
+	/// Create Payout
+	pub async fn payout(
+		&self,
+		body: Option<&PaymentsPayoutBody>,
+	) -> Result<PaymentsPayoutResponse, LolzteamError> {
+		self.http
+			.request_json("POST", "/balance/payout", None, body)
+			.await
+	}
+
+	/// Get Payout Services
+	pub async fn payout_services(&self) -> Result<PaymentsPayoutServicesResponse, LolzteamError> {
+		self.http
+			.request("GET", "/balance/payout/services", None, None)
+			.await
+	}
+
+	/// Transfer Money
+	pub async fn transfer(
+		&self,
+		body: Option<&PaymentsTransferBody>,
+	) -> Result<PaymentsTransferResponse, LolzteamError> {
+		self.http
+			.request_json("POST", "/balance/transfer", None, body)
+			.await
+	}
+
+	/// Cancel Transfer
+	pub async fn cancel(
+		&self,
+		body: Option<&PaymentsCancelBody>,
+	) -> Result<PaymentsCancelResponse, LolzteamError> {
+		self.http
+			.request_json("POST", "/balance/transfer/cancel", None, body)
+			.await
+	}
+
+	/// Check Transfer Fee
+	pub async fn fee(
+		&self,
+		params: Option<&PaymentsFeeParams>,
+	) -> Result<PaymentsFeeResponse, LolzteamError> {
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.amount {
+				query.push(("amount".into(), ParamValue::Float(*v)));
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				"/balance/transfer/fee",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Get Currency
+	pub async fn currency(&self) -> Result<PaymentsCurrencyResponse, LolzteamError> {
+		self.http.request("GET", "/currency", None, None).await
+	}
+
+	/// Get Invoice
+	pub async fn invoice_get(
+		&self,
+		params: Option<&PaymentsInvoiceGetParams>,
+	) -> Result<PaymentsInvoiceGetResponse, LolzteamError> {
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.invoice_id {
+				query.push(("invoice_id".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.payment_id {
+				query.push(("payment_id".into(), ParamValue::String(v.clone())));
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				"/invoice",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Create Invoice
+	pub async fn invoice_create(
+		&self,
+		body: Option<&PaymentsInvoiceCreateBody>,
+	) -> Result<PaymentsInvoiceCreateResponse, LolzteamError> {
+		self.http.request_json("POST", "/invoice", None, body).await
+	}
+
+	/// Get Invoice List
+	pub async fn invoice_list(
+		&self,
+		params: Option<&PaymentsInvoiceListParams>,
+	) -> Result<PaymentsInvoiceListResponse, LolzteamError> {
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.page {
+				query.push(("page".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.currency {
+				query.push(("currency".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.status {
+				query.push(("status".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.amount {
+				query.push(("amount".into(), ParamValue::Float(*v)));
+			}
+			if let Some(ref v) = p.merchant_id {
+				query.push(("merchant_id".into(), ParamValue::Integer(*v)));
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				"/invoice/list",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Payments History
+	pub async fn history(
+		&self,
+		params: Option<&PaymentsHistoryParams>,
+	) -> Result<PaymentsHistoryResponse, LolzteamError> {
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.r#type {
+				query.push(("type".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.pmin {
+				query.push(("pmin".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.pmax {
+				query.push(("pmax".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.currency {
+				query.push(("currency".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.page {
+				query.push(("page".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.operation_id_lt {
+				query.push(("operation_id_lt".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.receiver {
+				query.push(("receiver".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.sender {
+				query.push(("sender".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.is_api {
+				query.push(("is_api".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.start_date {
+				query.push(("startDate".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.end_date {
+				query.push(("endDate".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.wallet {
+				query.push(("wallet".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.comment {
+				query.push(("comment".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.is_hold {
+				query.push(("is_hold".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.show_payment_stats {
+				query.push(("show_payment_stats".into(), ParamValue::Bool(*v)));
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				"/user/payments",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+}
+
+pub struct ProfileApi {
+	http: Arc<HttpClient>,
+}
+
+impl ProfileApi {
+	pub(crate) fn new(http: Arc<HttpClient>) -> Self {
+		Self { http }
+	}
+
+	/// Get Claims
+	pub async fn claims(
+		&self,
+		params: Option<&ProfileClaimsParams>,
+	) -> Result<ProfileClaimsResponse, LolzteamError> {
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.r#type {
+				query.push(("type".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.claim_state {
+				query.push(("claim_state".into(), ParamValue::String(v.clone())));
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				"/claims",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Get Profile
+	pub async fn get(
+		&self,
+		params: Option<&ProfileGetParams>,
+	) -> Result<ProfileGetResponse, LolzteamError> {
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.fields_include {
+				for item in v {
+					query.push((
+						"fields_include".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				"/me",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Edit Market Settings
+	pub async fn edit(
+		&self,
+		body: Option<&ProfileEditBody>,
+	) -> Result<ProfileEditResponse, LolzteamError> {
+		self.http.request_json("PUT", "/me", None, body).await
+	}
+}
+
+pub struct ProxyApi {
+	http: Arc<HttpClient>,
+}
+
+impl ProxyApi {
+	pub(crate) fn new(http: Arc<HttpClient>) -> Self {
+		Self { http }
+	}
+
+	/// Delete Proxy
+	pub async fn delete(
+		&self,
+		body: Option<&ProxyDeleteBody>,
+	) -> Result<ProxyDeleteResponse, LolzteamError> {
+		self.http.request_json("DELETE", "/proxy", None, body).await
+	}
+
+	/// Get Proxy
+	pub async fn get(&self) -> Result<ProxyGetResponse, LolzteamError> {
+		self.http.request("GET", "/proxy", None, None).await
+	}
+
+	/// Add Proxy
+	pub async fn add(
+		&self,
+		body: Option<&ProxyAddBody>,
+	) -> Result<ProxyAddResponse, LolzteamError> {
+		self.http.request_json("POST", "/proxy", None, body).await
+	}
+}
+
+pub struct PublishingApi {
+	http: Arc<HttpClient>,
+}
+
+impl PublishingApi {
+	pub(crate) fn new(http: Arc<HttpClient>) -> Self {
+		Self { http }
+	}
+
+	/// Add Account
+	pub async fn add(
+		&self,
+		body: Option<&PublishingAddBody>,
+	) -> Result<PublishingAddResponse, LolzteamError> {
+		self.http
+			.request_json("POST", "/item/add", None, body)
+			.await
+	}
+
+	/// Fast Account Upload
+	pub async fn fast_sell(
+		&self,
+		body: Option<&PublishingFastSellBody>,
+	) -> Result<PublishingFastSellResponse, LolzteamError> {
+		self.http
+			.request_json("POST", "/item/fast-sell", None, body)
+			.await
+	}
+
+	/// Add an External Account
+	pub async fn external(
+		&self,
+		item_id: i64,
+		body: Option<&PublishingExternalBody>,
+	) -> Result<PublishingExternalResponse, LolzteamError> {
+		let path = format!("/{item_id}/external-account");
+		self.http.request_json("POST", &path, None, body).await
+	}
+
+	/// Check Account Details
+	pub async fn check(
+		&self,
+		item_id: i64,
+		body: Option<&PublishingCheckBody>,
+	) -> Result<PublishingCheckResponse, LolzteamError> {
+		let path = format!("/{item_id}/goods/check");
+		self.http.request_json("POST", &path, None, body).await
+	}
+}
+
+pub struct PurchasingApi {
+	http: Arc<HttpClient>,
+}
+
+impl PurchasingApi {
+	pub(crate) fn new(http: Arc<HttpClient>) -> Self {
+		Self { http }
+	}
+
+	/// Check Account
+	pub async fn check(&self, item_id: i64) -> Result<PurchasingCheckResponse, LolzteamError> {
+		let path = format!("/{item_id}/check-account");
+		self.http.request("POST", &path, None, None).await
+	}
+
+	/// Confirm Buy
+	pub async fn confirm(
+		&self,
+		item_id: i64,
+		body: Option<&PurchasingConfirmBody>,
+	) -> Result<PurchasingConfirmResponse, LolzteamError> {
+		let path = format!("/{item_id}/confirm-buy");
+		self.http.request_json("POST", &path, None, body).await
+	}
+
+	/// Cancel Discount Request
+	pub async fn discount_cancel(
+		&self,
+		item_id: i64,
+	) -> Result<PurchasingDiscountCancelResponse, LolzteamError> {
+		let path = format!("/{item_id}/discount");
+		self.http.request("DELETE", &path, None, None).await
+	}
+
+	/// Discount Request
+	pub async fn discount_request(
+		&self,
+		item_id: i64,
+		body: Option<&PurchasingDiscountRequestBody>,
+	) -> Result<PurchasingDiscountRequestResponse, LolzteamError> {
+		let path = format!("/{item_id}/discount");
+		self.http.request_json("POST", &path, None, body).await
+	}
+
+	/// Fast Buy Account
+	pub async fn fast_buy(
+		&self,
+		item_id: i64,
+		body: Option<&PurchasingFastBuyBody>,
+	) -> Result<PurchasingFastBuyResponse, LolzteamError> {
+		let path = format!("/{item_id}/fast-buy");
+		self.http.request_json("POST", &path, None, body).await
+	}
+}
 
 pub struct MarketClient {
 	auto_payments: AutoPaymentsApi,
@@ -41,7 +7082,9 @@ impl MarketClient {
 			base_url: "https://prod-api.lzt.market".to_string(),
 			proxy: None,
 			retry: RetryConfig::default(),
-			rate_limit: Some(RateLimitConfig { requests_per_minute: 120 }),
+			rate_limit: Some(RateLimitConfig {
+				requests_per_minute: 120,
+			}),
 		};
 		Self::with_config(config)
 	}

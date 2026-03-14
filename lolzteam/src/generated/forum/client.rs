@@ -2,25 +2,2545 @@
 
 use std::sync::Arc;
 
-use crate::runtime::{ClientConfig, HttpClient, LolzteamError, RateLimitConfig, RetryConfig};
-use super::assets::AssetsApi;
-use super::batch::BatchApi;
-use super::categories::CategoriesApi;
-use super::chatbox::ChatboxApi;
-use super::conversations::ConversationsApi;
-use super::forms::FormsApi;
-use super::forums::ForumsApi;
-use super::links::LinksApi;
-use super::navigation::NavigationApi;
-use super::notifications::NotificationsApi;
-use super::o_auth::OAuthApi;
-use super::pages::PagesApi;
-use super::posts::PostsApi;
-use super::profile_posts::ProfilePostsApi;
-use super::search::SearchApi;
-use super::tags::TagsApi;
-use super::threads::ThreadsApi;
-use super::users::UsersApi;
+use super::types::*;
+use crate::runtime::{
+	ClientConfig, HttpClient, LolzteamError, MultipartPart, ParamValue, RateLimitConfig,
+	RetryConfig, StringOrInt,
+};
+
+pub struct AssetsApi {
+	http: Arc<HttpClient>,
+}
+
+impl AssetsApi {
+	pub(crate) fn new(http: Arc<HttpClient>) -> Self {
+		Self { http }
+	}
+
+	/// Get CSS
+	pub async fn css(
+		&self,
+		params: Option<&AssetsCssParams>,
+	) -> Result<AssetsCssResponse, LolzteamError> {
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.css {
+				for item in v {
+					query.push(("css".into(), ParamValue::String(item.to_string())));
+				}
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				"/css",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+}
+
+pub struct BatchApi {
+	http: Arc<HttpClient>,
+}
+
+impl BatchApi {
+	pub(crate) fn new(http: Arc<HttpClient>) -> Self {
+		Self { http }
+	}
+
+	/// Batch
+	pub async fn execute(
+		&self,
+		body: serde_json::Value,
+	) -> Result<BatchExecuteResponse, LolzteamError> {
+		self.http
+			.request_json("POST", "/batch", None, Some(&body))
+			.await
+	}
+}
+
+pub struct CategoriesApi {
+	http: Arc<HttpClient>,
+}
+
+impl CategoriesApi {
+	pub(crate) fn new(http: Arc<HttpClient>) -> Self {
+		Self { http }
+	}
+
+	/// Get Categories
+	pub async fn list(
+		&self,
+		params: Option<&CategoriesListParams>,
+	) -> Result<CategoriesListResponse, LolzteamError> {
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.parent_category_id {
+				query.push(("parent_category_id".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.parent_forum_id {
+				query.push(("parent_forum_id".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.order {
+				query.push(("order".into(), ParamValue::String(v.clone())));
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				"/categories",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Get Category
+	pub async fn get(&self, category_id: i64) -> Result<CategoriesGetResponse, LolzteamError> {
+		let path = format!("/categories/{category_id}");
+		self.http.request("GET", &path, None, None).await
+	}
+}
+
+pub struct ChatboxApi {
+	http: Arc<HttpClient>,
+}
+
+impl ChatboxApi {
+	pub(crate) fn new(http: Arc<HttpClient>) -> Self {
+		Self { http }
+	}
+
+	/// Get Chats
+	pub async fn index(
+		&self,
+		params: Option<&ChatboxIndexParams>,
+	) -> Result<ChatboxIndexResponse, LolzteamError> {
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.room_id {
+				query.push(("room_id".into(), ParamValue::Integer(*v)));
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				"/chatbox",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Unignore Chat User
+	pub async fn delete_ignore(
+		&self,
+		body: Option<&ChatboxDeleteIgnoreBody>,
+	) -> Result<ChatboxDeleteIgnoreResponse, LolzteamError> {
+		self.http
+			.request_json("DELETE", "/chatbox/ignore", None, body)
+			.await
+	}
+
+	/// Get Ignored Chat Users
+	pub async fn get_ignore(&self) -> Result<ChatboxGetIgnoreResponse, LolzteamError> {
+		self.http
+			.request("GET", "/chatbox/ignore", None, None)
+			.await
+	}
+
+	/// Ignore Chat User
+	pub async fn post_ignore(
+		&self,
+		body: Option<&ChatboxPostIgnoreBody>,
+	) -> Result<ChatboxPostIgnoreResponse, LolzteamError> {
+		self.http
+			.request_json("POST", "/chatbox/ignore", None, body)
+			.await
+	}
+
+	/// Delete Chat Message
+	pub async fn delete_message(
+		&self,
+		body: Option<&ChatboxDeleteMessageBody>,
+	) -> Result<ChatboxDeleteMessageResponse, LolzteamError> {
+		self.http
+			.request_json("DELETE", "/chatbox/messages", None, body)
+			.await
+	}
+
+	/// Get Chat Messages
+	pub async fn get_messages(
+		&self,
+		room_id: i64,
+		params: Option<&ChatboxGetMessagesParams>,
+	) -> Result<ChatboxGetMessagesResponse, LolzteamError> {
+		let mut query = Vec::new();
+		query.push(("room_id".into(), ParamValue::Integer(room_id)));
+		if let Some(p) = params {
+			if let Some(ref v) = p.before_message_id {
+				query.push(("before_message_id".into(), ParamValue::Integer(*v)));
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				"/chatbox/messages",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Create Chat Message
+	pub async fn post_message(
+		&self,
+		body: Option<&ChatboxPostMessageBody>,
+	) -> Result<ChatboxPostMessageResponse, LolzteamError> {
+		self.http
+			.request_json("POST", "/chatbox/messages", None, body)
+			.await
+	}
+
+	/// Edit Chat Message
+	pub async fn edit_message(
+		&self,
+		body: Option<&ChatboxEditMessageBody>,
+	) -> Result<ChatboxEditMessageResponse, LolzteamError> {
+		self.http
+			.request_json("PUT", "/chatbox/messages", None, body)
+			.await
+	}
+
+	/// Get Chat Leaderboard
+	pub async fn get_leaderboard(
+		&self,
+		params: Option<&ChatboxGetLeaderboardParams>,
+	) -> Result<ChatboxGetLeaderboardResponse, LolzteamError> {
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.duration {
+				query.push(("duration".into(), ParamValue::String(v.clone())));
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				"/chatbox/messages/leaderboard",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Get Chat Online
+	pub async fn online(&self, room_id: i64) -> Result<ChatboxOnlineResponse, LolzteamError> {
+		let mut query = Vec::new();
+		query.push(("room_id".into(), ParamValue::Integer(room_id)));
+		self.http
+			.request(
+				"GET",
+				"/chatbox/messages/online",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Get Chat Message Report Reasons
+	pub async fn report_reasons(
+		&self,
+		message_id: i64,
+	) -> Result<ChatboxReportReasonsResponse, LolzteamError> {
+		let mut query = Vec::new();
+		query.push(("message_id".into(), ParamValue::Integer(message_id)));
+		self.http
+			.request(
+				"GET",
+				"/chatbox/messages/report",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Report Chat Message
+	pub async fn report(
+		&self,
+		body: Option<&ChatboxReportBody>,
+	) -> Result<ChatboxReportResponse, LolzteamError> {
+		self.http
+			.request_json("POST", "/chatbox/messages/report", None, body)
+			.await
+	}
+}
+
+pub struct ConversationsApi {
+	http: Arc<HttpClient>,
+}
+
+impl ConversationsApi {
+	pub(crate) fn new(http: Arc<HttpClient>) -> Self {
+		Self { http }
+	}
+
+	/// Leave Conversation
+	pub async fn delete(
+		&self,
+		body: Option<&ConversationsDeleteBody>,
+	) -> Result<ConversationsDeleteResponse, LolzteamError> {
+		self.http
+			.request_json("DELETE", "/conversations", None, body)
+			.await
+	}
+
+	/// Get Conversations
+	pub async fn list(
+		&self,
+		params: Option<&ConversationsListParams>,
+	) -> Result<ConversationsListResponse, LolzteamError> {
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.folder {
+				query.push(("folder".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.page {
+				query.push(("page".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.limit {
+				query.push(("limit".into(), ParamValue::Integer(*v)));
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				"/conversations",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Create Conversation
+	pub async fn create(
+		&self,
+		body: Option<&ConversationsCreateBody>,
+	) -> Result<ConversationsCreateResponse, LolzteamError> {
+		self.http
+			.request_json("POST", "/conversations", None, body)
+			.await
+	}
+
+	/// Edit Conversation
+	pub async fn update(
+		&self,
+		body: Option<&ConversationsUpdateBody>,
+	) -> Result<ConversationsUpdateResponse, LolzteamError> {
+		self.http
+			.request_json("PUT", "/conversations", None, body)
+			.await
+	}
+
+	/// Get Conversation Message
+	pub async fn messages_get(
+		&self,
+		message_id: i64,
+	) -> Result<ConversationsMessagesGetResponse, LolzteamError> {
+		let path = format!("/conversations/messages/{message_id}");
+		self.http.request("GET", &path, None, None).await
+	}
+
+	/// Read All Conversations
+	pub async fn read_all(&self) -> Result<ConversationsReadAllResponse, LolzteamError> {
+		self.http
+			.request("POST", "/conversations/read-all", None, None)
+			.await
+	}
+
+	/// Send Content To Saved Messages
+	pub async fn save(
+		&self,
+		body: Option<&ConversationsSaveBody>,
+	) -> Result<ConversationsSaveResponse, LolzteamError> {
+		self.http
+			.request_json("POST", "/conversations/save", None, body)
+			.await
+	}
+
+	/// Search Conversations Messages
+	pub async fn search(
+		&self,
+		body: Option<&ConversationsSearchBody>,
+	) -> Result<ConversationsSearchResponse, LolzteamError> {
+		self.http
+			.request_json("POST", "/conversations/search", None, body)
+			.await
+	}
+
+	/// Start Conversation
+	pub async fn start(
+		&self,
+		body: Option<&ConversationsStartBody>,
+	) -> Result<ConversationsStartResponse, LolzteamError> {
+		self.http
+			.request_json("POST", "/conversations/start", None, body)
+			.await
+	}
+
+	/// Get Conversation
+	pub async fn get(
+		&self,
+		conversation_id: i64,
+	) -> Result<ConversationsGetResponse, LolzteamError> {
+		let path = format!("/conversations/{conversation_id}");
+		self.http.request("GET", &path, None, None).await
+	}
+
+	/// Disable Conversation Alerts
+	pub async fn alerts_disable(
+		&self,
+		conversation_id: i64,
+	) -> Result<ConversationsAlertsDisableResponse, LolzteamError> {
+		let path = format!("/conversations/{conversation_id}/alerts");
+		self.http.request("DELETE", &path, None, None).await
+	}
+
+	/// Enable Conversation Alerts
+	pub async fn alerts_enable(
+		&self,
+		conversation_id: i64,
+	) -> Result<ConversationsAlertsEnableResponse, LolzteamError> {
+		let path = format!("/conversations/{conversation_id}/alerts");
+		self.http.request("POST", &path, None, None).await
+	}
+
+	/// Invite Users to Conversation
+	pub async fn invite(
+		&self,
+		conversation_id: i64,
+		body: Option<&ConversationsInviteBody>,
+	) -> Result<ConversationsInviteResponse, LolzteamError> {
+		let path = format!("/conversations/{conversation_id}/invite");
+		self.http.request_json("POST", &path, None, body).await
+	}
+
+	/// Kick User from Conversation
+	pub async fn kick(
+		&self,
+		conversation_id: i64,
+		body: Option<&ConversationsKickBody>,
+	) -> Result<ConversationsKickResponse, LolzteamError> {
+		let path = format!("/conversations/{conversation_id}/kick");
+		self.http.request_json("POST", &path, None, body).await
+	}
+
+	/// Get Conversation Messages
+	pub async fn messages_list(
+		&self,
+		conversation_id: i64,
+		params: Option<&ConversationsMessagesListParams>,
+	) -> Result<ConversationsMessagesListResponse, LolzteamError> {
+		let path = format!("/conversations/{conversation_id}/messages");
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.page {
+				query.push(("page".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.limit {
+				query.push(("limit".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.order {
+				query.push(("order".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.before {
+				query.push(("before".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.after {
+				query.push(("after".into(), ParamValue::Integer(*v)));
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				&path,
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Create Conversation Message
+	pub async fn messages_create(
+		&self,
+		conversation_id: i64,
+		body: Option<&ConversationsMessagesCreateBody>,
+	) -> Result<ConversationsMessagesCreateResponse, LolzteamError> {
+		let path = format!("/conversations/{conversation_id}/messages");
+		self.http.request_json("POST", &path, None, body).await
+	}
+
+	/// Delete Conversation Message
+	pub async fn messages_delete(
+		&self,
+		conversation_id: i64,
+		message_id: i64,
+	) -> Result<ConversationsMessagesDeleteResponse, LolzteamError> {
+		let path = format!("/conversations/{conversation_id}/messages/{message_id}");
+		self.http.request("DELETE", &path, None, None).await
+	}
+
+	/// Edit Conversation Message
+	pub async fn messages_edit(
+		&self,
+		conversation_id: i64,
+		message_id: i64,
+		body: Option<&ConversationsMessagesEditBody>,
+	) -> Result<ConversationsMessagesEditResponse, LolzteamError> {
+		let path = format!("/conversations/{conversation_id}/messages/{message_id}");
+		self.http.request_json("PUT", &path, None, body).await
+	}
+
+	/// Unstick Conversation Message
+	pub async fn messages_unstick(
+		&self,
+		conversation_id: i64,
+		message_id: i64,
+	) -> Result<ConversationsMessagesUnstickResponse, LolzteamError> {
+		let path = format!("/conversations/{conversation_id}/messages/{message_id}/stick");
+		self.http.request("DELETE", &path, None, None).await
+	}
+
+	/// Stick Conversation Message
+	pub async fn messages_stick(
+		&self,
+		conversation_id: i64,
+		message_id: i64,
+	) -> Result<ConversationsMessagesStickResponse, LolzteamError> {
+		let path = format!("/conversations/{conversation_id}/messages/{message_id}/stick");
+		self.http.request("POST", &path, None, None).await
+	}
+
+	/// Read a Conversation
+	pub async fn read(
+		&self,
+		conversation_id: i64,
+	) -> Result<ConversationsReadResponse, LolzteamError> {
+		let path = format!("/conversations/{conversation_id}/read");
+		self.http.request("POST", &path, None, None).await
+	}
+
+	/// Unstar Conversation
+	pub async fn unstar(
+		&self,
+		conversation_id: i64,
+	) -> Result<ConversationsUnstarResponse, LolzteamError> {
+		let path = format!("/conversations/{conversation_id}/star");
+		self.http.request("DELETE", &path, None, None).await
+	}
+
+	/// Star Conversation
+	pub async fn star(
+		&self,
+		conversation_id: i64,
+	) -> Result<ConversationsStarResponse, LolzteamError> {
+		let path = format!("/conversations/{conversation_id}/star");
+		self.http.request("POST", &path, None, None).await
+	}
+}
+
+pub struct FormsApi {
+	http: Arc<HttpClient>,
+}
+
+impl FormsApi {
+	pub(crate) fn new(http: Arc<HttpClient>) -> Self {
+		Self { http }
+	}
+
+	/// Get Forms List
+	pub async fn list(
+		&self,
+		params: Option<&FormsListParams>,
+	) -> Result<FormsListResponse, LolzteamError> {
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.page {
+				query.push(("page".into(), ParamValue::Integer(*v)));
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				"/forms",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Create Form
+	pub async fn create(
+		&self,
+		body: Option<&FormsCreateBody>,
+	) -> Result<FormsCreateResponse, LolzteamError> {
+		self.http
+			.request_json("POST", "/forms/save", None, body)
+			.await
+	}
+}
+
+pub struct ForumsApi {
+	http: Arc<HttpClient>,
+}
+
+impl ForumsApi {
+	pub(crate) fn new(http: Arc<HttpClient>) -> Self {
+		Self { http }
+	}
+
+	/// Get Forums
+	pub async fn list(
+		&self,
+		params: Option<&ForumsListParams>,
+	) -> Result<ForumsListResponse, LolzteamError> {
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.parent_category_id {
+				query.push(("parent_category_id".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.parent_forum_id {
+				query.push(("parent_forum_id".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.order {
+				query.push(("order".into(), ParamValue::String(v.clone())));
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				"/forums",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Get Feed Options
+	pub async fn get_feed_options(&self) -> Result<ForumsGetFeedOptionsResponse, LolzteamError> {
+		self.http
+			.request("GET", "/forums/feed/options", None, None)
+			.await
+	}
+
+	/// Edit Feed Options
+	pub async fn edit_feed_options(
+		&self,
+		body: Option<&ForumsEditFeedOptionsBody>,
+	) -> Result<ForumsEditFeedOptionsResponse, LolzteamError> {
+		self.http
+			.request_json("PUT", "/forums/feed/options", None, body)
+			.await
+	}
+
+	/// Get Followed Forums
+	pub async fn followed(
+		&self,
+		params: Option<&ForumsFollowedParams>,
+	) -> Result<ForumsFollowedResponse, LolzteamError> {
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.total {
+				query.push(("total".into(), ParamValue::Bool(*v)));
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				"/forums/followed",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Get Forums Tree
+	pub async fn grouped(&self) -> Result<ForumsGroupedResponse, LolzteamError> {
+		self.http
+			.request("GET", "/forums/grouped", None, None)
+			.await
+	}
+
+	/// Get Forum
+	pub async fn get(&self, forum_id: i64) -> Result<ForumsGetResponse, LolzteamError> {
+		let path = format!("/forums/{forum_id}");
+		self.http.request("GET", &path, None, None).await
+	}
+
+	/// Unfollow Forum
+	pub async fn unfollow(&self, forum_id: i64) -> Result<ForumsUnfollowResponse, LolzteamError> {
+		let path = format!("/forums/{forum_id}/followers");
+		self.http.request("DELETE", &path, None, None).await
+	}
+
+	/// Get Followers
+	pub async fn followers(&self, forum_id: i64) -> Result<ForumsFollowersResponse, LolzteamError> {
+		let path = format!("/forums/{forum_id}/followers");
+		self.http.request("GET", &path, None, None).await
+	}
+
+	/// Follow Forum
+	pub async fn follow(
+		&self,
+		forum_id: i64,
+		body: Option<&ForumsFollowBody>,
+	) -> Result<ForumsFollowResponse, LolzteamError> {
+		let path = format!("/forums/{forum_id}/followers");
+		self.http.request_json("POST", &path, None, body).await
+	}
+}
+
+pub struct LinksApi {
+	http: Arc<HttpClient>,
+}
+
+impl LinksApi {
+	pub(crate) fn new(http: Arc<HttpClient>) -> Self {
+		Self { http }
+	}
+
+	/// Get Links Forum
+	pub async fn list(&self) -> Result<LinksListResponse, LolzteamError> {
+		self.http.request("GET", "/link-forums", None, None).await
+	}
+
+	/// Get Link Forum
+	pub async fn get(&self, link_id: i64) -> Result<LinksGetResponse, LolzteamError> {
+		let path = format!("/link-forums/{link_id}");
+		self.http.request("GET", &path, None, None).await
+	}
+}
+
+pub struct NavigationApi {
+	http: Arc<HttpClient>,
+}
+
+impl NavigationApi {
+	pub(crate) fn new(http: Arc<HttpClient>) -> Self {
+		Self { http }
+	}
+
+	/// Get Navigation
+	pub async fn list(
+		&self,
+		params: Option<&NavigationListParams>,
+	) -> Result<NavigationListResponse, LolzteamError> {
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.parent {
+				query.push(("parent".into(), ParamValue::Integer(*v)));
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				"/navigation",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+}
+
+pub struct NotificationsApi {
+	http: Arc<HttpClient>,
+}
+
+impl NotificationsApi {
+	pub(crate) fn new(http: Arc<HttpClient>) -> Self {
+		Self { http }
+	}
+
+	/// Get Notifications
+	pub async fn list(
+		&self,
+		params: Option<&NotificationsListParams>,
+	) -> Result<NotificationsListResponse, LolzteamError> {
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.r#type {
+				query.push(("type".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.page {
+				query.push(("page".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.limit {
+				query.push(("limit".into(), ParamValue::Integer(*v)));
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				"/notifications",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Mark Notification Read
+	pub async fn read(
+		&self,
+		body: Option<&NotificationsReadBody>,
+	) -> Result<NotificationsReadResponse, LolzteamError> {
+		self.http
+			.request_json("POST", "/notifications/read", None, body)
+			.await
+	}
+
+	/// Get Notification
+	pub async fn get(
+		&self,
+		notification_id: i64,
+	) -> Result<NotificationsGetResponse, LolzteamError> {
+		let path = format!("/notifications/{notification_id}/content");
+		self.http.request("GET", &path, None, None).await
+	}
+}
+
+pub struct OAuthApi {
+	http: Arc<HttpClient>,
+}
+
+impl OAuthApi {
+	pub(crate) fn new(http: Arc<HttpClient>) -> Self {
+		Self { http }
+	}
+
+	/// Get Access Token
+	pub async fn token(
+		&self,
+		body: Option<&OAuthTokenBody>,
+	) -> Result<OAuthTokenResponse, LolzteamError> {
+		let mut parts = Vec::new();
+		if let Some(b) = body {
+			if let Some(ref v) = b.client_id {
+				parts.push(MultipartPart::Text {
+					name: "client_id".to_string(),
+					value: v.clone(),
+				});
+			}
+			if let Some(ref v) = b.client_secret {
+				parts.push(MultipartPart::Text {
+					name: "client_secret".to_string(),
+					value: v.clone(),
+				});
+			}
+			if let Some(ref v) = b.grant_type {
+				parts.push(MultipartPart::Text {
+					name: "grant_type".to_string(),
+					value: v.clone(),
+				});
+			}
+			if let Some(ref v) = b.scope {
+				parts.push(MultipartPart::Text {
+					name: "scope".to_string(),
+					value: v.join(" "),
+				});
+			}
+			if let Some(ref v) = b.code {
+				parts.push(MultipartPart::Text {
+					name: "code".to_string(),
+					value: v.clone(),
+				});
+			}
+			if let Some(ref v) = b.redirect_uri {
+				parts.push(MultipartPart::Text {
+					name: "redirect_uri".to_string(),
+					value: v.clone(),
+				});
+			}
+			if let Some(ref v) = b.refresh_token {
+				parts.push(MultipartPart::Text {
+					name: "refresh_token".to_string(),
+					value: v.clone(),
+				});
+			}
+			if let Some(ref v) = b.password {
+				parts.push(MultipartPart::Text {
+					name: "password".to_string(),
+					value: v.clone(),
+				});
+			}
+			if let Some(ref v) = b.username {
+				parts.push(MultipartPart::Text {
+					name: "username".to_string(),
+					value: v.clone(),
+				});
+			}
+		}
+		self.http
+			.request_multipart("POST", "/oauth/token", parts)
+			.await
+	}
+}
+
+pub struct PagesApi {
+	http: Arc<HttpClient>,
+}
+
+impl PagesApi {
+	pub(crate) fn new(http: Arc<HttpClient>) -> Self {
+		Self { http }
+	}
+
+	/// Get Pages
+	pub async fn list(
+		&self,
+		params: Option<&PagesListParams>,
+	) -> Result<PagesListResponse, LolzteamError> {
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.parent_page_id {
+				query.push(("parent_page_id".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.order {
+				query.push(("order".into(), ParamValue::String(v.clone())));
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				"/pages",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Get Page
+	pub async fn get(&self, page_id: i64) -> Result<PagesGetResponse, LolzteamError> {
+		let path = format!("/pages/{page_id}");
+		self.http.request("GET", &path, None, None).await
+	}
+}
+
+pub struct PostsApi {
+	http: Arc<HttpClient>,
+}
+
+impl PostsApi {
+	pub(crate) fn new(http: Arc<HttpClient>) -> Self {
+		Self { http }
+	}
+
+	/// Get Posts
+	pub async fn list(
+		&self,
+		params: Option<&PostsListParams>,
+	) -> Result<PostsListResponse, LolzteamError> {
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.thread_id {
+				query.push(("thread_id".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.page_of_post_id {
+				query.push(("page_of_post_id".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.page {
+				query.push(("page".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.limit {
+				query.push(("limit".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.order {
+				query.push(("order".into(), ParamValue::String(v.clone())));
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				"/posts",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Create Post
+	pub async fn create(
+		&self,
+		body: Option<&PostsCreateBody>,
+	) -> Result<PostsCreateResponse, LolzteamError> {
+		self.http.request_json("POST", "/posts", None, body).await
+	}
+
+	/// Delete Post Comment
+	pub async fn comments_delete(
+		&self,
+		body: Option<&PostsCommentsDeleteBody>,
+	) -> Result<PostsCommentsDeleteResponse, LolzteamError> {
+		self.http
+			.request_json("DELETE", "/posts/comments", None, body)
+			.await
+	}
+
+	/// Get Post Comments
+	pub async fn comments_get(
+		&self,
+		post_id: i64,
+		params: Option<&PostsCommentsGetParams>,
+	) -> Result<PostsCommentsGetResponse, LolzteamError> {
+		let mut query = Vec::new();
+		query.push(("post_id".into(), ParamValue::Integer(post_id)));
+		if let Some(p) = params {
+			if let Some(ref v) = p.before {
+				query.push(("before".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.before_comment {
+				query.push(("before_comment".into(), ParamValue::Integer(*v)));
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				"/posts/comments",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Create Post Comment
+	pub async fn comments_create(
+		&self,
+		body: Option<&PostsCommentsCreateBody>,
+	) -> Result<PostsCommentsCreateResponse, LolzteamError> {
+		self.http
+			.request_json("POST", "/posts/comments", None, body)
+			.await
+	}
+
+	/// Edit Post Comment
+	pub async fn comments_edit(
+		&self,
+		body: Option<&PostsCommentsEditBody>,
+	) -> Result<PostsCommentsEditResponse, LolzteamError> {
+		self.http
+			.request_json("PUT", "/posts/comments", None, body)
+			.await
+	}
+
+	/// Report Post Comment
+	pub async fn comments_report(
+		&self,
+		body: Option<&PostsCommentsReportBody>,
+	) -> Result<PostsCommentsReportResponse, LolzteamError> {
+		self.http
+			.request_json("POST", "/posts/comments/report", None, body)
+			.await
+	}
+
+	/// Delete Post
+	pub async fn delete(
+		&self,
+		post_id: i64,
+		body: Option<&PostsDeleteBody>,
+	) -> Result<PostsDeleteResponse, LolzteamError> {
+		let path = format!("/posts/{post_id}");
+		self.http.request_json("DELETE", &path, None, body).await
+	}
+
+	/// Get Post
+	pub async fn get(&self, post_id: i64) -> Result<PostsGetResponse, LolzteamError> {
+		let path = format!("/posts/{post_id}");
+		self.http.request("GET", &path, None, None).await
+	}
+
+	/// Edit Post
+	pub async fn edit(
+		&self,
+		post_id: i64,
+		body: Option<&PostsEditBody>,
+	) -> Result<PostsEditResponse, LolzteamError> {
+		let path = format!("/posts/{post_id}");
+		self.http.request_json("PUT", &path, None, body).await
+	}
+
+	/// Unlike Post
+	pub async fn unlike(&self, post_id: i64) -> Result<PostsUnlikeResponse, LolzteamError> {
+		let path = format!("/posts/{post_id}/likes");
+		self.http.request("DELETE", &path, None, None).await
+	}
+
+	/// Get Post Likes
+	pub async fn likes(
+		&self,
+		post_id: i64,
+		params: Option<&PostsLikesParams>,
+	) -> Result<PostsLikesResponse, LolzteamError> {
+		let path = format!("/posts/{post_id}/likes");
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.page {
+				query.push(("page".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.limit {
+				query.push(("limit".into(), ParamValue::Integer(*v)));
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				&path,
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Like Post
+	pub async fn like(&self, post_id: i64) -> Result<PostsLikeResponse, LolzteamError> {
+		let path = format!("/posts/{post_id}/likes");
+		self.http.request("POST", &path, None, None).await
+	}
+
+	/// Get Post Report Reasons
+	pub async fn report_reasons(
+		&self,
+		post_id: i64,
+	) -> Result<PostsReportReasonsResponse, LolzteamError> {
+		let path = format!("/posts/{post_id}/report");
+		self.http.request("GET", &path, None, None).await
+	}
+
+	/// Report Post
+	pub async fn report(
+		&self,
+		post_id: i64,
+		body: Option<&PostsReportBody>,
+	) -> Result<PostsReportResponse, LolzteamError> {
+		let path = format!("/posts/{post_id}/report");
+		self.http.request_json("POST", &path, None, body).await
+	}
+}
+
+pub struct ProfilePostsApi {
+	http: Arc<HttpClient>,
+}
+
+impl ProfilePostsApi {
+	pub(crate) fn new(http: Arc<HttpClient>) -> Self {
+		Self { http }
+	}
+
+	/// Create Profile Post
+	pub async fn create(
+		&self,
+		body: Option<&ProfilePostsCreateBody>,
+	) -> Result<ProfilePostsCreateResponse, LolzteamError> {
+		self.http
+			.request_json("POST", "/profile-posts", None, body)
+			.await
+	}
+
+	/// Delete Profile Post Comment
+	pub async fn comments_delete(
+		&self,
+		body: Option<&ProfilePostsCommentsDeleteBody>,
+	) -> Result<ProfilePostsCommentsDeleteResponse, LolzteamError> {
+		self.http
+			.request_json("DELETE", "/profile-posts/comments", None, body)
+			.await
+	}
+
+	/// Get Profile Post Comments
+	pub async fn comments_list(
+		&self,
+		profile_post_id: i64,
+		params: Option<&ProfilePostsCommentsListParams>,
+	) -> Result<ProfilePostsCommentsListResponse, LolzteamError> {
+		let mut query = Vec::new();
+		query.push((
+			"profile_post_id".into(),
+			ParamValue::Integer(profile_post_id),
+		));
+		if let Some(p) = params {
+			if let Some(ref v) = p.before {
+				query.push(("before".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.limit {
+				query.push(("limit".into(), ParamValue::Integer(*v)));
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				"/profile-posts/comments",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Create Profile Post Comment
+	pub async fn comments_create(
+		&self,
+		body: Option<&ProfilePostsCommentsCreateBody>,
+	) -> Result<ProfilePostsCommentsCreateResponse, LolzteamError> {
+		self.http
+			.request_json("POST", "/profile-posts/comments", None, body)
+			.await
+	}
+
+	/// Edit Profile Post Comment
+	pub async fn comments_edit(
+		&self,
+		body: Option<&ProfilePostsCommentsEditBody>,
+	) -> Result<ProfilePostsCommentsEditResponse, LolzteamError> {
+		self.http
+			.request_json("PUT", "/profile-posts/comments", None, body)
+			.await
+	}
+
+	/// Report a Profile Post Comment
+	pub async fn comments_report(
+		&self,
+		comment_id: i64,
+		body: Option<&ProfilePostsCommentsReportBody>,
+	) -> Result<ProfilePostsCommentsReportResponse, LolzteamError> {
+		let path = format!("/profile-posts/comments/{comment_id}/report");
+		self.http.request_json("POST", &path, None, body).await
+	}
+
+	/// Delete Profile Post
+	pub async fn delete(
+		&self,
+		profile_post_id: i64,
+		params: Option<&ProfilePostsDeleteParams>,
+	) -> Result<ProfilePostsDeleteResponse, LolzteamError> {
+		let path = format!("/profile-posts/{profile_post_id}");
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.reason {
+				query.push(("reason".into(), ParamValue::String(v.clone())));
+			}
+		}
+		self.http
+			.request(
+				"DELETE",
+				&path,
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Get Profile Post
+	pub async fn get(
+		&self,
+		profile_post_id: i64,
+	) -> Result<ProfilePostsGetResponse, LolzteamError> {
+		let path = format!("/profile-posts/{profile_post_id}");
+		self.http.request("GET", &path, None, None).await
+	}
+
+	/// Edit Profile Post
+	pub async fn edit(
+		&self,
+		profile_post_id: i64,
+		body: Option<&ProfilePostsEditBody>,
+	) -> Result<ProfilePostsEditResponse, LolzteamError> {
+		let path = format!("/profile-posts/{profile_post_id}");
+		self.http.request_json("PUT", &path, None, body).await
+	}
+
+	/// Get Profile Post Comment
+	pub async fn comments_get(
+		&self,
+		profile_post_id: i64,
+		comment_id: i64,
+	) -> Result<ProfilePostsCommentsGetResponse, LolzteamError> {
+		let path = format!("/profile-posts/{profile_post_id}/comments/{comment_id}");
+		self.http.request("GET", &path, None, None).await
+	}
+
+	/// Unlike Profile Post
+	pub async fn unlike(
+		&self,
+		profile_post_id: i64,
+	) -> Result<ProfilePostsUnlikeResponse, LolzteamError> {
+		let path = format!("/profile-posts/{profile_post_id}/likes");
+		self.http.request("DELETE", &path, None, None).await
+	}
+
+	/// Get Profile Post Likes
+	pub async fn likes(
+		&self,
+		profile_post_id: i64,
+	) -> Result<ProfilePostsLikesResponse, LolzteamError> {
+		let path = format!("/profile-posts/{profile_post_id}/likes");
+		self.http.request("GET", &path, None, None).await
+	}
+
+	/// Like Profile Post
+	pub async fn like(
+		&self,
+		profile_post_id: i64,
+	) -> Result<ProfilePostsLikeResponse, LolzteamError> {
+		let path = format!("/profile-posts/{profile_post_id}/likes");
+		self.http.request("POST", &path, None, None).await
+	}
+
+	/// Get Profile Post Report Reasons
+	pub async fn report_reasons(
+		&self,
+		profile_post_id: i64,
+	) -> Result<ProfilePostsReportReasonsResponse, LolzteamError> {
+		let path = format!("/profile-posts/{profile_post_id}/report");
+		self.http.request("GET", &path, None, None).await
+	}
+
+	/// Report a Profile Post
+	pub async fn report(
+		&self,
+		profile_post_id: i64,
+		body: Option<&ProfilePostsReportBody>,
+	) -> Result<ProfilePostsReportResponse, LolzteamError> {
+		let path = format!("/profile-posts/{profile_post_id}/report");
+		self.http.request_json("POST", &path, None, body).await
+	}
+
+	/// Unstick Profile Post
+	pub async fn unstick(
+		&self,
+		profile_post_id: i64,
+	) -> Result<ProfilePostsUnstickResponse, LolzteamError> {
+		let path = format!("/profile-posts/{profile_post_id}/stick");
+		self.http.request("DELETE", &path, None, None).await
+	}
+
+	/// Stick Profile Post
+	pub async fn stick(
+		&self,
+		profile_post_id: i64,
+	) -> Result<ProfilePostsStickResponse, LolzteamError> {
+		let path = format!("/profile-posts/{profile_post_id}/stick");
+		self.http.request("POST", &path, None, None).await
+	}
+
+	/// Get Profile Posts
+	pub async fn list(
+		&self,
+		user_id: StringOrInt,
+		params: Option<&ProfilePostsListParams>,
+	) -> Result<ProfilePostsListResponse, LolzteamError> {
+		let path = format!("/users/{user_id}/profile-posts");
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.posts_user_id {
+				query.push(("posts_user_id".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.page {
+				query.push(("page".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.limit {
+				query.push(("limit".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.fields_include {
+				for item in v {
+					query.push((
+						"fields_include".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				&path,
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+}
+
+pub struct SearchApi {
+	http: Arc<HttpClient>,
+}
+
+impl SearchApi {
+	pub(crate) fn new(http: Arc<HttpClient>) -> Self {
+		Self { http }
+	}
+
+	/// Search
+	pub async fn all(
+		&self,
+		body: Option<&SearchAllBody>,
+	) -> Result<SearchAllResponse, LolzteamError> {
+		self.http.request_json("POST", "/search", None, body).await
+	}
+
+	/// Search Post
+	pub async fn posts(
+		&self,
+		body: Option<&SearchPostsBody>,
+	) -> Result<SearchPostsResponse, LolzteamError> {
+		self.http
+			.request_json("POST", "/search/posts", None, body)
+			.await
+	}
+
+	/// Search Profile Posts
+	pub async fn profile_posts(
+		&self,
+		body: Option<&SearchProfilePostsBody>,
+	) -> Result<SearchProfilePostsResponse, LolzteamError> {
+		self.http
+			.request_json("POST", "/search/profile-posts", None, body)
+			.await
+	}
+
+	/// Search Tagged
+	pub async fn tagged(
+		&self,
+		body: Option<&SearchTaggedBody>,
+	) -> Result<SearchTaggedResponse, LolzteamError> {
+		self.http
+			.request_json("POST", "/search/tagged", None, body)
+			.await
+	}
+
+	/// Search Thread
+	pub async fn threads(
+		&self,
+		body: Option<&SearchThreadsBody>,
+	) -> Result<SearchThreadsResponse, LolzteamError> {
+		self.http
+			.request_json("POST", "/search/threads", None, body)
+			.await
+	}
+
+	/// Search Users
+	pub async fn users(
+		&self,
+		body: Option<&SearchUsersBody>,
+	) -> Result<SearchUsersResponse, LolzteamError> {
+		self.http
+			.request_json("POST", "/search/users", None, body)
+			.await
+	}
+
+	/// Get Search Results
+	pub async fn results(
+		&self,
+		search_id: StringOrInt,
+		params: Option<&SearchResultsParams>,
+	) -> Result<SearchResultsResponse, LolzteamError> {
+		let path = format!("/search/{search_id}/results");
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.limit {
+				query.push(("limit".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.page {
+				query.push(("page".into(), ParamValue::Integer(*v)));
+			}
+		}
+		self.http
+			.request_json(
+				"GET",
+				&path,
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None::<&()>,
+			)
+			.await
+	}
+}
+
+pub struct TagsApi {
+	http: Arc<HttpClient>,
+}
+
+impl TagsApi {
+	pub(crate) fn new(http: Arc<HttpClient>) -> Self {
+		Self { http }
+	}
+
+	/// Get Popular Tags
+	pub async fn popular(&self) -> Result<TagsPopularResponse, LolzteamError> {
+		self.http.request("GET", "/tags", None, None).await
+	}
+
+	/// Get Filtered Content
+	pub async fn find(&self, tag: String) -> Result<TagsFindResponse, LolzteamError> {
+		let mut query = Vec::new();
+		query.push(("tag".into(), ParamValue::String(tag.clone())));
+		self.http
+			.request(
+				"GET",
+				"/tags/find",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Get Tags
+	pub async fn list(
+		&self,
+		params: Option<&TagsListParams>,
+	) -> Result<TagsListResponse, LolzteamError> {
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.page {
+				query.push(("page".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.limit {
+				query.push(("limit".into(), ParamValue::Integer(*v)));
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				"/tags/list",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Get Tagged Content
+	pub async fn get(
+		&self,
+		tag_id: i64,
+		params: Option<&TagsGetParams>,
+	) -> Result<TagsGetResponse, LolzteamError> {
+		let path = format!("/tags/{tag_id}");
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.page {
+				query.push(("page".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.limit {
+				query.push(("limit".into(), ParamValue::Integer(*v)));
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				&path,
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+}
+
+pub struct ThreadsApi {
+	http: Arc<HttpClient>,
+}
+
+impl ThreadsApi {
+	pub(crate) fn new(http: Arc<HttpClient>) -> Self {
+		Self { http }
+	}
+
+	/// Create Claim
+	pub async fn claim(
+		&self,
+		body: Option<&ThreadsClaimBody>,
+	) -> Result<ThreadsClaimResponse, LolzteamError> {
+		self.http.request_json("POST", "/claims", None, body).await
+	}
+
+	/// Create Contest
+	pub async fn create_contest(
+		&self,
+		body: Option<&ThreadsCreateContestBody>,
+	) -> Result<ThreadsCreateContestResponse, LolzteamError> {
+		self.http
+			.request_json("POST", "/contests", None, body)
+			.await
+	}
+
+	/// Finish Contest
+	pub async fn finish(&self, thread_id: i64) -> Result<ThreadsFinishResponse, LolzteamError> {
+		let path = format!("/contests/{thread_id}/finish");
+		self.http.request("POST", &path, None, None).await
+	}
+
+	/// Get Threads
+	pub async fn list(
+		&self,
+		params: Option<&ThreadsListParams>,
+	) -> Result<ThreadsListResponse, LolzteamError> {
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.forum_id {
+				query.push(("forum_id".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.tab {
+				query.push(("tab".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.state {
+				query.push(("state".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.period {
+				query.push(("period".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.title {
+				query.push(("title".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.title_only {
+				query.push(("title_only".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.creator_user_id {
+				query.push(("creator_user_id".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.sticky {
+				query.push(("sticky".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.prefix_ids {
+				for item in v {
+					query.push(("prefix_ids[]".into(), ParamValue::String(item.to_string())));
+				}
+			}
+			if let Some(ref v) = p.prefix_ids_not {
+				for item in v {
+					query.push((
+						"prefix_ids_not[]".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.thread_tag_id {
+				query.push(("thread_tag_id".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.page {
+				query.push(("page".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.limit {
+				query.push(("limit".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.order {
+				query.push(("order".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.direction {
+				query.push(("direction".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.thread_create_date {
+				query.push(("thread_create_date".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.thread_update_date {
+				query.push(("thread_update_date".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.fields_include {
+				for item in v {
+					query.push((
+						"fields_include".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				"/threads",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Create Thread
+	pub async fn create(
+		&self,
+		body: Option<&ThreadsCreateBody>,
+	) -> Result<ThreadsCreateResponse, LolzteamError> {
+		self.http.request_json("POST", "/threads", None, body).await
+	}
+
+	/// Get Followed Threads
+	pub async fn followed(
+		&self,
+		params: Option<&ThreadsFollowedParams>,
+	) -> Result<ThreadsFollowedResponse, LolzteamError> {
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.total {
+				query.push(("total".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.fields_include {
+				for item in v {
+					query.push((
+						"fields_include".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				"/threads/followed",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Get Unread Threads
+	pub async fn unread(
+		&self,
+		params: Option<&ThreadsUnreadParams>,
+	) -> Result<ThreadsUnreadResponse, LolzteamError> {
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.limit {
+				query.push(("limit".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.forum_id {
+				query.push(("forum_id".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.data_limit {
+				query.push(("data_limit".into(), ParamValue::Integer(*v)));
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				"/threads/new",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Get Recent Threads
+	pub async fn recent(
+		&self,
+		params: Option<&ThreadsRecentParams>,
+	) -> Result<ThreadsRecentResponse, LolzteamError> {
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.days {
+				query.push(("days".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.limit {
+				query.push(("limit".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.forum_id {
+				query.push(("forum_id".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.data_limit {
+				query.push(("data_limit".into(), ParamValue::Integer(*v)));
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				"/threads/recent",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Delete Thread
+	pub async fn delete(
+		&self,
+		thread_id: i64,
+		body: Option<&ThreadsDeleteBody>,
+	) -> Result<ThreadsDeleteResponse, LolzteamError> {
+		let path = format!("/threads/{thread_id}");
+		self.http.request_json("DELETE", &path, None, body).await
+	}
+
+	/// Get Thread
+	pub async fn get(
+		&self,
+		thread_id: i64,
+		params: Option<&ThreadsGetParams>,
+	) -> Result<ThreadsGetResponse, LolzteamError> {
+		let path = format!("/threads/{thread_id}");
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.fields_include {
+				for item in v {
+					query.push((
+						"fields_include".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				&path,
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Edit thread
+	pub async fn edit(
+		&self,
+		thread_id: i64,
+		body: Option<&ThreadsEditBody>,
+	) -> Result<ThreadsEditResponse, LolzteamError> {
+		let path = format!("/threads/{thread_id}");
+		self.http.request_json("PUT", &path, None, body).await
+	}
+
+	/// Bump Thread
+	pub async fn bump(&self, thread_id: i64) -> Result<ThreadsBumpResponse, LolzteamError> {
+		let path = format!("/threads/{thread_id}/bump");
+		self.http.request("POST", &path, None, None).await
+	}
+
+	/// Unfollow Thread
+	pub async fn unfollow(&self, thread_id: i64) -> Result<ThreadsUnfollowResponse, LolzteamError> {
+		let path = format!("/threads/{thread_id}/followers");
+		self.http.request("DELETE", &path, None, None).await
+	}
+
+	/// Get Thread Followers
+	pub async fn followers(
+		&self,
+		thread_id: i64,
+	) -> Result<ThreadsFollowersResponse, LolzteamError> {
+		let path = format!("/threads/{thread_id}/followers");
+		self.http.request("GET", &path, None, None).await
+	}
+
+	/// Follow Thread
+	pub async fn follow(
+		&self,
+		thread_id: i64,
+		body: Option<&ThreadsFollowBody>,
+	) -> Result<ThreadsFollowResponse, LolzteamError> {
+		let path = format!("/threads/{thread_id}/followers");
+		self.http.request_json("POST", &path, None, body).await
+	}
+
+	/// Hide Thread
+	pub async fn hide(&self, thread_id: i64) -> Result<ThreadsHideResponse, LolzteamError> {
+		let path = format!("/threads/{thread_id}/hide");
+		self.http.request("POST", &path, None, None).await
+	}
+
+	/// Move Thread
+	pub async fn move_(
+		&self,
+		thread_id: i64,
+		body: Option<&ThreadsMoveBody>,
+	) -> Result<ThreadsMoveResponse, LolzteamError> {
+		let path = format!("/threads/{thread_id}/move");
+		self.http.request_json("POST", &path, None, body).await
+	}
+
+	/// Get Navigation Elements
+	pub async fn navigation(
+		&self,
+		thread_id: i64,
+	) -> Result<ThreadsNavigationResponse, LolzteamError> {
+		let path = format!("/threads/{thread_id}/navigation");
+		self.http.request("GET", &path, None, None).await
+	}
+
+	/// Get Poll
+	pub async fn poll_get(&self, thread_id: i64) -> Result<ThreadsPollGetResponse, LolzteamError> {
+		let path = format!("/threads/{thread_id}/poll");
+		self.http.request("GET", &path, None, None).await
+	}
+
+	/// Vote Poll
+	pub async fn poll_vote(
+		&self,
+		thread_id: i64,
+		body: Option<&ThreadsPollVoteBody>,
+	) -> Result<ThreadsPollVoteResponse, LolzteamError> {
+		let path = format!("/threads/{thread_id}/poll/votes");
+		self.http.request_json("POST", &path, None, body).await
+	}
+
+	/// Unbookmark Thread
+	pub async fn unstar(&self, thread_id: i64) -> Result<ThreadsUnstarResponse, LolzteamError> {
+		let path = format!("/threads/{thread_id}/star");
+		self.http.request("DELETE", &path, None, None).await
+	}
+
+	/// Bookmark Thread
+	pub async fn star(&self, thread_id: i64) -> Result<ThreadsStarResponse, LolzteamError> {
+		let path = format!("/threads/{thread_id}/star");
+		self.http.request("POST", &path, None, None).await
+	}
+}
+
+pub struct UsersApi {
+	http: Arc<HttpClient>,
+}
+
+impl UsersApi {
+	pub(crate) fn new(http: Arc<HttpClient>) -> Self {
+		Self { http }
+	}
+
+	/// Cancel Secret Answer Reset
+	pub async fn sa_cancel_reset(&self) -> Result<UsersSaCancelResetResponse, LolzteamError> {
+		self.http
+			.request("DELETE", "/account/secret-answer/reset", None, None)
+			.await
+	}
+
+	/// Reset Secret Answer
+	pub async fn sa_reset(&self) -> Result<UsersSaResetResponse, LolzteamError> {
+		self.http
+			.request("POST", "/account/secret-answer/reset", None, None)
+			.await
+	}
+
+	/// Get Users
+	pub async fn list(
+		&self,
+		params: Option<&UsersListParams>,
+	) -> Result<UsersListResponse, LolzteamError> {
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.page {
+				query.push(("page".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.limit {
+				query.push(("limit".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.fields_include {
+				for item in v {
+					query.push((
+						"fields_include".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				"/users",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Get User Fields
+	pub async fn fields(&self) -> Result<UsersFieldsResponse, LolzteamError> {
+		self.http.request("GET", "/users/fields", None, None).await
+	}
+
+	/// Find Users
+	pub async fn find(
+		&self,
+		params: Option<&UsersFindParams>,
+	) -> Result<UsersFindResponse, LolzteamError> {
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.username {
+				query.push(("username".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref map) = p.custom_fields {
+				for (key, val) in map {
+					query.push((
+						format!("custom_fields[{key}]"),
+						ParamValue::String(val.to_string()),
+					));
+				}
+			}
+			if let Some(ref v) = p.fields_include {
+				for item in v {
+					query.push((
+						"fields_include".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				"/users/find",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Get Ignored Users
+	pub async fn ignored(
+		&self,
+		params: Option<&UsersIgnoredParams>,
+	) -> Result<UsersIgnoredResponse, LolzteamError> {
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.total {
+				query.push(("total".into(), ParamValue::Bool(*v)));
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				"/users/ignored",
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Get Secret Answer Types
+	pub async fn secret_answer_types(
+		&self,
+	) -> Result<UsersSecretAnswerTypesResponse, LolzteamError> {
+		self.http
+			.request("GET", "/users/secret-answer/types", None, None)
+			.await
+	}
+
+	/// Get User
+	pub async fn get(
+		&self,
+		user_id: StringOrInt,
+		params: Option<&UsersGetParams>,
+	) -> Result<UsersGetResponse, LolzteamError> {
+		let path = format!("/users/{user_id}");
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.fields_include {
+				for item in v {
+					query.push((
+						"fields_include".into(),
+						ParamValue::String(item.to_string()),
+					));
+				}
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				&path,
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Edit User
+	pub async fn edit(
+		&self,
+		user_id: StringOrInt,
+		body: Option<&UsersEditBody>,
+	) -> Result<UsersEditResponse, LolzteamError> {
+		let path = format!("/users/{user_id}");
+		self.http.request_json("PUT", &path, None, body).await
+	}
+
+	/// Delete Avatar
+	pub async fn avatar_delete(
+		&self,
+		user_id: StringOrInt,
+	) -> Result<UsersAvatarDeleteResponse, LolzteamError> {
+		let path = format!("/users/{user_id}/avatar");
+		self.http.request("DELETE", &path, None, None).await
+	}
+
+	/// Upload Avatar
+	pub async fn avatar_upload(
+		&self,
+		user_id: StringOrInt,
+		body: Option<&UsersAvatarUploadBody>,
+	) -> Result<UsersAvatarUploadResponse, LolzteamError> {
+		let path = format!("/users/{user_id}/avatar");
+		let mut parts = Vec::new();
+		if let Some(b) = body {
+			parts.push(MultipartPart::File {
+				name: "avatar".to_string(),
+				data: b.avatar.clone(),
+				filename: Some("avatar".to_string()),
+				mime_type: Some("application/octet-stream".to_string()),
+			});
+			if let Some(ref v) = b.crop {
+				parts.push(MultipartPart::Text {
+					name: "crop".to_string(),
+					value: v.to_string(),
+				});
+			}
+			if let Some(ref v) = b.x {
+				parts.push(MultipartPart::Text {
+					name: "x".to_string(),
+					value: v.to_string(),
+				});
+			}
+			if let Some(ref v) = b.y {
+				parts.push(MultipartPart::Text {
+					name: "y".to_string(),
+					value: v.to_string(),
+				});
+			}
+		}
+		self.http.request_multipart("POST", &path, parts).await
+	}
+
+	/// Crop Avatar
+	pub async fn avatar_crop(
+		&self,
+		user_id: StringOrInt,
+		body: Option<&UsersAvatarCropBody>,
+	) -> Result<UsersAvatarCropResponse, LolzteamError> {
+		let path = format!("/users/{user_id}/avatar/crop");
+		self.http.request_json("POST", &path, None, body).await
+	}
+
+	/// Delete Background
+	pub async fn background_delete(
+		&self,
+		user_id: StringOrInt,
+	) -> Result<UsersBackgroundDeleteResponse, LolzteamError> {
+		let path = format!("/users/{user_id}/background");
+		self.http.request("DELETE", &path, None, None).await
+	}
+
+	/// Upload Background
+	pub async fn background_upload(
+		&self,
+		user_id: StringOrInt,
+		body: Option<&UsersBackgroundUploadBody>,
+	) -> Result<UsersBackgroundUploadResponse, LolzteamError> {
+		let path = format!("/users/{user_id}/background");
+		let mut parts = Vec::new();
+		if let Some(b) = body {
+			parts.push(MultipartPart::File {
+				name: "background".to_string(),
+				data: b.background.clone(),
+				filename: Some("background".to_string()),
+				mime_type: Some("application/octet-stream".to_string()),
+			});
+			if let Some(ref v) = b.crop {
+				parts.push(MultipartPart::Text {
+					name: "crop".to_string(),
+					value: v.to_string(),
+				});
+			}
+			if let Some(ref v) = b.x {
+				parts.push(MultipartPart::Text {
+					name: "x".to_string(),
+					value: v.to_string(),
+				});
+			}
+			if let Some(ref v) = b.y {
+				parts.push(MultipartPart::Text {
+					name: "y".to_string(),
+					value: v.to_string(),
+				});
+			}
+		}
+		self.http.request_multipart("POST", &path, parts).await
+	}
+
+	/// Crop Background
+	pub async fn background_crop(
+		&self,
+		user_id: StringOrInt,
+		body: Option<&UsersBackgroundCropBody>,
+	) -> Result<UsersBackgroundCropResponse, LolzteamError> {
+		let path = format!("/users/{user_id}/background/crop");
+		self.http.request_json("POST", &path, None, body).await
+	}
+
+	/// Get User Claims
+	pub async fn claims(
+		&self,
+		user_id: StringOrInt,
+		params: Option<&UsersClaimsParams>,
+	) -> Result<UsersClaimsResponse, LolzteamError> {
+		let path = format!("/users/{user_id}/claims");
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.r#type {
+				query.push(("type".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.claim_state {
+				query.push(("claim_state".into(), ParamValue::String(v.clone())));
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				&path,
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Unfollow User
+	pub async fn unfollow(
+		&self,
+		user_id: StringOrInt,
+	) -> Result<UsersUnfollowResponse, LolzteamError> {
+		let path = format!("/users/{user_id}/followers");
+		self.http.request("DELETE", &path, None, None).await
+	}
+
+	/// Get User Followers
+	pub async fn followers(
+		&self,
+		user_id: StringOrInt,
+		params: Option<&UsersFollowersParams>,
+	) -> Result<UsersFollowersResponse, LolzteamError> {
+		let path = format!("/users/{user_id}/followers");
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.order {
+				query.push(("order".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.page {
+				query.push(("page".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.limit {
+				query.push(("limit".into(), ParamValue::Integer(*v)));
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				&path,
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Follow User
+	pub async fn follow(&self, user_id: StringOrInt) -> Result<UsersFollowResponse, LolzteamError> {
+		let path = format!("/users/{user_id}/followers");
+		self.http.request("POST", &path, None, None).await
+	}
+
+	/// Get Followed Users By User
+	pub async fn followings(
+		&self,
+		user_id: StringOrInt,
+		params: Option<&UsersFollowingsParams>,
+	) -> Result<UsersFollowingsResponse, LolzteamError> {
+		let path = format!("/users/{user_id}/followings");
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.order {
+				query.push(("order".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.page {
+				query.push(("page".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.limit {
+				query.push(("limit".into(), ParamValue::Integer(*v)));
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				&path,
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Unignore User
+	pub async fn unignore(
+		&self,
+		user_id: StringOrInt,
+	) -> Result<UsersUnignoreResponse, LolzteamError> {
+		let path = format!("/users/{user_id}/ignore");
+		self.http.request("DELETE", &path, None, None).await
+	}
+
+	/// Ignore User
+	pub async fn ignore(&self, user_id: StringOrInt) -> Result<UsersIgnoreResponse, LolzteamError> {
+		let path = format!("/users/{user_id}/ignore");
+		self.http.request("POST", &path, None, None).await
+	}
+
+	/// Edit Ignoring Options
+	pub async fn ignore_edit(
+		&self,
+		user_id: StringOrInt,
+		params: Option<&UsersIgnoreEditParams>,
+	) -> Result<UsersIgnoreEditResponse, LolzteamError> {
+		let path = format!("/users/{user_id}/ignore");
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.ignore_conversations {
+				query.push(("ignore_conversations".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.ignore_content {
+				query.push(("ignore_content".into(), ParamValue::Bool(*v)));
+			}
+			if let Some(ref v) = p.restrict_view_profile {
+				query.push(("restrict_view_profile".into(), ParamValue::Bool(*v)));
+			}
+		}
+		self.http
+			.request(
+				"PUT",
+				&path,
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Get User Likes
+	pub async fn likes(
+		&self,
+		user_id: StringOrInt,
+		params: Option<&UsersLikesParams>,
+	) -> Result<UsersLikesResponse, LolzteamError> {
+		let path = format!("/users/{user_id}/likes");
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.node_id {
+				query.push(("node_id".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.like_type {
+				query.push(("like_type".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.r#type {
+				query.push(("type".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.page {
+				query.push(("page".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.content_type {
+				query.push(("content_type".into(), ParamValue::String(v.clone())));
+			}
+			if let Some(ref v) = p.search_user_id {
+				query.push(("search_user_id".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.stats {
+				query.push(("stats".into(), ParamValue::Bool(*v)));
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				&path,
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Get Contents
+	pub async fn contents(
+		&self,
+		user_id: StringOrInt,
+		params: Option<&UsersContentsParams>,
+	) -> Result<UsersContentsResponse, LolzteamError> {
+		let path = format!("/users/{user_id}/timeline");
+		let mut query = Vec::new();
+		if let Some(p) = params {
+			if let Some(ref v) = p.page {
+				query.push(("page".into(), ParamValue::Integer(*v)));
+			}
+			if let Some(ref v) = p.limit {
+				query.push(("limit".into(), ParamValue::Integer(*v)));
+			}
+		}
+		self.http
+			.request(
+				"GET",
+				&path,
+				if query.is_empty() {
+					None
+				} else {
+					Some(query.as_slice())
+				},
+				None,
+			)
+			.await
+	}
+
+	/// Get Trophies
+	pub async fn trophies(
+		&self,
+		user_id: StringOrInt,
+	) -> Result<UsersTrophiesResponse, LolzteamError> {
+		let path = format!("/users/{user_id}/trophies");
+		self.http.request("GET", &path, None, None).await
+	}
+}
 
 pub struct ForumClient {
 	assets: AssetsApi,
@@ -51,7 +2571,9 @@ impl ForumClient {
 			base_url: "https://prod-api.lolz.live".to_string(),
 			proxy: None,
 			retry: RetryConfig::default(),
-			rate_limit: Some(RateLimitConfig { requests_per_minute: 300 }),
+			rate_limit: Some(RateLimitConfig {
+				requests_per_minute: 300,
+			}),
 		};
 		Self::with_config(config)
 	}
