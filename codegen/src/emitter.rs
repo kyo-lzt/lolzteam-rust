@@ -50,13 +50,19 @@ pub fn emit_types(parsed: &ParseResult, output_dir: &str) {
         for method in &group.methods {
             let prefix = method_type_prefix(&group.name, &method.name);
 
-            // Params struct (query parameters)
-            if method.has_params {
-                emit_params_struct(&mut out, &prefix, &method.query_params);
+            // Params struct (only optional query parameters; required ones become direct args)
+            let optional_query: Vec<_> = method
+                .query_params
+                .iter()
+                .filter(|p| !p.required)
+                .cloned()
+                .collect();
+            if !optional_query.is_empty() {
+                emit_params_struct(&mut out, &prefix, &optional_query);
             }
 
-            // Body struct
-            if method.has_body {
+            // Body struct (skip for raw body — those take serde_json::Value directly)
+            if method.has_body && !method.is_raw_body {
                 match method.body_encoding {
                     BodyEncoding::Multipart => {
                         emit_multipart_body_struct(&mut out, &prefix, &method.body_params);
@@ -232,19 +238,21 @@ pub fn emit_groups(parsed: &ParseResult, output_dir: &str) {
         let needs_multipart = group
             .methods
             .iter()
-            .any(|m| m.body_encoding == BodyEncoding::Multipart);
+            .any(|m| m.body_encoding == BodyEncoding::Multipart && !m.is_raw_body);
 
         // ParamValue needed for: query params (any method) or form-urlencoded body params
         let needs_pv = group.methods.iter().any(|m| {
-            m.has_params || (m.has_body && m.body_encoding == BodyEncoding::FormUrlEncoded)
+            !m.query_params.is_empty()
+                || (m.has_body && !m.is_raw_body && m.body_encoding == BodyEncoding::FormUrlEncoded)
         });
 
         let needs_string_or_int = group.methods.iter().any(|m| {
             // StringOrInt needed in runtime import only for path params and form-encoded/multipart body params
             // JSON body params don't need it (struct is serialized directly via serde)
             let path_or_query = m.path_params.iter().chain(m.query_params.iter());
-            let form_body = if m.body_encoding == BodyEncoding::FormUrlEncoded
-                || m.body_encoding == BodyEncoding::Multipart
+            let form_body = if !m.is_raw_body
+                && (m.body_encoding == BodyEncoding::FormUrlEncoded
+                    || m.body_encoding == BodyEncoding::Multipart)
             {
                 m.body_params.as_slice()
             } else {
@@ -304,6 +312,10 @@ pub fn emit_groups(parsed: &ParseResult, output_dir: &str) {
 fn emit_method(out: &mut String, group_name: &str, method: &MethodDef) {
     let prefix = method_type_prefix(group_name, &method.name);
 
+    let required_query: Vec<_> = method.query_params.iter().filter(|p| p.required).collect();
+    let optional_query: Vec<_> = method.query_params.iter().filter(|p| !p.required).collect();
+    let has_optional_params = !optional_query.is_empty();
+
     // Doc comment
     if let Some(desc) = &method.description {
         writeln!(out, "\t/// {desc}").unwrap();
@@ -317,13 +329,20 @@ fn emit_method(out: &mut String, group_name: &str, method: &MethodDef) {
         write!(out, ", {}: {}", param.name, param.rust_type).unwrap();
     }
 
-    // Query params struct
-    if method.has_params {
+    // Required query params as direct arguments
+    for param in &required_query {
+        write!(out, ", {}: {}", param.name, param.rust_type).unwrap();
+    }
+
+    // Optional query params struct
+    if has_optional_params {
         write!(out, ", params: Option<&{prefix}Params>").unwrap();
     }
 
-    // Body struct
-    if method.has_body {
+    // Body
+    if method.is_raw_body {
+        write!(out, ", body: serde_json::Value").unwrap();
+    } else if method.has_body {
         write!(out, ", body: Option<&{prefix}Body>").unwrap();
     }
 
@@ -352,18 +371,26 @@ fn emit_method(out: &mut String, group_name: &str, method: &MethodDef) {
     }
 
     // Build query vec
-    if method.has_params {
+    let has_any_query = !required_query.is_empty() || has_optional_params;
+    if has_any_query {
         writeln!(out, "\t\tlet mut query = Vec::new();").unwrap();
-        writeln!(out, "\t\tif let Some(p) = params {{").unwrap();
-        for param in &method.query_params {
-            emit_param_push(out, "query", param, "\t\t\t");
+        // Required query params — always pushed
+        for param in &required_query {
+            emit_required_query_push(out, param, "\t\t");
         }
-        writeln!(out, "\t\t}}").unwrap();
+        // Optional query params — pushed from the params struct
+        if has_optional_params {
+            writeln!(out, "\t\tif let Some(p) = params {{").unwrap();
+            for param in &optional_query {
+                emit_param_push(out, "query", param, "\t\t\t");
+            }
+            writeln!(out, "\t\t}}").unwrap();
+        }
     }
 
     // Build body vec / parts depending on encoding
     match method.body_encoding {
-        BodyEncoding::Multipart if method.has_body => {
+        BodyEncoding::Multipart if method.has_body && !method.is_raw_body => {
             writeln!(out, "\t\tlet mut parts = Vec::new();").unwrap();
             writeln!(out, "\t\tif let Some(b) = body {{").unwrap();
             for param in &method.body_params {
@@ -371,7 +398,7 @@ fn emit_method(out: &mut String, group_name: &str, method: &MethodDef) {
             }
             writeln!(out, "\t\t}}").unwrap();
         }
-        BodyEncoding::FormUrlEncoded if method.has_body => {
+        BodyEncoding::FormUrlEncoded if method.has_body && !method.is_raw_body => {
             writeln!(out, "\t\tlet mut form = Vec::new();").unwrap();
             writeln!(out, "\t\tif let Some(b) = body {{").unwrap();
             for param in &method.body_params {
@@ -379,7 +406,7 @@ fn emit_method(out: &mut String, group_name: &str, method: &MethodDef) {
             }
             writeln!(out, "\t\t}}").unwrap();
         }
-        BodyEncoding::Json if method.has_body => {
+        BodyEncoding::Json if method.has_body && !method.is_raw_body => {
             // JSON body is passed directly as a serializable struct — no vec building needed
         }
         _ => {}
@@ -392,15 +419,30 @@ fn emit_method(out: &mut String, group_name: &str, method: &MethodDef) {
         &format!("\"{}\"", method.path)
     };
 
+    let query_arg_some = "if query.is_empty() { None } else { Some(query.as_slice()) }";
+
     if method.response_is_text {
-        let query_arg = if method.has_params {
-            "if query.is_empty() { None } else { Some(query.as_slice()) }"
+        let query_arg = if has_any_query {
+            query_arg_some
         } else {
             "None"
         };
         writeln!(
             out,
             "\t\tself.http.request_text(\"{}\", {path_arg}, {query_arg}).await",
+            method.http_method
+        )
+        .unwrap();
+    } else if method.is_raw_body {
+        // Raw JSON body (e.g. array-typed body like POST /batch)
+        let query_arg = if has_any_query {
+            query_arg_some
+        } else {
+            "None"
+        };
+        writeln!(
+            out,
+            "\t\tself.http.request_json(\"{}\", {path_arg}, {query_arg}, Some(&body)).await",
             method.http_method
         )
         .unwrap();
@@ -412,8 +454,8 @@ fn emit_method(out: &mut String, group_name: &str, method: &MethodDef) {
         )
         .unwrap();
     } else if method.body_encoding == BodyEncoding::Json {
-        let query_arg = if method.has_params {
-            "if query.is_empty() { None } else { Some(query.as_slice()) }"
+        let query_arg = if has_any_query {
+            query_arg_some
         } else {
             "None"
         };
@@ -429,8 +471,8 @@ fn emit_method(out: &mut String, group_name: &str, method: &MethodDef) {
         )
         .unwrap();
     } else {
-        let query_arg = if method.has_params {
-            "if query.is_empty() { None } else { Some(query.as_slice()) }"
+        let query_arg = if has_any_query {
+            query_arg_some
         } else {
             "None"
         };
@@ -449,6 +491,36 @@ fn emit_method(out: &mut String, group_name: &str, method: &MethodDef) {
         .unwrap();
     }
     writeln!(out, "\t}}").unwrap();
+}
+
+/// Emit code to push a required query parameter (direct arg, not from struct) into the query vec.
+fn emit_required_query_push(out: &mut String, param: &ParamDef, indent: &str) {
+    let api_name = &param.api_name;
+    let field = &param.name;
+    let variant = &param.param_value_variant;
+
+    let base_type = &param.rust_type;
+    let is_string_or_int = base_type == "StringOrInt";
+
+    if is_string_or_int {
+        writeln!(out, "{indent}match &{field} {{").unwrap();
+        writeln!(out, "{indent}\tStringOrInt::String(s) => query.push((\"{api_name}\".into(), ParamValue::String(s.clone()))),").unwrap();
+        writeln!(out, "{indent}\tStringOrInt::Int(n) => query.push((\"{api_name}\".into(), ParamValue::Integer(*n))),").unwrap();
+        writeln!(out, "{indent}}}").unwrap();
+    } else {
+        let value_expr = match variant.as_str() {
+            "String" => format!("ParamValue::String({field}.clone())"),
+            "Integer" => format!("ParamValue::Integer({field})"),
+            "Float" => format!("ParamValue::Float({field})"),
+            "Bool" => format!("ParamValue::Bool({field})"),
+            _ => format!("ParamValue::String({field}.to_string())"),
+        };
+        writeln!(
+            out,
+            "{indent}query.push((\"{api_name}\".into(), {value_expr}));"
+        )
+        .unwrap();
+    }
 }
 
 /// Emit code to push a parameter value into a Vec.

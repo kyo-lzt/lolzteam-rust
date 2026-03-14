@@ -19,14 +19,14 @@ fn main() {
             schema_path: "schemas/forum.json",
             output_dir: "lolzteam/src/generated/forum",
             client_name: "ForumClient",
-            default_base_url: "https://api.lolz.live",
+            default_base_url: "https://prod-api.lolz.live",
             default_rate_limit: 300,
         },
         ApiConfig {
             schema_path: "schemas/market.json",
             output_dir: "lolzteam/src/generated/market",
             client_name: "MarketClient",
-            default_base_url: "https://api.lzt.market",
+            default_base_url: "https://prod-api.lzt.market",
             default_rate_limit: 120,
         },
     ];

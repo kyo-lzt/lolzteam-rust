@@ -41,10 +41,10 @@ pub struct MethodDef {
     pub query_params: Vec<ParamDef>,
     /// Request body parameters
     pub body_params: Vec<ParamDef>,
-    /// Whether this method has query parameters
-    pub has_params: bool,
     /// Whether this method has a request body
     pub has_body: bool,
+    /// Whether the body is a raw JSON value (e.g. array-typed body like POST /batch)
+    pub is_raw_body: bool,
     /// Body content encoding
     pub body_encoding: BodyEncoding,
     /// Structured response schema for generating typed structs

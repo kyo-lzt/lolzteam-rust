@@ -10,6 +10,10 @@ pub enum LolzteamError {
     /// Network error — connection, DNS, timeout, or TLS failure.
     #[error("{0}")]
     Network(#[from] NetworkError),
+
+    /// Configuration error — invalid client configuration.
+    #[error("{0}")]
+    Config(#[from] ConfigError),
 }
 
 /// An HTTP error response from the API.
@@ -95,3 +99,8 @@ impl std::error::Error for HttpError {}
 #[derive(Debug, thiserror::Error)]
 #[error("network error: {0}")]
 pub struct NetworkError(#[from] pub reqwest::Error);
+
+/// A configuration error (e.g. invalid proxy URL).
+#[derive(Debug, thiserror::Error)]
+#[error("config error: {0}")]
+pub struct ConfigError(pub String);

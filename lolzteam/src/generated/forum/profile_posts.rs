@@ -25,12 +25,10 @@ impl ProfilePostsApi {
 	}
 
 	/// Get Profile Post Comments
-	pub async fn comments_list(&self, params: Option<&ProfilePostsCommentsListParams>) -> Result<ProfilePostsCommentsListResponse, LolzteamError> {
+	pub async fn comments_list(&self, profile_post_id: i64, params: Option<&ProfilePostsCommentsListParams>) -> Result<ProfilePostsCommentsListResponse, LolzteamError> {
 		let mut query = Vec::new();
+		query.push(("profile_post_id".into(), ParamValue::Integer(profile_post_id)));
 		if let Some(p) = params {
-			if let Some(ref v) = p.profile_post_id {
-				query.push(("profile_post_id".into(), ParamValue::Integer(*v)));
-			}
 			if let Some(ref v) = p.before {
 				query.push(("before".into(), ParamValue::Integer(*v)));
 			}

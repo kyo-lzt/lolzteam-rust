@@ -20,7 +20,7 @@ where
             Err(err) => {
                 let should_retry = match &err {
                     LolzteamError::Http(http_err) => http_err.is_retryable(),
-                    LolzteamError::Network(_) => false,
+                    LolzteamError::Network(_) | LolzteamError::Config(_) => false,
                 };
 
                 if !should_retry || attempt >= config.max_retries {

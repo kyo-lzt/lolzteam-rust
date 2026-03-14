@@ -45,12 +45,10 @@ impl ManagingApi {
 	}
 
 	/// Get Steam Inventory Value
-	pub async fn steam_value(&self, params: Option<&ManagingSteamValueParams>) -> Result<ManagingSteamValueResponse, LolzteamError> {
+	pub async fn steam_value(&self, link: String, params: Option<&ManagingSteamValueParams>) -> Result<ManagingSteamValueResponse, LolzteamError> {
 		let mut query = Vec::new();
+		query.push(("link".into(), ParamValue::String(link.clone())));
 		if let Some(p) = params {
-			if let Some(ref v) = p.link {
-				query.push(("link".into(), ParamValue::String(v.clone())));
-			}
 			if let Some(ref v) = p.app_id {
 				query.push(("app_id".into(), ParamValue::Integer(*v)));
 			}
@@ -167,14 +165,10 @@ impl ManagingApi {
 	}
 
 	/// Get Account Image
-	pub async fn image(&self, item_id: i64, params: Option<&ManagingImageParams>) -> Result<ManagingImageResponse, LolzteamError> {
+	pub async fn image(&self, item_id: i64, r#type: String) -> Result<ManagingImageResponse, LolzteamError> {
 		let path = format!("/{item_id}/image");
 		let mut query = Vec::new();
-		if let Some(p) = params {
-			if let Some(ref v) = p.r#type {
-				query.push(("type".into(), ParamValue::String(v.clone())));
-			}
-		}
+		query.push(("type".into(), ParamValue::String(r#type.clone())));
 		self.http.request("GET", &path, if query.is_empty() { None } else { Some(query.as_slice()) }, None).await
 	}
 

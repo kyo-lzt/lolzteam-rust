@@ -15,7 +15,7 @@ impl BatchApi {
 	}
 
 	/// Batch
-	pub async fn execute(&self) -> Result<BatchExecuteResponse, LolzteamError> {
-		self.http.request_json("POST", "/batch", None, None::<&()>).await
+	pub async fn execute(&self, body: serde_json::Value) -> Result<BatchExecuteResponse, LolzteamError> {
+		self.http.request_json("POST", "/batch", None, Some(&body)).await
 	}
 }

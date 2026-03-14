@@ -1,7 +1,7 @@
 use serde::de::DeserializeOwned;
 use serde::Serialize;
 
-use crate::runtime::errors::{HttpError, NetworkError};
+use crate::runtime::errors::{ConfigError, HttpError, NetworkError};
 use crate::runtime::rate_limiter::RateLimiter;
 use crate::runtime::retry::with_retry;
 use crate::runtime::types::{ClientConfig, MultipartPart, ParamValue, RetryConfig};
@@ -30,6 +30,17 @@ impl HttpClient {
         let mut builder = reqwest::Client::builder();
 
         if let Some(proxy_cfg) = &config.proxy {
+            let url = reqwest::Url::parse(&proxy_cfg.url)
+                .map_err(|e| ConfigError(format!("invalid proxy URL: {e}")))?;
+            match url.scheme() {
+                "http" | "https" | "socks5" => {}
+                other => {
+                    return Err(ConfigError(format!("unsupported proxy scheme: {other}")).into())
+                }
+            }
+            if url.host().is_none() {
+                return Err(ConfigError("proxy URL has no host".to_string()).into());
+            }
             let proxy = reqwest::Proxy::all(&proxy_cfg.url).map_err(NetworkError)?;
             builder = builder.proxy(proxy);
         }

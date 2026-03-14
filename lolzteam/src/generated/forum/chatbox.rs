@@ -46,12 +46,10 @@ impl ChatboxApi {
 	}
 
 	/// Get Chat Messages
-	pub async fn get_messages(&self, params: Option<&ChatboxGetMessagesParams>) -> Result<ChatboxGetMessagesResponse, LolzteamError> {
+	pub async fn get_messages(&self, room_id: i64, params: Option<&ChatboxGetMessagesParams>) -> Result<ChatboxGetMessagesResponse, LolzteamError> {
 		let mut query = Vec::new();
+		query.push(("room_id".into(), ParamValue::Integer(room_id)));
 		if let Some(p) = params {
-			if let Some(ref v) = p.room_id {
-				query.push(("room_id".into(), ParamValue::Integer(*v)));
-			}
 			if let Some(ref v) = p.before_message_id {
 				query.push(("before_message_id".into(), ParamValue::Integer(*v)));
 			}
@@ -81,24 +79,16 @@ impl ChatboxApi {
 	}
 
 	/// Get Chat Online
-	pub async fn online(&self, params: Option<&ChatboxOnlineParams>) -> Result<ChatboxOnlineResponse, LolzteamError> {
+	pub async fn online(&self, room_id: i64) -> Result<ChatboxOnlineResponse, LolzteamError> {
 		let mut query = Vec::new();
-		if let Some(p) = params {
-			if let Some(ref v) = p.room_id {
-				query.push(("room_id".into(), ParamValue::Integer(*v)));
-			}
-		}
+		query.push(("room_id".into(), ParamValue::Integer(room_id)));
 		self.http.request("GET", "/chatbox/messages/online", if query.is_empty() { None } else { Some(query.as_slice()) }, None).await
 	}
 
 	/// Get Chat Message Report Reasons
-	pub async fn report_reasons(&self, params: Option<&ChatboxReportReasonsParams>) -> Result<ChatboxReportReasonsResponse, LolzteamError> {
+	pub async fn report_reasons(&self, message_id: i64) -> Result<ChatboxReportReasonsResponse, LolzteamError> {
 		let mut query = Vec::new();
-		if let Some(p) = params {
-			if let Some(ref v) = p.message_id {
-				query.push(("message_id".into(), ParamValue::Integer(*v)));
-			}
-		}
+		query.push(("message_id".into(), ParamValue::Integer(message_id)));
 		self.http.request("GET", "/chatbox/messages/report", if query.is_empty() { None } else { Some(query.as_slice()) }, None).await
 	}
 

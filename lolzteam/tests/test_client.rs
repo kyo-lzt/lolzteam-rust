@@ -1,8 +1,79 @@
+use std::sync::atomic::{AtomicUsize, Ordering};
+use std::sync::Arc;
+
 use lolzteam::generated::forum::ForumClient;
 use lolzteam::generated::market::MarketClient;
 use lolzteam::runtime::{
-    ClientConfig, HttpError, LolzteamError, ProxyConfig, RateLimitConfig, RetryConfig,
+    ClientConfig, HttpClient, HttpError, LolzteamError, ParamValue, ProxyConfig, RateLimitConfig,
+    RetryConfig,
 };
+use tokio::io::{AsyncReadExt, AsyncWriteExt};
+use tokio::net::TcpListener;
+
+// ---------------------------------------------------------------------------
+// Mock HTTP server helpers
+// ---------------------------------------------------------------------------
+
+/// Start a TCP listener on a random port and return (listener, base_url).
+async fn mock_listener() -> (TcpListener, String) {
+    let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let addr = listener.local_addr().unwrap();
+    let base_url = format!("http://{addr}");
+    (listener, base_url)
+}
+
+/// Build an HttpClient pointing at the given base_url with no rate limiting
+/// and fast retries.
+fn test_client(base_url: &str, token: &str) -> HttpClient {
+    let config = ClientConfig {
+        token: token.to_string(),
+        base_url: base_url.to_string(),
+        proxy: None,
+        retry: RetryConfig {
+            max_retries: 3,
+            base_delay_ms: 10,
+            max_delay_ms: 50,
+        },
+        rate_limit: None,
+    };
+    HttpClient::new(config).unwrap()
+}
+
+/// Read the full HTTP request from a TcpStream (up to 8KB).
+async fn read_request(stream: &mut tokio::net::TcpStream) -> String {
+    let mut buf = vec![0u8; 8192];
+    let n = stream.read(&mut buf).await.unwrap();
+    String::from_utf8_lossy(&buf[..n]).to_string()
+}
+
+/// Write an HTTP response with the given status, optional headers, and body.
+async fn write_response(
+    stream: &mut tokio::net::TcpStream,
+    status: u16,
+    extra_headers: &str,
+    body: &str,
+) {
+    let reason = match status {
+        200 => "OK",
+        401 => "Unauthorized",
+        404 => "Not Found",
+        429 => "Too Many Requests",
+        502 => "Bad Gateway",
+        503 => "Service Unavailable",
+        _ => "Error",
+    };
+    let resp = format!(
+        "HTTP/1.1 {status} {reason}\r\n\
+         Content-Type: application/json\r\n\
+         Content-Length: {len}\r\n\
+         {extra_headers}\
+         \r\n\
+         {body}",
+        len = body.len(),
+    );
+    stream.write_all(resp.as_bytes()).await.unwrap();
+    stream.shutdown().await.ok();
+}
 
 // ---------------------------------------------------------------------------
 // RetryConfig defaults
@@ -318,6 +389,88 @@ fn market_client_all_api_group_accessors() {
 }
 
 // ---------------------------------------------------------------------------
+// Proxy URL validation
+// ---------------------------------------------------------------------------
+
+#[test]
+fn proxy_rejects_unsupported_scheme() {
+    let cfg = ClientConfig {
+        token: "t".to_string(),
+        base_url: "https://example.com".to_string(),
+        proxy: Some(ProxyConfig {
+            url: "ftp://proxy:8080".to_string(),
+        }),
+        retry: RetryConfig::default(),
+        rate_limit: None,
+    };
+    let result = ForumClient::with_config(cfg);
+    assert!(result.is_err());
+    assert!(matches!(result, Err(LolzteamError::Config(_))));
+}
+
+#[test]
+fn proxy_rejects_invalid_url() {
+    let cfg = ClientConfig {
+        token: "t".to_string(),
+        base_url: "https://example.com".to_string(),
+        proxy: Some(ProxyConfig {
+            url: "not a url".to_string(),
+        }),
+        retry: RetryConfig::default(),
+        rate_limit: None,
+    };
+    let result = ForumClient::with_config(cfg);
+    assert!(result.is_err());
+    assert!(matches!(result, Err(LolzteamError::Config(_))));
+}
+
+#[test]
+fn proxy_rejects_no_host() {
+    let cfg = ClientConfig {
+        token: "t".to_string(),
+        base_url: "https://example.com".to_string(),
+        proxy: Some(ProxyConfig {
+            url: "http://".to_string(),
+        }),
+        retry: RetryConfig::default(),
+        rate_limit: None,
+    };
+    let result = ForumClient::with_config(cfg);
+    assert!(result.is_err());
+    assert!(matches!(result, Err(LolzteamError::Config(_))));
+}
+
+#[test]
+fn proxy_accepts_valid_http() {
+    let cfg = ClientConfig {
+        token: "t".to_string(),
+        base_url: "https://example.com".to_string(),
+        proxy: Some(ProxyConfig {
+            url: "http://proxy:8080".to_string(),
+        }),
+        retry: RetryConfig::default(),
+        rate_limit: None,
+    };
+    let result = ForumClient::with_config(cfg);
+    assert!(result.is_ok());
+}
+
+#[test]
+fn proxy_accepts_valid_socks5() {
+    let cfg = ClientConfig {
+        token: "t".to_string(),
+        base_url: "https://example.com".to_string(),
+        proxy: Some(ProxyConfig {
+            url: "socks5://127.0.0.1:1080".to_string(),
+        }),
+        retry: RetryConfig::default(),
+        rate_limit: None,
+    };
+    let result = ForumClient::with_config(cfg);
+    assert!(result.is_ok());
+}
+
+// ---------------------------------------------------------------------------
 // Both clients can coexist
 // ---------------------------------------------------------------------------
 
@@ -329,4 +482,226 @@ fn both_clients_can_coexist() {
     // Smoke-check that both are usable simultaneously.
     let _ = forum.threads();
     let _ = market.list();
+}
+
+// ---------------------------------------------------------------------------
+// HTTP-level mock tests
+// ---------------------------------------------------------------------------
+
+/// 1. Successful request — mock returns 200 JSON, verify client parses it.
+#[tokio::test]
+async fn http_mock_successful_request() {
+    let (listener, base_url) = mock_listener().await;
+    let client = test_client(&base_url, "test-token");
+
+    tokio::spawn(async move {
+        let (mut stream, _) = listener.accept().await.unwrap();
+        let _ = read_request(&mut stream).await;
+        write_response(&mut stream, 200, "", r#"{"ok":true,"value":42}"#).await;
+    });
+
+    let result: serde_json::Value = client.request("GET", "/test", None, None).await.unwrap();
+    assert_eq!(result["ok"], true);
+    assert_eq!(result["value"], 42);
+}
+
+/// 2. Auth header — verify Bearer token is sent in Authorization header.
+#[tokio::test]
+async fn http_mock_auth_header_sent() {
+    let (listener, base_url) = mock_listener().await;
+    let client = test_client(&base_url, "secret-token-123");
+
+    let handle = tokio::spawn(async move {
+        let (mut stream, _) = listener.accept().await.unwrap();
+        let req = read_request(&mut stream).await;
+        write_response(&mut stream, 200, "", r#"{"ok":true}"#).await;
+        req
+    });
+
+    let _: serde_json::Value = client
+        .request("GET", "/auth-check", None, None)
+        .await
+        .unwrap();
+    let req = handle.await.unwrap();
+    let req_lower = req.to_lowercase();
+    assert!(
+        req_lower.contains("authorization: bearer secret-token-123"),
+        "request should contain Bearer token, got: {req}"
+    );
+}
+
+/// 3. 401 → auth error.
+#[tokio::test]
+async fn http_mock_401_auth_error() {
+    let (listener, base_url) = mock_listener().await;
+    let client = test_client(&base_url, "bad-token");
+
+    tokio::spawn(async move {
+        let (mut stream, _) = listener.accept().await.unwrap();
+        let _ = read_request(&mut stream).await;
+        write_response(&mut stream, 401, "", r#"{"error":"unauthorized"}"#).await;
+    });
+
+    let result: Result<serde_json::Value, LolzteamError> =
+        client.request("GET", "/secret", None, None).await;
+    let err = result.unwrap_err();
+    match &err {
+        LolzteamError::Http(http_err) => {
+            assert!(http_err.is_auth_error());
+            assert_eq!(http_err.status, 401);
+        }
+        other => panic!("expected Http error, got: {other:?}"),
+    }
+}
+
+/// 4. 404 → not found.
+#[tokio::test]
+async fn http_mock_404_not_found() {
+    let (listener, base_url) = mock_listener().await;
+    let client = test_client(&base_url, "token");
+
+    tokio::spawn(async move {
+        let (mut stream, _) = listener.accept().await.unwrap();
+        let _ = read_request(&mut stream).await;
+        write_response(&mut stream, 404, "", r#"{"error":"not found"}"#).await;
+    });
+
+    let result: Result<serde_json::Value, LolzteamError> =
+        client.request("GET", "/missing", None, None).await;
+    let err = result.unwrap_err();
+    match &err {
+        LolzteamError::Http(http_err) => {
+            assert!(http_err.is_not_found());
+            assert_eq!(http_err.status, 404);
+        }
+        other => panic!("expected Http error, got: {other:?}"),
+    }
+}
+
+/// 5. 429 retry then success — mock returns 429 first, then 200.
+#[tokio::test]
+async fn http_mock_429_retry_then_success() {
+    let (listener, base_url) = mock_listener().await;
+    let client = test_client(&base_url, "token");
+
+    let call_count = Arc::new(AtomicUsize::new(0));
+    let counter = Arc::clone(&call_count);
+
+    tokio::spawn(async move {
+        // First request: 429
+        let (mut stream, _) = listener.accept().await.unwrap();
+        let _ = read_request(&mut stream).await;
+        counter.fetch_add(1, Ordering::SeqCst);
+        write_response(
+            &mut stream,
+            429,
+            "Retry-After: 0\r\n",
+            r#"{"error":"rate limited"}"#,
+        )
+        .await;
+
+        // Second request: 200
+        let (mut stream, _) = listener.accept().await.unwrap();
+        let _ = read_request(&mut stream).await;
+        counter.fetch_add(1, Ordering::SeqCst);
+        write_response(&mut stream, 200, "", r#"{"retried":true}"#).await;
+    });
+
+    let result: serde_json::Value = client
+        .request("GET", "/rate-limited", None, None)
+        .await
+        .unwrap();
+    assert_eq!(result["retried"], true);
+    assert_eq!(call_count.load(Ordering::SeqCst), 2);
+}
+
+/// 6. 502/503 retry — mock returns 502 first, then 200.
+#[tokio::test]
+async fn http_mock_502_retry_then_success() {
+    let (listener, base_url) = mock_listener().await;
+    let client = test_client(&base_url, "token");
+
+    let call_count = Arc::new(AtomicUsize::new(0));
+    let counter = Arc::clone(&call_count);
+
+    tokio::spawn(async move {
+        // First request: 502
+        let (mut stream, _) = listener.accept().await.unwrap();
+        let _ = read_request(&mut stream).await;
+        counter.fetch_add(1, Ordering::SeqCst);
+        write_response(&mut stream, 502, "", r#"{"error":"bad gateway"}"#).await;
+
+        // Second request: 200
+        let (mut stream, _) = listener.accept().await.unwrap();
+        let _ = read_request(&mut stream).await;
+        counter.fetch_add(1, Ordering::SeqCst);
+        write_response(&mut stream, 200, "", r#"{"recovered":true}"#).await;
+    });
+
+    let result: serde_json::Value = client
+        .request("GET", "/unstable", None, None)
+        .await
+        .unwrap();
+    assert_eq!(result["recovered"], true);
+    assert_eq!(call_count.load(Ordering::SeqCst), 2);
+}
+
+/// 7. Path params — verify correct URL path is requested.
+#[tokio::test]
+async fn http_mock_path_params() {
+    let (listener, base_url) = mock_listener().await;
+    let client = test_client(&base_url, "token");
+
+    let handle = tokio::spawn(async move {
+        let (mut stream, _) = listener.accept().await.unwrap();
+        let req = read_request(&mut stream).await;
+        write_response(&mut stream, 200, "", r#"{"thread_id":123}"#).await;
+        req
+    });
+
+    // Simulate what threads().get(123, None) does: builds path "/threads/123"
+    let path = format!("/threads/{}", 123);
+    let _: serde_json::Value = client.request("GET", &path, None, None).await.unwrap();
+    let req = handle.await.unwrap();
+    assert!(
+        req.contains("GET /threads/123"),
+        "request should contain path /threads/123, got: {req}"
+    );
+}
+
+/// 8. Query params — verify query string is correctly appended.
+#[tokio::test]
+async fn http_mock_query_params() {
+    let (listener, base_url) = mock_listener().await;
+    let client = test_client(&base_url, "token");
+
+    let handle = tokio::spawn(async move {
+        let (mut stream, _) = listener.accept().await.unwrap();
+        let req = read_request(&mut stream).await;
+        write_response(&mut stream, 200, "", r#"{"threads":[]}"#).await;
+        req
+    });
+
+    let query = vec![
+        ("forum_id".to_string(), ParamValue::Integer(42)),
+        ("limit".to_string(), ParamValue::Integer(10)),
+        ("sticky".to_string(), ParamValue::Bool(true)),
+    ];
+    let _: serde_json::Value = client
+        .request("GET", "/threads", Some(query.as_slice()), None)
+        .await
+        .unwrap();
+    let req = handle.await.unwrap();
+    assert!(
+        req.contains("forum_id=42"),
+        "query should contain forum_id=42, got: {req}"
+    );
+    assert!(
+        req.contains("limit=10"),
+        "query should contain limit=10, got: {req}"
+    );
+    assert!(
+        req.contains("sticky=true"),
+        "query should contain sticky=true, got: {req}"
+    );
 }

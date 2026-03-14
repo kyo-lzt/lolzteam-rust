@@ -13613,8 +13613,6 @@ pub struct ManagingGetLetters2Response {
 #[derive(Debug, Clone, Default, Serialize)]
 pub struct ManagingSteamValueParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub link: Option<String>,
-	#[serde(skip_serializing_if = "Option::is_none")]
 	pub app_id: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub currency: Option<String>,
@@ -14907,12 +14905,6 @@ pub struct ManagingSteamMafileCodeResponse {
 	#[serde(rename = "codeData")]
 	pub code_data: ManagingSteamMafileCodeCodeData,
 	pub item: ManagingSteamMafileCodeItem,
-}
-
-#[derive(Debug, Clone, Default, Serialize)]
-pub struct ManagingImageParams {
-	#[serde(rename = "type", skip_serializing_if = "Option::is_none")]
-	pub r#type: Option<String>,
 }
 
 #[derive(Debug, Clone, Deserialize)]

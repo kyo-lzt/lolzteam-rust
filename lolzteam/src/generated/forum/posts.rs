@@ -48,12 +48,10 @@ impl PostsApi {
 	}
 
 	/// Get Post Comments
-	pub async fn comments_get(&self, params: Option<&PostsCommentsGetParams>) -> Result<PostsCommentsGetResponse, LolzteamError> {
+	pub async fn comments_get(&self, post_id: i64, params: Option<&PostsCommentsGetParams>) -> Result<PostsCommentsGetResponse, LolzteamError> {
 		let mut query = Vec::new();
+		query.push(("post_id".into(), ParamValue::Integer(post_id)));
 		if let Some(p) = params {
-			if let Some(ref v) = p.post_id {
-				query.push(("post_id".into(), ParamValue::Integer(*v)));
-			}
 			if let Some(ref v) = p.before {
 				query.push(("before".into(), ParamValue::Integer(*v)));
 			}

@@ -20,13 +20,9 @@ impl TagsApi {
 	}
 
 	/// Get Filtered Content
-	pub async fn find(&self, params: Option<&TagsFindParams>) -> Result<TagsFindResponse, LolzteamError> {
+	pub async fn find(&self, tag: String) -> Result<TagsFindResponse, LolzteamError> {
 		let mut query = Vec::new();
-		if let Some(p) = params {
-			if let Some(ref v) = p.tag {
-				query.push(("tag".into(), ParamValue::String(v.clone())));
-			}
-		}
+		query.push(("tag".into(), ParamValue::String(tag.clone())));
 		self.http.request("GET", "/tags/find", if query.is_empty() { None } else { Some(query.as_slice()) }, None).await
 	}
 

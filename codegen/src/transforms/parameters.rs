@@ -61,7 +61,7 @@ fn extract_params_by_location(root: &Value, parameters: &[Value], location: &str
             name: param_name_to_field(api_name),
             api_name: api_name.to_string(),
             rust_type,
-            required: required && location == "path",
+            required,
             param_value_variant,
             is_binary: false,
             is_deep_object,
@@ -99,6 +99,8 @@ pub enum BodyEncoding {
 pub struct BodyParamsResult {
     pub params: Vec<ParamDef>,
     pub encoding: BodyEncoding,
+    /// True when the body schema is an array (e.g. POST /batch) — needs raw JSON body.
+    pub is_raw_body: bool,
 }
 
 /// Extract body parameters from the request body schema.
@@ -106,6 +108,7 @@ pub fn extract_body_params(root: &Value, operation: &Value) -> BodyParamsResult 
     let default_result = BodyParamsResult {
         params: Vec::new(),
         encoding: BodyEncoding::FormUrlEncoded,
+        is_raw_body: false,
     };
 
     let request_body = match operation.get("requestBody") {
@@ -143,9 +146,21 @@ pub fn extract_body_params(root: &Value, operation: &Value) -> BodyParamsResult 
             return BodyParamsResult {
                 params: Vec::new(),
                 encoding,
+                is_raw_body: false,
             }
         }
     };
+
+    // Handle array body schema (e.g. POST /batch) — raw JSON body
+    if schema.get("type").and_then(|v| v.as_str()) == Some("array")
+        && schema.get("properties").is_none()
+    {
+        return BodyParamsResult {
+            params: Vec::new(),
+            encoding: BodyEncoding::Json,
+            is_raw_body: true,
+        };
+    }
 
     // Handle oneOf in body schema (e.g. OAuth)
     if schema.get("oneOf").is_some() {
@@ -153,12 +168,14 @@ pub fn extract_body_params(root: &Value, operation: &Value) -> BodyParamsResult 
         return BodyParamsResult {
             params: extract_one_of_params(root, schema),
             encoding,
+            is_raw_body: false,
         };
     }
 
     BodyParamsResult {
         params: extract_properties_as_params(root, schema),
         encoding,
+        is_raw_body: false,
     }
 }
 

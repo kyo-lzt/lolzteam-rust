@@ -38,7 +38,7 @@ impl MarketClient {
 	pub fn new(token: impl Into<String>) -> Result<Self, LolzteamError> {
 		let config = ClientConfig {
 			token: token.into(),
-			base_url: "https://api.lzt.market".to_string(),
+			base_url: "https://prod-api.lzt.market".to_string(),
 			proxy: None,
 			retry: RetryConfig::default(),
 			rate_limit: Some(RateLimitConfig { requests_per_minute: 120 }),

@@ -330,8 +330,6 @@ pub struct ChatboxDeleteMessageResponse {
 #[derive(Debug, Clone, Default, Serialize)]
 pub struct ChatboxGetMessagesParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub room_id: Option<i64>,
-	#[serde(skip_serializing_if = "Option::is_none")]
 	pub before_message_id: Option<i64>,
 }
 
@@ -668,12 +666,6 @@ pub struct ChatboxGetLeaderboardResponse {
 	pub system_info: ChatboxGetLeaderboardSystemInfo,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
-pub struct ChatboxOnlineParams {
-	#[serde(skip_serializing_if = "Option::is_none")]
-	pub room_id: Option<i64>,
-}
-
 #[derive(Debug, Clone, Deserialize)]
 pub struct ChatboxOnlineSystemInfo {
 	pub time: i64,
@@ -733,12 +725,6 @@ pub struct ChatboxOnlineUsers {
 pub struct ChatboxOnlineResponse {
 	pub system_info: ChatboxOnlineSystemInfo,
 	pub users: Vec<ChatboxOnlineUsers>,
-}
-
-#[derive(Debug, Clone, Default, Serialize)]
-pub struct ChatboxReportReasonsParams {
-	#[serde(skip_serializing_if = "Option::is_none")]
-	pub message_id: Option<i64>,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -3272,8 +3258,6 @@ pub struct PostsCommentsDeleteResponse {
 #[derive(Debug, Clone, Default, Serialize)]
 pub struct PostsCommentsGetParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub post_id: Option<i64>,
-	#[serde(skip_serializing_if = "Option::is_none")]
 	pub before: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub before_comment: Option<i64>,
@@ -3794,8 +3778,6 @@ pub struct ProfilePostsCommentsDeleteResponse {
 
 #[derive(Debug, Clone, Default, Serialize)]
 pub struct ProfilePostsCommentsListParams {
-	#[serde(skip_serializing_if = "Option::is_none")]
-	pub profile_post_id: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub before: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -6536,12 +6518,6 @@ pub struct TagsPopularTags {
 pub struct TagsPopularResponse {
 	pub system_info: TagsPopularSystemInfo,
 	pub tags: TagsPopularTags,
-}
-
-#[derive(Debug, Clone, Default, Serialize)]
-pub struct TagsFindParams {
-	#[serde(skip_serializing_if = "Option::is_none")]
-	pub tag: Option<String>,
 }
 
 #[derive(Debug, Clone, Deserialize)]
