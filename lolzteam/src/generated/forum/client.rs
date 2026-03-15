@@ -89,7 +89,7 @@ impl CategoriesApi {
 				query.push(("parent_forum_id".into(), ParamValue::Integer(*v)));
 			}
 			if let Some(ref v) = p.order {
-				query.push(("order".into(), ParamValue::String(v.clone())));
+				query.push(("order".into(), ParamValue::String(v.to_string())));
 			}
 		}
 		self.http
@@ -131,7 +131,7 @@ impl ChatboxApi {
 		let mut query = Vec::new();
 		if let Some(p) = params {
 			if let Some(ref v) = p.room_id {
-				query.push(("room_id".into(), ParamValue::Integer(*v)));
+				query.push(("room_id".into(), ParamValue::String(v.to_string())));
 			}
 		}
 		self.http
@@ -189,11 +189,11 @@ impl ChatboxApi {
 	/// Get Chat Messages
 	pub async fn get_messages(
 		&self,
-		room_id: i64,
+		room_id: RoomId,
 		params: Option<&ChatboxGetMessagesParams>,
 	) -> Result<ChatboxGetMessagesResponse, LolzteamError> {
 		let mut query = Vec::new();
-		query.push(("room_id".into(), ParamValue::Integer(room_id)));
+		query.push(("room_id".into(), ParamValue::String(room_id.to_string())));
 		if let Some(p) = params {
 			if let Some(ref v) = p.before_message_id {
 				query.push(("before_message_id".into(), ParamValue::Integer(*v)));
@@ -242,7 +242,7 @@ impl ChatboxApi {
 		let mut query = Vec::new();
 		if let Some(p) = params {
 			if let Some(ref v) = p.duration {
-				query.push(("duration".into(), ParamValue::String(v.clone())));
+				query.push(("duration".into(), ParamValue::String(v.to_string())));
 			}
 		}
 		self.http
@@ -261,9 +261,9 @@ impl ChatboxApi {
 	}
 
 	/// Get Chat Online
-	pub async fn online(&self, room_id: i64) -> Result<ChatboxOnlineResponse, LolzteamError> {
+	pub async fn online(&self, room_id: RoomId) -> Result<ChatboxOnlineResponse, LolzteamError> {
 		let mut query = Vec::new();
-		query.push(("room_id".into(), ParamValue::Integer(room_id)));
+		query.push(("room_id".into(), ParamValue::String(room_id.to_string())));
 		self.http
 			.request(
 				"GET",
@@ -339,7 +339,7 @@ impl ConversationsApi {
 		let mut query = Vec::new();
 		if let Some(p) = params {
 			if let Some(ref v) = p.folder {
-				query.push(("folder".into(), ParamValue::String(v.clone())));
+				query.push(("folder".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.page {
 				query.push(("page".into(), ParamValue::Integer(*v)));
@@ -496,7 +496,7 @@ impl ConversationsApi {
 				query.push(("limit".into(), ParamValue::Integer(*v)));
 			}
 			if let Some(ref v) = p.order {
-				query.push(("order".into(), ParamValue::String(v.clone())));
+				query.push(("order".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.before {
 				query.push(("before".into(), ParamValue::Integer(*v)));
@@ -672,7 +672,7 @@ impl ForumsApi {
 				query.push(("parent_forum_id".into(), ParamValue::Integer(*v)));
 			}
 			if let Some(ref v) = p.order {
-				query.push(("order".into(), ParamValue::String(v.clone())));
+				query.push(("order".into(), ParamValue::String(v.to_string())));
 			}
 		}
 		self.http
@@ -847,7 +847,7 @@ impl NotificationsApi {
 		let mut query = Vec::new();
 		if let Some(p) = params {
 			if let Some(ref v) = p.r#type {
-				query.push(("type".into(), ParamValue::String(v.clone())));
+				query.push(("type".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.page {
 				query.push(("page".into(), ParamValue::Integer(*v)));
@@ -907,53 +907,127 @@ impl OAuthApi {
 	) -> Result<OAuthTokenResponse, LolzteamError> {
 		let mut parts = Vec::new();
 		if let Some(b) = body {
-			parts.push(MultipartPart::Text {
-				name: "client_id".to_string(),
-				value: b.client_id.clone(),
-			});
-			parts.push(MultipartPart::Text {
-				name: "client_secret".to_string(),
-				value: b.client_secret.clone(),
-			});
-			parts.push(MultipartPart::Text {
-				name: "grant_type".to_string(),
-				value: b.grant_type.clone(),
-			});
-			if let Some(ref v) = b.scope {
-				parts.push(MultipartPart::Text {
-					name: "scope".to_string(),
-					value: v.join(" "),
-				});
-			}
-			if let Some(ref v) = b.code {
-				parts.push(MultipartPart::Text {
-					name: "code".to_string(),
-					value: v.clone(),
-				});
-			}
-			if let Some(ref v) = b.redirect_uri {
-				parts.push(MultipartPart::Text {
-					name: "redirect_uri".to_string(),
-					value: v.clone(),
-				});
-			}
-			if let Some(ref v) = b.refresh_token {
-				parts.push(MultipartPart::Text {
-					name: "refresh_token".to_string(),
-					value: v.clone(),
-				});
-			}
-			if let Some(ref v) = b.password {
-				parts.push(MultipartPart::Text {
-					name: "password".to_string(),
-					value: v.clone(),
-				});
-			}
-			if let Some(ref v) = b.username {
-				parts.push(MultipartPart::Text {
-					name: "username".to_string(),
-					value: v.clone(),
-				});
+			match b {
+				OAuthTokenBody::ClientCredentials {
+					client_id,
+					client_secret,
+					scope,
+				} => {
+					parts.push(MultipartPart::Text {
+						name: "grant_type".to_string(),
+						value: "client_credentials".to_string(),
+					});
+					parts.push(MultipartPart::Text {
+						name: "client_id".to_string(),
+						value: client_id.clone(),
+					});
+					parts.push(MultipartPart::Text {
+						name: "client_secret".to_string(),
+						value: client_secret.clone(),
+					});
+					parts.push(MultipartPart::Text {
+						name: "scope".to_string(),
+						value: scope
+							.iter()
+							.map(|v| v.to_string())
+							.collect::<Vec<_>>()
+							.join(" "),
+					});
+				}
+				OAuthTokenBody::AuthorizationCode {
+					client_id,
+					client_secret,
+					code,
+					redirect_uri,
+					scope,
+				} => {
+					parts.push(MultipartPart::Text {
+						name: "grant_type".to_string(),
+						value: "authorization_code".to_string(),
+					});
+					parts.push(MultipartPart::Text {
+						name: "client_id".to_string(),
+						value: client_id.clone(),
+					});
+					parts.push(MultipartPart::Text {
+						name: "client_secret".to_string(),
+						value: client_secret.clone(),
+					});
+					parts.push(MultipartPart::Text {
+						name: "code".to_string(),
+						value: code.clone(),
+					});
+					parts.push(MultipartPart::Text {
+						name: "redirect_uri".to_string(),
+						value: redirect_uri.clone(),
+					});
+					parts.push(MultipartPart::Text {
+						name: "scope".to_string(),
+						value: scope
+							.iter()
+							.map(|v| v.to_string())
+							.collect::<Vec<_>>()
+							.join(" "),
+					});
+				}
+				OAuthTokenBody::RefreshToken {
+					client_id,
+					client_secret,
+					refresh_token,
+				} => {
+					parts.push(MultipartPart::Text {
+						name: "grant_type".to_string(),
+						value: "refresh_token".to_string(),
+					});
+					parts.push(MultipartPart::Text {
+						name: "client_id".to_string(),
+						value: client_id.clone(),
+					});
+					parts.push(MultipartPart::Text {
+						name: "client_secret".to_string(),
+						value: client_secret.clone(),
+					});
+					parts.push(MultipartPart::Text {
+						name: "refresh_token".to_string(),
+						value: refresh_token.clone(),
+					});
+				}
+				OAuthTokenBody::Password {
+					client_id,
+					client_secret,
+					password,
+					scope,
+					username,
+				} => {
+					parts.push(MultipartPart::Text {
+						name: "grant_type".to_string(),
+						value: "password".to_string(),
+					});
+					parts.push(MultipartPart::Text {
+						name: "client_id".to_string(),
+						value: client_id.clone(),
+					});
+					parts.push(MultipartPart::Text {
+						name: "client_secret".to_string(),
+						value: client_secret.clone(),
+					});
+					parts.push(MultipartPart::Text {
+						name: "password".to_string(),
+						value: password.clone(),
+					});
+					parts.push(MultipartPart::Text {
+						name: "scope".to_string(),
+						value: scope
+							.iter()
+							.map(|v| v.to_string())
+							.collect::<Vec<_>>()
+							.join(" "),
+					});
+					parts.push(MultipartPart::Text {
+						name: "username".to_string(),
+						value: username.clone(),
+					});
+				}
 			}
 		}
 		self.http
@@ -982,7 +1056,7 @@ impl PagesApi {
 				query.push(("parent_page_id".into(), ParamValue::Integer(*v)));
 			}
 			if let Some(ref v) = p.order {
-				query.push(("order".into(), ParamValue::String(v.clone())));
+				query.push(("order".into(), ParamValue::String(v.to_string())));
 			}
 		}
 		self.http
@@ -1036,7 +1110,7 @@ impl PostsApi {
 				query.push(("limit".into(), ParamValue::Integer(*v)));
 			}
 			if let Some(ref v) = p.order {
-				query.push(("order".into(), ParamValue::String(v.clone())));
+				query.push(("order".into(), ParamValue::String(v.to_string())));
 			}
 		}
 		self.http
@@ -1737,10 +1811,10 @@ impl ThreadsApi {
 				query.push(("tab".into(), ParamValue::String(v.clone())));
 			}
 			if let Some(ref v) = p.state {
-				query.push(("state".into(), ParamValue::String(v.clone())));
+				query.push(("state".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.period {
-				query.push(("period".into(), ParamValue::String(v.clone())));
+				query.push(("period".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.title {
 				query.push(("title".into(), ParamValue::String(v.clone())));
@@ -1777,10 +1851,10 @@ impl ThreadsApi {
 				query.push(("limit".into(), ParamValue::Integer(*v)));
 			}
 			if let Some(ref v) = p.order {
-				query.push(("order".into(), ParamValue::String(v.clone())));
+				query.push(("order".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.direction {
-				query.push(("direction".into(), ParamValue::String(v.clone())));
+				query.push(("direction".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.thread_create_date {
 				query.push(("thread_create_date".into(), ParamValue::Integer(*v)));
@@ -2390,10 +2464,10 @@ impl UsersApi {
 		let mut query = Vec::new();
 		if let Some(p) = params {
 			if let Some(ref v) = p.r#type {
-				query.push(("type".into(), ParamValue::String(v.clone())));
+				query.push(("type".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.claim_state {
-				query.push(("claim_state".into(), ParamValue::String(v.clone())));
+				query.push(("claim_state".into(), ParamValue::String(v.to_string())));
 			}
 		}
 		self.http
@@ -2430,7 +2504,7 @@ impl UsersApi {
 		let mut query = Vec::new();
 		if let Some(p) = params {
 			if let Some(ref v) = p.order {
-				query.push(("order".into(), ParamValue::String(v.clone())));
+				query.push(("order".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.page {
 				query.push(("page".into(), ParamValue::Integer(*v)));
@@ -2470,7 +2544,7 @@ impl UsersApi {
 		let mut query = Vec::new();
 		if let Some(p) = params {
 			if let Some(ref v) = p.order {
-				query.push(("order".into(), ParamValue::String(v.clone())));
+				query.push(("order".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.page {
 				query.push(("page".into(), ParamValue::Integer(*v)));
@@ -2556,16 +2630,16 @@ impl UsersApi {
 				query.push(("node_id".into(), ParamValue::Integer(*v)));
 			}
 			if let Some(ref v) = p.like_type {
-				query.push(("like_type".into(), ParamValue::String(v.clone())));
+				query.push(("like_type".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.r#type {
-				query.push(("type".into(), ParamValue::String(v.clone())));
+				query.push(("type".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.page {
 				query.push(("page".into(), ParamValue::Integer(*v)));
 			}
 			if let Some(ref v) = p.content_type {
-				query.push(("content_type".into(), ParamValue::String(v.clone())));
+				query.push(("content_type".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.search_user_id {
 				query.push(("search_user_id".into(), ParamValue::Integer(*v)));

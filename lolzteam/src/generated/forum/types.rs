@@ -785,6 +785,1188 @@ pub struct RespUserModelUserGroups {
 	pub user_group_title_en: String,
 }
 
+// ── Enums ──
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum AllowInviteGroup {
+	#[serde(rename = "none")]
+	None,
+	#[serde(rename = "members")]
+	Members,
+	#[serde(rename = "followed")]
+	Followed,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for AllowInviteGroup {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::None => write!(f, "none"),
+			Self::Members => write!(f, "members"),
+			Self::Followed => write!(f, "followed"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum AllowPostProfile {
+	#[serde(rename = "none")]
+	None,
+	#[serde(rename = "members")]
+	Members,
+	#[serde(rename = "followed")]
+	Followed,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for AllowPostProfile {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::None => write!(f, "none"),
+			Self::Members => write!(f, "members"),
+			Self::Followed => write!(f, "followed"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum AllowReceiveNewsFeed {
+	#[serde(rename = "none")]
+	None,
+	#[serde(rename = "members")]
+	Members,
+	#[serde(rename = "followed")]
+	Followed,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for AllowReceiveNewsFeed {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::None => write!(f, "none"),
+			Self::Members => write!(f, "members"),
+			Self::Followed => write!(f, "followed"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum AllowSendPersonalConversation {
+	#[serde(rename = "none")]
+	None,
+	#[serde(rename = "members")]
+	Members,
+	#[serde(rename = "followed")]
+	Followed,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for AllowSendPersonalConversation {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::None => write!(f, "none"),
+			Self::Members => write!(f, "members"),
+			Self::Followed => write!(f, "followed"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum AllowViewProfile {
+	#[serde(rename = "none")]
+	None,
+	#[serde(rename = "members")]
+	Members,
+	#[serde(rename = "followed")]
+	Followed,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for AllowViewProfile {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::None => write!(f, "none"),
+			Self::Members => write!(f, "members"),
+			Self::Followed => write!(f, "followed"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum CategoriesOrder {
+	#[serde(rename = "natural")]
+	Natural,
+	#[serde(rename = "list")]
+	List,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for CategoriesOrder {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Natural => write!(f, "natural"),
+			Self::List => write!(f, "list"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum ClaimState {
+	#[serde(rename = "active")]
+	Active,
+	#[serde(rename = "solved")]
+	Solved,
+	#[serde(rename = "rejected")]
+	Rejected,
+	#[serde(rename = "settled")]
+	Settled,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for ClaimState {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Active => write!(f, "active"),
+			Self::Solved => write!(f, "solved"),
+			Self::Rejected => write!(f, "rejected"),
+			Self::Settled => write!(f, "settled"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum ContentType {
+	#[serde(rename = "post")]
+	Post,
+	#[serde(rename = "post_comment")]
+	PostComment,
+	#[serde(rename = "profile_post")]
+	ProfilePost,
+	#[serde(rename = "profile_post_comment")]
+	ProfilePostComment,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for ContentType {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Post => write!(f, "post"),
+			Self::PostComment => write!(f, "post_comment"),
+			Self::ProfilePost => write!(f, "profile_post"),
+			Self::ProfilePostComment => write!(f, "profile_post_comment"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum ContestType {
+	#[serde(rename = "by_finish_date")]
+	ByFinishDate,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for ContestType {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::ByFinishDate => write!(f, "by_finish_date"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum ConversationsOrder {
+	#[serde(rename = "natural")]
+	Natural,
+	#[serde(rename = "natural_reverse")]
+	NaturalReverse,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for ConversationsOrder {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Natural => write!(f, "natural"),
+			Self::NaturalReverse => write!(f, "natural_reverse"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum Currency {
+	#[serde(rename = "rub")]
+	Rub,
+	#[serde(rename = "uah")]
+	Uah,
+	#[serde(rename = "kzt")]
+	Kzt,
+	#[serde(rename = "byn")]
+	Byn,
+	#[serde(rename = "usd")]
+	Usd,
+	#[serde(rename = "eur")]
+	Eur,
+	#[serde(rename = "gbp")]
+	Gbp,
+	#[serde(rename = "cny")]
+	Cny,
+	#[serde(rename = "try")]
+	Try,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for Currency {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Rub => write!(f, "rub"),
+			Self::Uah => write!(f, "uah"),
+			Self::Kzt => write!(f, "kzt"),
+			Self::Byn => write!(f, "byn"),
+			Self::Usd => write!(f, "usd"),
+			Self::Eur => write!(f, "eur"),
+			Self::Gbp => write!(f, "gbp"),
+			Self::Cny => write!(f, "cny"),
+			Self::Try => write!(f, "try"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum DeleteType {
+	#[serde(rename = "delete")]
+	Delete,
+	#[serde(rename = "delete_ignore")]
+	DeleteIgnore,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for DeleteType {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Delete => write!(f, "delete"),
+			Self::DeleteIgnore => write!(f, "delete_ignore"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum Direction {
+	#[serde(rename = "asc")]
+	Asc,
+	#[serde(rename = "desc")]
+	Desc,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for Direction {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Asc => write!(f, "asc"),
+			Self::Desc => write!(f, "desc"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum Duration {
+	#[serde(rename = "day")]
+	Day,
+	#[serde(rename = "week")]
+	Week,
+	#[serde(rename = "month")]
+	Month,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for Duration {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Day => write!(f, "day"),
+			Self::Week => write!(f, "week"),
+			Self::Month => write!(f, "month"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum Folder {
+	#[serde(rename = "all")]
+	All,
+	#[serde(rename = "unread")]
+	Unread,
+	#[serde(rename = "groups")]
+	Groups,
+	#[serde(rename = "market")]
+	Market,
+	#[serde(rename = "market_replacements")]
+	MarketReplacements,
+	#[serde(rename = "staff")]
+	Staff,
+	#[serde(rename = "giveaways")]
+	Giveaways,
+	#[serde(rename = "p2p")]
+	P2p,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for Folder {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::All => write!(f, "all"),
+			Self::Unread => write!(f, "unread"),
+			Self::Groups => write!(f, "groups"),
+			Self::Market => write!(f, "market"),
+			Self::MarketReplacements => write!(f, "market_replacements"),
+			Self::Staff => write!(f, "staff"),
+			Self::Giveaways => write!(f, "giveaways"),
+			Self::P2p => write!(f, "p2p"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(into = "i64", try_from = "i64")]
+pub enum FormId {
+	V1 = 1,
+}
+
+impl From<FormId> for i64 {
+	fn from(v: FormId) -> i64 {
+		v as i64
+	}
+}
+
+impl TryFrom<i64> for FormId {
+	type Error = String;
+	fn try_from(v: i64) -> Result<Self, Self::Error> {
+		match v {
+			1 => Ok(Self::V1),
+			other => Err(format!("unknown FormId value: {other}")),
+		}
+	}
+}
+
+impl std::fmt::Display for FormId {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		write!(f, "{}", *self as i64)
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum Gender {
+	#[serde(rename = "")]
+	Empty,
+	#[serde(rename = "male")]
+	Male,
+	#[serde(rename = "female")]
+	Female,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for Gender {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Empty => write!(f, ""),
+			Self::Male => write!(f, "male"),
+			Self::Female => write!(f, "female"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum GrantType {
+	#[serde(rename = "client_credentials")]
+	ClientCredentials,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for GrantType {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::ClientCredentials => write!(f, "client_credentials"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(into = "i64", try_from = "i64")]
+pub enum LanguageId {
+	V1 = 1,
+	V2 = 2,
+}
+
+impl From<LanguageId> for i64 {
+	fn from(v: LanguageId) -> i64 {
+		v as i64
+	}
+}
+
+impl TryFrom<i64> for LanguageId {
+	type Error = String;
+	fn try_from(v: i64) -> Result<Self, Self::Error> {
+		match v {
+			1 => Ok(Self::V1),
+			2 => Ok(Self::V2),
+			other => Err(format!("unknown LanguageId value: {other}")),
+		}
+	}
+}
+
+impl std::fmt::Display for LanguageId {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		write!(f, "{}", *self as i64)
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum LengthOption {
+	#[serde(rename = "minutes")]
+	Minutes,
+	#[serde(rename = "hours")]
+	Hours,
+	#[serde(rename = "days")]
+	Days,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for LengthOption {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Minutes => write!(f, "minutes"),
+			Self::Hours => write!(f, "hours"),
+			Self::Days => write!(f, "days"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum LikeType {
+	#[serde(rename = "like")]
+	Like,
+	#[serde(rename = "like2")]
+	Like2,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for LikeType {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Like => write!(f, "like"),
+			Self::Like2 => write!(f, "like2"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum NotificationsType {
+	#[serde(rename = "market")]
+	Market,
+	#[serde(rename = "nomarket")]
+	Nomarket,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for NotificationsType {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Market => write!(f, "market"),
+			Self::Nomarket => write!(f, "nomarket"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum PayClaim {
+	#[serde(rename = "now")]
+	Now,
+	#[serde(rename = "later")]
+	Later,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for PayClaim {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Now => write!(f, "now"),
+			Self::Later => write!(f, "later"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum Period {
+	#[serde(rename = "day")]
+	Day,
+	#[serde(rename = "week")]
+	Week,
+	#[serde(rename = "month")]
+	Month,
+	#[serde(rename = "year")]
+	Year,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for Period {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Day => write!(f, "day"),
+			Self::Week => write!(f, "week"),
+			Self::Month => write!(f, "month"),
+			Self::Year => write!(f, "year"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum PostsOrder {
+	#[serde(rename = "natural")]
+	Natural,
+	#[serde(rename = "natural_reverse")]
+	NaturalReverse,
+	#[serde(rename = "post_likes")]
+	PostLikes,
+	#[serde(rename = "post_likes_reverse")]
+	PostLikesReverse,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for PostsOrder {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Natural => write!(f, "natural"),
+			Self::NaturalReverse => write!(f, "natural_reverse"),
+			Self::PostLikes => write!(f, "post_likes"),
+			Self::PostLikesReverse => write!(f, "post_likes_reverse"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(into = "i64", try_from = "i64")]
+pub enum PrizeDataUpgrade {
+	V1 = 1,
+	V6 = 6,
+	V12 = 12,
+	V14 = 14,
+	V17 = 17,
+	V19 = 19,
+	V20 = 20,
+	V21 = 21,
+	V22 = 22,
+}
+
+impl From<PrizeDataUpgrade> for i64 {
+	fn from(v: PrizeDataUpgrade) -> i64 {
+		v as i64
+	}
+}
+
+impl TryFrom<i64> for PrizeDataUpgrade {
+	type Error = String;
+	fn try_from(v: i64) -> Result<Self, Self::Error> {
+		match v {
+			1 => Ok(Self::V1),
+			6 => Ok(Self::V6),
+			12 => Ok(Self::V12),
+			14 => Ok(Self::V14),
+			17 => Ok(Self::V17),
+			19 => Ok(Self::V19),
+			20 => Ok(Self::V20),
+			21 => Ok(Self::V21),
+			22 => Ok(Self::V22),
+			other => Err(format!("unknown PrizeDataUpgrade value: {other}")),
+		}
+	}
+}
+
+impl std::fmt::Display for PrizeDataUpgrade {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		write!(f, "{}", *self as i64)
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum PrizeType {
+	#[serde(rename = "money")]
+	Money,
+	#[serde(rename = "upgrades")]
+	Upgrades,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for PrizeType {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Money => write!(f, "money"),
+			Self::Upgrades => write!(f, "upgrades"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(into = "i64", try_from = "i64")]
+pub enum ReplyGroup {
+	V0 = 0,
+	V2 = 2,
+	V21 = 21,
+	V22 = 22,
+	V23 = 23,
+	V60 = 60,
+	V351 = 351,
+}
+
+impl From<ReplyGroup> for i64 {
+	fn from(v: ReplyGroup) -> i64 {
+		v as i64
+	}
+}
+
+impl TryFrom<i64> for ReplyGroup {
+	type Error = String;
+	fn try_from(v: i64) -> Result<Self, Self::Error> {
+		match v {
+			0 => Ok(Self::V0),
+			2 => Ok(Self::V2),
+			21 => Ok(Self::V21),
+			22 => Ok(Self::V22),
+			23 => Ok(Self::V23),
+			60 => Ok(Self::V60),
+			351 => Ok(Self::V351),
+			other => Err(format!("unknown ReplyGroup value: {other}")),
+		}
+	}
+}
+
+impl std::fmt::Display for ReplyGroup {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		write!(f, "{}", *self as i64)
+	}
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(into = "i64", try_from = "i64")]
+pub enum RoomId {
+	V1 = 1,
+	V2 = 2,
+	V3 = 3,
+	V4 = 4,
+	V13 = 13,
+}
+
+impl From<RoomId> for i64 {
+	fn from(v: RoomId) -> i64 {
+		v as i64
+	}
+}
+
+impl TryFrom<i64> for RoomId {
+	type Error = String;
+	fn try_from(v: i64) -> Result<Self, Self::Error> {
+		match v {
+			1 => Ok(Self::V1),
+			2 => Ok(Self::V2),
+			3 => Ok(Self::V3),
+			4 => Ok(Self::V4),
+			13 => Ok(Self::V13),
+			other => Err(format!("unknown RoomId value: {other}")),
+		}
+	}
+}
+
+impl std::fmt::Display for RoomId {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		write!(f, "{}", *self as i64)
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum State {
+	#[serde(rename = "active")]
+	Active,
+	#[serde(rename = "closed")]
+	Closed,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for State {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Active => write!(f, "active"),
+			Self::Closed => write!(f, "closed"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum ThreadsOrder {
+	#[serde(rename = "post_date")]
+	PostDate,
+	#[serde(rename = "last_post_date")]
+	LastPostDate,
+	#[serde(rename = "reply_count")]
+	ReplyCount,
+	#[serde(rename = "reply_count_asc")]
+	ReplyCountAsc,
+	#[serde(rename = "first_post_likes")]
+	FirstPostLikes,
+	#[serde(rename = "vote_count")]
+	VoteCount,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for ThreadsOrder {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::PostDate => write!(f, "post_date"),
+			Self::LastPostDate => write!(f, "last_post_date"),
+			Self::ReplyCount => write!(f, "reply_count"),
+			Self::ReplyCountAsc => write!(f, "reply_count_asc"),
+			Self::FirstPostLikes => write!(f, "first_post_likes"),
+			Self::VoteCount => write!(f, "vote_count"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum Timezone {
+	#[serde(rename = "Pacific/Midway")]
+	PacificMidway,
+	#[serde(rename = "Pacific/Honolulu")]
+	PacificHonolulu,
+	#[serde(rename = "Pacific/Marquesas")]
+	PacificMarquesas,
+	#[serde(rename = "America/Anchorage")]
+	AmericaAnchorage,
+	#[serde(rename = "America/Los_Angeles")]
+	AmericaLosAngeles,
+	#[serde(rename = "America/Santa_Isabel")]
+	AmericaSantaIsabel,
+	#[serde(rename = "America/Tijuana")]
+	AmericaTijuana,
+	#[serde(rename = "America/Denver")]
+	AmericaDenver,
+	#[serde(rename = "America/Chihuahua")]
+	AmericaChihuahua,
+	#[serde(rename = "America/Phoenix")]
+	AmericaPhoenix,
+	#[serde(rename = "America/Chicago")]
+	AmericaChicago,
+	#[serde(rename = "America/Belize")]
+	AmericaBelize,
+	#[serde(rename = "America/Mexico_City")]
+	AmericaMexicoCity,
+	#[serde(rename = "Pacific/Easter")]
+	PacificEaster,
+	#[serde(rename = "America/New_York")]
+	AmericaNewYork,
+	#[serde(rename = "America/Havana")]
+	AmericaHavana,
+	#[serde(rename = "America/Bogota")]
+	AmericaBogota,
+	#[serde(rename = "America/Caracas")]
+	AmericaCaracas,
+	#[serde(rename = "America/Halifax")]
+	AmericaHalifax,
+	#[serde(rename = "America/Goose_Bay")]
+	AmericaGooseBay,
+	#[serde(rename = "America/Asuncion")]
+	AmericaAsuncion,
+	#[serde(rename = "America/Santiago")]
+	AmericaSantiago,
+	#[serde(rename = "America/Cuiaba")]
+	AmericaCuiaba,
+	#[serde(rename = "America/La_Paz")]
+	AmericaLaPaz,
+	#[serde(rename = "America/St_Johns")]
+	AmericaStJohns,
+	#[serde(rename = "America/Argentina/Buenos_Aires")]
+	AmericaArgentinaBuenosAires,
+	#[serde(rename = "America/Argentina/San_Luis")]
+	AmericaArgentinaSanLuis,
+	#[serde(rename = "America/Argentina/Mendoza")]
+	AmericaArgentinaMendoza,
+	#[serde(rename = "Atlantic/Stanley")]
+	AtlanticStanley,
+	#[serde(rename = "America/Godthab")]
+	AmericaGodthab,
+	#[serde(rename = "America/Montevideo")]
+	AmericaMontevideo,
+	#[serde(rename = "America/Sao_Paulo")]
+	AmericaSaoPaulo,
+	#[serde(rename = "America/Miquelon")]
+	AmericaMiquelon,
+	#[serde(rename = "America/Noronha")]
+	AmericaNoronha,
+	#[serde(rename = "Atlantic/Cape_Verde")]
+	AtlanticCapeVerde,
+	#[serde(rename = "Atlantic/Azores")]
+	AtlanticAzores,
+	#[serde(rename = "Europe/London")]
+	EuropeLondon,
+	#[serde(rename = "Africa/Casablanca")]
+	AfricaCasablanca,
+	#[serde(rename = "Atlantic/Reykjavik")]
+	AtlanticReykjavik,
+	#[serde(rename = "Europe/Amsterdam")]
+	EuropeAmsterdam,
+	#[serde(rename = "Africa/Algiers")]
+	AfricaAlgiers,
+	#[serde(rename = "Africa/Windhoek")]
+	AfricaWindhoek,
+	#[serde(rename = "Africa/Tunis")]
+	AfricaTunis,
+	#[serde(rename = "Europe/Athens")]
+	EuropeAthens,
+	#[serde(rename = "Africa/Johannesburg")]
+	AfricaJohannesburg,
+	#[serde(rename = "Europe/Kaliningrad")]
+	EuropeKaliningrad,
+	#[serde(rename = "Asia/Amman")]
+	AsiaAmman,
+	#[serde(rename = "Asia/Beirut")]
+	AsiaBeirut,
+	#[serde(rename = "Africa/Cairo")]
+	AfricaCairo,
+	#[serde(rename = "Asia/Jerusalem")]
+	AsiaJerusalem,
+	#[serde(rename = "Asia/Gaza")]
+	AsiaGaza,
+	#[serde(rename = "Asia/Damascus")]
+	AsiaDamascus,
+	#[serde(rename = "Europe/Moscow")]
+	EuropeMoscow,
+	#[serde(rename = "Europe/Minsk")]
+	EuropeMinsk,
+	#[serde(rename = "Africa/Nairobi")]
+	AfricaNairobi,
+	#[serde(rename = "Asia/Tehran")]
+	AsiaTehran,
+	#[serde(rename = "Asia/Dubai")]
+	AsiaDubai,
+	#[serde(rename = "Asia/Yerevan")]
+	AsiaYerevan,
+	#[serde(rename = "Asia/Baku")]
+	AsiaBaku,
+	#[serde(rename = "Indian/Mauritius")]
+	IndianMauritius,
+	#[serde(rename = "Asia/Kabul")]
+	AsiaKabul,
+	#[serde(rename = "Asia/Yekaterinburg")]
+	AsiaYekaterinburg,
+	#[serde(rename = "Asia/Tashkent")]
+	AsiaTashkent,
+	#[serde(rename = "Asia/Kolkata")]
+	AsiaKolkata,
+	#[serde(rename = "Asia/Kathmandu")]
+	AsiaKathmandu,
+	#[serde(rename = "Asia/Novosibirsk")]
+	AsiaNovosibirsk,
+	#[serde(rename = "Asia/Dhaka")]
+	AsiaDhaka,
+	#[serde(rename = "Asia/Almaty")]
+	AsiaAlmaty,
+	#[serde(rename = "Asia/Rangoon")]
+	AsiaRangoon,
+	#[serde(rename = "Asia/Krasnoyarsk")]
+	AsiaKrasnoyarsk,
+	#[serde(rename = "Asia/Bangkok")]
+	AsiaBangkok,
+	#[serde(rename = "Asia/Irkutsk")]
+	AsiaIrkutsk,
+	#[serde(rename = "Asia/Hong_Kong")]
+	AsiaHongKong,
+	#[serde(rename = "Asia/Singapore")]
+	AsiaSingapore,
+	#[serde(rename = "Australia/Perth")]
+	AustraliaPerth,
+	#[serde(rename = "Asia/Yakutsk")]
+	AsiaYakutsk,
+	#[serde(rename = "Asia/Tokyo")]
+	AsiaTokyo,
+	#[serde(rename = "Asia/Seoul")]
+	AsiaSeoul,
+	#[serde(rename = "Australia/Adelaide")]
+	AustraliaAdelaide,
+	#[serde(rename = "Australia/Darwin")]
+	AustraliaDarwin,
+	#[serde(rename = "Asia/Vladivostok")]
+	AsiaVladivostok,
+	#[serde(rename = "Asia/Magadan")]
+	AsiaMagadan,
+	#[serde(rename = "Australia/Brisbane")]
+	AustraliaBrisbane,
+	#[serde(rename = "Australia/Sydney")]
+	AustraliaSydney,
+	#[serde(rename = "Pacific/Noumea")]
+	PacificNoumea,
+	#[serde(rename = "Pacific/Norfolk")]
+	PacificNorfolk,
+	#[serde(rename = "Asia/Anadyr")]
+	AsiaAnadyr,
+	#[serde(rename = "Pacific/Auckland")]
+	PacificAuckland,
+	#[serde(rename = "Pacific/Fiji")]
+	PacificFiji,
+	#[serde(rename = "Pacific/Chatham")]
+	PacificChatham,
+	#[serde(rename = "Pacific/Tongatapu")]
+	PacificTongatapu,
+	#[serde(rename = "Pacific/Apia")]
+	PacificApia,
+	#[serde(rename = "Pacific/Kiritimati")]
+	PacificKiritimati,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for Timezone {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::PacificMidway => write!(f, "Pacific/Midway"),
+			Self::PacificHonolulu => write!(f, "Pacific/Honolulu"),
+			Self::PacificMarquesas => write!(f, "Pacific/Marquesas"),
+			Self::AmericaAnchorage => write!(f, "America/Anchorage"),
+			Self::AmericaLosAngeles => write!(f, "America/Los_Angeles"),
+			Self::AmericaSantaIsabel => write!(f, "America/Santa_Isabel"),
+			Self::AmericaTijuana => write!(f, "America/Tijuana"),
+			Self::AmericaDenver => write!(f, "America/Denver"),
+			Self::AmericaChihuahua => write!(f, "America/Chihuahua"),
+			Self::AmericaPhoenix => write!(f, "America/Phoenix"),
+			Self::AmericaChicago => write!(f, "America/Chicago"),
+			Self::AmericaBelize => write!(f, "America/Belize"),
+			Self::AmericaMexicoCity => write!(f, "America/Mexico_City"),
+			Self::PacificEaster => write!(f, "Pacific/Easter"),
+			Self::AmericaNewYork => write!(f, "America/New_York"),
+			Self::AmericaHavana => write!(f, "America/Havana"),
+			Self::AmericaBogota => write!(f, "America/Bogota"),
+			Self::AmericaCaracas => write!(f, "America/Caracas"),
+			Self::AmericaHalifax => write!(f, "America/Halifax"),
+			Self::AmericaGooseBay => write!(f, "America/Goose_Bay"),
+			Self::AmericaAsuncion => write!(f, "America/Asuncion"),
+			Self::AmericaSantiago => write!(f, "America/Santiago"),
+			Self::AmericaCuiaba => write!(f, "America/Cuiaba"),
+			Self::AmericaLaPaz => write!(f, "America/La_Paz"),
+			Self::AmericaStJohns => write!(f, "America/St_Johns"),
+			Self::AmericaArgentinaBuenosAires => write!(f, "America/Argentina/Buenos_Aires"),
+			Self::AmericaArgentinaSanLuis => write!(f, "America/Argentina/San_Luis"),
+			Self::AmericaArgentinaMendoza => write!(f, "America/Argentina/Mendoza"),
+			Self::AtlanticStanley => write!(f, "Atlantic/Stanley"),
+			Self::AmericaGodthab => write!(f, "America/Godthab"),
+			Self::AmericaMontevideo => write!(f, "America/Montevideo"),
+			Self::AmericaSaoPaulo => write!(f, "America/Sao_Paulo"),
+			Self::AmericaMiquelon => write!(f, "America/Miquelon"),
+			Self::AmericaNoronha => write!(f, "America/Noronha"),
+			Self::AtlanticCapeVerde => write!(f, "Atlantic/Cape_Verde"),
+			Self::AtlanticAzores => write!(f, "Atlantic/Azores"),
+			Self::EuropeLondon => write!(f, "Europe/London"),
+			Self::AfricaCasablanca => write!(f, "Africa/Casablanca"),
+			Self::AtlanticReykjavik => write!(f, "Atlantic/Reykjavik"),
+			Self::EuropeAmsterdam => write!(f, "Europe/Amsterdam"),
+			Self::AfricaAlgiers => write!(f, "Africa/Algiers"),
+			Self::AfricaWindhoek => write!(f, "Africa/Windhoek"),
+			Self::AfricaTunis => write!(f, "Africa/Tunis"),
+			Self::EuropeAthens => write!(f, "Europe/Athens"),
+			Self::AfricaJohannesburg => write!(f, "Africa/Johannesburg"),
+			Self::EuropeKaliningrad => write!(f, "Europe/Kaliningrad"),
+			Self::AsiaAmman => write!(f, "Asia/Amman"),
+			Self::AsiaBeirut => write!(f, "Asia/Beirut"),
+			Self::AfricaCairo => write!(f, "Africa/Cairo"),
+			Self::AsiaJerusalem => write!(f, "Asia/Jerusalem"),
+			Self::AsiaGaza => write!(f, "Asia/Gaza"),
+			Self::AsiaDamascus => write!(f, "Asia/Damascus"),
+			Self::EuropeMoscow => write!(f, "Europe/Moscow"),
+			Self::EuropeMinsk => write!(f, "Europe/Minsk"),
+			Self::AfricaNairobi => write!(f, "Africa/Nairobi"),
+			Self::AsiaTehran => write!(f, "Asia/Tehran"),
+			Self::AsiaDubai => write!(f, "Asia/Dubai"),
+			Self::AsiaYerevan => write!(f, "Asia/Yerevan"),
+			Self::AsiaBaku => write!(f, "Asia/Baku"),
+			Self::IndianMauritius => write!(f, "Indian/Mauritius"),
+			Self::AsiaKabul => write!(f, "Asia/Kabul"),
+			Self::AsiaYekaterinburg => write!(f, "Asia/Yekaterinburg"),
+			Self::AsiaTashkent => write!(f, "Asia/Tashkent"),
+			Self::AsiaKolkata => write!(f, "Asia/Kolkata"),
+			Self::AsiaKathmandu => write!(f, "Asia/Kathmandu"),
+			Self::AsiaNovosibirsk => write!(f, "Asia/Novosibirsk"),
+			Self::AsiaDhaka => write!(f, "Asia/Dhaka"),
+			Self::AsiaAlmaty => write!(f, "Asia/Almaty"),
+			Self::AsiaRangoon => write!(f, "Asia/Rangoon"),
+			Self::AsiaKrasnoyarsk => write!(f, "Asia/Krasnoyarsk"),
+			Self::AsiaBangkok => write!(f, "Asia/Bangkok"),
+			Self::AsiaIrkutsk => write!(f, "Asia/Irkutsk"),
+			Self::AsiaHongKong => write!(f, "Asia/Hong_Kong"),
+			Self::AsiaSingapore => write!(f, "Asia/Singapore"),
+			Self::AustraliaPerth => write!(f, "Australia/Perth"),
+			Self::AsiaYakutsk => write!(f, "Asia/Yakutsk"),
+			Self::AsiaTokyo => write!(f, "Asia/Tokyo"),
+			Self::AsiaSeoul => write!(f, "Asia/Seoul"),
+			Self::AustraliaAdelaide => write!(f, "Australia/Adelaide"),
+			Self::AustraliaDarwin => write!(f, "Australia/Darwin"),
+			Self::AsiaVladivostok => write!(f, "Asia/Vladivostok"),
+			Self::AsiaMagadan => write!(f, "Asia/Magadan"),
+			Self::AustraliaBrisbane => write!(f, "Australia/Brisbane"),
+			Self::AustraliaSydney => write!(f, "Australia/Sydney"),
+			Self::PacificNoumea => write!(f, "Pacific/Noumea"),
+			Self::PacificNorfolk => write!(f, "Pacific/Norfolk"),
+			Self::AsiaAnadyr => write!(f, "Asia/Anadyr"),
+			Self::PacificAuckland => write!(f, "Pacific/Auckland"),
+			Self::PacificFiji => write!(f, "Pacific/Fiji"),
+			Self::PacificChatham => write!(f, "Pacific/Chatham"),
+			Self::PacificTongatapu => write!(f, "Pacific/Tongatapu"),
+			Self::PacificApia => write!(f, "Pacific/Apia"),
+			Self::PacificKiritimati => write!(f, "Pacific/Kiritimati"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum TransferType {
+	#[serde(rename = "guarantor")]
+	Guarantor,
+	#[serde(rename = "safe")]
+	Safe,
+	#[serde(rename = "notsafe")]
+	Notsafe,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for TransferType {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Guarantor => write!(f, "guarantor"),
+			Self::Safe => write!(f, "safe"),
+			Self::Notsafe => write!(f, "notsafe"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum UsersOrder {
+	#[serde(rename = "natural")]
+	Natural,
+	#[serde(rename = "follow_date")]
+	FollowDate,
+	#[serde(rename = "follow_date_reverse")]
+	FollowDateReverse,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for UsersOrder {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Natural => write!(f, "natural"),
+			Self::FollowDate => write!(f, "follow_date"),
+			Self::FollowDateReverse => write!(f, "follow_date_reverse"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum UsersType {
+	#[serde(rename = "gotten")]
+	Gotten,
+	#[serde(rename = "given")]
+	Given,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for UsersType {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Gotten => write!(f, "gotten"),
+			Self::Given => write!(f, "given"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
 #[derive(Debug, Clone, Default, Serialize)]
 pub struct AssetsCssParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -814,7 +1996,7 @@ pub struct CategoriesListParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub parent_forum_id: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub order: Option<String>,
+	pub order: Option<CategoriesOrder>,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -885,7 +2067,7 @@ pub struct CategoriesGetResponse {
 #[derive(Debug, Clone, Default, Serialize)]
 pub struct ChatboxIndexParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub room_id: Option<i64>,
+	pub room_id: Option<RoomId>,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -971,7 +2153,7 @@ pub struct ChatboxIndexResponse {
 	pub system_info: RespSystemInfo,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ChatboxDeleteIgnoreBody {
 	pub user_id: StringOrInt,
 }
@@ -1030,7 +2212,7 @@ pub struct ChatboxGetIgnoreResponse {
 	pub system_info: RespSystemInfo,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ChatboxPostIgnoreBody {
 	pub user_id: StringOrInt,
 }
@@ -1045,7 +2227,7 @@ pub struct ChatboxPostIgnoreResponse {
 	pub system_info: Option<RespSystemInfo>,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ChatboxDeleteMessageBody {
 	pub message_id: i64,
 }
@@ -1072,12 +2254,12 @@ pub struct ChatboxGetMessagesResponse {
 	pub system_info: RespSystemInfo,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ChatboxPostMessageBody {
 	pub message: String,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub reply_message_id: Option<i64>,
-	pub room_id: i64,
+	pub room_id: RoomId,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -1086,7 +2268,7 @@ pub struct ChatboxPostMessageResponse {
 	pub system_info: RespSystemInfo,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ChatboxEditMessageBody {
 	pub message: String,
 	pub message_id: i64,
@@ -1101,7 +2283,7 @@ pub struct ChatboxEditMessageResponse {
 #[derive(Debug, Clone, Default, Serialize)]
 pub struct ChatboxGetLeaderboardParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub duration: Option<String>,
+	pub duration: Option<Duration>,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -1217,7 +2399,7 @@ pub struct ChatboxReportReasonsResponse {
 	pub system_info: RespSystemInfo,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ChatboxReportBody {
 	pub message_id: i64,
 	pub reason: String,
@@ -1233,10 +2415,10 @@ pub struct ChatboxReportResponse {
 	pub system_info: Option<RespSystemInfo>,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ConversationsDeleteBody {
 	pub conversation_id: i64,
-	pub delete_type: String,
+	pub delete_type: DeleteType,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -1252,7 +2434,7 @@ pub struct ConversationsDeleteResponse {
 #[derive(Debug, Clone, Default, Serialize)]
 pub struct ConversationsListParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub folder: Option<String>,
+	pub folder: Option<Folder>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub page: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -1282,7 +2464,7 @@ pub struct ConversationsListResponse {
 	pub system_info: RespSystemInfo,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ConversationsCreateBody {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub allow_delete_own_messages: Option<bool>,
@@ -1290,7 +2472,11 @@ pub struct ConversationsCreateBody {
 	pub allow_edit_messages: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub allow_sticky_messages: Option<bool>,
-	#[serde(skip_serializing_if = "Option::is_none")]
+	/// Default: false
+	#[serde(
+		skip_serializing_if = "Option::is_none",
+		default = "default_conversations_create_body_is_group"
+	)]
 	pub is_group: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub message_body: Option<String>,
@@ -1304,13 +2490,17 @@ pub struct ConversationsCreateBody {
 	pub title: Option<String>,
 }
 
+fn default_conversations_create_body_is_group() -> Option<bool> {
+	Some(false)
+}
+
 #[derive(Debug, Clone, Deserialize)]
 pub struct ConversationsCreateResponse {
 	pub conversation: RespConversationModel,
 	pub system_info: RespSystemInfo,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ConversationsUpdateBody {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub allow_delete_own_messages: Option<bool>,
@@ -1346,7 +2536,7 @@ pub struct ConversationsReadAllResponse {
 	pub system_info: RespSystemInfo,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ConversationsSaveBody {
 	pub link: String,
 }
@@ -1361,7 +2551,7 @@ pub struct ConversationsSaveResponse {
 	pub system_info: Option<RespSystemInfo>,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ConversationsSearchBody {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub conversation_id: Option<i64>,
@@ -1378,7 +2568,7 @@ pub struct ConversationsSearchResponse {
 	pub system_info: RespSystemInfo,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ConversationsStartBody {
 	pub user_id: StringOrInt,
 }
@@ -1409,7 +2599,7 @@ pub struct ConversationsAlertsEnableResponse {
 	pub system_info: RespSystemInfo,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ConversationsInviteBody {
 	pub recipients: Vec<String>,
 }
@@ -1424,7 +2614,7 @@ pub struct ConversationsInviteResponse {
 	pub system_info: Option<RespSystemInfo>,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ConversationsKickBody {
 	pub user_id: i64,
 }
@@ -1446,7 +2636,7 @@ pub struct ConversationsMessagesListParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub limit: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub order: Option<String>,
+	pub order: Option<ConversationsOrder>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub before: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -1468,7 +2658,7 @@ pub struct ConversationsMessagesListResponse {
 	pub system_info: RespSystemInfo,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ConversationsMessagesCreateBody {
 	pub message_body: String,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -1491,7 +2681,7 @@ pub struct ConversationsMessagesDeleteResponse {
 	pub system_info: Option<RespSystemInfo>,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ConversationsMessagesEditBody {
 	pub message_body: String,
 }
@@ -1588,10 +2778,28 @@ pub struct FormsListResponse {
 	pub total_forms: i64,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
-pub struct FormsCreateBody {
-	pub fields: serde_json::Value,
-	pub form_id: i64,
+#[derive(Debug, Clone, Serialize)]
+#[serde(untagged)]
+pub enum FormsCreateBody {
+	P2pTrade {
+		/// Must be `1`. Set automatically by this variant.
+		form_id: i64,
+		fields: serde_json::Value,
+	},
+	Complaint {
+		/// Must be `3`. Set automatically by this variant.
+		form_id: i64,
+		fields: serde_json::Value,
+	},
+}
+
+impl FormsCreateBody {
+	pub fn p2ptrade(fields: serde_json::Value) -> Self {
+		Self::P2pTrade { form_id: 1, fields }
+	}
+	pub fn complaint(fields: serde_json::Value) -> Self {
+		Self::Complaint { form_id: 3, fields }
+	}
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -1653,7 +2861,7 @@ pub struct ForumsListParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub parent_forum_id: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub order: Option<String>,
+	pub order: Option<CategoriesOrder>,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -1766,7 +2974,7 @@ pub struct ForumsGetFeedOptionsResponse {
 	pub system_info: RespSystemInfo,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ForumsEditFeedOptionsBody {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub keywords: Option<Vec<String>>,
@@ -2004,7 +3212,7 @@ pub struct ForumsFollowersResponse {
 	pub users: Vec<ForumsFollowersUsers>,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ForumsFollowBody {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub alert: Option<bool>,
@@ -2092,7 +3300,7 @@ pub struct NavigationListResponse {
 #[derive(Debug, Clone, Default, Serialize)]
 pub struct NotificationsListParams {
 	#[serde(rename = "type", skip_serializing_if = "Option::is_none")]
-	pub r#type: Option<String>,
+	pub r#type: Option<NotificationsType>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub page: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -2115,7 +3323,7 @@ pub struct NotificationsListResponse {
 	pub system_info: RespSystemInfo,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct NotificationsReadBody {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub notification_id: Option<i64>,
@@ -2138,17 +3346,37 @@ pub struct NotificationsGetResponse {
 	pub system_info: RespSystemInfo,
 }
 
-#[derive(Debug, Clone)]
-pub struct OAuthTokenBody {
-	pub client_id: String,
-	pub client_secret: String,
-	pub grant_type: String,
-	pub scope: Option<Vec<String>>,
-	pub code: Option<String>,
-	pub redirect_uri: Option<String>,
-	pub refresh_token: Option<String>,
-	pub password: Option<String>,
-	pub username: Option<String>,
+#[derive(Debug, Clone, Serialize)]
+#[serde(tag = "grant_type")]
+pub enum OAuthTokenBody {
+	#[serde(rename = "client_credentials")]
+	ClientCredentials {
+		client_id: String,
+		client_secret: String,
+		scope: Vec<String>,
+	},
+	#[serde(rename = "authorization_code")]
+	AuthorizationCode {
+		client_id: String,
+		client_secret: String,
+		code: String,
+		redirect_uri: String,
+		scope: Vec<String>,
+	},
+	#[serde(rename = "refresh_token")]
+	RefreshToken {
+		client_id: String,
+		client_secret: String,
+		refresh_token: String,
+	},
+	#[serde(rename = "password")]
+	Password {
+		client_id: String,
+		client_secret: String,
+		password: String,
+		scope: Vec<String>,
+		username: String,
+	},
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -2167,7 +3395,7 @@ pub struct PagesListParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub parent_page_id: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub order: Option<String>,
+	pub order: Option<CategoriesOrder>,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -2244,7 +3472,7 @@ pub struct PostsListParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub limit: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub order: Option<String>,
+	pub order: Option<PostsOrder>,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -2255,7 +3483,7 @@ pub struct PostsListResponse {
 	pub thread: RespThreadModel,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct PostsCreateBody {
 	pub post_body: String,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -2270,7 +3498,7 @@ pub struct PostsCreateResponse {
 	pub system_info: RespSystemInfo,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct PostsCommentsDeleteBody {
 	pub post_comment_id: i64,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -2301,7 +3529,7 @@ pub struct PostsCommentsGetResponse {
 	pub system_info: RespSystemInfo,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct PostsCommentsCreateBody {
 	pub comment_body: String,
 	pub post_id: i64,
@@ -2355,7 +3583,7 @@ pub struct PostsCommentsCreateResponse {
 	pub system_info: RespSystemInfo,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct PostsCommentsEditBody {
 	pub comment_body: String,
 	pub post_comment_id: i64,
@@ -2409,7 +3637,7 @@ pub struct PostsCommentsEditResponse {
 	pub system_info: RespSystemInfo,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct PostsCommentsReportBody {
 	pub message: String,
 	pub post_comment_id: i64,
@@ -2425,7 +3653,7 @@ pub struct PostsCommentsReportResponse {
 	pub system_info: Option<RespSystemInfo>,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct PostsDeleteBody {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub reason: Option<String>,
@@ -2447,7 +3675,7 @@ pub struct PostsGetResponse {
 	pub system_info: RespSystemInfo,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct PostsEditBody {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub post_body: Option<String>,
@@ -2505,7 +3733,7 @@ pub struct PostsReportReasonsResponse {
 	pub system_info: RespSystemInfo,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct PostsReportBody {
 	pub message: String,
 }
@@ -2520,7 +3748,7 @@ pub struct PostsReportResponse {
 	pub system_info: Option<RespSystemInfo>,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ProfilePostsCreateBody {
 	pub post_body: String,
 	pub user_id: StringOrInt,
@@ -2574,7 +3802,7 @@ pub struct ProfilePostsCreateResponse {
 	pub system_info: RespSystemInfo,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ProfilePostsCommentsDeleteBody {
 	pub comment_id: i64,
 }
@@ -2648,7 +3876,7 @@ pub struct ProfilePostsCommentsListResponse {
 	pub timeline_user: RespUserModel,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ProfilePostsCommentsCreateBody {
 	pub comment_body: String,
 	pub profile_post_id: i64,
@@ -2691,7 +3919,7 @@ pub struct ProfilePostsCommentsCreateResponse {
 	pub system_info: RespSystemInfo,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ProfilePostsCommentsEditBody {
 	pub comment_body: String,
 	pub comment_id: i64,
@@ -2734,7 +3962,7 @@ pub struct ProfilePostsCommentsEditResponse {
 	pub system_info: RespSystemInfo,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ProfilePostsCommentsReportBody {
 	pub message: String,
 }
@@ -2771,7 +3999,7 @@ pub struct ProfilePostsGetResponse {
 	pub system_info: RespSystemInfo,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ProfilePostsEditBody {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub disable_comments: Option<bool>,
@@ -2871,7 +4099,7 @@ pub struct ProfilePostsReportReasonsResponse {
 	pub system_info: RespSystemInfo,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ProfilePostsReportBody {
 	pub message: String,
 }
@@ -2936,7 +4164,7 @@ pub struct ProfilePostsListResponse {
 	pub total_profile_posts: i64,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct SearchAllBody {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub forum_id: Option<i64>,
@@ -3163,7 +4391,7 @@ pub struct SearchAllResponse {
 	pub users: Vec<RespUserModel>,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct SearchPostsBody {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub data_limit: Option<i64>,
@@ -3332,7 +4560,7 @@ pub struct SearchPostsResponse {
 	pub system_info: RespSystemInfo,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct SearchProfilePostsBody {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub limit: Option<i64>,
@@ -3404,7 +4632,7 @@ pub struct SearchProfilePostsResponse {
 	pub system_info: RespSystemInfo,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct SearchTaggedBody {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub limit: Option<i64>,
@@ -3586,7 +4814,7 @@ pub struct SearchTaggedResponse {
 	pub system_info: RespSystemInfo,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct SearchThreadsBody {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub data_limit: Option<i64>,
@@ -3755,7 +4983,7 @@ pub struct SearchThreadsResponse {
 	pub system_info: RespSystemInfo,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct SearchUsersBody {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub q: Option<String>,
@@ -4230,7 +5458,7 @@ pub struct TagsGetResponse {
 	pub tagged_total: i64,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ThreadsClaimBody {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub allow_ask_hidden_content: Option<bool>,
@@ -4248,23 +5476,27 @@ pub struct ThreadsClaimBody {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub comment_ignore_group: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub currency: Option<String>,
+	pub currency: Option<Currency>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub dont_alert_followers: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub hide_contacts: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub pay_claim: Option<String>,
+	pub pay_claim: Option<PayClaim>,
 	pub post_body: String,
-	#[serde(skip_serializing_if = "Option::is_none")]
-	pub reply_group: Option<i64>,
+	/// Default: 2
+	#[serde(
+		skip_serializing_if = "Option::is_none",
+		default = "default_threads_claim_body_reply_group"
+	)]
+	pub reply_group: Option<ReplyGroup>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub schedule_date: Option<String>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub schedule_time: Option<String>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub tags: Option<Vec<String>>,
-	pub transfer_type: String,
+	pub transfer_type: TransferType,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub watch_thread: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -4273,19 +5505,25 @@ pub struct ThreadsClaimBody {
 	pub watch_thread_state: Option<bool>,
 }
 
+fn default_threads_claim_body_reply_group() -> Option<ReplyGroup> {
+	Some(ReplyGroup::V2)
+}
+
 #[derive(Debug, Clone, Deserialize)]
 pub struct ThreadsClaimResponse {
 	pub system_info: RespSystemInfo,
 	pub thread: RespThreadModel,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ThreadsCreateContestBody {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub allow_ask_hidden_content: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub comment_ignore_group: Option<bool>,
-	pub contest_type: String,
+	/// Default: "by_finish_date"
+	#[serde(default = "default_threads_create_contest_body_contest_type")]
+	pub contest_type: ContestType,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub count_winners: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -4295,7 +5533,7 @@ pub struct ThreadsCreateContestBody {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub is_money_places: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub length_option: Option<String>,
+	pub length_option: Option<LengthOption>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub length_value: Option<i64>,
 	pub post_body: String,
@@ -4304,10 +5542,14 @@ pub struct ThreadsCreateContestBody {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub prize_data_places: Option<Vec<f64>>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub prize_data_upgrade: Option<i64>,
-	pub prize_type: String,
-	#[serde(skip_serializing_if = "Option::is_none")]
-	pub reply_group: Option<i64>,
+	pub prize_data_upgrade: Option<PrizeDataUpgrade>,
+	pub prize_type: PrizeType,
+	/// Default: 2
+	#[serde(
+		skip_serializing_if = "Option::is_none",
+		default = "default_threads_create_contest_body_reply_group"
+	)]
+	pub reply_group: Option<ReplyGroup>,
 	pub require_like_count: i64,
 	pub require_total_like_count: i64,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -4328,6 +5570,14 @@ pub struct ThreadsCreateContestBody {
 	pub watch_thread_email: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub watch_thread_state: Option<bool>,
+}
+
+fn default_threads_create_contest_body_contest_type() -> ContestType {
+	ContestType::ByFinishDate
+}
+
+fn default_threads_create_contest_body_reply_group() -> Option<ReplyGroup> {
+	Some(ReplyGroup::V2)
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -4353,9 +5603,9 @@ pub struct ThreadsListParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub tab: Option<String>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub state: Option<String>,
+	pub state: Option<State>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub period: Option<String>,
+	pub period: Option<Period>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub title: Option<String>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -4375,9 +5625,9 @@ pub struct ThreadsListParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub limit: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub order: Option<String>,
+	pub order: Option<ThreadsOrder>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub direction: Option<String>,
+	pub direction: Option<Direction>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub thread_create_date: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -4440,7 +5690,7 @@ pub struct ThreadsListResponse {
 	pub threads_total: i64,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ThreadsCreateBody {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub allow_ask_hidden_content: Option<bool>,
@@ -4454,8 +5704,12 @@ pub struct ThreadsCreateBody {
 	pub post_body: String,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub prefix_id: Option<Vec<i64>>,
-	#[serde(skip_serializing_if = "Option::is_none")]
-	pub reply_group: Option<i64>,
+	/// Default: 2
+	#[serde(
+		skip_serializing_if = "Option::is_none",
+		default = "default_threads_create_body_reply_group"
+	)]
+	pub reply_group: Option<ReplyGroup>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub schedule_date: Option<String>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -4472,6 +5726,10 @@ pub struct ThreadsCreateBody {
 	pub watch_thread_email: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub watch_thread_state: Option<bool>,
+}
+
+fn default_threads_create_body_reply_group() -> Option<ReplyGroup> {
+	Some(ReplyGroup::V2)
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -4982,7 +6240,7 @@ pub struct ThreadsRecentResponse {
 	pub threads: Vec<RespThreadModel>,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ThreadsDeleteBody {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub reason: Option<String>,
@@ -5010,7 +6268,7 @@ pub struct ThreadsGetResponse {
 	pub thread: RespThreadModel,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ThreadsEditBody {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub allow_ask_hidden_content: Option<bool>,
@@ -5023,7 +6281,7 @@ pub struct ThreadsEditBody {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub prefix_id: Option<Vec<i64>>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub reply_group: Option<i64>,
+	pub reply_group: Option<ReplyGroup>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub tags: Option<Vec<String>>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -5074,7 +6332,7 @@ pub struct ThreadsFollowersResponse {
 	pub users: Vec<ThreadsFollowersUsers>,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ThreadsFollowBody {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub email: Option<bool>,
@@ -5097,7 +6355,7 @@ pub struct ThreadsHideResponse {
 	pub system_info: RespSystemInfo,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ThreadsMoveBody {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub apply_thread_prefix: Option<bool>,
@@ -5199,7 +6457,7 @@ pub struct ThreadsPollGetResponse {
 	pub system_info: RespSystemInfo,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ThreadsPollVoteBody {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub response_id: Option<i64>,
@@ -5430,22 +6688,22 @@ pub struct UsersGetResponse {
 	pub user: RespUserModel,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct UsersEditBody {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub activity_visible: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub alert: Option<HashMap<String, bool>>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub allow_invite_group: Option<String>,
+	pub allow_invite_group: Option<AllowInviteGroup>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub allow_post_profile: Option<String>,
+	pub allow_post_profile: Option<AllowPostProfile>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub allow_receive_news_feed: Option<String>,
+	pub allow_receive_news_feed: Option<AllowReceiveNewsFeed>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub allow_send_personal_conversation: Option<String>,
+	pub allow_send_personal_conversation: Option<AllowSendPersonalConversation>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub allow_view_profile: Option<String>,
+	pub allow_view_profile: Option<AllowViewProfile>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub conv_welcome_message: Option<String>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -5457,11 +6715,11 @@ pub struct UsersEditBody {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub fields: Option<serde_json::Value>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub gender: Option<String>,
+	pub gender: Option<Gender>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub hide_username_change_logs: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub language_id: Option<i64>,
+	pub language_id: Option<LanguageId>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub receive_admin_email: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -5475,7 +6733,7 @@ pub struct UsersEditBody {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub show_dob_year: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub timezone: Option<String>,
+	pub timezone: Option<Timezone>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub user_dob_day: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -5523,7 +6781,7 @@ pub struct UsersAvatarUploadResponse {
 	pub system_info: RespSystemInfo,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct UsersAvatarCropBody {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub crop: Option<i64>,
@@ -5565,7 +6823,7 @@ pub struct UsersBackgroundUploadResponse {
 	pub system_info: RespSystemInfo,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct UsersBackgroundCropBody {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub crop: Option<i64>,
@@ -5585,9 +6843,9 @@ pub struct UsersBackgroundCropResponse {
 #[derive(Debug, Clone, Default, Serialize)]
 pub struct UsersClaimsParams {
 	#[serde(rename = "type", skip_serializing_if = "Option::is_none")]
-	pub r#type: Option<String>,
+	pub r#type: Option<NotificationsType>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub claim_state: Option<String>,
+	pub claim_state: Option<ClaimState>,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -5646,7 +6904,7 @@ pub struct UsersUnfollowResponse {
 #[derive(Debug, Clone, Default, Serialize)]
 pub struct UsersFollowersParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub order: Option<String>,
+	pub order: Option<UsersOrder>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub page: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -5744,7 +7002,7 @@ pub struct UsersFollowResponse {
 #[derive(Debug, Clone, Default, Serialize)]
 pub struct UsersFollowingsParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub order: Option<String>,
+	pub order: Option<UsersOrder>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub page: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -5890,22 +7148,38 @@ pub struct UsersIgnoreEditResponse {
 	pub system_info: Option<RespSystemInfo>,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Serialize)]
 pub struct UsersLikesParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub node_id: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub like_type: Option<String>,
+	pub like_type: Option<LikeType>,
+	/// Default: "gotten"
 	#[serde(rename = "type", skip_serializing_if = "Option::is_none")]
-	pub r#type: Option<String>,
+	pub r#type: Option<UsersType>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub page: Option<i64>,
+	/// Default: "post"
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub content_type: Option<String>,
+	pub content_type: Option<ContentType>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub search_user_id: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub stats: Option<bool>,
+}
+
+impl Default for UsersLikesParams {
+	fn default() -> Self {
+		Self {
+			node_id: None,
+			like_type: None,
+			r#type: Some(UsersType::Gotten),
+			page: None,
+			content_type: Some(ContentType::Post),
+			search_user_id: None,
+			stats: None,
+		}
+	}
 }
 
 #[derive(Debug, Clone, Deserialize)]

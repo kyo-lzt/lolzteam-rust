@@ -91,7 +91,7 @@ impl CartApi {
 		let mut query = Vec::new();
 		if let Some(p) = params {
 			if let Some(ref v) = p.category_id {
-				query.push(("category_id".into(), ParamValue::Integer(*v)));
+				query.push(("category_id".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.page {
 				query.push(("page".into(), ParamValue::Integer(*v)));
@@ -106,7 +106,7 @@ impl CartApi {
 				query.push(("title".into(), ParamValue::String(v.clone())));
 			}
 			if let Some(ref v) = p.order_by {
-				query.push(("order_by".into(), ParamValue::String(v.clone())));
+				query.push(("order_by".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.tag_id {
 				for item in v {
@@ -160,7 +160,7 @@ impl CartApi {
 				query.push(("sb_by_me".into(), ParamValue::Bool(*v)));
 			}
 			if let Some(ref v) = p.currency {
-				query.push(("currency".into(), ParamValue::String(v.clone())));
+				query.push(("currency".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.email_login_data {
 				query.push(("email_login_data".into(), ParamValue::Bool(*v)));
@@ -174,12 +174,10 @@ impl CartApi {
 				}
 			}
 			if let Some(ref v) = p.not_email_provider {
-				for item in v {
-					query.push((
-						"not_email_provider[]".into(),
-						ParamValue::String(item.to_string()),
-					));
-				}
+				query.push((
+					"not_email_provider[]".into(),
+					ParamValue::String(v.to_string()),
+				));
 			}
 			if let Some(ref v) = p.parse_same_item_ids {
 				query.push(("parse_same_item_ids".into(), ParamValue::Bool(*v)));
@@ -237,7 +235,7 @@ impl CategoryApi {
 				query.push(("title".into(), ParamValue::String(v.clone())));
 			}
 			if let Some(ref v) = p.order_by {
-				query.push(("order_by".into(), ParamValue::String(v.clone())));
+				query.push(("order_by".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.tag_id {
 				for item in v {
@@ -291,7 +289,7 @@ impl CategoryApi {
 				query.push(("sb_by_me".into(), ParamValue::Bool(*v)));
 			}
 			if let Some(ref v) = p.currency {
-				query.push(("currency".into(), ParamValue::String(v.clone())));
+				query.push(("currency".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.email_login_data {
 				query.push(("email_login_data".into(), ParamValue::Bool(*v)));
@@ -305,12 +303,10 @@ impl CategoryApi {
 				}
 			}
 			if let Some(ref v) = p.not_email_provider {
-				for item in v {
-					query.push((
-						"not_email_provider[]".into(),
-						ParamValue::String(item.to_string()),
-					));
-				}
+				query.push((
+					"not_email_provider[]".into(),
+					ParamValue::String(v.to_string()),
+				));
 			}
 			if let Some(ref v) = p.parse_same_item_ids {
 				query.push(("parse_same_item_ids".into(), ParamValue::Bool(*v)));
@@ -351,7 +347,7 @@ impl CategoryApi {
 				query.push(("title".into(), ParamValue::String(v.clone())));
 			}
 			if let Some(ref v) = p.order_by {
-				query.push(("order_by".into(), ParamValue::String(v.clone())));
+				query.push(("order_by".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.tag_id {
 				for item in v {
@@ -405,7 +401,7 @@ impl CategoryApi {
 				query.push(("sb_by_me".into(), ParamValue::Bool(*v)));
 			}
 			if let Some(ref v) = p.currency {
-				query.push(("currency".into(), ParamValue::String(v.clone())));
+				query.push(("currency".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.email_login_data {
 				query.push(("email_login_data".into(), ParamValue::Bool(*v)));
@@ -419,12 +415,10 @@ impl CategoryApi {
 				}
 			}
 			if let Some(ref v) = p.not_email_provider {
-				for item in v {
-					query.push((
-						"not_email_provider[]".into(),
-						ParamValue::String(item.to_string()),
-					));
-				}
+				query.push((
+					"not_email_provider[]".into(),
+					ParamValue::String(v.to_string()),
+				));
 			}
 			if let Some(ref v) = p.parse_same_item_ids {
 				query.push(("parse_same_item_ids".into(), ParamValue::Bool(*v)));
@@ -438,7 +432,7 @@ impl CategoryApi {
 				query.push(("item_domain".into(), ParamValue::String(v.clone())));
 			}
 			if let Some(ref v) = p.eg {
-				query.push(("eg".into(), ParamValue::Integer(*v)));
+				query.push(("eg".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.game {
 				for item in v {
@@ -459,22 +453,22 @@ impl CategoryApi {
 				}
 			}
 			if let Some(ref v) = p.tel {
-				query.push(("tel".into(), ParamValue::String(v.clone())));
+				query.push(("tel".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.edit_btag {
-				query.push(("edit_btag".into(), ParamValue::String(v.clone())));
+				query.push(("edit_btag".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.changeable_fn {
-				query.push(("changeable_fn".into(), ParamValue::String(v.clone())));
+				query.push(("changeable_fn".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.real_id {
-				query.push(("real_id".into(), ParamValue::String(v.clone())));
+				query.push(("real_id".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.parent_control {
-				query.push(("parent_control".into(), ParamValue::String(v.clone())));
+				query.push(("parent_control".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.no_bans {
-				query.push(("no_bans".into(), ParamValue::String(v.clone())));
+				query.push(("no_bans".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.balance_min {
 				query.push(("balance_min".into(), ParamValue::Integer(*v)));
@@ -544,7 +538,7 @@ impl CategoryApi {
 				query.push(("title".into(), ParamValue::String(v.clone())));
 			}
 			if let Some(ref v) = p.order_by {
-				query.push(("order_by".into(), ParamValue::String(v.clone())));
+				query.push(("order_by".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.tag_id {
 				for item in v {
@@ -598,7 +592,7 @@ impl CategoryApi {
 				query.push(("sb_by_me".into(), ParamValue::Bool(*v)));
 			}
 			if let Some(ref v) = p.currency {
-				query.push(("currency".into(), ParamValue::String(v.clone())));
+				query.push(("currency".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.email_login_data {
 				query.push(("email_login_data".into(), ParamValue::Bool(*v)));
@@ -612,12 +606,10 @@ impl CategoryApi {
 				}
 			}
 			if let Some(ref v) = p.not_email_provider {
-				for item in v {
-					query.push((
-						"not_email_provider[]".into(),
-						ParamValue::String(item.to_string()),
-					));
-				}
+				query.push((
+					"not_email_provider[]".into(),
+					ParamValue::String(v.to_string()),
+				));
 			}
 			if let Some(ref v) = p.parse_same_item_ids {
 				query.push(("parse_same_item_ids".into(), ParamValue::Bool(*v)));
@@ -642,22 +634,25 @@ impl CategoryApi {
 				query.push(("subscription_length".into(), ParamValue::Integer(*v)));
 			}
 			if let Some(ref v) = p.subscription_period {
-				query.push(("subscription_period".into(), ParamValue::String(v.clone())));
+				query.push((
+					"subscription_period".into(),
+					ParamValue::String(v.to_string()),
+				));
 			}
 			if let Some(ref v) = p.autorenewal {
-				query.push(("autorenewal".into(), ParamValue::String(v.clone())));
+				query.push(("autorenewal".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.tel {
-				query.push(("tel".into(), ParamValue::String(v.clone())));
+				query.push(("tel".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.transactions {
-				query.push(("transactions".into(), ParamValue::String(v.clone())));
+				query.push(("transactions".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.reg {
 				query.push(("reg".into(), ParamValue::Integer(*v)));
 			}
 			if let Some(ref v) = p.reg_period {
-				query.push(("reg_period".into(), ParamValue::String(v.clone())));
+				query.push(("reg_period".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.openai_tier {
 				for item in v {
@@ -706,7 +701,7 @@ impl CategoryApi {
 				query.push(("title".into(), ParamValue::String(v.clone())));
 			}
 			if let Some(ref v) = p.order_by {
-				query.push(("order_by".into(), ParamValue::String(v.clone())));
+				query.push(("order_by".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.tag_id {
 				for item in v {
@@ -760,7 +755,7 @@ impl CategoryApi {
 				query.push(("sb_by_me".into(), ParamValue::Bool(*v)));
 			}
 			if let Some(ref v) = p.currency {
-				query.push(("currency".into(), ParamValue::String(v.clone())));
+				query.push(("currency".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.email_login_data {
 				query.push(("email_login_data".into(), ParamValue::Bool(*v)));
@@ -774,12 +769,10 @@ impl CategoryApi {
 				}
 			}
 			if let Some(ref v) = p.not_email_provider {
-				for item in v {
-					query.push((
-						"not_email_provider[]".into(),
-						ParamValue::String(item.to_string()),
-					));
-				}
+				query.push((
+					"not_email_provider[]".into(),
+					ParamValue::String(v.to_string()),
+				));
 			}
 			if let Some(ref v) = p.parse_same_item_ids {
 				query.push(("parse_same_item_ids".into(), ParamValue::Bool(*v)));
@@ -793,10 +786,10 @@ impl CategoryApi {
 				query.push(("item_domain".into(), ParamValue::String(v.clone())));
 			}
 			if let Some(ref v) = p.tel {
-				query.push(("tel".into(), ParamValue::String(v.clone())));
+				query.push(("tel".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.nitro {
-				query.push(("nitro".into(), ParamValue::String(v.clone())));
+				query.push(("nitro".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.nitro_type {
 				for item in v {
@@ -807,7 +800,7 @@ impl CategoryApi {
 				query.push(("nitro_length".into(), ParamValue::Integer(*v)));
 			}
 			if let Some(ref v) = p.nitro_period {
-				query.push(("nitro_period".into(), ParamValue::String(v.clone())));
+				query.push(("nitro_period".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.boosts_min {
 				query.push(("boosts_min".into(), ParamValue::Integer(*v)));
@@ -816,13 +809,13 @@ impl CategoryApi {
 				query.push(("boosts_max".into(), ParamValue::Integer(*v)));
 			}
 			if let Some(ref v) = p.billing {
-				query.push(("billing".into(), ParamValue::String(v.clone())));
+				query.push(("billing".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.gifts {
-				query.push(("gifts".into(), ParamValue::String(v.clone())));
+				query.push(("gifts".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.transactions {
-				query.push(("transactions".into(), ParamValue::String(v.clone())));
+				query.push(("transactions".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.badge {
 				for item in v {
@@ -856,7 +849,7 @@ impl CategoryApi {
 				query.push(("reg".into(), ParamValue::Integer(*v)));
 			}
 			if let Some(ref v) = p.reg_period {
-				query.push(("reg_period".into(), ParamValue::String(v.clone())));
+				query.push(("reg_period".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.language {
 				for item in v {
@@ -872,7 +865,7 @@ impl CategoryApi {
 				}
 			}
 			if let Some(ref v) = p.clans {
-				query.push(("clans".into(), ParamValue::String(v.clone())));
+				query.push(("clans".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.min_admin_clans {
 				query.push(("min_admin_clans".into(), ParamValue::Integer(*v)));
@@ -903,7 +896,7 @@ impl CategoryApi {
 				query.push(("max_servers".into(), ParamValue::Integer(*v)));
 			}
 			if let Some(ref v) = p._2fa {
-				query.push(("2fa".into(), ParamValue::String(v.clone())));
+				query.push(("2fa".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.min_full_credits {
 				query.push(("min_full_credits".into(), ParamValue::Integer(*v)));
@@ -959,7 +952,7 @@ impl CategoryApi {
 				query.push(("title".into(), ParamValue::String(v.clone())));
 			}
 			if let Some(ref v) = p.order_by {
-				query.push(("order_by".into(), ParamValue::String(v.clone())));
+				query.push(("order_by".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.tag_id {
 				for item in v {
@@ -1013,7 +1006,7 @@ impl CategoryApi {
 				query.push(("sb_by_me".into(), ParamValue::Bool(*v)));
 			}
 			if let Some(ref v) = p.currency {
-				query.push(("currency".into(), ParamValue::String(v.clone())));
+				query.push(("currency".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.email_login_data {
 				query.push(("email_login_data".into(), ParamValue::Bool(*v)));
@@ -1027,12 +1020,10 @@ impl CategoryApi {
 				}
 			}
 			if let Some(ref v) = p.not_email_provider {
-				for item in v {
-					query.push((
-						"not_email_provider[]".into(),
-						ParamValue::String(item.to_string()),
-					));
-				}
+				query.push((
+					"not_email_provider[]".into(),
+					ParamValue::String(v.to_string()),
+				));
 			}
 			if let Some(ref v) = p.parse_same_item_ids {
 				query.push(("parse_same_item_ids".into(), ParamValue::Bool(*v)));
@@ -1079,25 +1070,28 @@ impl CategoryApi {
 				query.push(("al_level_max".into(), ParamValue::Integer(*v)));
 			}
 			if let Some(ref v) = p.has_ban {
-				query.push(("has_ban".into(), ParamValue::String(v.clone())));
+				query.push(("has_ban".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.xbox_connected {
-				query.push(("xbox_connected".into(), ParamValue::String(v.clone())));
+				query.push(("xbox_connected".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.steam_connected {
-				query.push(("steam_connected".into(), ParamValue::String(v.clone())));
+				query.push(("steam_connected".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.psn_connected {
-				query.push(("psn_connected".into(), ParamValue::String(v.clone())));
+				query.push(("psn_connected".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.subscription {
-				query.push(("subscription".into(), ParamValue::String(v.clone())));
+				query.push(("subscription".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.subscription_length {
 				query.push(("subscription_length".into(), ParamValue::Integer(*v)));
 			}
 			if let Some(ref v) = p.subscription_period {
-				query.push(("subscription_period".into(), ParamValue::String(v.clone())));
+				query.push((
+					"subscription_period".into(),
+					ParamValue::String(v.to_string()),
+				));
 			}
 			if let Some(ref map) = p.hours_played {
 				for (key, val) in map {
@@ -1113,7 +1107,7 @@ impl CategoryApi {
 				}
 			}
 			if let Some(ref v) = p.transactions {
-				query.push(("transactions".into(), ParamValue::String(v.clone())));
+				query.push(("transactions".into(), ParamValue::String(v.to_string())));
 			}
 		}
 		self.http
@@ -1151,7 +1145,7 @@ impl CategoryApi {
 				query.push(("title".into(), ParamValue::String(v.clone())));
 			}
 			if let Some(ref v) = p.order_by {
-				query.push(("order_by".into(), ParamValue::String(v.clone())));
+				query.push(("order_by".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.tag_id {
 				for item in v {
@@ -1205,7 +1199,7 @@ impl CategoryApi {
 				query.push(("sb_by_me".into(), ParamValue::Bool(*v)));
 			}
 			if let Some(ref v) = p.currency {
-				query.push(("currency".into(), ParamValue::String(v.clone())));
+				query.push(("currency".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.email_login_data {
 				query.push(("email_login_data".into(), ParamValue::Bool(*v)));
@@ -1219,12 +1213,10 @@ impl CategoryApi {
 				}
 			}
 			if let Some(ref v) = p.not_email_provider {
-				for item in v {
-					query.push((
-						"not_email_provider[]".into(),
-						ParamValue::String(item.to_string()),
-					));
-				}
+				query.push((
+					"not_email_provider[]".into(),
+					ParamValue::String(v.to_string()),
+				));
 			}
 			if let Some(ref v) = p.parse_same_item_ids {
 				query.push(("parse_same_item_ids".into(), ParamValue::Bool(*v)));
@@ -1238,7 +1230,7 @@ impl CategoryApi {
 				query.push(("item_domain".into(), ParamValue::String(v.clone())));
 			}
 			if let Some(ref v) = p.eg {
-				query.push(("eg".into(), ParamValue::Integer(*v)));
+				query.push(("eg".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.game {
 				for item in v {
@@ -1246,7 +1238,7 @@ impl CategoryApi {
 				}
 			}
 			if let Some(ref v) = p.change_email {
-				query.push(("change_email".into(), ParamValue::String(v.clone())));
+				query.push(("change_email".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.rl_purchases {
 				query.push(("rl_purchases".into(), ParamValue::Bool(*v)));
@@ -1331,7 +1323,7 @@ impl CategoryApi {
 				query.push(("title".into(), ParamValue::String(v.clone())));
 			}
 			if let Some(ref v) = p.order_by {
-				query.push(("order_by".into(), ParamValue::String(v.clone())));
+				query.push(("order_by".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.tag_id {
 				for item in v {
@@ -1385,7 +1377,7 @@ impl CategoryApi {
 				query.push(("sb_by_me".into(), ParamValue::Bool(*v)));
 			}
 			if let Some(ref v) = p.currency {
-				query.push(("currency".into(), ParamValue::String(v.clone())));
+				query.push(("currency".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.email_login_data {
 				query.push(("email_login_data".into(), ParamValue::Bool(*v)));
@@ -1399,12 +1391,10 @@ impl CategoryApi {
 				}
 			}
 			if let Some(ref v) = p.not_email_provider {
-				for item in v {
-					query.push((
-						"not_email_provider[]".into(),
-						ParamValue::String(item.to_string()),
-					));
-				}
+				query.push((
+					"not_email_provider[]".into(),
+					ParamValue::String(v.to_string()),
+				));
 			}
 			if let Some(ref v) = p.parse_same_item_ids {
 				query.push(("parse_same_item_ids".into(), ParamValue::Bool(*v)));
@@ -1418,7 +1408,7 @@ impl CategoryApi {
 				query.push(("item_domain".into(), ParamValue::String(v.clone())));
 			}
 			if let Some(ref v) = p.region {
-				query.push(("region".into(), ParamValue::String(v.clone())));
+				query.push(("region".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.version {
 				for item in v {
@@ -1429,7 +1419,7 @@ impl CategoryApi {
 				query.push(("reg".into(), ParamValue::Integer(*v)));
 			}
 			if let Some(ref v) = p.reg_period {
-				query.push(("reg_period".into(), ParamValue::String(v.clone())));
+				query.push(("reg_period".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.level_min {
 				query.push(("level_min".into(), ParamValue::Integer(*v)));
@@ -1438,10 +1428,10 @@ impl CategoryApi {
 				query.push(("level_max".into(), ParamValue::Integer(*v)));
 			}
 			if let Some(ref v) = p.pve {
-				query.push(("pve".into(), ParamValue::String(v.clone())));
+				query.push(("pve".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.side {
-				query.push(("side".into(), ParamValue::String(v.clone())));
+				query.push(("side".into(), ParamValue::String(v.to_string())));
 			}
 		}
 		self.http
@@ -1479,7 +1469,7 @@ impl CategoryApi {
 				query.push(("title".into(), ParamValue::String(v.clone())));
 			}
 			if let Some(ref v) = p.order_by {
-				query.push(("order_by".into(), ParamValue::String(v.clone())));
+				query.push(("order_by".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.tag_id {
 				for item in v {
@@ -1533,7 +1523,7 @@ impl CategoryApi {
 				query.push(("sb_by_me".into(), ParamValue::Bool(*v)));
 			}
 			if let Some(ref v) = p.currency {
-				query.push(("currency".into(), ParamValue::String(v.clone())));
+				query.push(("currency".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.email_login_data {
 				query.push(("email_login_data".into(), ParamValue::Bool(*v)));
@@ -1552,24 +1542,22 @@ impl CategoryApi {
 				}
 			}
 			if let Some(ref v) = p.not_email_provider {
-				for item in v {
-					query.push((
-						"not_email_provider[]".into(),
-						ParamValue::String(item.to_string()),
-					));
-				}
+				query.push((
+					"not_email_provider[]".into(),
+					ParamValue::String(v.to_string()),
+				));
 			}
 			if let Some(ref v) = p.parse_same_item_ids {
 				query.push(("parse_same_item_ids".into(), ParamValue::Bool(*v)));
 			}
 			if let Some(ref v) = p.temp_email {
-				query.push(("temp_email".into(), ParamValue::String(v.clone())));
+				query.push(("temp_email".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.item_domain {
 				query.push(("item_domain".into(), ParamValue::String(v.clone())));
 			}
 			if let Some(ref v) = p.eg {
-				query.push(("eg".into(), ParamValue::Integer(*v)));
+				query.push(("eg".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.smin {
 				query.push(("smin".into(), ParamValue::Integer(*v)));
@@ -1604,7 +1592,7 @@ impl CategoryApi {
 				}
 			}
 			if let Some(ref v) = p.change_email {
-				query.push(("change_email".into(), ParamValue::String(v.clone())));
+				query.push(("change_email".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.platform {
 				for item in v {
@@ -1660,7 +1648,7 @@ impl CategoryApi {
 				query.push(("gliders_shop_vbmax".into(), ParamValue::Integer(*v)));
 			}
 			if let Some(ref v) = p.bp {
-				query.push(("bp".into(), ParamValue::String(v.clone())));
+				query.push(("bp".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.lmin {
 				query.push(("lmin".into(), ParamValue::Integer(*v)));
@@ -1680,17 +1668,17 @@ impl CategoryApi {
 			if let Some(ref v) = p.last_trans_date_period {
 				query.push((
 					"last_trans_date_period".into(),
-					ParamValue::String(v.clone()),
+					ParamValue::String(v.to_string()),
 				));
 			}
 			if let Some(ref v) = p.no_trans {
 				query.push(("no_trans".into(), ParamValue::Bool(*v)));
 			}
 			if let Some(ref v) = p.xbox_linkable {
-				query.push(("xbox_linkable".into(), ParamValue::String(v.clone())));
+				query.push(("xbox_linkable".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.psn_linkable {
-				query.push(("psn_linkable".into(), ParamValue::String(v.clone())));
+				query.push(("psn_linkable".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.daybreak {
 				query.push(("daybreak".into(), ParamValue::Integer(*v)));
@@ -1702,7 +1690,7 @@ impl CategoryApi {
 				query.push(("reg".into(), ParamValue::Integer(*v)));
 			}
 			if let Some(ref v) = p.reg_period {
-				query.push(("reg_period".into(), ParamValue::String(v.clone())));
+				query.push(("reg_period".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.refund_credits_min {
 				query.push(("refund_credits_min".into(), ParamValue::Integer(*v)));
@@ -1774,7 +1762,7 @@ impl CategoryApi {
 				query.push(("title".into(), ParamValue::String(v.clone())));
 			}
 			if let Some(ref v) = p.order_by {
-				query.push(("order_by".into(), ParamValue::String(v.clone())));
+				query.push(("order_by".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.tag_id {
 				for item in v {
@@ -1828,7 +1816,7 @@ impl CategoryApi {
 				query.push(("sb_by_me".into(), ParamValue::Bool(*v)));
 			}
 			if let Some(ref v) = p.currency {
-				query.push(("currency".into(), ParamValue::String(v.clone())));
+				query.push(("currency".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.email_login_data {
 				query.push(("email_login_data".into(), ParamValue::Bool(*v)));
@@ -1842,24 +1830,25 @@ impl CategoryApi {
 				}
 			}
 			if let Some(ref v) = p.not_email_provider {
-				for item in v {
-					query.push((
-						"not_email_provider[]".into(),
-						ParamValue::String(item.to_string()),
-					));
-				}
+				query.push((
+					"not_email_provider[]".into(),
+					ParamValue::String(v.to_string()),
+				));
 			}
 			if let Some(ref v) = p.parse_same_item_ids {
 				query.push(("parse_same_item_ids".into(), ParamValue::Bool(*v)));
 			}
 			if let Some(ref v) = p.subscription {
-				query.push(("subscription".into(), ParamValue::String(v.clone())));
+				query.push(("subscription".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.subscription_length {
 				query.push(("subscription_length".into(), ParamValue::Integer(*v)));
 			}
 			if let Some(ref v) = p.subscription_period {
-				query.push(("subscription_period".into(), ParamValue::String(v.clone())));
+				query.push((
+					"subscription_period".into(),
+					ParamValue::String(v.to_string()),
+				));
 			}
 		}
 		self.http
@@ -1897,7 +1886,7 @@ impl CategoryApi {
 				query.push(("title".into(), ParamValue::String(v.clone())));
 			}
 			if let Some(ref v) = p.order_by {
-				query.push(("order_by".into(), ParamValue::String(v.clone())));
+				query.push(("order_by".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.tag_id {
 				for item in v {
@@ -1951,7 +1940,7 @@ impl CategoryApi {
 				query.push(("sb_by_me".into(), ParamValue::Bool(*v)));
 			}
 			if let Some(ref v) = p.currency {
-				query.push(("currency".into(), ParamValue::String(v.clone())));
+				query.push(("currency".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.email_login_data {
 				query.push(("email_login_data".into(), ParamValue::Bool(*v)));
@@ -1965,12 +1954,10 @@ impl CategoryApi {
 				}
 			}
 			if let Some(ref v) = p.not_email_provider {
-				for item in v {
-					query.push((
-						"not_email_provider[]".into(),
-						ParamValue::String(item.to_string()),
-					));
-				}
+				query.push((
+					"not_email_provider[]".into(),
+					ParamValue::String(v.to_string()),
+				));
 			}
 			if let Some(ref v) = p.parse_same_item_ids {
 				query.push(("parse_same_item_ids".into(), ParamValue::Bool(*v)));
@@ -2022,7 +2009,7 @@ impl CategoryApi {
 				query.push(("title".into(), ParamValue::String(v.clone())));
 			}
 			if let Some(ref v) = p.order_by {
-				query.push(("order_by".into(), ParamValue::String(v.clone())));
+				query.push(("order_by".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.tag_id {
 				for item in v {
@@ -2076,7 +2063,7 @@ impl CategoryApi {
 				query.push(("sb_by_me".into(), ParamValue::Bool(*v)));
 			}
 			if let Some(ref v) = p.currency {
-				query.push(("currency".into(), ParamValue::String(v.clone())));
+				query.push(("currency".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.email_login_data {
 				query.push(("email_login_data".into(), ParamValue::Bool(*v)));
@@ -2090,12 +2077,10 @@ impl CategoryApi {
 				}
 			}
 			if let Some(ref v) = p.not_email_provider {
-				for item in v {
-					query.push((
-						"not_email_provider[]".into(),
-						ParamValue::String(item.to_string()),
-					));
-				}
+				query.push((
+					"not_email_provider[]".into(),
+					ParamValue::String(v.to_string()),
+				));
 			}
 			if let Some(ref v) = p.parse_same_item_ids {
 				query.push(("parse_same_item_ids".into(), ParamValue::Bool(*v)));
@@ -2109,7 +2094,7 @@ impl CategoryApi {
 				query.push(("item_domain".into(), ParamValue::String(v.clone())));
 			}
 			if let Some(ref v) = p.tel {
-				query.push(("tel".into(), ParamValue::String(v.clone())));
+				query.push(("tel".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.country {
 				for item in v {
@@ -2122,12 +2107,12 @@ impl CategoryApi {
 				}
 			}
 			if let Some(ref v) = p.cookies {
-				query.push(("cookies".into(), ParamValue::String(v.clone())));
+				query.push(("cookies".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.login_without_cookies {
 				query.push((
 					"login_without_cookies".into(),
-					ParamValue::String(v.clone()),
+					ParamValue::String(v.to_string()),
 				));
 			}
 			if let Some(ref v) = p.followers_min {
@@ -2146,7 +2131,7 @@ impl CategoryApi {
 				query.push(("reg".into(), ParamValue::Integer(*v)));
 			}
 			if let Some(ref v) = p.reg_period {
-				query.push(("reg_period".into(), ParamValue::String(v.clone())));
+				query.push(("reg_period".into(), ParamValue::String(v.to_string())));
 			}
 		}
 		self.http
@@ -2184,7 +2169,7 @@ impl CategoryApi {
 				query.push(("title".into(), ParamValue::String(v.clone())));
 			}
 			if let Some(ref v) = p.order_by {
-				query.push(("order_by".into(), ParamValue::String(v.clone())));
+				query.push(("order_by".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.tag_id {
 				for item in v {
@@ -2238,7 +2223,7 @@ impl CategoryApi {
 				query.push(("sb_by_me".into(), ParamValue::Bool(*v)));
 			}
 			if let Some(ref v) = p.currency {
-				query.push(("currency".into(), ParamValue::String(v.clone())));
+				query.push(("currency".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.email_login_data {
 				query.push(("email_login_data".into(), ParamValue::Bool(*v)));
@@ -2252,12 +2237,10 @@ impl CategoryApi {
 				}
 			}
 			if let Some(ref v) = p.not_email_provider {
-				for item in v {
-					query.push((
-						"not_email_provider[]".into(),
-						ParamValue::String(item.to_string()),
-					));
-				}
+				query.push((
+					"not_email_provider[]".into(),
+					ParamValue::String(v.to_string()),
+				));
 			}
 			if let Some(ref v) = p.email_type {
 				for item in v {
@@ -2271,10 +2254,10 @@ impl CategoryApi {
 				query.push(("item_domain".into(), ParamValue::String(v.clone())));
 			}
 			if let Some(ref v) = p.email {
-				query.push(("email".into(), ParamValue::String(v.clone())));
+				query.push(("email".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.ea {
-				query.push(("ea".into(), ParamValue::String(v.clone())));
+				query.push(("ea".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.region {
 				for item in v {
@@ -2565,7 +2548,7 @@ impl CategoryApi {
 				query.push(("title".into(), ParamValue::String(v.clone())));
 			}
 			if let Some(ref v) = p.order_by {
-				query.push(("order_by".into(), ParamValue::String(v.clone())));
+				query.push(("order_by".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.tag_id {
 				for item in v {
@@ -2619,7 +2602,7 @@ impl CategoryApi {
 				query.push(("sb_by_me".into(), ParamValue::Bool(*v)));
 			}
 			if let Some(ref v) = p.currency {
-				query.push(("currency".into(), ParamValue::String(v.clone())));
+				query.push(("currency".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.email_login_data {
 				query.push(("email_login_data".into(), ParamValue::Bool(*v)));
@@ -2633,42 +2616,43 @@ impl CategoryApi {
 				}
 			}
 			if let Some(ref v) = p.not_email_provider {
-				for item in v {
-					query.push((
-						"not_email_provider[]".into(),
-						ParamValue::String(item.to_string()),
-					));
-				}
+				query.push((
+					"not_email_provider[]".into(),
+					ParamValue::String(v.to_string()),
+				));
 			}
 			if let Some(ref v) = p.parse_same_item_ids {
 				query.push(("parse_same_item_ids".into(), ParamValue::Bool(*v)));
 			}
 			if let Some(ref v) = p.subscription {
-				query.push(("subscription".into(), ParamValue::String(v.clone())));
+				query.push(("subscription".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.subscription_length {
 				query.push(("subscription_length".into(), ParamValue::Integer(*v)));
 			}
 			if let Some(ref v) = p.subscription_period {
-				query.push(("subscription_period".into(), ParamValue::String(v.clone())));
+				query.push((
+					"subscription_period".into(),
+					ParamValue::String(v.to_string()),
+				));
 			}
 			if let Some(ref v) = p.autorenewal {
-				query.push(("autorenewal".into(), ParamValue::String(v.clone())));
+				query.push(("autorenewal".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.java {
-				query.push(("java".into(), ParamValue::String(v.clone())));
+				query.push(("java".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.bedrock {
-				query.push(("bedrock".into(), ParamValue::String(v.clone())));
+				query.push(("bedrock".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.dungeons {
-				query.push(("dungeons".into(), ParamValue::String(v.clone())));
+				query.push(("dungeons".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.legends {
-				query.push(("legends".into(), ParamValue::String(v.clone())));
+				query.push(("legends".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.change_nickname {
-				query.push(("change_nickname".into(), ParamValue::String(v.clone())));
+				query.push(("change_nickname".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.capes {
 				for item in v {
@@ -2692,12 +2676,12 @@ impl CategoryApi {
 				}
 			}
 			if let Some(ref v) = p.hypixel_ban {
-				query.push(("hypixel_ban".into(), ParamValue::String(v.clone())));
+				query.push(("hypixel_ban".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.hypixel_skyblock_api_enabled {
 				query.push((
 					"hypixel_skyblock_api_enabled".into(),
-					ParamValue::String(v.clone()),
+					ParamValue::String(v.to_string()),
 				));
 			}
 			if let Some(ref v) = p.rank_hypixel {
@@ -2742,7 +2726,7 @@ impl CategoryApi {
 				query.push(("reg".into(), ParamValue::Integer(*v)));
 			}
 			if let Some(ref v) = p.reg_period {
-				query.push(("reg_period".into(), ParamValue::String(v.clone())));
+				query.push(("reg_period".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.last_login_hypixel {
 				query.push(("last_login_hypixel".into(), ParamValue::Integer(*v)));
@@ -2750,11 +2734,14 @@ impl CategoryApi {
 			if let Some(ref v) = p.last_login_hypixel_period {
 				query.push((
 					"last_login_hypixel_period".into(),
-					ParamValue::String(v.clone()),
+					ParamValue::String(v.to_string()),
 				));
 			}
 			if let Some(ref v) = p.can_change_details {
-				query.push(("can_change_details".into(), ParamValue::String(v.clone())));
+				query.push((
+					"can_change_details".into(),
+					ParamValue::String(v.to_string()),
+				));
 			}
 			if let Some(ref v) = p.nickname_length_min {
 				query.push(("nickname_length_min".into(), ParamValue::Integer(*v)));
@@ -2763,7 +2750,10 @@ impl CategoryApi {
 				query.push(("nickname_length_max".into(), ParamValue::Integer(*v)));
 			}
 			if let Some(ref v) = p.hypixel_ban_parsed {
-				query.push(("hypixel_ban_parsed".into(), ParamValue::String(v.clone())));
+				query.push((
+					"hypixel_ban_parsed".into(),
+					ParamValue::String(v.to_string()),
+				));
 			}
 			if let Some(ref v) = p.minecoins_min {
 				query.push(("minecoins_min".into(), ParamValue::Integer(*v)));
@@ -2807,7 +2797,7 @@ impl CategoryApi {
 				query.push(("title".into(), ParamValue::String(v.clone())));
 			}
 			if let Some(ref v) = p.order_by {
-				query.push(("order_by".into(), ParamValue::String(v.clone())));
+				query.push(("order_by".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.tag_id {
 				for item in v {
@@ -2861,7 +2851,7 @@ impl CategoryApi {
 				query.push(("sb_by_me".into(), ParamValue::Bool(*v)));
 			}
 			if let Some(ref v) = p.currency {
-				query.push(("currency".into(), ParamValue::String(v.clone())));
+				query.push(("currency".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.email_login_data {
 				query.push(("email_login_data".into(), ParamValue::Bool(*v)));
@@ -2875,12 +2865,10 @@ impl CategoryApi {
 				}
 			}
 			if let Some(ref v) = p.not_email_provider {
-				for item in v {
-					query.push((
-						"not_email_provider[]".into(),
-						ParamValue::String(item.to_string()),
-					));
-				}
+				query.push((
+					"not_email_provider[]".into(),
+					ParamValue::String(v.to_string()),
+				));
 			}
 			if let Some(ref v) = p.parse_same_item_ids {
 				query.push(("parse_same_item_ids".into(), ParamValue::Bool(*v)));
@@ -3068,10 +3056,10 @@ impl CategoryApi {
 				query.push(("riot_max".into(), ParamValue::Integer(*v)));
 			}
 			if let Some(ref v) = p.email {
-				query.push(("email".into(), ParamValue::String(v.clone())));
+				query.push(("email".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.tel {
-				query.push(("tel".into(), ParamValue::String(v.clone())));
+				query.push(("tel".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.valorant_knife_min {
 				query.push(("valorant_knife_min".into(), ParamValue::Integer(*v)));
@@ -3132,7 +3120,7 @@ impl CategoryApi {
 				query.push(("title".into(), ParamValue::String(v.clone())));
 			}
 			if let Some(ref v) = p.order_by {
-				query.push(("order_by".into(), ParamValue::String(v.clone())));
+				query.push(("order_by".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.tag_id {
 				for item in v {
@@ -3186,7 +3174,7 @@ impl CategoryApi {
 				query.push(("sb_by_me".into(), ParamValue::Bool(*v)));
 			}
 			if let Some(ref v) = p.currency {
-				query.push(("currency".into(), ParamValue::String(v.clone())));
+				query.push(("currency".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.email_login_data {
 				query.push(("email_login_data".into(), ParamValue::Bool(*v)));
@@ -3200,18 +3188,16 @@ impl CategoryApi {
 				}
 			}
 			if let Some(ref v) = p.not_email_provider {
-				for item in v {
-					query.push((
-						"not_email_provider[]".into(),
-						ParamValue::String(item.to_string()),
-					));
-				}
+				query.push((
+					"not_email_provider[]".into(),
+					ParamValue::String(v.to_string()),
+				));
 			}
 			if let Some(ref v) = p.parse_same_item_ids {
 				query.push(("parse_same_item_ids".into(), ParamValue::Bool(*v)));
 			}
 			if let Some(ref v) = p.email {
-				query.push(("email".into(), ParamValue::String(v.clone())));
+				query.push(("email".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.robux_min {
 				query.push(("robux_min".into(), ParamValue::Integer(*v)));
@@ -3245,31 +3231,34 @@ impl CategoryApi {
 				query.push(("reg".into(), ParamValue::Integer(*v)));
 			}
 			if let Some(ref v) = p.reg_period {
-				query.push(("reg_period".into(), ParamValue::String(v.clone())));
+				query.push(("reg_period".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.subscription {
-				query.push(("subscription".into(), ParamValue::String(v.clone())));
+				query.push(("subscription".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.subscription_length {
 				query.push(("subscription_length".into(), ParamValue::Integer(*v)));
 			}
 			if let Some(ref v) = p.subscription_period {
-				query.push(("subscription_period".into(), ParamValue::String(v.clone())));
+				query.push((
+					"subscription_period".into(),
+					ParamValue::String(v.to_string()),
+				));
 			}
 			if let Some(ref v) = p.autorenewal {
-				query.push(("autorenewal".into(), ParamValue::String(v.clone())));
+				query.push(("autorenewal".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.xbox_connected {
-				query.push(("xbox_connected".into(), ParamValue::String(v.clone())));
+				query.push(("xbox_connected".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.psn_connected {
-				query.push(("psn_connected".into(), ParamValue::String(v.clone())));
+				query.push(("psn_connected".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.verified {
-				query.push(("verified".into(), ParamValue::String(v.clone())));
+				query.push(("verified".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.age_verified {
-				query.push(("age_verified".into(), ParamValue::String(v.clone())));
+				query.push(("age_verified".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.incoming_robux_total_min {
 				query.push(("incoming_robux_total_min".into(), ParamValue::Integer(*v)));
@@ -3290,7 +3279,7 @@ impl CategoryApi {
 				query.push(("gamepass_max".into(), ParamValue::Integer(*v)));
 			}
 			if let Some(ref v) = p.game_donations {
-				query.push(("game_donations".into(), ParamValue::String(v.clone())));
+				query.push(("game_donations".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.inv_min {
 				query.push(("inv_min".into(), ParamValue::Integer(*v)));
@@ -3317,7 +3306,7 @@ impl CategoryApi {
 				query.push(("offsale_max".into(), ParamValue::Integer(*v)));
 			}
 			if let Some(ref v) = p.voice {
-				query.push(("voice".into(), ParamValue::String(v.clone())));
+				query.push(("voice".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.age_group {
 				for item in v {
@@ -3368,7 +3357,7 @@ impl CategoryApi {
 				query.push(("title".into(), ParamValue::String(v.clone())));
 			}
 			if let Some(ref v) = p.order_by {
-				query.push(("order_by".into(), ParamValue::String(v.clone())));
+				query.push(("order_by".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.tag_id {
 				for item in v {
@@ -3422,7 +3411,7 @@ impl CategoryApi {
 				query.push(("sb_by_me".into(), ParamValue::Bool(*v)));
 			}
 			if let Some(ref v) = p.currency {
-				query.push(("currency".into(), ParamValue::String(v.clone())));
+				query.push(("currency".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.email_login_data {
 				query.push(("email_login_data".into(), ParamValue::Bool(*v)));
@@ -3436,12 +3425,10 @@ impl CategoryApi {
 				}
 			}
 			if let Some(ref v) = p.not_email_provider {
-				for item in v {
-					query.push((
-						"not_email_provider[]".into(),
-						ParamValue::String(item.to_string()),
-					));
-				}
+				query.push((
+					"not_email_provider[]".into(),
+					ParamValue::String(v.to_string()),
+				));
 			}
 			if let Some(ref v) = p.parse_same_item_ids {
 				query.push(("parse_same_item_ids".into(), ParamValue::Bool(*v)));
@@ -3508,7 +3495,7 @@ impl CategoryApi {
 				query.push(("title".into(), ParamValue::String(v.clone())));
 			}
 			if let Some(ref v) = p.order_by {
-				query.push(("order_by".into(), ParamValue::String(v.clone())));
+				query.push(("order_by".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.tag_id {
 				for item in v {
@@ -3562,7 +3549,7 @@ impl CategoryApi {
 				query.push(("sb_by_me".into(), ParamValue::Bool(*v)));
 			}
 			if let Some(ref v) = p.currency {
-				query.push(("currency".into(), ParamValue::String(v.clone())));
+				query.push(("currency".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.email_login_data {
 				query.push(("email_login_data".into(), ParamValue::Bool(*v)));
@@ -3581,12 +3568,10 @@ impl CategoryApi {
 				}
 			}
 			if let Some(ref v) = p.not_email_provider {
-				for item in v {
-					query.push((
-						"not_email_provider[]".into(),
-						ParamValue::String(item.to_string()),
-					));
-				}
+				query.push((
+					"not_email_provider[]".into(),
+					ParamValue::String(v.to_string()),
+				));
 			}
 			if let Some(ref v) = p.parse_same_item_ids {
 				query.push(("parse_same_item_ids".into(), ParamValue::Bool(*v)));
@@ -3613,7 +3598,7 @@ impl CategoryApi {
 				}
 			}
 			if let Some(ref v) = p.eg {
-				query.push(("eg".into(), ParamValue::Integer(*v)));
+				query.push(("eg".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.vac {
 				for item in v {
@@ -3624,28 +3609,28 @@ impl CategoryApi {
 				query.push(("vac_skip_game_check".into(), ParamValue::Bool(*v)));
 			}
 			if let Some(ref v) = p.rt {
-				query.push(("rt".into(), ParamValue::String(v.clone())));
+				query.push(("rt".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.trade_ban {
-				query.push(("trade_ban".into(), ParamValue::String(v.clone())));
+				query.push(("trade_ban".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.trade_limit {
-				query.push(("trade_limit".into(), ParamValue::String(v.clone())));
+				query.push(("trade_limit".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.daybreak {
 				query.push(("daybreak".into(), ParamValue::Integer(*v)));
 			}
 			if let Some(ref v) = p.limit {
-				query.push(("limit".into(), ParamValue::String(v.clone())));
+				query.push(("limit".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.mafile {
-				query.push(("mafile".into(), ParamValue::String(v.clone())));
+				query.push(("mafile".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.reg {
 				query.push(("reg".into(), ParamValue::Integer(*v)));
 			}
 			if let Some(ref v) = p.reg_period {
-				query.push(("reg_period".into(), ParamValue::String(v.clone())));
+				query.push(("reg_period".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.lmin {
 				query.push(("lmin".into(), ParamValue::Integer(*v)));
@@ -3669,7 +3654,7 @@ impl CategoryApi {
 				query.push(("no_vac".into(), ParamValue::Bool(*v)));
 			}
 			if let Some(ref v) = p.mm_ban {
-				query.push(("mm_ban".into(), ParamValue::String(v.clone())));
+				query.push(("mm_ban".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.balance_min {
 				query.push(("balance_min".into(), ParamValue::Integer(*v)));
@@ -3799,7 +3784,7 @@ impl CategoryApi {
 			if let Some(ref v) = p.last_trans_date_period {
 				query.push((
 					"last_trans_date_period".into(),
-					ParamValue::String(v.clone()),
+					ParamValue::String(v.to_string()),
 				));
 			}
 			if let Some(ref v) = p.last_trans_date_later {
@@ -3808,7 +3793,7 @@ impl CategoryApi {
 			if let Some(ref v) = p.last_trans_date_period_later {
 				query.push((
 					"last_trans_date_period_later".into(),
-					ParamValue::String(v.clone()),
+					ParamValue::String(v.to_string()),
 				));
 			}
 			if let Some(ref v) = p.no_trans {
@@ -3848,7 +3833,10 @@ impl CategoryApi {
 				query.push(("purchase_max".into(), ParamValue::Float(*v)));
 			}
 			if let Some(ref v) = p.has_activated_keys {
-				query.push(("has_activated_keys".into(), ParamValue::String(v.clone())));
+				query.push((
+					"has_activated_keys".into(),
+					ParamValue::String(v.to_string()),
+				));
 			}
 			if let Some(ref v) = p.elo_min {
 				query.push(("elo_min".into(), ParamValue::Integer(*v)));
@@ -3857,7 +3845,7 @@ impl CategoryApi {
 				query.push(("elo_max".into(), ParamValue::Integer(*v)));
 			}
 			if let Some(ref v) = p.cs2_map_rank {
-				query.push(("cs2_map_rank".into(), ParamValue::Integer(*v)));
+				query.push(("cs2_map_rank".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.cs2_map_rmin {
 				query.push(("cs2_map_rmin".into(), ParamValue::Integer(*v)));
@@ -3866,7 +3854,7 @@ impl CategoryApi {
 				query.push(("cs2_map_rmax".into(), ParamValue::Integer(*v)));
 			}
 			if let Some(ref v) = p.has_faceit {
-				query.push(("has_faceit".into(), ParamValue::String(v.clone())));
+				query.push(("has_faceit".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.faceit_csgo_lvl_min {
 				query.push(("faceit_csgo_lvl_min".into(), ParamValue::Integer(*v)));
@@ -3892,7 +3880,7 @@ impl CategoryApi {
 			if let Some(ref v) = p.d2_last_match_date_period {
 				query.push((
 					"d2_last_match_date_period".into(),
-					ParamValue::String(v.clone()),
+					ParamValue::String(v.to_string()),
 				));
 			}
 			if let Some(ref v) = p.cards_min {
@@ -3946,7 +3934,7 @@ impl CategoryApi {
 				query.push(("title".into(), ParamValue::String(v.clone())));
 			}
 			if let Some(ref v) = p.order_by {
-				query.push(("order_by".into(), ParamValue::String(v.clone())));
+				query.push(("order_by".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.tag_id {
 				for item in v {
@@ -4000,7 +3988,7 @@ impl CategoryApi {
 				query.push(("sb_by_me".into(), ParamValue::Bool(*v)));
 			}
 			if let Some(ref v) = p.currency {
-				query.push(("currency".into(), ParamValue::String(v.clone())));
+				query.push(("currency".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.email_login_data {
 				query.push(("email_login_data".into(), ParamValue::Bool(*v)));
@@ -4014,12 +4002,10 @@ impl CategoryApi {
 				}
 			}
 			if let Some(ref v) = p.not_email_provider {
-				for item in v {
-					query.push((
-						"not_email_provider[]".into(),
-						ParamValue::String(item.to_string()),
-					));
-				}
+				query.push((
+					"not_email_provider[]".into(),
+					ParamValue::String(v.to_string()),
+				));
 			}
 			if let Some(ref v) = p.parse_same_item_ids {
 				query.push(("parse_same_item_ids".into(), ParamValue::Bool(*v)));
@@ -4036,10 +4022,10 @@ impl CategoryApi {
 				query.push(("item_domain".into(), ParamValue::String(v.clone())));
 			}
 			if let Some(ref v) = p.eg {
-				query.push(("eg".into(), ParamValue::Integer(*v)));
+				query.push(("eg".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.tel {
-				query.push(("tel".into(), ParamValue::String(v.clone())));
+				query.push(("tel".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.brawl_level_min {
 				query.push(("brawl_level_min".into(), ParamValue::Integer(*v)));
@@ -4060,7 +4046,7 @@ impl CategoryApi {
 				query.push(("brawl_wins_max".into(), ParamValue::Integer(*v)));
 			}
 			if let Some(ref v) = p.brawl_pass {
-				query.push(("brawl_pass".into(), ParamValue::String(v.clone())));
+				query.push(("brawl_pass".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.brawler {
 				for item in v {
@@ -4104,7 +4090,7 @@ impl CategoryApi {
 				query.push(("king_level_max".into(), ParamValue::Integer(*v)));
 			}
 			if let Some(ref v) = p.royale_pass {
-				query.push(("royale_pass".into(), ParamValue::String(v.clone())));
+				query.push(("royale_pass".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.clash_level_min {
 				query.push(("clash_level_min".into(), ParamValue::Integer(*v)));
@@ -4125,7 +4111,7 @@ impl CategoryApi {
 				query.push(("clash_wins_max".into(), ParamValue::Integer(*v)));
 			}
 			if let Some(ref v) = p.clash_pass {
-				query.push(("clash_pass".into(), ParamValue::String(v.clone())));
+				query.push(("clash_pass".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.total_heroes_level_min {
 				query.push(("total_heroes_level_min".into(), ParamValue::Integer(*v)));
@@ -4229,7 +4215,7 @@ impl CategoryApi {
 				query.push(("title".into(), ParamValue::String(v.clone())));
 			}
 			if let Some(ref v) = p.order_by {
-				query.push(("order_by".into(), ParamValue::String(v.clone())));
+				query.push(("order_by".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.tag_id {
 				for item in v {
@@ -4283,7 +4269,7 @@ impl CategoryApi {
 				query.push(("sb_by_me".into(), ParamValue::Bool(*v)));
 			}
 			if let Some(ref v) = p.currency {
-				query.push(("currency".into(), ParamValue::String(v.clone())));
+				query.push(("currency".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.email_login_data {
 				query.push(("email_login_data".into(), ParamValue::Bool(*v)));
@@ -4297,24 +4283,22 @@ impl CategoryApi {
 				}
 			}
 			if let Some(ref v) = p.not_email_provider {
-				for item in v {
-					query.push((
-						"not_email_provider[]".into(),
-						ParamValue::String(item.to_string()),
-					));
-				}
+				query.push((
+					"not_email_provider[]".into(),
+					ParamValue::String(v.to_string()),
+				));
 			}
 			if let Some(ref v) = p.parse_same_item_ids {
 				query.push(("parse_same_item_ids".into(), ParamValue::Bool(*v)));
 			}
 			if let Some(ref v) = p.spam {
-				query.push(("spam".into(), ParamValue::String(v.clone())));
+				query.push(("spam".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.password {
-				query.push(("password".into(), ParamValue::String(v.clone())));
+				query.push(("password".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.premium {
-				query.push(("premium".into(), ParamValue::String(v.clone())));
+				query.push(("premium".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.premium_expiration {
 				query.push(("premium_expiration".into(), ParamValue::Integer(*v)));
@@ -4322,7 +4306,7 @@ impl CategoryApi {
 			if let Some(ref v) = p.premium_expiration_period {
 				query.push((
 					"premium_expiration_period".into(),
-					ParamValue::String(v.clone()),
+					ParamValue::String(v.to_string()),
 				));
 			}
 			if let Some(ref v) = p.country {
@@ -4390,7 +4374,7 @@ impl CategoryApi {
 				query.push(("birthday".into(), ParamValue::Integer(*v)));
 			}
 			if let Some(ref v) = p.birthday_period {
-				query.push(("birthday_period".into(), ParamValue::String(v.clone())));
+				query.push(("birthday_period".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.birthday_after {
 				query.push(("birthday_after".into(), ParamValue::Integer(*v)));
@@ -4398,7 +4382,7 @@ impl CategoryApi {
 			if let Some(ref v) = p.birthday_after_period {
 				query.push((
 					"birthday_after_period".into(),
-					ParamValue::String(v.clone()),
+					ParamValue::String(v.to_string()),
 				));
 			}
 			if let Some(ref v) = p.min_id {
@@ -4445,7 +4429,7 @@ impl CategoryApi {
 				}
 			}
 			if let Some(ref v) = p.email {
-				query.push(("email".into(), ParamValue::String(v.clone())));
+				query.push(("email".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.min_bots {
 				query.push(("min_bots".into(), ParamValue::Integer(*v)));
@@ -4495,7 +4479,7 @@ impl CategoryApi {
 				query.push(("title".into(), ParamValue::String(v.clone())));
 			}
 			if let Some(ref v) = p.order_by {
-				query.push(("order_by".into(), ParamValue::String(v.clone())));
+				query.push(("order_by".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.tag_id {
 				for item in v {
@@ -4549,7 +4533,7 @@ impl CategoryApi {
 				query.push(("sb_by_me".into(), ParamValue::Bool(*v)));
 			}
 			if let Some(ref v) = p.currency {
-				query.push(("currency".into(), ParamValue::String(v.clone())));
+				query.push(("currency".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.email_login_data {
 				query.push(("email_login_data".into(), ParamValue::Bool(*v)));
@@ -4563,12 +4547,10 @@ impl CategoryApi {
 				}
 			}
 			if let Some(ref v) = p.not_email_provider {
-				for item in v {
-					query.push((
-						"not_email_provider[]".into(),
-						ParamValue::String(item.to_string()),
-					));
-				}
+				query.push((
+					"not_email_provider[]".into(),
+					ParamValue::String(v.to_string()),
+				));
 			}
 			if let Some(ref v) = p.parse_same_item_ids {
 				query.push(("parse_same_item_ids".into(), ParamValue::Bool(*v)));
@@ -4582,13 +4564,13 @@ impl CategoryApi {
 				query.push(("item_domain".into(), ParamValue::String(v.clone())));
 			}
 			if let Some(ref v) = p.tel {
-				query.push(("tel".into(), ParamValue::String(v.clone())));
+				query.push(("tel".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.reg {
 				query.push(("reg".into(), ParamValue::Integer(*v)));
 			}
 			if let Some(ref v) = p.reg_period {
-				query.push(("reg_period".into(), ParamValue::String(v.clone())));
+				query.push(("reg_period".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.followers_min {
 				query.push(("followers_min".into(), ParamValue::Integer(*v)));
@@ -4615,13 +4597,13 @@ impl CategoryApi {
 				query.push(("coins_max".into(), ParamValue::Integer(*v)));
 			}
 			if let Some(ref v) = p.cookie_login {
-				query.push(("cookie_login".into(), ParamValue::String(v.clone())));
+				query.push(("cookie_login".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.verified {
-				query.push(("verified".into(), ParamValue::String(v.clone())));
+				query.push(("verified".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.email {
-				query.push(("email".into(), ParamValue::String(v.clone())));
+				query.push(("email".into(), ParamValue::String(v.to_string())));
 			}
 		}
 		self.http
@@ -4659,7 +4641,7 @@ impl CategoryApi {
 				query.push(("title".into(), ParamValue::String(v.clone())));
 			}
 			if let Some(ref v) = p.order_by {
-				query.push(("order_by".into(), ParamValue::String(v.clone())));
+				query.push(("order_by".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.tag_id {
 				for item in v {
@@ -4713,7 +4695,7 @@ impl CategoryApi {
 				query.push(("sb_by_me".into(), ParamValue::Bool(*v)));
 			}
 			if let Some(ref v) = p.currency {
-				query.push(("currency".into(), ParamValue::String(v.clone())));
+				query.push(("currency".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.email_login_data {
 				query.push(("email_login_data".into(), ParamValue::Bool(*v)));
@@ -4727,12 +4709,10 @@ impl CategoryApi {
 				}
 			}
 			if let Some(ref v) = p.not_email_provider {
-				for item in v {
-					query.push((
-						"not_email_provider[]".into(),
-						ParamValue::String(item.to_string()),
-					));
-				}
+				query.push((
+					"not_email_provider[]".into(),
+					ParamValue::String(v.to_string()),
+				));
 			}
 			if let Some(ref v) = p.parse_same_item_ids {
 				query.push(("parse_same_item_ids".into(), ParamValue::Bool(*v)));
@@ -4770,13 +4750,16 @@ impl CategoryApi {
 				query.push(("gmax".into(), ParamValue::Integer(*v)));
 			}
 			if let Some(ref v) = p.subscription {
-				query.push(("subscription".into(), ParamValue::String(v.clone())));
+				query.push(("subscription".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.subscription_length {
 				query.push(("subscription_length".into(), ParamValue::Integer(*v)));
 			}
 			if let Some(ref v) = p.subscription_period {
-				query.push(("subscription_period".into(), ParamValue::String(v.clone())));
+				query.push((
+					"subscription_period".into(),
+					ParamValue::String(v.to_string()),
+				));
 			}
 			if let Some(ref v) = p.r6_level_min {
 				query.push(("r6_level_min".into(), ParamValue::Integer(*v)));
@@ -4797,7 +4780,7 @@ impl CategoryApi {
 				query.push(("r6_operators_max".into(), ParamValue::Integer(*v)));
 			}
 			if let Some(ref v) = p.r6_ban {
-				query.push(("r6_ban".into(), ParamValue::String(v.clone())));
+				query.push(("r6_ban".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.r6_smin {
 				query.push(("r6_smin".into(), ParamValue::Integer(*v)));
@@ -4816,13 +4799,13 @@ impl CategoryApi {
 				}
 			}
 			if let Some(ref v) = p.xbox_connected {
-				query.push(("xbox_connected".into(), ParamValue::String(v.clone())));
+				query.push(("xbox_connected".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.psn_connected {
-				query.push(("psn_connected".into(), ParamValue::String(v.clone())));
+				query.push(("psn_connected".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.steam_connected {
-				query.push(("steam_connected".into(), ParamValue::String(v.clone())));
+				query.push(("steam_connected".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.balance_min {
 				query.push(("balance_min".into(), ParamValue::Float(*v)));
@@ -4831,13 +4814,13 @@ impl CategoryApi {
 				query.push(("balance_max".into(), ParamValue::Float(*v)));
 			}
 			if let Some(ref v) = p.transactions {
-				query.push(("transactions".into(), ParamValue::String(v.clone())));
+				query.push(("transactions".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.reg {
 				query.push(("reg".into(), ParamValue::Integer(*v)));
 			}
 			if let Some(ref v) = p.reg_period {
-				query.push(("reg_period".into(), ParamValue::String(v.clone())));
+				query.push(("reg_period".into(), ParamValue::String(v.to_string())));
 			}
 		}
 		self.http
@@ -4875,7 +4858,7 @@ impl CategoryApi {
 				query.push(("title".into(), ParamValue::String(v.clone())));
 			}
 			if let Some(ref v) = p.order_by {
-				query.push(("order_by".into(), ParamValue::String(v.clone())));
+				query.push(("order_by".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.tag_id {
 				for item in v {
@@ -4929,7 +4912,7 @@ impl CategoryApi {
 				query.push(("sb_by_me".into(), ParamValue::Bool(*v)));
 			}
 			if let Some(ref v) = p.currency {
-				query.push(("currency".into(), ParamValue::String(v.clone())));
+				query.push(("currency".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.email_login_data {
 				query.push(("email_login_data".into(), ParamValue::Bool(*v)));
@@ -4943,12 +4926,10 @@ impl CategoryApi {
 				}
 			}
 			if let Some(ref v) = p.not_email_provider {
-				for item in v {
-					query.push((
-						"not_email_provider[]".into(),
-						ParamValue::String(item.to_string()),
-					));
-				}
+				query.push((
+					"not_email_provider[]".into(),
+					ParamValue::String(v.to_string()),
+				));
 			}
 			if let Some(ref v) = p.parse_same_item_ids {
 				query.push(("parse_same_item_ids".into(), ParamValue::Bool(*v)));
@@ -4962,10 +4943,13 @@ impl CategoryApi {
 				query.push(("subscription_length".into(), ParamValue::Integer(*v)));
 			}
 			if let Some(ref v) = p.subscription_period {
-				query.push(("subscription_period".into(), ParamValue::String(v.clone())));
+				query.push((
+					"subscription_period".into(),
+					ParamValue::String(v.to_string()),
+				));
 			}
 			if let Some(ref v) = p.autorenewal {
-				query.push(("autorenewal".into(), ParamValue::String(v.clone())));
+				query.push(("autorenewal".into(), ParamValue::String(v.to_string())));
 			}
 		}
 		self.http
@@ -5003,7 +4987,7 @@ impl CategoryApi {
 				query.push(("title".into(), ParamValue::String(v.clone())));
 			}
 			if let Some(ref v) = p.order_by {
-				query.push(("order_by".into(), ParamValue::String(v.clone())));
+				query.push(("order_by".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.tag_id {
 				for item in v {
@@ -5057,7 +5041,7 @@ impl CategoryApi {
 				query.push(("sb_by_me".into(), ParamValue::Bool(*v)));
 			}
 			if let Some(ref v) = p.currency {
-				query.push(("currency".into(), ParamValue::String(v.clone())));
+				query.push(("currency".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.email_login_data {
 				query.push(("email_login_data".into(), ParamValue::Bool(*v)));
@@ -5071,12 +5055,10 @@ impl CategoryApi {
 				}
 			}
 			if let Some(ref v) = p.not_email_provider {
-				for item in v {
-					query.push((
-						"not_email_provider[]".into(),
-						ParamValue::String(item.to_string()),
-					));
-				}
+				query.push((
+					"not_email_provider[]".into(),
+					ParamValue::String(v.to_string()),
+				));
 			}
 			if let Some(ref v) = p.parse_same_item_ids {
 				query.push(("parse_same_item_ids".into(), ParamValue::Bool(*v)));
@@ -5094,7 +5076,7 @@ impl CategoryApi {
 				query.push(("bonus_rank_max".into(), ParamValue::Integer(*v)));
 			}
 			if let Some(ref v) = p.tel {
-				query.push(("tel".into(), ParamValue::String(v.clone())));
+				query.push(("tel".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.daybreak {
 				query.push(("daybreak".into(), ParamValue::Integer(*v)));
@@ -5147,7 +5129,7 @@ impl CategoryApi {
 				query.push(("title".into(), ParamValue::String(v.clone())));
 			}
 			if let Some(ref v) = p.order_by {
-				query.push(("order_by".into(), ParamValue::String(v.clone())));
+				query.push(("order_by".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.tag_id {
 				for item in v {
@@ -5201,7 +5183,7 @@ impl CategoryApi {
 				query.push(("sb_by_me".into(), ParamValue::Bool(*v)));
 			}
 			if let Some(ref v) = p.currency {
-				query.push(("currency".into(), ParamValue::String(v.clone())));
+				query.push(("currency".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.email_login_data {
 				query.push(("email_login_data".into(), ParamValue::Bool(*v)));
@@ -5215,12 +5197,10 @@ impl CategoryApi {
 				}
 			}
 			if let Some(ref v) = p.not_email_provider {
-				for item in v {
-					query.push((
-						"not_email_provider[]".into(),
-						ParamValue::String(item.to_string()),
-					));
-				}
+				query.push((
+					"not_email_provider[]".into(),
+					ParamValue::String(v.to_string()),
+				));
 			}
 			if let Some(ref v) = p.parse_same_item_ids {
 				query.push(("parse_same_item_ids".into(), ParamValue::Bool(*v)));
@@ -5234,7 +5214,7 @@ impl CategoryApi {
 				query.push(("item_domain".into(), ParamValue::String(v.clone())));
 			}
 			if let Some(ref v) = p.tel {
-				query.push(("tel".into(), ParamValue::String(v.clone())));
+				query.push(("tel".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.daybreak {
 				query.push(("daybreak".into(), ParamValue::Integer(*v)));
@@ -5297,7 +5277,7 @@ impl CategoryApi {
 				}
 			}
 			if let Some(ref v) = p.premium {
-				query.push(("premium".into(), ParamValue::String(v.clone())));
+				query.push(("premium".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.premium_expiration {
 				query.push(("premium_expiration".into(), ParamValue::Integer(*v)));
@@ -5305,11 +5285,11 @@ impl CategoryApi {
 			if let Some(ref v) = p.premium_expiration_period {
 				query.push((
 					"premium_expiration_period".into(),
-					ParamValue::String(v.clone()),
+					ParamValue::String(v.to_string()),
 				));
 			}
 			if let Some(ref v) = p.clan {
-				query.push(("clan".into(), ParamValue::String(v.clone())));
+				query.push(("clan".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.clan_role {
 				for item in v {
@@ -5388,7 +5368,7 @@ impl CategoryApi {
 				query.push(("title".into(), ParamValue::String(v.clone())));
 			}
 			if let Some(ref v) = p.order_by {
-				query.push(("order_by".into(), ParamValue::String(v.clone())));
+				query.push(("order_by".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.tag_id {
 				for item in v {
@@ -5442,7 +5422,7 @@ impl CategoryApi {
 				query.push(("sb_by_me".into(), ParamValue::Bool(*v)));
 			}
 			if let Some(ref v) = p.currency {
-				query.push(("currency".into(), ParamValue::String(v.clone())));
+				query.push(("currency".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.email_login_data {
 				query.push(("email_login_data".into(), ParamValue::Bool(*v)));
@@ -5456,12 +5436,10 @@ impl CategoryApi {
 				}
 			}
 			if let Some(ref v) = p.not_email_provider {
-				for item in v {
-					query.push((
-						"not_email_provider[]".into(),
-						ParamValue::String(item.to_string()),
-					));
-				}
+				query.push((
+					"not_email_provider[]".into(),
+					ParamValue::String(v.to_string()),
+				));
 			}
 			if let Some(ref v) = p.parse_same_item_ids {
 				query.push(("parse_same_item_ids".into(), ParamValue::Bool(*v)));
@@ -5475,7 +5453,7 @@ impl CategoryApi {
 				query.push(("item_domain".into(), ParamValue::String(v.clone())));
 			}
 			if let Some(ref v) = p.tel {
-				query.push(("tel".into(), ParamValue::String(v.clone())));
+				query.push(("tel".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.daybreak {
 				query.push(("daybreak".into(), ParamValue::Integer(*v)));
@@ -5538,7 +5516,7 @@ impl CategoryApi {
 				}
 			}
 			if let Some(ref v) = p.premium {
-				query.push(("premium".into(), ParamValue::String(v.clone())));
+				query.push(("premium".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.premium_expiration {
 				query.push(("premium_expiration".into(), ParamValue::Integer(*v)));
@@ -5546,11 +5524,11 @@ impl CategoryApi {
 			if let Some(ref v) = p.premium_expiration_period {
 				query.push((
 					"premium_expiration_period".into(),
-					ParamValue::String(v.clone()),
+					ParamValue::String(v.to_string()),
 				));
 			}
 			if let Some(ref v) = p.clan {
-				query.push(("clan".into(), ParamValue::String(v.clone())));
+				query.push(("clan".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.clan_role {
 				for item in v {
@@ -5725,7 +5703,7 @@ impl ListApi {
 				query.push(("page".into(), ParamValue::Integer(*v)));
 			}
 			if let Some(ref v) = p.show {
-				query.push(("show".into(), ParamValue::String(v.clone())));
+				query.push(("show".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.title {
 				query.push(("title".into(), ParamValue::String(v.clone())));
@@ -5747,7 +5725,7 @@ impl ListApi {
 				}
 			}
 			if let Some(ref v) = p.order_by {
-				query.push(("order_by".into(), ParamValue::String(v.clone())));
+				query.push(("order_by".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.sb {
 				query.push(("sb".into(), ParamValue::Bool(*v)));
@@ -5819,13 +5797,13 @@ impl ListApi {
 				query.push(("user_id".into(), ParamValue::Integer(*v)));
 			}
 			if let Some(ref v) = p.category_id {
-				query.push(("category_id".into(), ParamValue::Integer(*v)));
+				query.push(("category_id".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.page {
 				query.push(("page".into(), ParamValue::Integer(*v)));
 			}
 			if let Some(ref v) = p.show {
-				query.push(("show".into(), ParamValue::String(v.clone())));
+				query.push(("show".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.delete_reason {
 				query.push(("delete_reason".into(), ParamValue::String(v.clone())));
@@ -5853,7 +5831,7 @@ impl ListApi {
 				}
 			}
 			if let Some(ref v) = p.order_by {
-				query.push(("order_by".into(), ParamValue::String(v.clone())));
+				query.push(("order_by".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.sb {
 				query.push(("sb".into(), ParamValue::Bool(*v)));
@@ -5927,13 +5905,13 @@ impl ListApi {
 				query.push(("user_id".into(), ParamValue::Integer(*v)));
 			}
 			if let Some(ref v) = p.category_id {
-				query.push(("category_id".into(), ParamValue::Integer(*v)));
+				query.push(("category_id".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.page {
 				query.push(("page".into(), ParamValue::Integer(*v)));
 			}
 			if let Some(ref v) = p.show {
-				query.push(("show".into(), ParamValue::String(v.clone())));
+				query.push(("show".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.title {
 				query.push(("title".into(), ParamValue::String(v.clone())));
@@ -5958,7 +5936,7 @@ impl ListApi {
 				}
 			}
 			if let Some(ref v) = p.order_by {
-				query.push(("order_by".into(), ParamValue::String(v.clone())));
+				query.push(("order_by".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.sb {
 				query.push(("sb".into(), ParamValue::Bool(*v)));
@@ -5999,19 +5977,19 @@ impl ListApi {
 		let mut query = Vec::new();
 		if let Some(p) = params {
 			if let Some(ref v) = p.format {
-				query.push(("format".into(), ParamValue::String(v.clone())));
+				query.push(("format".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.custom_format {
 				query.push(("custom_format".into(), ParamValue::String(v.clone())));
 			}
 			if let Some(ref v) = p.category_id {
-				query.push(("category_id".into(), ParamValue::Integer(*v)));
+				query.push(("category_id".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.page {
 				query.push(("page".into(), ParamValue::Integer(*v)));
 			}
 			if let Some(ref v) = p.show {
-				query.push(("show".into(), ParamValue::String(v.clone())));
+				query.push(("show".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.delete_reason {
 				query.push(("delete_reason".into(), ParamValue::String(v.clone())));
@@ -6036,7 +6014,7 @@ impl ListApi {
 				}
 			}
 			if let Some(ref v) = p.order_by {
-				query.push(("order_by".into(), ParamValue::String(v.clone())));
+				query.push(("order_by".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.sb {
 				query.push(("sb".into(), ParamValue::Bool(*v)));
@@ -6109,7 +6087,7 @@ impl ListApi {
 				query.push(("page".into(), ParamValue::Integer(*v)));
 			}
 			if let Some(ref v) = p.show {
-				query.push(("show".into(), ParamValue::String(v.clone())));
+				query.push(("show".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.title {
 				query.push(("title".into(), ParamValue::String(v.clone())));
@@ -6131,7 +6109,7 @@ impl ListApi {
 				}
 			}
 			if let Some(ref v) = p.order_by {
-				query.push(("order_by".into(), ParamValue::String(v.clone())));
+				query.push(("order_by".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.sb {
 				query.push(("sb".into(), ParamValue::Bool(*v)));
@@ -6236,10 +6214,10 @@ impl ManagingApi {
 		query.push(("link".into(), ParamValue::String(link.clone())));
 		if let Some(p) = params {
 			if let Some(ref v) = p.app_id {
-				query.push(("app_id".into(), ParamValue::Integer(*v)));
+				query.push(("app_id".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.currency {
-				query.push(("currency".into(), ParamValue::String(v.clone())));
+				query.push(("currency".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.ignore_cache {
 				query.push(("ignore_cache".into(), ParamValue::Bool(*v)));
@@ -6439,11 +6417,11 @@ impl ManagingApi {
 	pub async fn image(
 		&self,
 		item_id: i64,
-		r#type: String,
+		r#type: ManagingType,
 	) -> Result<ManagingImageResponse, LolzteamError> {
 		let path = format!("/{item_id}/image");
 		let mut query = Vec::new();
-		query.push(("type".into(), ParamValue::String(r#type.clone())));
+		query.push(("type".into(), ParamValue::String(r#type.to_string())));
 		self.http
 			.request(
 				"GET",
@@ -6469,10 +6447,10 @@ impl ManagingApi {
 		let mut query = Vec::new();
 		if let Some(p) = params {
 			if let Some(ref v) = p.app_id {
-				query.push(("app_id".into(), ParamValue::Integer(*v)));
+				query.push(("app_id".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.currency {
-				query.push(("currency".into(), ParamValue::String(v.clone())));
+				query.push(("currency".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.ignore_cache {
 				query.push(("ignore_cache".into(), ParamValue::Bool(*v)));
@@ -6596,7 +6574,7 @@ impl ManagingApi {
 		let mut query = Vec::new();
 		if let Some(p) = params {
 			if let Some(ref v) = p.r#type {
-				query.push(("type".into(), ParamValue::String(v.clone())));
+				query.push(("type".into(), ParamValue::String(v.to_string())));
 			}
 		}
 		self.http
@@ -6835,10 +6813,10 @@ impl PaymentsApi {
 				query.push(("page".into(), ParamValue::Integer(*v)));
 			}
 			if let Some(ref v) = p.currency {
-				query.push(("currency".into(), ParamValue::String(v.clone())));
+				query.push(("currency".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.status {
-				query.push(("status".into(), ParamValue::String(v.clone())));
+				query.push(("status".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.amount {
 				query.push(("amount".into(), ParamValue::Float(*v)));
@@ -6870,7 +6848,7 @@ impl PaymentsApi {
 		let mut query = Vec::new();
 		if let Some(p) = params {
 			if let Some(ref v) = p.r#type {
-				query.push(("type".into(), ParamValue::String(v.clone())));
+				query.push(("type".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.pmin {
 				query.push(("pmin".into(), ParamValue::Integer(*v)));
@@ -6879,7 +6857,7 @@ impl PaymentsApi {
 				query.push(("pmax".into(), ParamValue::Integer(*v)));
 			}
 			if let Some(ref v) = p.currency {
-				query.push(("currency".into(), ParamValue::String(v.clone())));
+				query.push(("currency".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.page {
 				query.push(("page".into(), ParamValue::Integer(*v)));
@@ -6948,10 +6926,10 @@ impl ProfileApi {
 		let mut query = Vec::new();
 		if let Some(p) = params {
 			if let Some(ref v) = p.r#type {
-				query.push(("type".into(), ParamValue::String(v.clone())));
+				query.push(("type".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.claim_state {
-				query.push(("claim_state".into(), ParamValue::String(v.clone())));
+				query.push(("claim_state".into(), ParamValue::String(v.to_string())));
 			}
 		}
 		self.http

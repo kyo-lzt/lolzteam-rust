@@ -75,5 +75,6 @@ pub fn build_method_def(
 		response_schema,
 		response_is_text,
 		description,
+		one_of_body: body_result.one_of_body,
 	}
 }

@@ -695,7 +695,2627 @@ pub struct UserModelTelegramClient {
 	pub telegram_system_version: String,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+// ── Enums ──
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum AgeVerified {
+	#[serde(rename = "yes")]
+	Yes,
+	#[serde(rename = "no")]
+	No,
+	#[serde(rename = "nomatter")]
+	Nomatter,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for AgeVerified {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Yes => write!(f, "yes"),
+			Self::No => write!(f, "no"),
+			Self::Nomatter => write!(f, "nomatter"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(into = "i64", try_from = "i64")]
+pub enum AppId {
+	V730 = 730,
+	V578080 = 578080,
+	V753 = 753,
+	V570 = 570,
+	V440 = 440,
+	V252490 = 252490,
+	V304930 = 304930,
+	V232090 = 232090,
+	V322330 = 322330,
+}
+
+impl From<AppId> for i64 {
+	fn from(v: AppId) -> i64 {
+		v as i64
+	}
+}
+
+impl TryFrom<i64> for AppId {
+	type Error = String;
+	fn try_from(v: i64) -> Result<Self, Self::Error> {
+		match v {
+			730 => Ok(Self::V730),
+			578080 => Ok(Self::V578080),
+			753 => Ok(Self::V753),
+			570 => Ok(Self::V570),
+			440 => Ok(Self::V440),
+			252490 => Ok(Self::V252490),
+			304930 => Ok(Self::V304930),
+			232090 => Ok(Self::V232090),
+			322330 => Ok(Self::V322330),
+			other => Err(format!("unknown AppId value: {other}")),
+		}
+	}
+}
+
+impl std::fmt::Display for AppId {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		write!(f, "{}", *self as i64)
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum Autorenewal {
+	#[serde(rename = "yes")]
+	Yes,
+	#[serde(rename = "no")]
+	No,
+	#[serde(rename = "nomatter")]
+	Nomatter,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for Autorenewal {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Yes => write!(f, "yes"),
+			Self::No => write!(f, "no"),
+			Self::Nomatter => write!(f, "nomatter"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum Bedrock {
+	#[serde(rename = "yes")]
+	Yes,
+	#[serde(rename = "no")]
+	No,
+	#[serde(rename = "nomatter")]
+	Nomatter,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for Bedrock {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Yes => write!(f, "yes"),
+			Self::No => write!(f, "no"),
+			Self::Nomatter => write!(f, "nomatter"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum Billing {
+	#[serde(rename = "yes")]
+	Yes,
+	#[serde(rename = "no")]
+	No,
+	#[serde(rename = "nomatter")]
+	Nomatter,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for Billing {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Yes => write!(f, "yes"),
+			Self::No => write!(f, "no"),
+			Self::Nomatter => write!(f, "nomatter"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum BirthdayAfterPeriod {
+	#[serde(rename = "day")]
+	Day,
+	#[serde(rename = "month")]
+	Month,
+	#[serde(rename = "year")]
+	Year,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for BirthdayAfterPeriod {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Day => write!(f, "day"),
+			Self::Month => write!(f, "month"),
+			Self::Year => write!(f, "year"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum BirthdayPeriod {
+	#[serde(rename = "day")]
+	Day,
+	#[serde(rename = "month")]
+	Month,
+	#[serde(rename = "year")]
+	Year,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for BirthdayPeriod {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Day => write!(f, "day"),
+			Self::Month => write!(f, "month"),
+			Self::Year => write!(f, "year"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum Bp {
+	#[serde(rename = "yes")]
+	Yes,
+	#[serde(rename = "no")]
+	No,
+	#[serde(rename = "nomatter")]
+	Nomatter,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for Bp {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Yes => write!(f, "yes"),
+			Self::No => write!(f, "no"),
+			Self::Nomatter => write!(f, "nomatter"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum BrawlPass {
+	#[serde(rename = "yes")]
+	Yes,
+	#[serde(rename = "no")]
+	No,
+	#[serde(rename = "nomatter")]
+	Nomatter,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for BrawlPass {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Yes => write!(f, "yes"),
+			Self::No => write!(f, "no"),
+			Self::Nomatter => write!(f, "nomatter"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum CanChangeDetails {
+	#[serde(rename = "yes")]
+	Yes,
+	#[serde(rename = "no")]
+	No,
+	#[serde(rename = "nomatter")]
+	Nomatter,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for CanChangeDetails {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Yes => write!(f, "yes"),
+			Self::No => write!(f, "no"),
+			Self::Nomatter => write!(f, "nomatter"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(into = "i64", try_from = "i64")]
+pub enum Cancel {
+	V1 = 1,
+}
+
+impl From<Cancel> for i64 {
+	fn from(v: Cancel) -> i64 {
+		v as i64
+	}
+}
+
+impl TryFrom<i64> for Cancel {
+	type Error = String;
+	fn try_from(v: i64) -> Result<Self, Self::Error> {
+		match v {
+			1 => Ok(Self::V1),
+			other => Err(format!("unknown Cancel value: {other}")),
+		}
+	}
+}
+
+impl std::fmt::Display for Cancel {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		write!(f, "{}", *self as i64)
+	}
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(into = "i64", try_from = "i64")]
+pub enum CategoryEg {
+	Neg1 = -1,
+	V0 = 0,
+	V1 = 1,
+}
+
+impl From<CategoryEg> for i64 {
+	fn from(v: CategoryEg) -> i64 {
+		v as i64
+	}
+}
+
+impl TryFrom<i64> for CategoryEg {
+	type Error = String;
+	fn try_from(v: i64) -> Result<Self, Self::Error> {
+		match v {
+			-1 => Ok(Self::Neg1),
+			0 => Ok(Self::V0),
+			1 => Ok(Self::V1),
+			other => Err(format!("unknown CategoryEg value: {other}")),
+		}
+	}
+}
+
+impl std::fmt::Display for CategoryEg {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		write!(f, "{}", *self as i64)
+	}
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(into = "i64", try_from = "i64")]
+pub enum CategoryId {
+	V1 = 1,
+	V3 = 3,
+	V4 = 4,
+	V5 = 5,
+	V6 = 6,
+	V7 = 7,
+	V8 = 8,
+	V9 = 9,
+	V10 = 10,
+	V11 = 11,
+	V12 = 12,
+	V13 = 13,
+	V14 = 14,
+	V15 = 15,
+	V16 = 16,
+	V17 = 17,
+	V18 = 18,
+	V19 = 19,
+	V20 = 20,
+	V22 = 22,
+	V24 = 24,
+	V28 = 28,
+	V30 = 30,
+	V31 = 31,
+}
+
+impl From<CategoryId> for i64 {
+	fn from(v: CategoryId) -> i64 {
+		v as i64
+	}
+}
+
+impl TryFrom<i64> for CategoryId {
+	type Error = String;
+	fn try_from(v: i64) -> Result<Self, Self::Error> {
+		match v {
+			1 => Ok(Self::V1),
+			3 => Ok(Self::V3),
+			4 => Ok(Self::V4),
+			5 => Ok(Self::V5),
+			6 => Ok(Self::V6),
+			7 => Ok(Self::V7),
+			8 => Ok(Self::V8),
+			9 => Ok(Self::V9),
+			10 => Ok(Self::V10),
+			11 => Ok(Self::V11),
+			12 => Ok(Self::V12),
+			13 => Ok(Self::V13),
+			14 => Ok(Self::V14),
+			15 => Ok(Self::V15),
+			16 => Ok(Self::V16),
+			17 => Ok(Self::V17),
+			18 => Ok(Self::V18),
+			19 => Ok(Self::V19),
+			20 => Ok(Self::V20),
+			22 => Ok(Self::V22),
+			24 => Ok(Self::V24),
+			28 => Ok(Self::V28),
+			30 => Ok(Self::V30),
+			31 => Ok(Self::V31),
+			other => Err(format!("unknown CategoryId value: {other}")),
+		}
+	}
+}
+
+impl std::fmt::Display for CategoryId {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		write!(f, "{}", *self as i64)
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum CategoryName {
+	#[serde(rename = "steam")]
+	Steam,
+	#[serde(rename = "fortnite")]
+	Fortnite,
+	#[serde(rename = "mihoyo")]
+	Mihoyo,
+	#[serde(rename = "riot")]
+	Riot,
+	#[serde(rename = "telegram")]
+	Telegram,
+	#[serde(rename = "supercell")]
+	Supercell,
+	#[serde(rename = "ea")]
+	Ea,
+	#[serde(rename = "world-of-tanks")]
+	WorldOfTanks,
+	#[serde(rename = "wot-blitz")]
+	WotBlitz,
+	#[serde(rename = "epicgames")]
+	Epicgames,
+	#[serde(rename = "gifts")]
+	Gifts,
+	#[serde(rename = "minecraft")]
+	Minecraft,
+	#[serde(rename = "escape-from-tarkov")]
+	EscapeFromTarkov,
+	#[serde(rename = "socialclub")]
+	Socialclub,
+	#[serde(rename = "uplay")]
+	Uplay,
+	#[serde(rename = "discord")]
+	Discord,
+	#[serde(rename = "tiktok")]
+	Tiktok,
+	#[serde(rename = "instagram")]
+	Instagram,
+	#[serde(rename = "chatgpt")]
+	Chatgpt,
+	#[serde(rename = "battlenet")]
+	Battlenet,
+	#[serde(rename = "vpn")]
+	Vpn,
+	#[serde(rename = "roblox")]
+	Roblox,
+	#[serde(rename = "warface")]
+	Warface,
+	#[serde(rename = "hytale")]
+	Hytale,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for CategoryName {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Steam => write!(f, "steam"),
+			Self::Fortnite => write!(f, "fortnite"),
+			Self::Mihoyo => write!(f, "mihoyo"),
+			Self::Riot => write!(f, "riot"),
+			Self::Telegram => write!(f, "telegram"),
+			Self::Supercell => write!(f, "supercell"),
+			Self::Ea => write!(f, "ea"),
+			Self::WorldOfTanks => write!(f, "world-of-tanks"),
+			Self::WotBlitz => write!(f, "wot-blitz"),
+			Self::Epicgames => write!(f, "epicgames"),
+			Self::Gifts => write!(f, "gifts"),
+			Self::Minecraft => write!(f, "minecraft"),
+			Self::EscapeFromTarkov => write!(f, "escape-from-tarkov"),
+			Self::Socialclub => write!(f, "socialclub"),
+			Self::Uplay => write!(f, "uplay"),
+			Self::Discord => write!(f, "discord"),
+			Self::Tiktok => write!(f, "tiktok"),
+			Self::Instagram => write!(f, "instagram"),
+			Self::Chatgpt => write!(f, "chatgpt"),
+			Self::Battlenet => write!(f, "battlenet"),
+			Self::Vpn => write!(f, "vpn"),
+			Self::Roblox => write!(f, "roblox"),
+			Self::Warface => write!(f, "warface"),
+			Self::Hytale => write!(f, "hytale"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum CategorySubscription {
+	#[serde(rename = "EA Play")]
+	EaPlay,
+	#[serde(rename = "EA Play Pro")]
+	EaPlayPro,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for CategorySubscription {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::EaPlay => write!(f, "EA Play"),
+			Self::EaPlayPro => write!(f, "EA Play Pro"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum ChangeEmail {
+	#[serde(rename = "yes")]
+	Yes,
+	#[serde(rename = "no")]
+	No,
+	#[serde(rename = "nomatter")]
+	Nomatter,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for ChangeEmail {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Yes => write!(f, "yes"),
+			Self::No => write!(f, "no"),
+			Self::Nomatter => write!(f, "nomatter"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum ChangeNickname {
+	#[serde(rename = "yes")]
+	Yes,
+	#[serde(rename = "no")]
+	No,
+	#[serde(rename = "nomatter")]
+	Nomatter,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for ChangeNickname {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Yes => write!(f, "yes"),
+			Self::No => write!(f, "no"),
+			Self::Nomatter => write!(f, "nomatter"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum ChangeableFn {
+	#[serde(rename = "yes")]
+	Yes,
+	#[serde(rename = "no")]
+	No,
+	#[serde(rename = "nomatter")]
+	Nomatter,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for ChangeableFn {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Yes => write!(f, "yes"),
+			Self::No => write!(f, "no"),
+			Self::Nomatter => write!(f, "nomatter"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum ClaimState {
+	#[serde(rename = "active")]
+	Active,
+	#[serde(rename = "solved")]
+	Solved,
+	#[serde(rename = "rejected")]
+	Rejected,
+	#[serde(rename = "settled")]
+	Settled,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for ClaimState {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Active => write!(f, "active"),
+			Self::Solved => write!(f, "solved"),
+			Self::Rejected => write!(f, "rejected"),
+			Self::Settled => write!(f, "settled"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum Clan {
+	#[serde(rename = "yes")]
+	Yes,
+	#[serde(rename = "no")]
+	No,
+	#[serde(rename = "nomatter")]
+	Nomatter,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for Clan {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Yes => write!(f, "yes"),
+			Self::No => write!(f, "no"),
+			Self::Nomatter => write!(f, "nomatter"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum Clans {
+	#[serde(rename = "yes")]
+	Yes,
+	#[serde(rename = "no")]
+	No,
+	#[serde(rename = "nomatter")]
+	Nomatter,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for Clans {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Yes => write!(f, "yes"),
+			Self::No => write!(f, "no"),
+			Self::Nomatter => write!(f, "nomatter"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum ClashPass {
+	#[serde(rename = "yes")]
+	Yes,
+	#[serde(rename = "no")]
+	No,
+	#[serde(rename = "nomatter")]
+	Nomatter,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for ClashPass {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Yes => write!(f, "yes"),
+			Self::No => write!(f, "no"),
+			Self::Nomatter => write!(f, "nomatter"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum CookieLogin {
+	#[serde(rename = "yes")]
+	Yes,
+	#[serde(rename = "no")]
+	No,
+	#[serde(rename = "nomatter")]
+	Nomatter,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for CookieLogin {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Yes => write!(f, "yes"),
+			Self::No => write!(f, "no"),
+			Self::Nomatter => write!(f, "nomatter"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum Cookies {
+	#[serde(rename = "yes")]
+	Yes,
+	#[serde(rename = "no")]
+	No,
+	#[serde(rename = "nomatter")]
+	Nomatter,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for Cookies {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Yes => write!(f, "yes"),
+			Self::No => write!(f, "no"),
+			Self::Nomatter => write!(f, "nomatter"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(into = "i64", try_from = "i64")]
+pub enum Cs2MapRank {
+	V1 = 1,
+	V2 = 2,
+	V3 = 3,
+	V4 = 4,
+	V5 = 5,
+	V6 = 6,
+	V7 = 7,
+	V8 = 8,
+	V9 = 9,
+	V10 = 10,
+	V11 = 11,
+	V12 = 12,
+	V13 = 13,
+}
+
+impl From<Cs2MapRank> for i64 {
+	fn from(v: Cs2MapRank) -> i64 {
+		v as i64
+	}
+}
+
+impl TryFrom<i64> for Cs2MapRank {
+	type Error = String;
+	fn try_from(v: i64) -> Result<Self, Self::Error> {
+		match v {
+			1 => Ok(Self::V1),
+			2 => Ok(Self::V2),
+			3 => Ok(Self::V3),
+			4 => Ok(Self::V4),
+			5 => Ok(Self::V5),
+			6 => Ok(Self::V6),
+			7 => Ok(Self::V7),
+			8 => Ok(Self::V8),
+			9 => Ok(Self::V9),
+			10 => Ok(Self::V10),
+			11 => Ok(Self::V11),
+			12 => Ok(Self::V12),
+			13 => Ok(Self::V13),
+			other => Err(format!("unknown Cs2MapRank value: {other}")),
+		}
+	}
+}
+
+impl std::fmt::Display for Cs2MapRank {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		write!(f, "{}", *self as i64)
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum Currency {
+	#[serde(rename = "rub")]
+	Rub,
+	#[serde(rename = "uah")]
+	Uah,
+	#[serde(rename = "kzt")]
+	Kzt,
+	#[serde(rename = "byn")]
+	Byn,
+	#[serde(rename = "usd")]
+	Usd,
+	#[serde(rename = "eur")]
+	Eur,
+	#[serde(rename = "gbp")]
+	Gbp,
+	#[serde(rename = "cny")]
+	Cny,
+	#[serde(rename = "try")]
+	Try,
+	#[serde(rename = "jpy")]
+	Jpy,
+	#[serde(rename = "brl")]
+	Brl,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for Currency {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Rub => write!(f, "rub"),
+			Self::Uah => write!(f, "uah"),
+			Self::Kzt => write!(f, "kzt"),
+			Self::Byn => write!(f, "byn"),
+			Self::Usd => write!(f, "usd"),
+			Self::Eur => write!(f, "eur"),
+			Self::Gbp => write!(f, "gbp"),
+			Self::Cny => write!(f, "cny"),
+			Self::Try => write!(f, "try"),
+			Self::Jpy => write!(f, "jpy"),
+			Self::Brl => write!(f, "brl"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum D2LastMatchDatePeriod {
+	#[serde(rename = "day")]
+	Day,
+	#[serde(rename = "month")]
+	Month,
+	#[serde(rename = "year")]
+	Year,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for D2LastMatchDatePeriod {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Day => write!(f, "day"),
+			Self::Month => write!(f, "month"),
+			Self::Year => write!(f, "year"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(into = "i64", try_from = "i64")]
+pub enum Day {
+	V0 = 0,
+	V1 = 1,
+	V2 = 2,
+	V3 = 3,
+	V4 = 4,
+	V5 = 5,
+	V6 = 6,
+	V7 = 7,
+	V8 = 8,
+	V9 = 9,
+	V10 = 10,
+	V11 = 11,
+	V12 = 12,
+	V13 = 13,
+	V14 = 14,
+	V15 = 15,
+	V16 = 16,
+	V17 = 17,
+	V18 = 18,
+	V19 = 19,
+	V20 = 20,
+	V21 = 21,
+	V22 = 22,
+	V23 = 23,
+	V24 = 24,
+	V25 = 25,
+	V26 = 26,
+	V27 = 27,
+	V28 = 28,
+}
+
+impl From<Day> for i64 {
+	fn from(v: Day) -> i64 {
+		v as i64
+	}
+}
+
+impl TryFrom<i64> for Day {
+	type Error = String;
+	fn try_from(v: i64) -> Result<Self, Self::Error> {
+		match v {
+			0 => Ok(Self::V0),
+			1 => Ok(Self::V1),
+			2 => Ok(Self::V2),
+			3 => Ok(Self::V3),
+			4 => Ok(Self::V4),
+			5 => Ok(Self::V5),
+			6 => Ok(Self::V6),
+			7 => Ok(Self::V7),
+			8 => Ok(Self::V8),
+			9 => Ok(Self::V9),
+			10 => Ok(Self::V10),
+			11 => Ok(Self::V11),
+			12 => Ok(Self::V12),
+			13 => Ok(Self::V13),
+			14 => Ok(Self::V14),
+			15 => Ok(Self::V15),
+			16 => Ok(Self::V16),
+			17 => Ok(Self::V17),
+			18 => Ok(Self::V18),
+			19 => Ok(Self::V19),
+			20 => Ok(Self::V20),
+			21 => Ok(Self::V21),
+			22 => Ok(Self::V22),
+			23 => Ok(Self::V23),
+			24 => Ok(Self::V24),
+			25 => Ok(Self::V25),
+			26 => Ok(Self::V26),
+			27 => Ok(Self::V27),
+			28 => Ok(Self::V28),
+			other => Err(format!("unknown Day value: {other}")),
+		}
+	}
+}
+
+impl std::fmt::Display for Day {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		write!(f, "{}", *self as i64)
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum Dungeons {
+	#[serde(rename = "yes")]
+	Yes,
+	#[serde(rename = "no")]
+	No,
+	#[serde(rename = "nomatter")]
+	Nomatter,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for Dungeons {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Yes => write!(f, "yes"),
+			Self::No => write!(f, "no"),
+			Self::Nomatter => write!(f, "nomatter"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum Ea {
+	#[serde(rename = "yes")]
+	Yes,
+	#[serde(rename = "no")]
+	No,
+	#[serde(rename = "nomatter")]
+	Nomatter,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for Ea {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Yes => write!(f, "yes"),
+			Self::No => write!(f, "no"),
+			Self::Nomatter => write!(f, "nomatter"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum EditBtag {
+	#[serde(rename = "yes")]
+	Yes,
+	#[serde(rename = "no")]
+	No,
+	#[serde(rename = "nomatter")]
+	Nomatter,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for EditBtag {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Yes => write!(f, "yes"),
+			Self::No => write!(f, "no"),
+			Self::Nomatter => write!(f, "nomatter"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum Email {
+	#[serde(rename = "yes")]
+	Yes,
+	#[serde(rename = "no")]
+	No,
+	#[serde(rename = "nomatter")]
+	Nomatter,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for Email {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Yes => write!(f, "yes"),
+			Self::No => write!(f, "no"),
+			Self::Nomatter => write!(f, "nomatter"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum EmailType {
+	#[serde(rename = "native")]
+	Native,
+	#[serde(rename = "autoreg")]
+	Autoreg,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for EmailType {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Native => write!(f, "native"),
+			Self::Autoreg => write!(f, "autoreg"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(into = "i64", try_from = "i64")]
+pub enum ExtendedGuarantee {
+	Neg1 = -1,
+	V0 = 0,
+	V1 = 1,
+}
+
+impl From<ExtendedGuarantee> for i64 {
+	fn from(v: ExtendedGuarantee) -> i64 {
+		v as i64
+	}
+}
+
+impl TryFrom<i64> for ExtendedGuarantee {
+	type Error = String;
+	fn try_from(v: i64) -> Result<Self, Self::Error> {
+		match v {
+			-1 => Ok(Self::Neg1),
+			0 => Ok(Self::V0),
+			1 => Ok(Self::V1),
+			other => Err(format!("unknown ExtendedGuarantee value: {other}")),
+		}
+	}
+}
+
+impl std::fmt::Display for ExtendedGuarantee {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		write!(f, "{}", *self as i64)
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum Format {
+	#[serde(rename = "short")]
+	Short,
+	#[serde(rename = "custom")]
+	Custom,
+	#[serde(rename = "mfa_file_steam_id")]
+	MfaFileSteamId,
+	#[serde(rename = "mfa_file_login")]
+	MfaFileLogin,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for Format {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Short => write!(f, "short"),
+			Self::Custom => write!(f, "custom"),
+			Self::MfaFileSteamId => write!(f, "mfa_file_steam_id"),
+			Self::MfaFileLogin => write!(f, "mfa_file_login"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum GameDonations {
+	#[serde(rename = "yes")]
+	Yes,
+	#[serde(rename = "no")]
+	No,
+	#[serde(rename = "nomatter")]
+	Nomatter,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for GameDonations {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Yes => write!(f, "yes"),
+			Self::No => write!(f, "no"),
+			Self::Nomatter => write!(f, "nomatter"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum Gifts {
+	#[serde(rename = "yes")]
+	Yes,
+	#[serde(rename = "no")]
+	No,
+	#[serde(rename = "nomatter")]
+	Nomatter,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for Gifts {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Yes => write!(f, "yes"),
+			Self::No => write!(f, "no"),
+			Self::Nomatter => write!(f, "nomatter"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum HasActivatedKeys {
+	#[serde(rename = "yes")]
+	Yes,
+	#[serde(rename = "no")]
+	No,
+	#[serde(rename = "nomatter")]
+	Nomatter,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for HasActivatedKeys {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Yes => write!(f, "yes"),
+			Self::No => write!(f, "no"),
+			Self::Nomatter => write!(f, "nomatter"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum HasBan {
+	#[serde(rename = "yes")]
+	Yes,
+	#[serde(rename = "no")]
+	No,
+	#[serde(rename = "nomatter")]
+	Nomatter,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for HasBan {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Yes => write!(f, "yes"),
+			Self::No => write!(f, "no"),
+			Self::Nomatter => write!(f, "nomatter"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum HasFaceit {
+	#[serde(rename = "yes")]
+	Yes,
+	#[serde(rename = "no")]
+	No,
+	#[serde(rename = "nomatter")]
+	Nomatter,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for HasFaceit {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Yes => write!(f, "yes"),
+			Self::No => write!(f, "no"),
+			Self::Nomatter => write!(f, "nomatter"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum HoldLengthOption {
+	#[serde(rename = "hour")]
+	Hour,
+	#[serde(rename = "day")]
+	Day,
+	#[serde(rename = "week")]
+	Week,
+	#[serde(rename = "month")]
+	Month,
+	#[serde(rename = "year")]
+	Year,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for HoldLengthOption {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Hour => write!(f, "hour"),
+			Self::Day => write!(f, "day"),
+			Self::Week => write!(f, "week"),
+			Self::Month => write!(f, "month"),
+			Self::Year => write!(f, "year"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum HypixelBan {
+	#[serde(rename = "yes")]
+	Yes,
+	#[serde(rename = "no")]
+	No,
+	#[serde(rename = "nomatter")]
+	Nomatter,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for HypixelBan {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Yes => write!(f, "yes"),
+			Self::No => write!(f, "no"),
+			Self::Nomatter => write!(f, "nomatter"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum HypixelBanParsed {
+	#[serde(rename = "yes")]
+	Yes,
+	#[serde(rename = "no")]
+	No,
+	#[serde(rename = "nomatter")]
+	Nomatter,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for HypixelBanParsed {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Yes => write!(f, "yes"),
+			Self::No => write!(f, "no"),
+			Self::Nomatter => write!(f, "nomatter"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum HypixelSkyblockApiEnabled {
+	#[serde(rename = "yes")]
+	Yes,
+	#[serde(rename = "no")]
+	No,
+	#[serde(rename = "nomatter")]
+	Nomatter,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for HypixelSkyblockApiEnabled {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Yes => write!(f, "yes"),
+			Self::No => write!(f, "no"),
+			Self::Nomatter => write!(f, "nomatter"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum Java {
+	#[serde(rename = "yes")]
+	Yes,
+	#[serde(rename = "no")]
+	No,
+	#[serde(rename = "nomatter")]
+	Nomatter,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for Java {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Yes => write!(f, "yes"),
+			Self::No => write!(f, "no"),
+			Self::Nomatter => write!(f, "nomatter"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum LastLoginHypixelPeriod {
+	#[serde(rename = "day")]
+	Day,
+	#[serde(rename = "month")]
+	Month,
+	#[serde(rename = "year")]
+	Year,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for LastLoginHypixelPeriod {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Day => write!(f, "day"),
+			Self::Month => write!(f, "month"),
+			Self::Year => write!(f, "year"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum LastTransDatePeriod {
+	#[serde(rename = "day")]
+	Day,
+	#[serde(rename = "month")]
+	Month,
+	#[serde(rename = "year")]
+	Year,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for LastTransDatePeriod {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Day => write!(f, "day"),
+			Self::Month => write!(f, "month"),
+			Self::Year => write!(f, "year"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum LastTransDatePeriodLater {
+	#[serde(rename = "day")]
+	Day,
+	#[serde(rename = "month")]
+	Month,
+	#[serde(rename = "year")]
+	Year,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for LastTransDatePeriodLater {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Day => write!(f, "day"),
+			Self::Month => write!(f, "month"),
+			Self::Year => write!(f, "year"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum Legends {
+	#[serde(rename = "yes")]
+	Yes,
+	#[serde(rename = "no")]
+	No,
+	#[serde(rename = "nomatter")]
+	Nomatter,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for Legends {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Yes => write!(f, "yes"),
+			Self::No => write!(f, "no"),
+			Self::Nomatter => write!(f, "nomatter"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum Limit {
+	#[serde(rename = "yes")]
+	Yes,
+	#[serde(rename = "no")]
+	No,
+	#[serde(rename = "nomatter")]
+	Nomatter,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for Limit {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Yes => write!(f, "yes"),
+			Self::No => write!(f, "no"),
+			Self::Nomatter => write!(f, "nomatter"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum ListType {
+	#[serde(rename = "items")]
+	Items,
+	#[serde(rename = "orders")]
+	Orders,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for ListType {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Items => write!(f, "items"),
+			Self::Orders => write!(f, "orders"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum LoginWithoutCookies {
+	#[serde(rename = "yes")]
+	Yes,
+	#[serde(rename = "no")]
+	No,
+	#[serde(rename = "nomatter")]
+	Nomatter,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for LoginWithoutCookies {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Yes => write!(f, "yes"),
+			Self::No => write!(f, "no"),
+			Self::Nomatter => write!(f, "nomatter"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum Mafile {
+	#[serde(rename = "yes")]
+	Yes,
+	#[serde(rename = "no")]
+	No,
+	#[serde(rename = "nomatter")]
+	Nomatter,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for Mafile {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Yes => write!(f, "yes"),
+			Self::No => write!(f, "no"),
+			Self::Nomatter => write!(f, "nomatter"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum ManagingItemOrigin {
+	#[serde(rename = "brute")]
+	Brute,
+	#[serde(rename = "phishing")]
+	Phishing,
+	#[serde(rename = "stealer")]
+	Stealer,
+	#[serde(rename = "personal")]
+	Personal,
+	#[serde(rename = "resale")]
+	Resale,
+	#[serde(rename = "autoreg")]
+	Autoreg,
+	#[serde(rename = "dummy")]
+	Dummy,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for ManagingItemOrigin {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Brute => write!(f, "brute"),
+			Self::Phishing => write!(f, "phishing"),
+			Self::Stealer => write!(f, "stealer"),
+			Self::Personal => write!(f, "personal"),
+			Self::Resale => write!(f, "resale"),
+			Self::Autoreg => write!(f, "autoreg"),
+			Self::Dummy => write!(f, "dummy"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum ManagingType {
+	#[serde(rename = "profiles")]
+	Profiles,
+	#[serde(rename = "games")]
+	Games,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for ManagingType {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Profiles => write!(f, "profiles"),
+			Self::Games => write!(f, "games"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum MmBan {
+	#[serde(rename = "yes")]
+	Yes,
+	#[serde(rename = "no")]
+	No,
+	#[serde(rename = "nomatter")]
+	Nomatter,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for MmBan {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Yes => write!(f, "yes"),
+			Self::No => write!(f, "no"),
+			Self::Nomatter => write!(f, "nomatter"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum Nitro {
+	#[serde(rename = "yes")]
+	Yes,
+	#[serde(rename = "no")]
+	No,
+	#[serde(rename = "nomatter")]
+	Nomatter,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for Nitro {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Yes => write!(f, "yes"),
+			Self::No => write!(f, "no"),
+			Self::Nomatter => write!(f, "nomatter"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum NitroPeriod {
+	#[serde(rename = "day")]
+	Day,
+	#[serde(rename = "month")]
+	Month,
+	#[serde(rename = "year")]
+	Year,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for NitroPeriod {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Day => write!(f, "day"),
+			Self::Month => write!(f, "month"),
+			Self::Year => write!(f, "year"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum NoBans {
+	#[serde(rename = "yes")]
+	Yes,
+	#[serde(rename = "no")]
+	No,
+	#[serde(rename = "nomatter")]
+	Nomatter,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for NoBans {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Yes => write!(f, "yes"),
+			Self::No => write!(f, "no"),
+			Self::Nomatter => write!(f, "nomatter"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum NotEmailProvider {
+	#[serde(rename = "other")]
+	Other,
+	#[serde(rename = "rambler")]
+	Rambler,
+	#[serde(rename = "outlook")]
+	Outlook,
+	#[serde(rename = "firstmail")]
+	Firstmail,
+	#[serde(rename = "notletters")]
+	Notletters,
+	#[serde(rename = "mail_ru")]
+	MailRu,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for NotEmailProvider {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Other => write!(f, "other"),
+			Self::Rambler => write!(f, "rambler"),
+			Self::Outlook => write!(f, "outlook"),
+			Self::Firstmail => write!(f, "firstmail"),
+			Self::Notletters => write!(f, "notletters"),
+			Self::MailRu => write!(f, "mail_ru"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum OrderBy {
+	#[serde(rename = "price_to_up")]
+	PriceToUp,
+	#[serde(rename = "price_to_down")]
+	PriceToDown,
+	#[serde(rename = "pdate_to_down")]
+	PdateToDown,
+	#[serde(rename = "pdate_to_up")]
+	PdateToUp,
+	#[serde(rename = "pdate_to_down_upload")]
+	PdateToDownUpload,
+	#[serde(rename = "pdate_to_up_upload")]
+	PdateToUpUpload,
+	#[serde(rename = "edate_to_up")]
+	EdateToUp,
+	#[serde(rename = "edate_to_down")]
+	EdateToDown,
+	#[serde(rename = "ddate_to_up")]
+	DdateToUp,
+	#[serde(rename = "ddate_to_down")]
+	DdateToDown,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for OrderBy {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::PriceToUp => write!(f, "price_to_up"),
+			Self::PriceToDown => write!(f, "price_to_down"),
+			Self::PdateToDown => write!(f, "pdate_to_down"),
+			Self::PdateToUp => write!(f, "pdate_to_up"),
+			Self::PdateToDownUpload => write!(f, "pdate_to_down_upload"),
+			Self::PdateToUpUpload => write!(f, "pdate_to_up_upload"),
+			Self::EdateToUp => write!(f, "edate_to_up"),
+			Self::EdateToDown => write!(f, "edate_to_down"),
+			Self::DdateToUp => write!(f, "ddate_to_up"),
+			Self::DdateToDown => write!(f, "ddate_to_down"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum ParentControl {
+	#[serde(rename = "yes")]
+	Yes,
+	#[serde(rename = "no")]
+	No,
+	#[serde(rename = "nomatter")]
+	Nomatter,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for ParentControl {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Yes => write!(f, "yes"),
+			Self::No => write!(f, "no"),
+			Self::Nomatter => write!(f, "nomatter"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum Password {
+	#[serde(rename = "yes")]
+	Yes,
+	#[serde(rename = "no")]
+	No,
+	#[serde(rename = "nomatter")]
+	Nomatter,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for Password {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Yes => write!(f, "yes"),
+			Self::No => write!(f, "no"),
+			Self::Nomatter => write!(f, "nomatter"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum PaymentsType {
+	#[serde(rename = "paid_item")]
+	PaidItem,
+	#[serde(rename = "sold_item")]
+	SoldItem,
+	#[serde(rename = "withdrawal_balance")]
+	WithdrawalBalance,
+	#[serde(rename = "refilled_balance")]
+	RefilledBalance,
+	#[serde(rename = "internal_purchase")]
+	InternalPurchase,
+	#[serde(rename = "money_transfer")]
+	MoneyTransfer,
+	#[serde(rename = "receiving_money")]
+	ReceivingMoney,
+	#[serde(rename = "claim_hold")]
+	ClaimHold,
+	#[serde(rename = "insurance_deposit")]
+	InsuranceDeposit,
+	#[serde(rename = "paid_mail")]
+	PaidMail,
+	#[serde(rename = "contest")]
+	Contest,
+	#[serde(rename = "invoice")]
+	Invoice,
+	#[serde(rename = "balance_exchange")]
+	BalanceExchange,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for PaymentsType {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::PaidItem => write!(f, "paid_item"),
+			Self::SoldItem => write!(f, "sold_item"),
+			Self::WithdrawalBalance => write!(f, "withdrawal_balance"),
+			Self::RefilledBalance => write!(f, "refilled_balance"),
+			Self::InternalPurchase => write!(f, "internal_purchase"),
+			Self::MoneyTransfer => write!(f, "money_transfer"),
+			Self::ReceivingMoney => write!(f, "receiving_money"),
+			Self::ClaimHold => write!(f, "claim_hold"),
+			Self::InsuranceDeposit => write!(f, "insurance_deposit"),
+			Self::PaidMail => write!(f, "paid_mail"),
+			Self::Contest => write!(f, "contest"),
+			Self::Invoice => write!(f, "invoice"),
+			Self::BalanceExchange => write!(f, "balance_exchange"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum Premium {
+	#[serde(rename = "yes")]
+	Yes,
+	#[serde(rename = "no")]
+	No,
+	#[serde(rename = "nomatter")]
+	Nomatter,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for Premium {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Yes => write!(f, "yes"),
+			Self::No => write!(f, "no"),
+			Self::Nomatter => write!(f, "nomatter"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum PremiumExpirationPeriod {
+	#[serde(rename = "day")]
+	Day,
+	#[serde(rename = "month")]
+	Month,
+	#[serde(rename = "year")]
+	Year,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for PremiumExpirationPeriod {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Day => write!(f, "day"),
+			Self::Month => write!(f, "month"),
+			Self::Year => write!(f, "year"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum ProfileType {
+	#[serde(rename = "market")]
+	Market,
+	#[serde(rename = "nomarket")]
+	Nomarket,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for ProfileType {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Market => write!(f, "market"),
+			Self::Nomarket => write!(f, "nomarket"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum PsnConnected {
+	#[serde(rename = "yes")]
+	Yes,
+	#[serde(rename = "no")]
+	No,
+	#[serde(rename = "nomatter")]
+	Nomatter,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for PsnConnected {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Yes => write!(f, "yes"),
+			Self::No => write!(f, "no"),
+			Self::Nomatter => write!(f, "nomatter"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum PsnLinkable {
+	#[serde(rename = "yes")]
+	Yes,
+	#[serde(rename = "no")]
+	No,
+	#[serde(rename = "nomatter")]
+	Nomatter,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for PsnLinkable {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Yes => write!(f, "yes"),
+			Self::No => write!(f, "no"),
+			Self::Nomatter => write!(f, "nomatter"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum PublishingItemOrigin {
+	#[serde(rename = "brute")]
+	Brute,
+	#[serde(rename = "phishing")]
+	Phishing,
+	#[serde(rename = "stealer")]
+	Stealer,
+	#[serde(rename = "personal")]
+	Personal,
+	#[serde(rename = "resale")]
+	Resale,
+	#[serde(rename = "autoreg")]
+	Autoreg,
+	#[serde(rename = "dummy")]
+	Dummy,
+	#[serde(rename = "self_registration")]
+	SelfRegistration,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for PublishingItemOrigin {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Brute => write!(f, "brute"),
+			Self::Phishing => write!(f, "phishing"),
+			Self::Stealer => write!(f, "stealer"),
+			Self::Personal => write!(f, "personal"),
+			Self::Resale => write!(f, "resale"),
+			Self::Autoreg => write!(f, "autoreg"),
+			Self::Dummy => write!(f, "dummy"),
+			Self::SelfRegistration => write!(f, "self_registration"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum PublishingType {
+	#[serde(rename = "socialclub")]
+	Socialclub,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for PublishingType {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Socialclub => write!(f, "socialclub"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum Pve {
+	#[serde(rename = "yes")]
+	Yes,
+	#[serde(rename = "no")]
+	No,
+	#[serde(rename = "nomatter")]
+	Nomatter,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for Pve {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Yes => write!(f, "yes"),
+			Self::No => write!(f, "no"),
+			Self::Nomatter => write!(f, "nomatter"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum R6Ban {
+	#[serde(rename = "yes")]
+	Yes,
+	#[serde(rename = "no")]
+	No,
+	#[serde(rename = "nomatter")]
+	Nomatter,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for R6Ban {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Yes => write!(f, "yes"),
+			Self::No => write!(f, "no"),
+			Self::Nomatter => write!(f, "nomatter"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum RealId {
+	#[serde(rename = "yes")]
+	Yes,
+	#[serde(rename = "no")]
+	No,
+	#[serde(rename = "nomatter")]
+	Nomatter,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for RealId {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Yes => write!(f, "yes"),
+			Self::No => write!(f, "no"),
+			Self::Nomatter => write!(f, "nomatter"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum RegPeriod {
+	#[serde(rename = "day")]
+	Day,
+	#[serde(rename = "month")]
+	Month,
+	#[serde(rename = "year")]
+	Year,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for RegPeriod {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Day => write!(f, "day"),
+			Self::Month => write!(f, "month"),
+			Self::Year => write!(f, "year"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum Region {
+	#[serde(rename = "af")]
+	Af,
+	#[serde(rename = "as")]
+	As,
+	#[serde(rename = "cis")]
+	Cis,
+	#[serde(rename = "eu")]
+	Eu,
+	#[serde(rename = "me")]
+	Me,
+	#[serde(rename = "oc")]
+	Oc,
+	#[serde(rename = "us")]
+	Us,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for Region {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Af => write!(f, "af"),
+			Self::As => write!(f, "as"),
+			Self::Cis => write!(f, "cis"),
+			Self::Eu => write!(f, "eu"),
+			Self::Me => write!(f, "me"),
+			Self::Oc => write!(f, "oc"),
+			Self::Us => write!(f, "us"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum RoyalePass {
+	#[serde(rename = "yes")]
+	Yes,
+	#[serde(rename = "no")]
+	No,
+	#[serde(rename = "nomatter")]
+	Nomatter,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for RoyalePass {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Yes => write!(f, "yes"),
+			Self::No => write!(f, "no"),
+			Self::Nomatter => write!(f, "nomatter"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum Rt {
+	#[serde(rename = "yes")]
+	Yes,
+	#[serde(rename = "no")]
+	No,
+	#[serde(rename = "nomatter")]
+	Nomatter,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for Rt {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Yes => write!(f, "yes"),
+			Self::No => write!(f, "no"),
+			Self::Nomatter => write!(f, "nomatter"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum Show {
+	#[serde(rename = "active")]
+	Active,
+	#[serde(rename = "paid")]
+	Paid,
+	#[serde(rename = "deleted")]
+	Deleted,
+	#[serde(rename = "awaiting")]
+	Awaiting,
+	#[serde(rename = "closed")]
+	Closed,
+	#[serde(rename = "discount_request")]
+	DiscountRequest,
+	#[serde(rename = "stickied")]
+	Stickied,
+	#[serde(rename = "pre_active")]
+	PreActive,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for Show {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Active => write!(f, "active"),
+			Self::Paid => write!(f, "paid"),
+			Self::Deleted => write!(f, "deleted"),
+			Self::Awaiting => write!(f, "awaiting"),
+			Self::Closed => write!(f, "closed"),
+			Self::DiscountRequest => write!(f, "discount_request"),
+			Self::Stickied => write!(f, "stickied"),
+			Self::PreActive => write!(f, "pre_active"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum Side {
+	Bear,
+	Savage,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for Side {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Bear => write!(f, "Bear"),
+			Self::Savage => write!(f, "Savage"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum Spam {
+	#[serde(rename = "yes")]
+	Yes,
+	#[serde(rename = "no")]
+	No,
+	#[serde(rename = "nomatter")]
+	Nomatter,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for Spam {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Yes => write!(f, "yes"),
+			Self::No => write!(f, "no"),
+			Self::Nomatter => write!(f, "nomatter"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum Status {
+	#[serde(rename = "paid")]
+	Paid,
+	#[serde(rename = "not_paid")]
+	NotPaid,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for Status {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Paid => write!(f, "paid"),
+			Self::NotPaid => write!(f, "not_paid"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum SteamConnected {
+	#[serde(rename = "yes")]
+	Yes,
+	#[serde(rename = "no")]
+	No,
+	#[serde(rename = "nomatter")]
+	Nomatter,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for SteamConnected {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Yes => write!(f, "yes"),
+			Self::No => write!(f, "no"),
+			Self::Nomatter => write!(f, "nomatter"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum SubscriptionPeriod {
+	#[serde(rename = "day")]
+	Day,
+	#[serde(rename = "month")]
+	Month,
+	#[serde(rename = "year")]
+	Year,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for SubscriptionPeriod {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Day => write!(f, "day"),
+			Self::Month => write!(f, "month"),
+			Self::Year => write!(f, "year"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum Tel {
+	#[serde(rename = "yes")]
+	Yes,
+	#[serde(rename = "no")]
+	No,
+	#[serde(rename = "nomatter")]
+	Nomatter,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for Tel {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Yes => write!(f, "yes"),
+			Self::No => write!(f, "no"),
+			Self::Nomatter => write!(f, "nomatter"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum TempEmail {
+	#[serde(rename = "yes")]
+	Yes,
+	#[serde(rename = "no")]
+	No,
+	#[serde(rename = "nomatter")]
+	Nomatter,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for TempEmail {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Yes => write!(f, "yes"),
+			Self::No => write!(f, "no"),
+			Self::Nomatter => write!(f, "nomatter"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum TradeBan {
+	#[serde(rename = "yes")]
+	Yes,
+	#[serde(rename = "no")]
+	No,
+	#[serde(rename = "nomatter")]
+	Nomatter,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for TradeBan {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Yes => write!(f, "yes"),
+			Self::No => write!(f, "no"),
+			Self::Nomatter => write!(f, "nomatter"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum TradeLimit {
+	#[serde(rename = "yes")]
+	Yes,
+	#[serde(rename = "no")]
+	No,
+	#[serde(rename = "nomatter")]
+	Nomatter,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for TradeLimit {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Yes => write!(f, "yes"),
+			Self::No => write!(f, "no"),
+			Self::Nomatter => write!(f, "nomatter"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum Transactions {
+	#[serde(rename = "yes")]
+	Yes,
+	#[serde(rename = "no")]
+	No,
+	#[serde(rename = "nomatter")]
+	Nomatter,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for Transactions {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Yes => write!(f, "yes"),
+			Self::No => write!(f, "no"),
+			Self::Nomatter => write!(f, "nomatter"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum V2fa {
+	#[serde(rename = "yes")]
+	Yes,
+	#[serde(rename = "no")]
+	No,
+	#[serde(rename = "nomatter")]
+	Nomatter,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for V2fa {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Yes => write!(f, "yes"),
+			Self::No => write!(f, "no"),
+			Self::Nomatter => write!(f, "nomatter"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum Verified {
+	#[serde(rename = "yes")]
+	Yes,
+	#[serde(rename = "no")]
+	No,
+	#[serde(rename = "nomatter")]
+	Nomatter,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for Verified {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Yes => write!(f, "yes"),
+			Self::No => write!(f, "no"),
+			Self::Nomatter => write!(f, "nomatter"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum Voice {
+	#[serde(rename = "yes")]
+	Yes,
+	#[serde(rename = "no")]
+	No,
+	#[serde(rename = "nomatter")]
+	Nomatter,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for Voice {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Yes => write!(f, "yes"),
+			Self::No => write!(f, "no"),
+			Self::Nomatter => write!(f, "nomatter"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum XboxConnected {
+	#[serde(rename = "yes")]
+	Yes,
+	#[serde(rename = "no")]
+	No,
+	#[serde(rename = "nomatter")]
+	Nomatter,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for XboxConnected {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Yes => write!(f, "yes"),
+			Self::No => write!(f, "no"),
+			Self::Nomatter => write!(f, "nomatter"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum XboxLinkable {
+	#[serde(rename = "yes")]
+	Yes,
+	#[serde(rename = "no")]
+	No,
+	#[serde(rename = "nomatter")]
+	Nomatter,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for XboxLinkable {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Yes => write!(f, "yes"),
+			Self::No => write!(f, "no"),
+			Self::Nomatter => write!(f, "nomatter"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct AutoPaymentsDeleteBody {
 	pub auto_payment_id: i64,
 }
@@ -707,12 +3327,12 @@ pub struct AutoPaymentsDeleteResponse {
 	pub system_info: RespSystemInfo,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AutoPaymentsCreateBody {
 	pub amount: f64,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub currency: Option<String>,
-	pub day: i64,
+	pub currency: Option<Currency>,
+	pub day: Day,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub description: Option<String>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -832,7 +3452,7 @@ pub struct BatchBatchResponse {
 	pub system_info: Option<RespSystemInfo>,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct CartDeleteBody {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub item_id: Option<i64>,
@@ -847,7 +3467,7 @@ pub struct CartDeleteResponse {
 #[derive(Debug, Clone, Default, Serialize)]
 pub struct CartGetParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub category_id: Option<i64>,
+	pub category_id: Option<CategoryId>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub page: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -857,7 +3477,7 @@ pub struct CartGetParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub title: Option<String>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub order_by: Option<String>,
+	pub order_by: Option<OrderBy>,
 	#[serde(rename = "tag_id[]", skip_serializing_if = "Option::is_none")]
 	pub tag_id: Option<Vec<i64>>,
 	#[serde(rename = "not_tag_id[]", skip_serializing_if = "Option::is_none")]
@@ -884,7 +3504,7 @@ pub struct CartGetParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub sb_by_me: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub currency: Option<String>,
+	pub currency: Option<Currency>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub email_login_data: Option<bool>,
 	#[serde(rename = "email_provider[]", skip_serializing_if = "Option::is_none")]
@@ -893,7 +3513,7 @@ pub struct CartGetParams {
 		rename = "not_email_provider[]",
 		skip_serializing_if = "Option::is_none"
 	)]
-	pub not_email_provider: Option<Vec<String>>,
+	pub not_email_provider: Option<NotEmailProvider>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub parse_same_item_ids: Option<bool>,
 }
@@ -917,7 +3537,7 @@ pub struct CartGetResponse {
 	pub total_items_price: serde_json::Value,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct CartAddBody {
 	pub item_id: i64,
 }
@@ -939,7 +3559,7 @@ pub struct CategoryAllParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub title: Option<String>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub order_by: Option<String>,
+	pub order_by: Option<OrderBy>,
 	#[serde(rename = "tag_id[]", skip_serializing_if = "Option::is_none")]
 	pub tag_id: Option<Vec<i64>>,
 	#[serde(rename = "not_tag_id[]", skip_serializing_if = "Option::is_none")]
@@ -966,7 +3586,7 @@ pub struct CategoryAllParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub sb_by_me: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub currency: Option<String>,
+	pub currency: Option<Currency>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub email_login_data: Option<bool>,
 	#[serde(rename = "email_provider[]", skip_serializing_if = "Option::is_none")]
@@ -975,7 +3595,7 @@ pub struct CategoryAllParams {
 		rename = "not_email_provider[]",
 		skip_serializing_if = "Option::is_none"
 	)]
-	pub not_email_provider: Option<Vec<String>>,
+	pub not_email_provider: Option<NotEmailProvider>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub parse_same_item_ids: Option<bool>,
 }
@@ -1010,7 +3630,7 @@ pub struct CategoryBattleNetParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub title: Option<String>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub order_by: Option<String>,
+	pub order_by: Option<OrderBy>,
 	#[serde(rename = "tag_id[]", skip_serializing_if = "Option::is_none")]
 	pub tag_id: Option<Vec<i64>>,
 	#[serde(rename = "not_tag_id[]", skip_serializing_if = "Option::is_none")]
@@ -1037,7 +3657,7 @@ pub struct CategoryBattleNetParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub sb_by_me: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub currency: Option<String>,
+	pub currency: Option<Currency>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub email_login_data: Option<bool>,
 	#[serde(rename = "email_provider[]", skip_serializing_if = "Option::is_none")]
@@ -1046,7 +3666,7 @@ pub struct CategoryBattleNetParams {
 		rename = "not_email_provider[]",
 		skip_serializing_if = "Option::is_none"
 	)]
-	pub not_email_provider: Option<Vec<String>>,
+	pub not_email_provider: Option<NotEmailProvider>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub parse_same_item_ids: Option<bool>,
 	#[serde(rename = "email_type[]", skip_serializing_if = "Option::is_none")]
@@ -1054,7 +3674,7 @@ pub struct CategoryBattleNetParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub item_domain: Option<String>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub eg: Option<i64>,
+	pub eg: Option<CategoryEg>,
 	#[serde(rename = "game[]", skip_serializing_if = "Option::is_none")]
 	pub game: Option<Vec<i64>>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -1064,17 +3684,17 @@ pub struct CategoryBattleNetParams {
 	#[serde(rename = "not_country[]", skip_serializing_if = "Option::is_none")]
 	pub not_country: Option<Vec<String>>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub tel: Option<String>,
+	pub tel: Option<Tel>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub edit_btag: Option<String>,
+	pub edit_btag: Option<EditBtag>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub changeable_fn: Option<String>,
+	pub changeable_fn: Option<ChangeableFn>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub real_id: Option<String>,
+	pub real_id: Option<RealId>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub parent_control: Option<String>,
+	pub parent_control: Option<ParentControl>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub no_bans: Option<String>,
+	pub no_bans: Option<NoBans>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub balance_min: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -1330,7 +3950,7 @@ pub struct CategoryChatGptParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub title: Option<String>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub order_by: Option<String>,
+	pub order_by: Option<OrderBy>,
 	#[serde(rename = "tag_id[]", skip_serializing_if = "Option::is_none")]
 	pub tag_id: Option<Vec<i64>>,
 	#[serde(rename = "not_tag_id[]", skip_serializing_if = "Option::is_none")]
@@ -1357,7 +3977,7 @@ pub struct CategoryChatGptParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub sb_by_me: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub currency: Option<String>,
+	pub currency: Option<Currency>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub email_login_data: Option<bool>,
 	#[serde(rename = "email_provider[]", skip_serializing_if = "Option::is_none")]
@@ -1366,7 +3986,7 @@ pub struct CategoryChatGptParams {
 		rename = "not_email_provider[]",
 		skip_serializing_if = "Option::is_none"
 	)]
-	pub not_email_provider: Option<Vec<String>>,
+	pub not_email_provider: Option<NotEmailProvider>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub parse_same_item_ids: Option<bool>,
 	#[serde(rename = "email_type[]", skip_serializing_if = "Option::is_none")]
@@ -1378,17 +3998,17 @@ pub struct CategoryChatGptParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub subscription_length: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub subscription_period: Option<String>,
+	pub subscription_period: Option<SubscriptionPeriod>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub autorenewal: Option<String>,
+	pub autorenewal: Option<Autorenewal>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub tel: Option<String>,
+	pub tel: Option<Tel>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub transactions: Option<String>,
+	pub transactions: Option<Transactions>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub reg: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub reg_period: Option<String>,
+	pub reg_period: Option<RegPeriod>,
 	#[serde(rename = "openai_tier[]", skip_serializing_if = "Option::is_none")]
 	pub openai_tier: Option<Vec<String>>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -1573,7 +4193,7 @@ pub struct CategoryDiscordParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub title: Option<String>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub order_by: Option<String>,
+	pub order_by: Option<OrderBy>,
 	#[serde(rename = "tag_id[]", skip_serializing_if = "Option::is_none")]
 	pub tag_id: Option<Vec<i64>>,
 	#[serde(rename = "not_tag_id[]", skip_serializing_if = "Option::is_none")]
@@ -1600,7 +4220,7 @@ pub struct CategoryDiscordParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub sb_by_me: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub currency: Option<String>,
+	pub currency: Option<Currency>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub email_login_data: Option<bool>,
 	#[serde(rename = "email_provider[]", skip_serializing_if = "Option::is_none")]
@@ -1609,7 +4229,7 @@ pub struct CategoryDiscordParams {
 		rename = "not_email_provider[]",
 		skip_serializing_if = "Option::is_none"
 	)]
-	pub not_email_provider: Option<Vec<String>>,
+	pub not_email_provider: Option<NotEmailProvider>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub parse_same_item_ids: Option<bool>,
 	#[serde(rename = "email_type[]", skip_serializing_if = "Option::is_none")]
@@ -1617,25 +4237,25 @@ pub struct CategoryDiscordParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub item_domain: Option<String>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub tel: Option<String>,
+	pub tel: Option<Tel>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub nitro: Option<String>,
+	pub nitro: Option<Nitro>,
 	#[serde(rename = "nitro_type[]", skip_serializing_if = "Option::is_none")]
 	pub nitro_type: Option<Vec<String>>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub nitro_length: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub nitro_period: Option<String>,
+	pub nitro_period: Option<NitroPeriod>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub boosts_min: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub boosts_max: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub billing: Option<String>,
+	pub billing: Option<Billing>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub gifts: Option<String>,
+	pub gifts: Option<Gifts>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub transactions: Option<String>,
+	pub transactions: Option<Transactions>,
 	#[serde(rename = "badge[]", skip_serializing_if = "Option::is_none")]
 	pub badge: Option<Vec<String>>,
 	#[serde(rename = "condition[]", skip_serializing_if = "Option::is_none")]
@@ -1655,13 +4275,13 @@ pub struct CategoryDiscordParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub reg: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub reg_period: Option<String>,
+	pub reg_period: Option<RegPeriod>,
 	#[serde(rename = "language[]", skip_serializing_if = "Option::is_none")]
 	pub language: Option<Vec<String>>,
 	#[serde(rename = "not_language[]", skip_serializing_if = "Option::is_none")]
 	pub not_language: Option<Vec<String>>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub clans: Option<String>,
+	pub clans: Option<Clans>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub min_admin_clans: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -1679,7 +4299,7 @@ pub struct CategoryDiscordParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub max_servers: Option<i64>,
 	#[serde(rename = "2fa", skip_serializing_if = "Option::is_none")]
-	pub _2fa: Option<String>,
+	pub _2fa: Option<V2fa>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub min_full_credits: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -1863,7 +4483,7 @@ pub struct CategoryEaParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub title: Option<String>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub order_by: Option<String>,
+	pub order_by: Option<OrderBy>,
 	#[serde(rename = "tag_id[]", skip_serializing_if = "Option::is_none")]
 	pub tag_id: Option<Vec<i64>>,
 	#[serde(rename = "not_tag_id[]", skip_serializing_if = "Option::is_none")]
@@ -1890,7 +4510,7 @@ pub struct CategoryEaParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub sb_by_me: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub currency: Option<String>,
+	pub currency: Option<Currency>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub email_login_data: Option<bool>,
 	#[serde(rename = "email_provider[]", skip_serializing_if = "Option::is_none")]
@@ -1899,7 +4519,7 @@ pub struct CategoryEaParams {
 		rename = "not_email_provider[]",
 		skip_serializing_if = "Option::is_none"
 	)]
-	pub not_email_provider: Option<Vec<String>>,
+	pub not_email_provider: Option<NotEmailProvider>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub parse_same_item_ids: Option<bool>,
 	#[serde(rename = "email_type[]", skip_serializing_if = "Option::is_none")]
@@ -1925,25 +4545,25 @@ pub struct CategoryEaParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub al_level_max: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub has_ban: Option<String>,
+	pub has_ban: Option<HasBan>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub xbox_connected: Option<String>,
+	pub xbox_connected: Option<XboxConnected>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub steam_connected: Option<String>,
+	pub steam_connected: Option<SteamConnected>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub psn_connected: Option<String>,
+	pub psn_connected: Option<PsnConnected>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub subscription: Option<String>,
+	pub subscription: Option<CategorySubscription>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub subscription_length: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub subscription_period: Option<String>,
+	pub subscription_period: Option<SubscriptionPeriod>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub hours_played: Option<HashMap<String, i64>>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub hours_played_max: Option<HashMap<String, i64>>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub transactions: Option<String>,
+	pub transactions: Option<Transactions>,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -2141,7 +4761,7 @@ pub struct CategoryEpicGamesParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub title: Option<String>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub order_by: Option<String>,
+	pub order_by: Option<OrderBy>,
 	#[serde(rename = "tag_id[]", skip_serializing_if = "Option::is_none")]
 	pub tag_id: Option<Vec<i64>>,
 	#[serde(rename = "not_tag_id[]", skip_serializing_if = "Option::is_none")]
@@ -2168,7 +4788,7 @@ pub struct CategoryEpicGamesParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub sb_by_me: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub currency: Option<String>,
+	pub currency: Option<Currency>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub email_login_data: Option<bool>,
 	#[serde(rename = "email_provider[]", skip_serializing_if = "Option::is_none")]
@@ -2177,7 +4797,7 @@ pub struct CategoryEpicGamesParams {
 		rename = "not_email_provider[]",
 		skip_serializing_if = "Option::is_none"
 	)]
-	pub not_email_provider: Option<Vec<String>>,
+	pub not_email_provider: Option<NotEmailProvider>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub parse_same_item_ids: Option<bool>,
 	#[serde(rename = "email_type[]", skip_serializing_if = "Option::is_none")]
@@ -2185,11 +4805,11 @@ pub struct CategoryEpicGamesParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub item_domain: Option<String>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub eg: Option<i64>,
+	pub eg: Option<CategoryEg>,
 	#[serde(rename = "game[]", skip_serializing_if = "Option::is_none")]
 	pub game: Option<Vec<String>>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub change_email: Option<String>,
+	pub change_email: Option<ChangeEmail>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub rl_purchases: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -2420,7 +5040,7 @@ pub struct CategoryEscapeFromTarkovParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub title: Option<String>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub order_by: Option<String>,
+	pub order_by: Option<OrderBy>,
 	#[serde(rename = "tag_id[]", skip_serializing_if = "Option::is_none")]
 	pub tag_id: Option<Vec<i64>>,
 	#[serde(rename = "not_tag_id[]", skip_serializing_if = "Option::is_none")]
@@ -2447,7 +5067,7 @@ pub struct CategoryEscapeFromTarkovParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub sb_by_me: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub currency: Option<String>,
+	pub currency: Option<Currency>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub email_login_data: Option<bool>,
 	#[serde(rename = "email_provider[]", skip_serializing_if = "Option::is_none")]
@@ -2456,7 +5076,7 @@ pub struct CategoryEscapeFromTarkovParams {
 		rename = "not_email_provider[]",
 		skip_serializing_if = "Option::is_none"
 	)]
-	pub not_email_provider: Option<Vec<String>>,
+	pub not_email_provider: Option<NotEmailProvider>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub parse_same_item_ids: Option<bool>,
 	#[serde(rename = "email_type[]", skip_serializing_if = "Option::is_none")]
@@ -2464,21 +5084,21 @@ pub struct CategoryEscapeFromTarkovParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub item_domain: Option<String>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub region: Option<String>,
+	pub region: Option<Region>,
 	#[serde(rename = "version[]", skip_serializing_if = "Option::is_none")]
 	pub version: Option<Vec<String>>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub reg: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub reg_period: Option<String>,
+	pub reg_period: Option<RegPeriod>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub level_min: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub level_max: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub pve: Option<String>,
+	pub pve: Option<Pve>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub side: Option<String>,
+	pub side: Option<Side>,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -2661,7 +5281,7 @@ pub struct CategoryFortniteParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub title: Option<String>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub order_by: Option<String>,
+	pub order_by: Option<OrderBy>,
 	#[serde(rename = "tag_id[]", skip_serializing_if = "Option::is_none")]
 	pub tag_id: Option<Vec<i64>>,
 	#[serde(rename = "not_tag_id[]", skip_serializing_if = "Option::is_none")]
@@ -2688,7 +5308,7 @@ pub struct CategoryFortniteParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub sb_by_me: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub currency: Option<String>,
+	pub currency: Option<Currency>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub email_login_data: Option<bool>,
 	#[serde(rename = "email_provider[]", skip_serializing_if = "Option::is_none")]
@@ -2699,15 +5319,15 @@ pub struct CategoryFortniteParams {
 		rename = "not_email_provider[]",
 		skip_serializing_if = "Option::is_none"
 	)]
-	pub not_email_provider: Option<Vec<String>>,
+	pub not_email_provider: Option<NotEmailProvider>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub parse_same_item_ids: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub temp_email: Option<String>,
+	pub temp_email: Option<TempEmail>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub item_domain: Option<String>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub eg: Option<i64>,
+	pub eg: Option<CategoryEg>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub smin: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -2725,7 +5345,7 @@ pub struct CategoryFortniteParams {
 	#[serde(rename = "dance[]", skip_serializing_if = "Option::is_none")]
 	pub dance: Option<Vec<String>>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub change_email: Option<String>,
+	pub change_email: Option<ChangeEmail>,
 	#[serde(rename = "platform[]", skip_serializing_if = "Option::is_none")]
 	pub platform: Option<Vec<String>>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -2761,7 +5381,7 @@ pub struct CategoryFortniteParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub gliders_shop_vbmax: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub bp: Option<String>,
+	pub bp: Option<Bp>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub lmin: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -2773,13 +5393,13 @@ pub struct CategoryFortniteParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub last_trans_date: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub last_trans_date_period: Option<String>,
+	pub last_trans_date_period: Option<LastTransDatePeriod>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub no_trans: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub xbox_linkable: Option<String>,
+	pub xbox_linkable: Option<XboxLinkable>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub psn_linkable: Option<String>,
+	pub psn_linkable: Option<PsnLinkable>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub daybreak: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -2787,7 +5407,7 @@ pub struct CategoryFortniteParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub reg: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub reg_period: Option<String>,
+	pub reg_period: Option<RegPeriod>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub refund_credits_min: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -3094,7 +5714,7 @@ pub struct CategoryGiftsParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub title: Option<String>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub order_by: Option<String>,
+	pub order_by: Option<OrderBy>,
 	#[serde(rename = "tag_id[]", skip_serializing_if = "Option::is_none")]
 	pub tag_id: Option<Vec<i64>>,
 	#[serde(rename = "not_tag_id[]", skip_serializing_if = "Option::is_none")]
@@ -3121,7 +5741,7 @@ pub struct CategoryGiftsParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub sb_by_me: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub currency: Option<String>,
+	pub currency: Option<Currency>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub email_login_data: Option<bool>,
 	#[serde(rename = "email_provider[]", skip_serializing_if = "Option::is_none")]
@@ -3130,15 +5750,15 @@ pub struct CategoryGiftsParams {
 		rename = "not_email_provider[]",
 		skip_serializing_if = "Option::is_none"
 	)]
-	pub not_email_provider: Option<Vec<String>>,
+	pub not_email_provider: Option<NotEmailProvider>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub parse_same_item_ids: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub subscription: Option<String>,
+	pub subscription: Option<CategorySubscription>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub subscription_length: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub subscription_period: Option<String>,
+	pub subscription_period: Option<SubscriptionPeriod>,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -3297,7 +5917,7 @@ pub struct CategoryHytaleParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub title: Option<String>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub order_by: Option<String>,
+	pub order_by: Option<OrderBy>,
 	#[serde(rename = "tag_id[]", skip_serializing_if = "Option::is_none")]
 	pub tag_id: Option<Vec<i64>>,
 	#[serde(rename = "not_tag_id[]", skip_serializing_if = "Option::is_none")]
@@ -3324,7 +5944,7 @@ pub struct CategoryHytaleParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub sb_by_me: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub currency: Option<String>,
+	pub currency: Option<Currency>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub email_login_data: Option<bool>,
 	#[serde(rename = "email_provider[]", skip_serializing_if = "Option::is_none")]
@@ -3333,7 +5953,7 @@ pub struct CategoryHytaleParams {
 		rename = "not_email_provider[]",
 		skip_serializing_if = "Option::is_none"
 	)]
-	pub not_email_provider: Option<Vec<String>>,
+	pub not_email_provider: Option<NotEmailProvider>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub parse_same_item_ids: Option<bool>,
 	#[serde(rename = "edition[]", skip_serializing_if = "Option::is_none")]
@@ -3523,7 +6143,7 @@ pub struct CategoryInstagramParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub title: Option<String>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub order_by: Option<String>,
+	pub order_by: Option<OrderBy>,
 	#[serde(rename = "tag_id[]", skip_serializing_if = "Option::is_none")]
 	pub tag_id: Option<Vec<i64>>,
 	#[serde(rename = "not_tag_id[]", skip_serializing_if = "Option::is_none")]
@@ -3550,7 +6170,7 @@ pub struct CategoryInstagramParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub sb_by_me: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub currency: Option<String>,
+	pub currency: Option<Currency>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub email_login_data: Option<bool>,
 	#[serde(rename = "email_provider[]", skip_serializing_if = "Option::is_none")]
@@ -3559,7 +6179,7 @@ pub struct CategoryInstagramParams {
 		rename = "not_email_provider[]",
 		skip_serializing_if = "Option::is_none"
 	)]
-	pub not_email_provider: Option<Vec<String>>,
+	pub not_email_provider: Option<NotEmailProvider>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub parse_same_item_ids: Option<bool>,
 	#[serde(rename = "email_type[]", skip_serializing_if = "Option::is_none")]
@@ -3567,15 +6187,15 @@ pub struct CategoryInstagramParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub item_domain: Option<String>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub tel: Option<String>,
+	pub tel: Option<Tel>,
 	#[serde(rename = "country[]", skip_serializing_if = "Option::is_none")]
 	pub country: Option<Vec<String>>,
 	#[serde(rename = "not_country[]", skip_serializing_if = "Option::is_none")]
 	pub not_country: Option<Vec<String>>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub cookies: Option<String>,
+	pub cookies: Option<Cookies>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub login_without_cookies: Option<String>,
+	pub login_without_cookies: Option<LoginWithoutCookies>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub followers_min: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -3587,7 +6207,7 @@ pub struct CategoryInstagramParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub reg: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub reg_period: Option<String>,
+	pub reg_period: Option<RegPeriod>,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -3763,7 +6383,7 @@ pub struct CategoryMihoyoParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub title: Option<String>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub order_by: Option<String>,
+	pub order_by: Option<OrderBy>,
 	#[serde(rename = "tag_id[]", skip_serializing_if = "Option::is_none")]
 	pub tag_id: Option<Vec<i64>>,
 	#[serde(rename = "not_tag_id[]", skip_serializing_if = "Option::is_none")]
@@ -3790,7 +6410,7 @@ pub struct CategoryMihoyoParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub sb_by_me: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub currency: Option<String>,
+	pub currency: Option<Currency>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub email_login_data: Option<bool>,
 	#[serde(rename = "email_provider[]", skip_serializing_if = "Option::is_none")]
@@ -3799,7 +6419,7 @@ pub struct CategoryMihoyoParams {
 		rename = "not_email_provider[]",
 		skip_serializing_if = "Option::is_none"
 	)]
-	pub not_email_provider: Option<Vec<String>>,
+	pub not_email_provider: Option<NotEmailProvider>,
 	#[serde(rename = "email_type[]", skip_serializing_if = "Option::is_none")]
 	pub email_type: Option<Vec<String>>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -3807,9 +6427,9 @@ pub struct CategoryMihoyoParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub item_domain: Option<String>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub email: Option<String>,
+	pub email: Option<Email>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub ea: Option<String>,
+	pub ea: Option<Ea>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub region: Option<Vec<String>>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -4329,7 +6949,7 @@ pub struct CategoryMinecraftParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub title: Option<String>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub order_by: Option<String>,
+	pub order_by: Option<OrderBy>,
 	#[serde(rename = "tag_id[]", skip_serializing_if = "Option::is_none")]
 	pub tag_id: Option<Vec<i64>>,
 	#[serde(rename = "not_tag_id[]", skip_serializing_if = "Option::is_none")]
@@ -4356,7 +6976,7 @@ pub struct CategoryMinecraftParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub sb_by_me: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub currency: Option<String>,
+	pub currency: Option<Currency>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub email_login_data: Option<bool>,
 	#[serde(rename = "email_provider[]", skip_serializing_if = "Option::is_none")]
@@ -4365,27 +6985,27 @@ pub struct CategoryMinecraftParams {
 		rename = "not_email_provider[]",
 		skip_serializing_if = "Option::is_none"
 	)]
-	pub not_email_provider: Option<Vec<String>>,
+	pub not_email_provider: Option<NotEmailProvider>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub parse_same_item_ids: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub subscription: Option<String>,
+	pub subscription: Option<CategorySubscription>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub subscription_length: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub subscription_period: Option<String>,
+	pub subscription_period: Option<SubscriptionPeriod>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub autorenewal: Option<String>,
+	pub autorenewal: Option<Autorenewal>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub java: Option<String>,
+	pub java: Option<Java>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub bedrock: Option<String>,
+	pub bedrock: Option<Bedrock>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub dungeons: Option<String>,
+	pub dungeons: Option<Dungeons>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub legends: Option<String>,
+	pub legends: Option<Legends>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub change_nickname: Option<String>,
+	pub change_nickname: Option<ChangeNickname>,
 	#[serde(rename = "capes[]", skip_serializing_if = "Option::is_none")]
 	pub capes: Option<Vec<String>>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -4397,9 +7017,9 @@ pub struct CategoryMinecraftParams {
 	#[serde(rename = "not_country[]", skip_serializing_if = "Option::is_none")]
 	pub not_country: Option<Vec<String>>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub hypixel_ban: Option<String>,
+	pub hypixel_ban: Option<HypixelBan>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub hypixel_skyblock_api_enabled: Option<String>,
+	pub hypixel_skyblock_api_enabled: Option<HypixelSkyblockApiEnabled>,
 	#[serde(rename = "rank_hypixel[]", skip_serializing_if = "Option::is_none")]
 	pub rank_hypixel: Option<Vec<String>>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -4421,19 +7041,19 @@ pub struct CategoryMinecraftParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub reg: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub reg_period: Option<String>,
+	pub reg_period: Option<RegPeriod>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub last_login_hypixel: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub last_login_hypixel_period: Option<String>,
+	pub last_login_hypixel_period: Option<LastLoginHypixelPeriod>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub can_change_details: Option<String>,
+	pub can_change_details: Option<CanChangeDetails>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub nickname_length_min: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub nickname_length_max: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub hypixel_ban_parsed: Option<String>,
+	pub hypixel_ban_parsed: Option<HypixelBanParsed>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub minecoins_min: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -4629,7 +7249,7 @@ pub struct CategoryRiotParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub title: Option<String>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub order_by: Option<String>,
+	pub order_by: Option<OrderBy>,
 	#[serde(rename = "tag_id[]", skip_serializing_if = "Option::is_none")]
 	pub tag_id: Option<Vec<i64>>,
 	#[serde(rename = "not_tag_id[]", skip_serializing_if = "Option::is_none")]
@@ -4656,7 +7276,7 @@ pub struct CategoryRiotParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub sb_by_me: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub currency: Option<String>,
+	pub currency: Option<Currency>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub email_login_data: Option<bool>,
 	#[serde(rename = "email_provider[]", skip_serializing_if = "Option::is_none")]
@@ -4665,7 +7285,7 @@ pub struct CategoryRiotParams {
 		rename = "not_email_provider[]",
 		skip_serializing_if = "Option::is_none"
 	)]
-	pub not_email_provider: Option<Vec<String>>,
+	pub not_email_provider: Option<NotEmailProvider>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub parse_same_item_ids: Option<bool>,
 	#[serde(rename = "email_type[]", skip_serializing_if = "Option::is_none")]
@@ -4771,9 +7391,9 @@ pub struct CategoryRiotParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub riot_max: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub email: Option<String>,
+	pub email: Option<Email>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub tel: Option<String>,
+	pub tel: Option<Tel>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub valorant_knife_min: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -5023,7 +7643,7 @@ pub struct CategoryRobloxParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub title: Option<String>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub order_by: Option<String>,
+	pub order_by: Option<OrderBy>,
 	#[serde(rename = "tag_id[]", skip_serializing_if = "Option::is_none")]
 	pub tag_id: Option<Vec<i64>>,
 	#[serde(rename = "not_tag_id[]", skip_serializing_if = "Option::is_none")]
@@ -5050,7 +7670,7 @@ pub struct CategoryRobloxParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub sb_by_me: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub currency: Option<String>,
+	pub currency: Option<Currency>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub email_login_data: Option<bool>,
 	#[serde(rename = "email_provider[]", skip_serializing_if = "Option::is_none")]
@@ -5059,11 +7679,11 @@ pub struct CategoryRobloxParams {
 		rename = "not_email_provider[]",
 		skip_serializing_if = "Option::is_none"
 	)]
-	pub not_email_provider: Option<Vec<String>>,
+	pub not_email_provider: Option<NotEmailProvider>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub parse_same_item_ids: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub email: Option<String>,
+	pub email: Option<Email>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub robux_min: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -5083,23 +7703,23 @@ pub struct CategoryRobloxParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub reg: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub reg_period: Option<String>,
+	pub reg_period: Option<RegPeriod>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub subscription: Option<String>,
+	pub subscription: Option<CategorySubscription>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub subscription_length: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub subscription_period: Option<String>,
+	pub subscription_period: Option<SubscriptionPeriod>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub autorenewal: Option<String>,
+	pub autorenewal: Option<Autorenewal>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub xbox_connected: Option<String>,
+	pub xbox_connected: Option<XboxConnected>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub psn_connected: Option<String>,
+	pub psn_connected: Option<PsnConnected>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub verified: Option<String>,
+	pub verified: Option<Verified>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub age_verified: Option<String>,
+	pub age_verified: Option<AgeVerified>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub incoming_robux_total_min: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -5113,7 +7733,7 @@ pub struct CategoryRobloxParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub gamepass_max: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub game_donations: Option<String>,
+	pub game_donations: Option<GameDonations>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub inv_min: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -5131,7 +7751,7 @@ pub struct CategoryRobloxParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub offsale_max: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub voice: Option<String>,
+	pub voice: Option<Voice>,
 	#[serde(rename = "age_group[]", skip_serializing_if = "Option::is_none")]
 	pub age_group: Option<Vec<String>>,
 	#[serde(rename = "not_age_group[]", skip_serializing_if = "Option::is_none")]
@@ -5347,7 +7967,7 @@ pub struct CategorySocialClubParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub title: Option<String>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub order_by: Option<String>,
+	pub order_by: Option<OrderBy>,
 	#[serde(rename = "tag_id[]", skip_serializing_if = "Option::is_none")]
 	pub tag_id: Option<Vec<i64>>,
 	#[serde(rename = "not_tag_id[]", skip_serializing_if = "Option::is_none")]
@@ -5374,7 +7994,7 @@ pub struct CategorySocialClubParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub sb_by_me: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub currency: Option<String>,
+	pub currency: Option<Currency>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub email_login_data: Option<bool>,
 	#[serde(rename = "email_provider[]", skip_serializing_if = "Option::is_none")]
@@ -5383,7 +8003,7 @@ pub struct CategorySocialClubParams {
 		rename = "not_email_provider[]",
 		skip_serializing_if = "Option::is_none"
 	)]
-	pub not_email_provider: Option<Vec<String>>,
+	pub not_email_provider: Option<NotEmailProvider>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub parse_same_item_ids: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -5575,7 +8195,7 @@ pub struct CategorySocialClubResponse {
 	pub was_cached: bool,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Serialize)]
 pub struct CategorySteamParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub page: Option<i64>,
@@ -5586,7 +8206,7 @@ pub struct CategorySteamParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub title: Option<String>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub order_by: Option<String>,
+	pub order_by: Option<OrderBy>,
 	#[serde(rename = "tag_id[]", skip_serializing_if = "Option::is_none")]
 	pub tag_id: Option<Vec<i64>>,
 	#[serde(rename = "not_tag_id[]", skip_serializing_if = "Option::is_none")]
@@ -5613,7 +8233,7 @@ pub struct CategorySteamParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub sb_by_me: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub currency: Option<String>,
+	pub currency: Option<Currency>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub email_login_data: Option<bool>,
 	#[serde(rename = "email_type[]", skip_serializing_if = "Option::is_none")]
@@ -5624,7 +8244,7 @@ pub struct CategorySteamParams {
 		rename = "not_email_provider[]",
 		skip_serializing_if = "Option::is_none"
 	)]
-	pub not_email_provider: Option<Vec<String>>,
+	pub not_email_provider: Option<NotEmailProvider>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub parse_same_item_ids: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -5636,27 +8256,28 @@ pub struct CategorySteamParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub hours_played_max: Option<HashMap<String, i64>>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub eg: Option<i64>,
+	pub eg: Option<CategoryEg>,
 	#[serde(rename = "vac[]", skip_serializing_if = "Option::is_none")]
 	pub vac: Option<Vec<i64>>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub vac_skip_game_check: Option<bool>,
+	/// Default: "no"
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub rt: Option<String>,
+	pub rt: Option<Rt>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub trade_ban: Option<String>,
+	pub trade_ban: Option<TradeBan>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub trade_limit: Option<String>,
+	pub trade_limit: Option<TradeLimit>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub daybreak: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub limit: Option<String>,
+	pub limit: Option<Limit>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub mafile: Option<String>,
+	pub mafile: Option<Mafile>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub reg: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub reg_period: Option<String>,
+	pub reg_period: Option<RegPeriod>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub lmin: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -5672,7 +8293,7 @@ pub struct CategorySteamParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub no_vac: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub mm_ban: Option<String>,
+	pub mm_ban: Option<MmBan>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub balance_min: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -5752,11 +8373,11 @@ pub struct CategorySteamParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub last_trans_date: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub last_trans_date_period: Option<String>,
+	pub last_trans_date_period: Option<LastTransDatePeriod>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub last_trans_date_later: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub last_trans_date_period_later: Option<String>,
+	pub last_trans_date_period_later: Option<LastTransDatePeriodLater>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub no_trans: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -5782,19 +8403,19 @@ pub struct CategorySteamParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub purchase_max: Option<f64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub has_activated_keys: Option<String>,
+	pub has_activated_keys: Option<HasActivatedKeys>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub elo_min: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub elo_max: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub cs2_map_rank: Option<i64>,
+	pub cs2_map_rank: Option<Cs2MapRank>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub cs2_map_rmin: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub cs2_map_rmax: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub has_faceit: Option<String>,
+	pub has_faceit: Option<HasFaceit>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub faceit_csgo_lvl_min: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -5810,7 +8431,7 @@ pub struct CategorySteamParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub d2_last_match_date: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub d2_last_match_date_period: Option<String>,
+	pub d2_last_match_date_period: Option<D2LastMatchDatePeriod>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub cards_min: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -5821,6 +8442,132 @@ pub struct CategorySteamParams {
 	pub cards_games_max: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub skip_vac_inv: Option<bool>,
+}
+
+impl Default for CategorySteamParams {
+	fn default() -> Self {
+		Self {
+			page: None,
+			pmin: None,
+			pmax: None,
+			title: None,
+			order_by: None,
+			tag_id: None,
+			not_tag_id: None,
+			public_tag_id: None,
+			not_public_tag_id: None,
+			origin: None,
+			not_origin: None,
+			user_id: None,
+			nsb: None,
+			sb: None,
+			nsb_by_me: None,
+			sb_by_me: None,
+			currency: None,
+			email_login_data: None,
+			email_type: None,
+			email_provider: None,
+			not_email_provider: None,
+			parse_same_item_ids: None,
+			item_domain: None,
+			game: None,
+			hours_played: None,
+			hours_played_max: None,
+			eg: None,
+			vac: None,
+			vac_skip_game_check: None,
+			rt: Some(Rt::No),
+			trade_ban: None,
+			trade_limit: None,
+			daybreak: None,
+			limit: None,
+			mafile: None,
+			reg: None,
+			reg_period: None,
+			lmin: None,
+			lmax: None,
+			rmin: None,
+			rmax: None,
+			wingman_rmin: None,
+			wingman_rmax: None,
+			no_vac: None,
+			mm_ban: None,
+			balance_min: None,
+			balance_max: None,
+			inv_game: None,
+			inv_min: None,
+			inv_max: None,
+			friends_min: None,
+			friends_max: None,
+			gmin: None,
+			gmax: None,
+			win_count_min: None,
+			win_count_max: None,
+			medal_id: None,
+			medal_operator_or: None,
+			medal_min: None,
+			medal_max: None,
+			gift: None,
+			gift_min: None,
+			gift_max: None,
+			recently_hours_min: None,
+			recently_hours_max: None,
+			country: None,
+			not_country: None,
+			cs2_profile_rank_min: None,
+			cs2_profile_rank_max: None,
+			solommr_min: None,
+			solommr_max: None,
+			d2_game_count_min: None,
+			d2_game_count_max: None,
+			d2_win_count_min: None,
+			d2_win_count_max: None,
+			d2_behavior_min: None,
+			d2_behavior_max: None,
+			faceit_lvl_min: None,
+			faceit_lvl_max: None,
+			points_min: None,
+			points_max: None,
+			relevant_gmin: None,
+			relevant_gmax: None,
+			last_trans_date: None,
+			last_trans_date_period: None,
+			last_trans_date_later: None,
+			last_trans_date_period_later: None,
+			no_trans: None,
+			trans: None,
+			gifts_purchase_min: None,
+			gifts_purchase_max: None,
+			refunds_purchase_min: None,
+			refunds_purchase_max: None,
+			ingame_purchase_min: None,
+			ingame_purchase_max: None,
+			games_purchase_min: None,
+			games_purchase_max: None,
+			purchase_min: None,
+			purchase_max: None,
+			has_activated_keys: None,
+			elo_min: None,
+			elo_max: None,
+			cs2_map_rank: None,
+			cs2_map_rmin: None,
+			cs2_map_rmax: None,
+			has_faceit: None,
+			faceit_csgo_lvl_min: None,
+			faceit_csgo_lvl_max: None,
+			rust_deaths_min: None,
+			rust_deaths_max: None,
+			rust_kills_min: None,
+			rust_kills_max: None,
+			d2_last_match_date: None,
+			d2_last_match_date_period: None,
+			cards_min: None,
+			cards_max: None,
+			cards_games_min: None,
+			cards_games_max: None,
+			skip_vac_inv: None,
+		}
+	}
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -6140,7 +8887,7 @@ pub struct CategorySupercellParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub title: Option<String>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub order_by: Option<String>,
+	pub order_by: Option<OrderBy>,
 	#[serde(rename = "tag_id[]", skip_serializing_if = "Option::is_none")]
 	pub tag_id: Option<Vec<i64>>,
 	#[serde(rename = "not_tag_id[]", skip_serializing_if = "Option::is_none")]
@@ -6167,7 +8914,7 @@ pub struct CategorySupercellParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub sb_by_me: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub currency: Option<String>,
+	pub currency: Option<Currency>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub email_login_data: Option<bool>,
 	#[serde(rename = "email_provider[]", skip_serializing_if = "Option::is_none")]
@@ -6176,7 +8923,7 @@ pub struct CategorySupercellParams {
 		rename = "not_email_provider[]",
 		skip_serializing_if = "Option::is_none"
 	)]
-	pub not_email_provider: Option<Vec<String>>,
+	pub not_email_provider: Option<NotEmailProvider>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub parse_same_item_ids: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -6186,9 +8933,9 @@ pub struct CategorySupercellParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub item_domain: Option<String>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub eg: Option<i64>,
+	pub eg: Option<CategoryEg>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub tel: Option<String>,
+	pub tel: Option<Tel>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub brawl_level_min: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -6202,7 +8949,7 @@ pub struct CategorySupercellParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub brawl_wins_max: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub brawl_pass: Option<String>,
+	pub brawl_pass: Option<BrawlPass>,
 	#[serde(rename = "brawler[]", skip_serializing_if = "Option::is_none")]
 	pub brawler: Option<Vec<String>>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -6230,7 +8977,7 @@ pub struct CategorySupercellParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub king_level_max: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub royale_pass: Option<String>,
+	pub royale_pass: Option<RoyalePass>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub clash_level_min: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -6244,7 +8991,7 @@ pub struct CategorySupercellParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub clash_wins_max: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub clash_pass: Option<String>,
+	pub clash_pass: Option<ClashPass>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub total_heroes_level_min: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -6478,7 +9225,7 @@ pub struct CategoryTelegramParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub title: Option<String>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub order_by: Option<String>,
+	pub order_by: Option<OrderBy>,
 	#[serde(rename = "tag_id[]", skip_serializing_if = "Option::is_none")]
 	pub tag_id: Option<Vec<i64>>,
 	#[serde(rename = "not_tag_id[]", skip_serializing_if = "Option::is_none")]
@@ -6505,7 +9252,7 @@ pub struct CategoryTelegramParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub sb_by_me: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub currency: Option<String>,
+	pub currency: Option<Currency>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub email_login_data: Option<bool>,
 	#[serde(rename = "email_provider[]", skip_serializing_if = "Option::is_none")]
@@ -6514,19 +9261,19 @@ pub struct CategoryTelegramParams {
 		rename = "not_email_provider[]",
 		skip_serializing_if = "Option::is_none"
 	)]
-	pub not_email_provider: Option<Vec<String>>,
+	pub not_email_provider: Option<NotEmailProvider>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub parse_same_item_ids: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub spam: Option<String>,
+	pub spam: Option<Spam>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub password: Option<String>,
+	pub password: Option<Password>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub premium: Option<String>,
+	pub premium: Option<Premium>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub premium_expiration: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub premium_expiration_period: Option<String>,
+	pub premium_expiration_period: Option<PremiumExpirationPeriod>,
 	#[serde(rename = "country[]", skip_serializing_if = "Option::is_none")]
 	pub country: Option<Vec<String>>,
 	#[serde(rename = "not_country[]", skip_serializing_if = "Option::is_none")]
@@ -6568,11 +9315,11 @@ pub struct CategoryTelegramParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub birthday: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub birthday_period: Option<String>,
+	pub birthday_period: Option<BirthdayPeriod>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub birthday_after: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub birthday_after_period: Option<String>,
+	pub birthday_after_period: Option<BirthdayAfterPeriod>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub min_id: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -6600,7 +9347,7 @@ pub struct CategoryTelegramParams {
 	#[serde(rename = "not_dc_id[]", skip_serializing_if = "Option::is_none")]
 	pub not_dc_id: Option<Vec<i64>>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub email: Option<String>,
+	pub email: Option<Email>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub min_bots: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -6786,7 +9533,7 @@ pub struct CategoryTikTokParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub title: Option<String>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub order_by: Option<String>,
+	pub order_by: Option<OrderBy>,
 	#[serde(rename = "tag_id[]", skip_serializing_if = "Option::is_none")]
 	pub tag_id: Option<Vec<i64>>,
 	#[serde(rename = "not_tag_id[]", skip_serializing_if = "Option::is_none")]
@@ -6813,7 +9560,7 @@ pub struct CategoryTikTokParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub sb_by_me: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub currency: Option<String>,
+	pub currency: Option<Currency>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub email_login_data: Option<bool>,
 	#[serde(rename = "email_provider[]", skip_serializing_if = "Option::is_none")]
@@ -6822,7 +9569,7 @@ pub struct CategoryTikTokParams {
 		rename = "not_email_provider[]",
 		skip_serializing_if = "Option::is_none"
 	)]
-	pub not_email_provider: Option<Vec<String>>,
+	pub not_email_provider: Option<NotEmailProvider>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub parse_same_item_ids: Option<bool>,
 	#[serde(rename = "email_type[]", skip_serializing_if = "Option::is_none")]
@@ -6830,11 +9577,11 @@ pub struct CategoryTikTokParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub item_domain: Option<String>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub tel: Option<String>,
+	pub tel: Option<Tel>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub reg: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub reg_period: Option<String>,
+	pub reg_period: Option<RegPeriod>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub followers_min: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -6852,11 +9599,11 @@ pub struct CategoryTikTokParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub coins_max: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub cookie_login: Option<String>,
+	pub cookie_login: Option<CookieLogin>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub verified: Option<String>,
+	pub verified: Option<Verified>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub email: Option<String>,
+	pub email: Option<Email>,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -7046,7 +9793,7 @@ pub struct CategoryUplayParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub title: Option<String>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub order_by: Option<String>,
+	pub order_by: Option<OrderBy>,
 	#[serde(rename = "tag_id[]", skip_serializing_if = "Option::is_none")]
 	pub tag_id: Option<Vec<i64>>,
 	#[serde(rename = "not_tag_id[]", skip_serializing_if = "Option::is_none")]
@@ -7073,7 +9820,7 @@ pub struct CategoryUplayParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub sb_by_me: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub currency: Option<String>,
+	pub currency: Option<Currency>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub email_login_data: Option<bool>,
 	#[serde(rename = "email_provider[]", skip_serializing_if = "Option::is_none")]
@@ -7082,7 +9829,7 @@ pub struct CategoryUplayParams {
 		rename = "not_email_provider[]",
 		skip_serializing_if = "Option::is_none"
 	)]
-	pub not_email_provider: Option<Vec<String>>,
+	pub not_email_provider: Option<NotEmailProvider>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub parse_same_item_ids: Option<bool>,
 	#[serde(rename = "email_type[]", skip_serializing_if = "Option::is_none")]
@@ -7102,11 +9849,11 @@ pub struct CategoryUplayParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub gmax: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub subscription: Option<String>,
+	pub subscription: Option<CategorySubscription>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub subscription_length: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub subscription_period: Option<String>,
+	pub subscription_period: Option<SubscriptionPeriod>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub r6_level_min: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -7120,7 +9867,7 @@ pub struct CategoryUplayParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub r6_operators_max: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub r6_ban: Option<String>,
+	pub r6_ban: Option<R6Ban>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub r6_smin: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -7130,21 +9877,21 @@ pub struct CategoryUplayParams {
 	#[serde(rename = "r6_operator[]", skip_serializing_if = "Option::is_none")]
 	pub r6_operator: Option<Vec<String>>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub xbox_connected: Option<String>,
+	pub xbox_connected: Option<XboxConnected>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub psn_connected: Option<String>,
+	pub psn_connected: Option<PsnConnected>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub steam_connected: Option<String>,
+	pub steam_connected: Option<SteamConnected>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub balance_min: Option<f64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub balance_max: Option<f64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub transactions: Option<String>,
+	pub transactions: Option<Transactions>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub reg: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub reg_period: Option<String>,
+	pub reg_period: Option<RegPeriod>,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -7358,7 +10105,7 @@ pub struct CategoryVpnParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub title: Option<String>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub order_by: Option<String>,
+	pub order_by: Option<OrderBy>,
 	#[serde(rename = "tag_id[]", skip_serializing_if = "Option::is_none")]
 	pub tag_id: Option<Vec<i64>>,
 	#[serde(rename = "not_tag_id[]", skip_serializing_if = "Option::is_none")]
@@ -7385,7 +10132,7 @@ pub struct CategoryVpnParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub sb_by_me: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub currency: Option<String>,
+	pub currency: Option<Currency>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub email_login_data: Option<bool>,
 	#[serde(rename = "email_provider[]", skip_serializing_if = "Option::is_none")]
@@ -7394,7 +10141,7 @@ pub struct CategoryVpnParams {
 		rename = "not_email_provider[]",
 		skip_serializing_if = "Option::is_none"
 	)]
-	pub not_email_provider: Option<Vec<String>>,
+	pub not_email_provider: Option<NotEmailProvider>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub parse_same_item_ids: Option<bool>,
 	#[serde(rename = "service[]", skip_serializing_if = "Option::is_none")]
@@ -7402,9 +10149,9 @@ pub struct CategoryVpnParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub subscription_length: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub subscription_period: Option<String>,
+	pub subscription_period: Option<SubscriptionPeriod>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub autorenewal: Option<String>,
+	pub autorenewal: Option<Autorenewal>,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -7563,7 +10310,7 @@ pub struct CategoryWarfaceParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub title: Option<String>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub order_by: Option<String>,
+	pub order_by: Option<OrderBy>,
 	#[serde(rename = "tag_id[]", skip_serializing_if = "Option::is_none")]
 	pub tag_id: Option<Vec<i64>>,
 	#[serde(rename = "not_tag_id[]", skip_serializing_if = "Option::is_none")]
@@ -7590,7 +10337,7 @@ pub struct CategoryWarfaceParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub sb_by_me: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub currency: Option<String>,
+	pub currency: Option<Currency>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub email_login_data: Option<bool>,
 	#[serde(rename = "email_provider[]", skip_serializing_if = "Option::is_none")]
@@ -7599,7 +10346,7 @@ pub struct CategoryWarfaceParams {
 		rename = "not_email_provider[]",
 		skip_serializing_if = "Option::is_none"
 	)]
-	pub not_email_provider: Option<Vec<String>>,
+	pub not_email_provider: Option<NotEmailProvider>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub parse_same_item_ids: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -7611,7 +10358,7 @@ pub struct CategoryWarfaceParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub bonus_rank_max: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub tel: Option<String>,
+	pub tel: Option<Tel>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub daybreak: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -7798,7 +10545,7 @@ pub struct CategoryWotParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub title: Option<String>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub order_by: Option<String>,
+	pub order_by: Option<OrderBy>,
 	#[serde(rename = "tag_id[]", skip_serializing_if = "Option::is_none")]
 	pub tag_id: Option<Vec<i64>>,
 	#[serde(rename = "not_tag_id[]", skip_serializing_if = "Option::is_none")]
@@ -7825,7 +10572,7 @@ pub struct CategoryWotParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub sb_by_me: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub currency: Option<String>,
+	pub currency: Option<Currency>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub email_login_data: Option<bool>,
 	#[serde(rename = "email_provider[]", skip_serializing_if = "Option::is_none")]
@@ -7834,7 +10581,7 @@ pub struct CategoryWotParams {
 		rename = "not_email_provider[]",
 		skip_serializing_if = "Option::is_none"
 	)]
-	pub not_email_provider: Option<Vec<String>>,
+	pub not_email_provider: Option<NotEmailProvider>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub parse_same_item_ids: Option<bool>,
 	#[serde(rename = "email_type[]", skip_serializing_if = "Option::is_none")]
@@ -7842,7 +10589,7 @@ pub struct CategoryWotParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub item_domain: Option<String>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub tel: Option<String>,
+	pub tel: Option<Tel>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub daybreak: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -7880,13 +10627,13 @@ pub struct CategoryWotParams {
 	#[serde(rename = "not_region[]", skip_serializing_if = "Option::is_none")]
 	pub not_region: Option<Vec<String>>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub premium: Option<String>,
+	pub premium: Option<Premium>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub premium_expiration: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub premium_expiration_period: Option<String>,
+	pub premium_expiration_period: Option<PremiumExpirationPeriod>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub clan: Option<String>,
+	pub clan: Option<Clan>,
 	#[serde(rename = "clan_role[]", skip_serializing_if = "Option::is_none")]
 	pub clan_role: Option<Vec<String>>,
 	#[serde(rename = "not_clan_role[]", skip_serializing_if = "Option::is_none")]
@@ -8309,7 +11056,7 @@ pub struct CategoryWotBlitzParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub title: Option<String>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub order_by: Option<String>,
+	pub order_by: Option<OrderBy>,
 	#[serde(rename = "tag_id[]", skip_serializing_if = "Option::is_none")]
 	pub tag_id: Option<Vec<i64>>,
 	#[serde(rename = "not_tag_id[]", skip_serializing_if = "Option::is_none")]
@@ -8336,7 +11083,7 @@ pub struct CategoryWotBlitzParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub sb_by_me: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub currency: Option<String>,
+	pub currency: Option<Currency>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub email_login_data: Option<bool>,
 	#[serde(rename = "email_provider[]", skip_serializing_if = "Option::is_none")]
@@ -8345,7 +11092,7 @@ pub struct CategoryWotBlitzParams {
 		rename = "not_email_provider[]",
 		skip_serializing_if = "Option::is_none"
 	)]
-	pub not_email_provider: Option<Vec<String>>,
+	pub not_email_provider: Option<NotEmailProvider>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub parse_same_item_ids: Option<bool>,
 	#[serde(rename = "email_type[]", skip_serializing_if = "Option::is_none")]
@@ -8353,7 +11100,7 @@ pub struct CategoryWotBlitzParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub item_domain: Option<String>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub tel: Option<String>,
+	pub tel: Option<Tel>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub daybreak: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -8391,13 +11138,13 @@ pub struct CategoryWotBlitzParams {
 	#[serde(rename = "not_region[]", skip_serializing_if = "Option::is_none")]
 	pub not_region: Option<Vec<String>>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub premium: Option<String>,
+	pub premium: Option<Premium>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub premium_expiration: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub premium_expiration_period: Option<String>,
+	pub premium_expiration_period: Option<PremiumExpirationPeriod>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub clan: Option<String>,
+	pub clan: Option<Clan>,
 	#[serde(rename = "clan_role[]", skip_serializing_if = "Option::is_none")]
 	pub clan_role: Option<Vec<String>>,
 	#[serde(rename = "not_clan_role[]", skip_serializing_if = "Option::is_none")]
@@ -11549,7 +14296,7 @@ pub struct CategoryParamsResponse {
 	pub system_info: Option<RespSystemInfo>,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct CustomDiscountsDeleteBody {
 	pub discount_id: i64,
 }
@@ -11571,11 +14318,11 @@ pub struct CustomDiscountsGetResponse {
 	pub total: i64,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CustomDiscountsCreateBody {
-	pub category_id: i64,
+	pub category_id: CategoryId,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub currency: Option<String>,
+	pub currency: Option<Currency>,
 	pub discount_percent: f64,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub max_price: Option<f64>,
@@ -11590,7 +14337,7 @@ pub struct CustomDiscountsCreateResponse {
 	pub total: i64,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct CustomDiscountsEditBody {
 	pub discount_id: i64,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -11608,7 +14355,7 @@ pub struct CustomDiscountsEditResponse {
 	pub total: i64,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ImapDeleteBody {
 	pub domain: String,
 }
@@ -11623,7 +14370,7 @@ pub struct ImapDeleteResponse {
 	pub system_info: Option<RespSystemInfo>,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ImapCreateBody {
 	pub domain: String,
 	pub imap_server: String,
@@ -11646,7 +14393,7 @@ pub struct ListFavoritesParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub page: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub show: Option<String>,
+	pub show: Option<Show>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub title: Option<String>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -11658,7 +14405,7 @@ pub struct ListFavoritesParams {
 	#[serde(rename = "not_origin[]", skip_serializing_if = "Option::is_none")]
 	pub not_origin: Option<Vec<String>>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub order_by: Option<String>,
+	pub order_by: Option<OrderBy>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub sb: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -11816,11 +14563,11 @@ pub struct ListUserParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub user_id: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub category_id: Option<i64>,
+	pub category_id: Option<CategoryId>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub page: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub show: Option<String>,
+	pub show: Option<Show>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub delete_reason: Option<String>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -11836,7 +14583,7 @@ pub struct ListUserParams {
 	#[serde(rename = "not_origin[]", skip_serializing_if = "Option::is_none")]
 	pub not_origin: Option<Vec<String>>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub order_by: Option<String>,
+	pub order_by: Option<OrderBy>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub sb: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -11894,11 +14641,11 @@ pub struct ListOrdersParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub user_id: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub category_id: Option<i64>,
+	pub category_id: Option<CategoryId>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub page: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub show: Option<String>,
+	pub show: Option<Show>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub title: Option<String>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -11912,7 +14659,7 @@ pub struct ListOrdersParams {
 	#[serde(rename = "not_origin[]", skip_serializing_if = "Option::is_none")]
 	pub not_origin: Option<Vec<String>>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub order_by: Option<String>,
+	pub order_by: Option<OrderBy>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub sb: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -11945,15 +14692,15 @@ pub struct ListOrdersResponse {
 #[derive(Debug, Clone, Default, Serialize)]
 pub struct ListDownloadParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub format: Option<String>,
+	pub format: Option<Format>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub custom_format: Option<String>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub category_id: Option<i64>,
+	pub category_id: Option<CategoryId>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub page: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub show: Option<String>,
+	pub show: Option<Show>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub delete_reason: Option<String>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -11967,7 +14714,7 @@ pub struct ListDownloadParams {
 	#[serde(rename = "not_origin[]", skip_serializing_if = "Option::is_none")]
 	pub not_origin: Option<Vec<String>>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub order_by: Option<String>,
+	pub order_by: Option<OrderBy>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub sb: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -12008,7 +14755,7 @@ pub struct ListViewedParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub page: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub show: Option<String>,
+	pub show: Option<Show>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub title: Option<String>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -12020,7 +14767,7 @@ pub struct ListViewedParams {
 	#[serde(rename = "not_origin[]", skip_serializing_if = "Option::is_none")]
 	pub not_origin: Option<Vec<String>>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub order_by: Option<String>,
+	pub order_by: Option<OrderBy>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub sb: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -12050,7 +14797,7 @@ pub struct ListViewedResponse {
 	pub total_items_price: serde_json::Value,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ManagingBulkGetBody {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub item_id: Option<Vec<i64>>,
@@ -12071,7 +14818,7 @@ pub struct ManagingBulkGetResponse {
 	pub system_info: RespSystemInfo,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ManagingCreateClaimBody {
 	pub item_id: i64,
 	pub post_body: String,
@@ -12279,9 +15026,9 @@ pub struct ManagingGetLetters2Response {
 #[derive(Debug, Clone, Default, Serialize)]
 pub struct ManagingSteamValueParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub app_id: Option<i64>,
+	pub app_id: Option<AppId>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub currency: Option<String>,
+	pub currency: Option<Currency>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub ignore_cache: Option<bool>,
 }
@@ -12350,7 +15097,7 @@ pub struct ManagingSteamValueResponse {
 	pub system_info: Option<RespSystemInfo>,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ManagingDeleteBody {
 	pub reason: String,
 }
@@ -12425,7 +15172,7 @@ pub struct ManagingAutoBumpDisableResponse {
 	pub system_info: RespSystemInfo,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ManagingAutoBumpBody {
 	pub hour: i64,
 }
@@ -12450,7 +15197,7 @@ pub struct ManagingBumpResponse {
 	pub system_info: RespSystemInfo,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ManagingTransferBody {
 	pub secret_answer: String,
 	pub username: String,
@@ -12466,10 +15213,10 @@ pub struct ManagingTransferResponse {
 	pub system_info: Option<RespSystemInfo>,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ManagingChangePasswordBody {
 	#[serde(rename = "_cancel", skip_serializing_if = "Option::is_none")]
-	pub cancel: Option<i64>,
+	pub cancel: Option<Cancel>,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -12494,7 +15241,7 @@ pub struct ManagingCloseResponse {
 	pub system_info: RespSystemInfo,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ManagingSteamSdaBody {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub id: Option<i64>,
@@ -12509,7 +15256,7 @@ pub struct ManagingSteamSdaResponse {
 	pub system_info: RespSystemInfo,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ManagingDeclineVideoRecordingBody {
 	pub i_voluntarily_and_with_full_awareness_of_my_actions_waive_any_claims_regarding_this_item:
 		bool,
@@ -12525,22 +15272,22 @@ pub struct ManagingDeclineVideoRecordingResponse {
 	pub system_info: Option<RespSystemInfo>,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ManagingEditBody {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub allow_ask_discount: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub currency: Option<String>,
+	pub currency: Option<Currency>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub description: Option<String>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub email_login_data: Option<String>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub email_type: Option<String>,
+	pub email_type: Option<EmailType>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub information: Option<String>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub item_origin: Option<String>,
+	pub item_origin: Option<ManagingItemOrigin>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub price: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -12600,9 +15347,9 @@ pub struct ManagingImageResponse {
 #[derive(Debug, Clone, Default, Serialize)]
 pub struct ManagingSteamInventoryValueParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub app_id: Option<i64>,
+	pub app_id: Option<AppId>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub currency: Option<String>,
+	pub currency: Option<Currency>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub ignore_cache: Option<bool>,
 }
@@ -12724,7 +15471,7 @@ pub struct ManagingSteamAddMafileResponse {
 	pub system_info: RespSystemInfo,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ManagingNoteBody {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub text: Option<String>,
@@ -12744,7 +15491,7 @@ pub struct ManagingOpenResponse {
 	pub system_info: RespSystemInfo,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ManagingPublicUntagBody {
 	pub tag_id: i64,
 }
@@ -12772,7 +15519,7 @@ pub struct ManagingPublicUntagResponse {
 	pub tag: ManagingPublicUntagTag,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ManagingPublicTagBody {
 	pub tag_id: i64,
 }
@@ -12830,7 +15577,7 @@ pub struct ManagingFavoriteResponse {
 #[derive(Debug, Clone, Default, Serialize)]
 pub struct ManagingSteamPreviewParams {
 	#[serde(rename = "type", skip_serializing_if = "Option::is_none")]
-	pub r#type: Option<String>,
+	pub r#type: Option<ManagingType>,
 }
 
 pub type ManagingSteamPreviewResponse = serde_json::Value;
@@ -12855,7 +15602,7 @@ pub struct ManagingStickResponse {
 	pub system_info: Option<RespSystemInfo>,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ManagingUntagBody {
 	pub tag_id: i64,
 }
@@ -12883,7 +15630,7 @@ pub struct ManagingUntagResponse {
 	pub tag: ManagingUntagTag,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ManagingTagBody {
 	pub tag_id: i64,
 }
@@ -12945,12 +15692,12 @@ pub struct ManagingTempEmailPasswordResponse {
 	pub item: ManagingTempEmailPasswordItem,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ManagingSteamUpdateValueBody {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub all: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub app_id: Option<i64>,
+	pub app_id: Option<AppId>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub authorize: Option<bool>,
 }
@@ -12993,7 +15740,7 @@ pub struct PaymentsBalanceListResponse {
 	pub to: PaymentsBalanceListTo,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct PaymentsBalanceExchangeBody {
 	pub amount: i64,
 	pub from_balance: String,
@@ -13031,10 +15778,10 @@ pub struct PaymentsBalanceExchangeResponse {
 	pub to: PaymentsBalanceExchangeTo,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PaymentsPayoutBody {
 	pub amount: f64,
-	pub currency: String,
+	pub currency: Currency,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub extra: Option<serde_json::Value>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -13203,14 +15950,14 @@ pub struct PaymentsPayoutServicesResponse {
 	pub systems: Vec<PaymentsPayoutServicesSystems>,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PaymentsTransferBody {
 	pub amount: i64,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub comment: Option<String>,
-	pub currency: String,
+	pub currency: Currency,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub hold_length_option: Option<String>,
+	pub hold_length_option: Option<HoldLengthOption>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub hold_length_value: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -13232,7 +15979,7 @@ pub struct PaymentsTransferResponse {
 	pub system_info: RespSystemInfo,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct PaymentsCancelBody {
 	pub payment_id: i64,
 }
@@ -13958,16 +16705,20 @@ pub struct PaymentsInvoiceGetResponse {
 	pub system_info: RespSystemInfo,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PaymentsInvoiceCreateBody {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub additional_data: Option<String>,
 	pub amount: f64,
 	pub comment: String,
-	pub currency: String,
+	pub currency: Currency,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub is_test: Option<bool>,
-	#[serde(skip_serializing_if = "Option::is_none")]
+	/// Default: 3600
+	#[serde(
+		skip_serializing_if = "Option::is_none",
+		default = "default_payments_invoice_create_body_lifetime"
+	)]
 	pub lifetime: Option<f64>,
 	pub merchant_id: i64,
 	pub payment_id: String,
@@ -13978,6 +16729,10 @@ pub struct PaymentsInvoiceCreateBody {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub url_callback: Option<String>,
 	pub url_success: String,
+}
+
+fn default_payments_invoice_create_body_lifetime() -> Option<f64> {
+	Some(3600_f64)
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -13991,9 +16746,9 @@ pub struct PaymentsInvoiceListParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub page: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub currency: Option<String>,
+	pub currency: Option<Currency>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub status: Option<String>,
+	pub status: Option<Status>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub amount: Option<f64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -14013,13 +16768,13 @@ pub struct PaymentsInvoiceListResponse {
 #[derive(Debug, Clone, Default, Serialize)]
 pub struct PaymentsHistoryParams {
 	#[serde(rename = "type", skip_serializing_if = "Option::is_none")]
-	pub r#type: Option<String>,
+	pub r#type: Option<PaymentsType>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub pmin: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub pmax: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub currency: Option<String>,
+	pub currency: Option<Currency>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub page: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -14200,9 +16955,9 @@ pub struct PaymentsHistoryResponse {
 #[derive(Debug, Clone, Default, Serialize)]
 pub struct ProfileClaimsParams {
 	#[serde(rename = "type", skip_serializing_if = "Option::is_none")]
-	pub r#type: Option<String>,
+	pub r#type: Option<ProfileType>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub claim_state: Option<String>,
+	pub claim_state: Option<ClaimState>,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -14313,7 +17068,7 @@ pub struct ProfileGetResponse {
 	pub user: UserModel,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ProfileEditBody {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub allow_accept_accounts: Option<Vec<String>>,
@@ -14351,7 +17106,7 @@ pub struct ProfileEditResponse {
 	pub system_info: Option<RespSystemInfo>,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ProxyDeleteBody {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub delete_all: Option<bool>,
@@ -14392,7 +17147,7 @@ pub struct ProxyGetResponse {
 	pub system_info: RespSystemInfo,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ProxyAddBody {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub proxy_ip: Option<String>,
@@ -14416,27 +17171,27 @@ pub struct ProxyAddResponse {
 	pub system_info: Option<RespSystemInfo>,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PublishingAddBody {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub allow_ask_discount: Option<bool>,
-	pub category_id: i64,
-	pub currency: String,
+	pub category_id: CategoryId,
+	pub currency: Currency,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub description: Option<String>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub email_login_data: Option<String>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub email_type: Option<String>,
+	pub email_type: Option<EmailType>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub extended_guarantee: Option<i64>,
+	pub extended_guarantee: Option<ExtendedGuarantee>,
 	#[serde(rename = "forceTempEmail", skip_serializing_if = "Option::is_none")]
 	pub force_temp_email: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub has_email_login_data: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub information: Option<String>,
-	pub item_origin: String,
+	pub item_origin: PublishingItemOrigin,
 	pub price: f64,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub proxy_id: Option<i64>,
@@ -14457,27 +17212,27 @@ pub struct PublishingAddResponse {
 	pub system_info: RespSystemInfo,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PublishingFastSellBody {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub allow_ask_discount: Option<bool>,
-	pub category_id: i64,
-	pub currency: String,
+	pub category_id: CategoryId,
+	pub currency: Currency,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub description: Option<String>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub email_login_data: Option<String>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub email_type: Option<String>,
+	pub email_type: Option<EmailType>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub extended_guarantee: Option<i64>,
+	pub extended_guarantee: Option<ExtendedGuarantee>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub extra: Option<serde_json::Value>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub has_email_login_data: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub information: Option<String>,
-	pub item_origin: String,
+	pub item_origin: PublishingItemOrigin,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub login: Option<String>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -14503,7 +17258,7 @@ pub struct PublishingFastSellResponse {
 	pub system_info: RespSystemInfo,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PublishingExternalBody {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub cookies: Option<String>,
@@ -14512,7 +17267,7 @@ pub struct PublishingExternalBody {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub login: Option<String>,
 	#[serde(rename = "type")]
-	pub r#type: String,
+	pub r#type: PublishingType,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -14525,12 +17280,12 @@ pub struct PublishingExternalResponse {
 	pub system_info: Option<RespSystemInfo>,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct PublishingCheckBody {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub email_login_data: Option<String>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub email_type: Option<String>,
+	pub email_type: Option<EmailType>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub extra: Option<serde_json::Value>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -14975,7 +17730,7 @@ pub struct PurchasingCheckResponse {
 	pub system_info: RespSystemInfo,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct PurchasingConfirmBody {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub balance_id: Option<i64>,
@@ -15024,7 +17779,7 @@ pub struct PurchasingDiscountCancelResponse {
 	pub system_info: Option<RespSystemInfo>,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct PurchasingDiscountRequestBody {
 	pub discount_price: f64,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -15041,7 +17796,7 @@ pub struct PurchasingDiscountRequestResponse {
 	pub system_info: Option<RespSystemInfo>,
 }
 
-#[derive(Debug, Clone, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct PurchasingFastBuyBody {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub balance_id: Option<i64>,

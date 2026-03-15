@@ -53,6 +53,42 @@ pub struct MethodDef {
 	pub response_is_text: bool,
 	/// Summary/description from the OpenAPI spec
 	pub description: Option<String>,
+	/// Discriminated union body (oneOf with discriminator), if detected
+	pub one_of_body: Option<OneOfBody>,
+}
+
+/// Enum values extracted from the OpenAPI schema.
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+pub enum EnumValues {
+	Integer(Vec<i64>),
+	String(Vec<String>),
+}
+
+/// A single variant of a oneOf discriminated union body.
+#[derive(Debug, Clone)]
+pub struct OneOfVariant {
+	/// PascalCase variant name, e.g. "ClientCredentials"
+	pub variant_name: String,
+	/// Discriminator field value (string or integer literal)
+	pub discriminator_value: OneOfDiscriminatorValue,
+	/// Parameters for this variant (excluding the discriminator itself)
+	pub params: Vec<ParamDef>,
+}
+
+/// Discriminator value type for oneOf variants.
+#[derive(Debug, Clone)]
+pub enum OneOfDiscriminatorValue {
+	String(String),
+	Integer(i64),
+}
+
+/// A oneOf request body with discriminated union structure.
+#[derive(Debug, Clone)]
+pub struct OneOfBody {
+	/// Discriminator field name (e.g. "grant_type", "form_id")
+	pub discriminator_field: String,
+	/// Variants of the union
+	pub variants: Vec<OneOfVariant>,
 }
 
 /// A single parameter definition.
@@ -72,6 +108,12 @@ pub struct ParamDef {
 	pub is_binary: bool,
 	/// Whether this parameter uses deepObject serialization style
 	pub is_deep_object: bool,
+	/// Enum constraint from the schema, if present
+	pub enum_values: Option<EnumValues>,
+	/// Default value from the schema, if present (rendered as doc comment)
+	pub default_value: Option<String>,
+	/// Raw JSON default value from the schema, for generating Rust default expressions
+	pub default_value_raw: Option<serde_json::Value>,
 }
 
 /// Parse an OpenAPI spec into grouped operations.

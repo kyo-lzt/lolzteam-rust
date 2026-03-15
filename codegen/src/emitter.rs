@@ -5,7 +5,10 @@ use std::path::Path;
 
 use serde_json::Value;
 
-use crate::parser::{MethodDef, ParamDef, ParseResult};
+use crate::parser::{
+	EnumValues, MethodDef, OneOfBody, OneOfDiscriminatorValue, ParamDef, ParseResult,
+};
+use crate::transforms::enums::{self, EnumDef};
 use crate::transforms::parameters::BodyEncoding;
 use crate::transforms::responses::{
 	component_ref_type, component_schema_to_rust_name, resolve_response_field_type,
@@ -16,7 +19,12 @@ use crate::utils::deref;
 use crate::utils::naming::{method_type_prefix, sanitize_ident};
 
 /// Emit the types file (params, bodies, response aliases) for all groups.
-pub fn emit_types(parsed: &ParseResult, root: &Value, output_dir: &str) {
+pub fn emit_types(
+	parsed: &ParseResult,
+	root: &Value,
+	output_dir: &str,
+	enum_map: &BTreeMap<(String, EnumValues), EnumDef>,
+) {
 	let dir = Path::new(output_dir);
 	fs::create_dir_all(dir).expect("failed to create output directory");
 
@@ -81,6 +89,12 @@ pub fn emit_types(parsed: &ParseResult, root: &Value, output_dir: &str) {
 		}
 	}
 
+	// Emit enum type definitions
+	let enum_code = enums::emit_enum_definitions(enum_map);
+	if !enum_code.is_empty() {
+		out.push_str(&enum_code);
+	}
+
 	for group in &parsed.groups {
 		for method in &group.methods {
 			let prefix = method_type_prefix(&group.name, &method.name);
@@ -93,17 +107,26 @@ pub fn emit_types(parsed: &ParseResult, root: &Value, output_dir: &str) {
 				.cloned()
 				.collect();
 			if !optional_query.is_empty() {
-				emit_params_struct(&mut out, &prefix, &optional_query);
+				emit_params_struct(&mut out, &prefix, &optional_query, enum_map);
 			}
 
 			// Body struct (skip for raw body — those take serde_json::Value directly)
 			if method.has_body && !method.is_raw_body {
-				match method.body_encoding {
-					BodyEncoding::Multipart => {
-						emit_multipart_body_struct(&mut out, &prefix, &method.body_params);
-					}
-					_ => {
-						emit_body_struct(&mut out, &prefix, &method.body_params);
+				if let Some(ref one_of) = method.one_of_body {
+					emit_one_of_body_enum(&mut out, &prefix, one_of, enum_map);
+				} else {
+					match method.body_encoding {
+						BodyEncoding::Multipart => {
+							emit_multipart_body_struct(
+								&mut out,
+								&prefix,
+								&method.body_params,
+								enum_map,
+							);
+						}
+						_ => {
+							emit_body_struct(&mut out, &prefix, &method.body_params, enum_map);
+						}
 					}
 				}
 			}
@@ -341,15 +364,54 @@ fn emit_component_schema(out: &mut String, name: &str, schema: &Value, root: &Va
 	}
 }
 
+/// Resolve the Rust type for a param, using enum type if available.
+fn resolve_param_type(
+	param: &ParamDef,
+	enum_map: &BTreeMap<(String, EnumValues), EnumDef>,
+) -> String {
+	if let Some(ref ev) = param.enum_values {
+		if let Some(type_name) = enums::lookup_enum_type(enum_map, &param.api_name, ev) {
+			return type_name;
+		}
+	}
+	param.rust_type.clone()
+}
+
 /// Emit a params struct for query parameters.
-fn emit_params_struct(out: &mut String, prefix: &str, params: &[ParamDef]) {
-	writeln!(out, "#[derive(Debug, Clone, Default, Serialize)]").unwrap();
-	writeln!(out, "pub struct {prefix}Params {{").unwrap();
+fn emit_params_struct(
+	out: &mut String,
+	prefix: &str,
+	params: &[ParamDef],
+	enum_map: &BTreeMap<(String, EnumValues), EnumDef>,
+) {
+	let struct_name = format!("{prefix}Params");
+
+	// Check if any param has a default value we can generate code for
+	let has_defaults = params.iter().any(|p| {
+		p.default_value_raw.is_some()
+			&& default_value_expr(
+				&resolve_param_type(p, enum_map),
+				p.default_value_raw.as_ref().unwrap(),
+				p,
+				enum_map,
+			)
+			.is_some()
+	});
+
+	if has_defaults {
+		writeln!(out, "#[derive(Debug, Clone, Serialize)]").unwrap();
+	} else {
+		writeln!(out, "#[derive(Debug, Clone, Default, Serialize)]").unwrap();
+	}
+	writeln!(out, "pub struct {struct_name} {{").unwrap();
 
 	for param in params {
 		let field_name = &param.name;
 		let serde_name = &param.api_name;
 
+		if let Some(ref default) = param.default_value {
+			writeln!(out, "\t/// Default: {default}").unwrap();
+		}
 		// All query params are wrapped in Option
 		if field_name != serde_name && !serde_name.contains("r#") {
 			writeln!(
@@ -361,55 +423,266 @@ fn emit_params_struct(out: &mut String, prefix: &str, params: &[ParamDef]) {
 			writeln!(out, "\t#[serde(skip_serializing_if = \"Option::is_none\")]").unwrap();
 		}
 
-		let rust_type = optionalize(&param.rust_type);
+		let rust_type = optionalize(&resolve_param_type(param, enum_map));
 		writeln!(out, "\tpub {field_name}: {rust_type},").unwrap();
 	}
 
 	writeln!(out, "}}").unwrap();
 	writeln!(out).unwrap();
+
+	// Generate custom Default impl with schema defaults
+	if has_defaults {
+		writeln!(out, "impl Default for {struct_name} {{").unwrap();
+		writeln!(out, "\tfn default() -> Self {{").unwrap();
+		writeln!(out, "\t\tSelf {{").unwrap();
+		for param in params {
+			let field_name = &param.name;
+			let resolved = resolve_param_type(param, enum_map);
+			if let Some(ref raw) = param.default_value_raw {
+				if let Some(expr) = default_value_expr(&resolved, raw, param, enum_map) {
+					writeln!(out, "\t\t\t{field_name}: Some({expr}),").unwrap();
+					continue;
+				}
+			}
+			writeln!(out, "\t\t\t{field_name}: None,").unwrap();
+		}
+		writeln!(out, "\t\t}}").unwrap();
+		writeln!(out, "\t}}").unwrap();
+		writeln!(out, "}}").unwrap();
+		writeln!(out).unwrap();
+	}
 }
 
 /// Emit a body struct for request body parameters.
-fn emit_body_struct(out: &mut String, prefix: &str, params: &[ParamDef]) {
-	writeln!(out, "#[derive(Debug, Clone, Default, Serialize)]").unwrap();
-	writeln!(out, "pub struct {prefix}Body {{").unwrap();
+fn emit_body_struct(
+	out: &mut String,
+	prefix: &str,
+	params: &[ParamDef],
+	enum_map: &BTreeMap<(String, EnumValues), EnumDef>,
+) {
+	let struct_name = format!("{prefix}Body");
+
+	// Collect default functions to emit after the struct
+	let mut default_fns: Vec<(String, String, String)> = Vec::new(); // (fn_name, return_type, expr)
+
+	// Skip Default derive if any required param uses an enum type
+	let has_required_enum = params.iter().any(|p| {
+		p.required && p.enum_values.is_some() && resolve_param_type(p, enum_map) != p.rust_type
+	});
+	if has_required_enum {
+		writeln!(out, "#[derive(Debug, Clone, Serialize, Deserialize)]").unwrap();
+	} else {
+		writeln!(
+			out,
+			"#[derive(Debug, Clone, Default, Serialize, Deserialize)]"
+		)
+		.unwrap();
+	}
+	writeln!(out, "pub struct {struct_name} {{").unwrap();
 
 	for param in params {
 		let field_name = &param.name;
 		let serde_name = &param.api_name;
 
-		if param.required {
-			if field_name != serde_name {
-				writeln!(out, "\t#[serde(rename = \"{serde_name}\")]").unwrap();
-			}
-			writeln!(out, "\tpub {field_name}: {},", param.rust_type).unwrap();
-		} else {
-			if field_name != serde_name {
-				writeln!(
-					out,
-					"\t#[serde(rename = \"{serde_name}\", skip_serializing_if = \"Option::is_none\")]"
-				)
-				.unwrap();
+		if let Some(ref default) = param.default_value {
+			writeln!(out, "\t/// Default: {default}").unwrap();
+		}
+		let resolved_type = resolve_param_type(param, enum_map);
+
+		// Check if we can generate a serde default function for this field
+		let serde_default_fn = param.default_value_raw.as_ref().and_then(|raw| {
+			let expr = default_value_expr(&resolved_type, raw, param, enum_map)?;
+			let fn_name = default_fn_name(&struct_name, field_name);
+			let ret_type = if param.required {
+				resolved_type.clone()
 			} else {
-				writeln!(out, "\t#[serde(skip_serializing_if = \"Option::is_none\")]").unwrap();
+				optionalize(&resolved_type)
+			};
+			let full_expr = if param.required {
+				expr
+			} else {
+				format!("Some({expr})")
+			};
+			default_fns.push((fn_name.clone(), ret_type, full_expr));
+			Some(fn_name)
+		});
+
+		if param.required {
+			let mut serde_attrs = Vec::new();
+			if field_name != serde_name {
+				serde_attrs.push(format!("rename = \"{serde_name}\""));
 			}
-			let rust_type = optionalize(&param.rust_type);
+			if let Some(ref fn_name) = serde_default_fn {
+				serde_attrs.push(format!("default = \"{fn_name}\""));
+			}
+			if !serde_attrs.is_empty() {
+				writeln!(out, "\t#[serde({})]", serde_attrs.join(", ")).unwrap();
+			}
+			writeln!(out, "\tpub {field_name}: {resolved_type},").unwrap();
+		} else {
+			let mut serde_attrs = Vec::new();
+			if field_name != serde_name {
+				serde_attrs.push(format!("rename = \"{serde_name}\""));
+			}
+			serde_attrs.push("skip_serializing_if = \"Option::is_none\"".to_string());
+			if let Some(ref fn_name) = serde_default_fn {
+				serde_attrs.push(format!("default = \"{fn_name}\""));
+			}
+			writeln!(out, "\t#[serde({})]", serde_attrs.join(", ")).unwrap();
+			let rust_type = optionalize(&resolved_type);
 			writeln!(out, "\tpub {field_name}: {rust_type},").unwrap();
 		}
 	}
 
 	writeln!(out, "}}").unwrap();
 	writeln!(out).unwrap();
+
+	// Emit default functions
+	for (fn_name, ret_type, expr) in &default_fns {
+		writeln!(out, "fn {fn_name}() -> {ret_type} {{").unwrap();
+		writeln!(out, "\t{expr}").unwrap();
+		writeln!(out, "}}").unwrap();
+		writeln!(out).unwrap();
+	}
+}
+
+/// Emit a discriminated union enum for oneOf request bodies.
+fn emit_one_of_body_enum(
+	out: &mut String,
+	prefix: &str,
+	one_of: &OneOfBody,
+	enum_map: &BTreeMap<(String, EnumValues), EnumDef>,
+) {
+	let type_name = format!("{prefix}Body");
+	let is_string_discriminator = one_of
+		.variants
+		.first()
+		.is_some_and(|v| matches!(v.discriminator_value, OneOfDiscriminatorValue::String(_)));
+
+	writeln!(out, "#[derive(Debug, Clone, Serialize)]").unwrap();
+	if is_string_discriminator {
+		writeln!(out, "#[serde(tag = \"{}\")]", one_of.discriminator_field).unwrap();
+	} else {
+		// Integer discriminators don't work with serde's internally tagged repr
+		writeln!(out, "#[serde(untagged)]").unwrap();
+	}
+	writeln!(out, "pub enum {type_name} {{").unwrap();
+
+	for variant in &one_of.variants {
+		match &variant.discriminator_value {
+			OneOfDiscriminatorValue::String(s) => {
+				writeln!(out, "\t#[serde(rename = \"{s}\")]").unwrap();
+			}
+			OneOfDiscriminatorValue::Integer(_) => {
+				// No rename attr for untagged — discriminator field is inside the struct
+			}
+		}
+		write!(out, "\t{} {{", variant.variant_name).unwrap();
+
+		// For integer discriminators, include the discriminator field in each variant
+		if let OneOfDiscriminatorValue::Integer(n) = &variant.discriminator_value {
+			writeln!(out).unwrap();
+			writeln!(
+				out,
+				"\t\t/// Must be `{n}`. Set automatically by this variant."
+			)
+			.unwrap();
+			writeln!(out, "\t\t{}: i64,", one_of.discriminator_field).unwrap();
+		}
+
+		if variant.params.is_empty() && is_string_discriminator {
+			writeln!(out, " }},").unwrap();
+		} else {
+			if is_string_discriminator {
+				writeln!(out).unwrap();
+			}
+			for param in &variant.params {
+				let field_name = &param.name;
+				let serde_name = &param.api_name;
+				let resolved_type = resolve_param_type(param, enum_map);
+
+				if param.required {
+					if field_name != serde_name {
+						writeln!(out, "\t\t#[serde(rename = \"{serde_name}\")]").unwrap();
+					}
+					writeln!(out, "\t\t{field_name}: {resolved_type},").unwrap();
+				} else {
+					if field_name != serde_name {
+						writeln!(
+							out,
+							"\t\t#[serde(rename = \"{serde_name}\", skip_serializing_if = \"Option::is_none\")]"
+						)
+						.unwrap();
+					} else {
+						writeln!(
+							out,
+							"\t\t#[serde(skip_serializing_if = \"Option::is_none\")]"
+						)
+						.unwrap();
+					}
+					let rust_type = optionalize(&resolved_type);
+					writeln!(out, "\t\t{field_name}: {rust_type},").unwrap();
+				}
+			}
+			writeln!(out, "\t}},").unwrap();
+		}
+	}
+
+	writeln!(out, "}}").unwrap();
+	writeln!(out).unwrap();
+
+	// For integer discriminators, emit constructors that set the discriminator automatically
+	if !is_string_discriminator {
+		writeln!(out, "impl {type_name} {{").unwrap();
+		for variant in &one_of.variants {
+			if let OneOfDiscriminatorValue::Integer(n) = &variant.discriminator_value {
+				let fn_name = variant.variant_name.to_lowercase();
+				write!(out, "\tpub fn {fn_name}(").unwrap();
+				let mut first = true;
+				for param in &variant.params {
+					if !first {
+						write!(out, ", ").unwrap();
+					}
+					first = false;
+					let resolved_type = resolve_param_type(param, enum_map);
+					let ty = if param.required {
+						resolved_type
+					} else {
+						optionalize(&resolved_type)
+					};
+					write!(out, "{}: {ty}", param.name).unwrap();
+				}
+				writeln!(out, ") -> Self {{").unwrap();
+				writeln!(out, "\t\tSelf::{} {{", variant.variant_name).unwrap();
+				writeln!(out, "\t\t\t{}: {n},", one_of.discriminator_field).unwrap();
+				for param in &variant.params {
+					writeln!(out, "\t\t\t{},", param.name).unwrap();
+				}
+				writeln!(out, "\t\t}}").unwrap();
+				writeln!(out, "\t}}").unwrap();
+			}
+		}
+		writeln!(out, "}}").unwrap();
+		writeln!(out).unwrap();
+	}
 }
 
 /// Emit a body struct for multipart request body parameters.
 /// Binary fields use `Vec<u8>`, no serde derives.
-fn emit_multipart_body_struct(out: &mut String, prefix: &str, params: &[ParamDef]) {
+fn emit_multipart_body_struct(
+	out: &mut String,
+	prefix: &str,
+	params: &[ParamDef],
+	enum_map: &BTreeMap<(String, EnumValues), EnumDef>,
+) {
 	writeln!(out, "#[derive(Debug, Clone)]").unwrap();
 	writeln!(out, "pub struct {prefix}Body {{").unwrap();
 
 	for param in params {
 		let field_name = &param.name;
+		if let Some(ref default) = param.default_value {
+			writeln!(out, "\t/// Default: {default}").unwrap();
+		}
 		if param.is_binary {
 			let rust_type = if param.required {
 				"Vec<u8>".to_string()
@@ -418,9 +691,11 @@ fn emit_multipart_body_struct(out: &mut String, prefix: &str, params: &[ParamDef
 			};
 			writeln!(out, "\tpub {field_name}: {rust_type},").unwrap();
 		} else if param.required {
-			writeln!(out, "\tpub {field_name}: {},", param.rust_type).unwrap();
+			let resolved_type = resolve_param_type(param, enum_map);
+			writeln!(out, "\tpub {field_name}: {resolved_type},").unwrap();
 		} else {
-			let rust_type = optionalize(&param.rust_type);
+			let resolved_type = resolve_param_type(param, enum_map);
+			let rust_type = optionalize(&resolved_type);
 			writeln!(out, "\tpub {field_name}: {rust_type},").unwrap();
 		}
 	}
@@ -482,7 +757,11 @@ fn emit_response_struct(out: &mut String, struct_name: &str, fields: &[ResponseF
 }
 
 /// Emit all group structs + impl blocks into the shared buffer (used by emit_client).
-fn emit_groups_into(parsed: &ParseResult, out: &mut String) {
+fn emit_groups_into(
+	parsed: &ParseResult,
+	out: &mut String,
+	enum_map: &BTreeMap<(String, EnumValues), EnumDef>,
+) {
 	for group in &parsed.groups {
 		let struct_name = &group.class_name;
 
@@ -501,7 +780,7 @@ fn emit_groups_into(parsed: &ParseResult, out: &mut String) {
 		let is_search_group = group.name == "category";
 		for method in &group.methods {
 			writeln!(out).unwrap();
-			emit_method(out, &group.name, method, is_search_group);
+			emit_method(out, &group.name, method, is_search_group, enum_map);
 		}
 
 		writeln!(out, "}}").unwrap();
@@ -510,7 +789,13 @@ fn emit_groups_into(parsed: &ParseResult, out: &mut String) {
 }
 
 /// Emit a single method inside an impl block.
-fn emit_method(out: &mut String, group_name: &str, method: &MethodDef, is_search: bool) {
+fn emit_method(
+	out: &mut String,
+	group_name: &str,
+	method: &MethodDef,
+	is_search: bool,
+	enum_map: &BTreeMap<(String, EnumValues), EnumDef>,
+) {
 	let prefix = method_type_prefix(group_name, &method.name);
 
 	let required_query: Vec<_> = method.query_params.iter().filter(|p| p.required).collect();
@@ -532,7 +817,8 @@ fn emit_method(out: &mut String, group_name: &str, method: &MethodDef, is_search
 
 	// Required query params as direct arguments
 	for param in &required_query {
-		write!(out, ", {}: {}", param.name, param.rust_type).unwrap();
+		let resolved_type = resolve_param_type(param, enum_map);
+		write!(out, ", {}: {resolved_type}", param.name).unwrap();
 	}
 
 	// Optional query params struct
@@ -577,33 +863,38 @@ fn emit_method(out: &mut String, group_name: &str, method: &MethodDef, is_search
 		writeln!(out, "\t\tlet mut query = Vec::new();").unwrap();
 		// Required query params — always pushed
 		for param in &required_query {
-			emit_required_query_push(out, param, "\t\t");
+			emit_required_query_push(out, param, "\t\t", enum_map);
 		}
 		// Optional query params — pushed from the params struct
 		if has_optional_params {
 			writeln!(out, "\t\tif let Some(p) = params {{").unwrap();
 			for param in &optional_query {
-				emit_param_push(out, "query", param, "\t\t\t");
+				emit_param_push(out, "query", param, "\t\t\t", enum_map);
 			}
 			writeln!(out, "\t\t}}").unwrap();
 		}
 	}
 
 	// Build body vec / parts depending on encoding
+	let has_one_of = method.one_of_body.is_some();
 	match method.body_encoding {
 		BodyEncoding::Multipart if method.has_body && !method.is_raw_body => {
 			writeln!(out, "\t\tlet mut parts = Vec::new();").unwrap();
-			writeln!(out, "\t\tif let Some(b) = body {{").unwrap();
-			for param in &method.body_params {
-				emit_multipart_part_push(out, param, "\t\t\t");
+			if let Some(ref one_of) = method.one_of_body {
+				emit_one_of_multipart_match(out, &prefix, one_of, "\t\t");
+			} else {
+				writeln!(out, "\t\tif let Some(b) = body {{").unwrap();
+				for param in &method.body_params {
+					emit_multipart_part_push(out, param, "\t\t\t", enum_map);
+				}
+				writeln!(out, "\t\t}}").unwrap();
 			}
-			writeln!(out, "\t\t}}").unwrap();
 		}
-		BodyEncoding::FormUrlEncoded if method.has_body && !method.is_raw_body => {
+		BodyEncoding::FormUrlEncoded if method.has_body && !method.is_raw_body && !has_one_of => {
 			writeln!(out, "\t\tlet mut form = Vec::new();").unwrap();
 			writeln!(out, "\t\tif let Some(b) = body {{").unwrap();
 			for param in &method.body_params {
-				emit_param_push(out, "form", param, "\t\t\t");
+				emit_param_push(out, "form", param, "\t\t\t", enum_map);
 			}
 			writeln!(out, "\t\t}}").unwrap();
 		}
@@ -696,10 +987,27 @@ fn emit_method(out: &mut String, group_name: &str, method: &MethodDef, is_search
 }
 
 /// Emit code to push a required query parameter (direct arg, not from struct) into the query vec.
-fn emit_required_query_push(out: &mut String, param: &ParamDef, indent: &str) {
+fn emit_required_query_push(
+	out: &mut String,
+	param: &ParamDef,
+	indent: &str,
+	enum_map: &BTreeMap<(String, EnumValues), EnumDef>,
+) {
 	let api_name = &param.api_name;
 	let field = &param.name;
 	let variant = &param.param_value_variant;
+
+	let has_enum =
+		param.enum_values.is_some() && resolve_param_type(param, enum_map) != param.rust_type;
+
+	if has_enum {
+		writeln!(
+			out,
+			"{indent}query.push((\"{api_name}\".into(), ParamValue::String({field}.to_string())));"
+		)
+		.unwrap();
+		return;
+	}
 
 	let base_type = &param.rust_type;
 	let is_string_or_int = base_type == "StringOrInt";
@@ -726,13 +1034,41 @@ fn emit_required_query_push(out: &mut String, param: &ParamDef, indent: &str) {
 }
 
 /// Emit code to push a parameter value into a Vec.
-fn emit_param_push(out: &mut String, vec_name: &str, param: &ParamDef, indent: &str) {
+fn emit_param_push(
+	out: &mut String,
+	vec_name: &str,
+	param: &ParamDef,
+	indent: &str,
+	enum_map: &BTreeMap<(String, EnumValues), EnumDef>,
+) {
 	let api_name = &param.api_name;
 	let field = &param.name;
 	let variant = &param.param_value_variant;
 
 	// Determine the correct accessor based on whether we're in body or query context
 	let accessor = if vec_name == "form" { "b" } else { "p" };
+
+	let has_enum =
+		param.enum_values.is_some() && resolve_param_type(param, enum_map) != param.rust_type;
+
+	if has_enum {
+		if param.required {
+			writeln!(
+				out,
+				"{indent}{vec_name}.push((\"{api_name}\".into(), ParamValue::String({accessor}.{field}.to_string())));"
+			)
+			.unwrap();
+		} else {
+			writeln!(out, "{indent}if let Some(ref v) = {accessor}.{field} {{").unwrap();
+			writeln!(
+				out,
+				"{indent}\t{vec_name}.push((\"{api_name}\".into(), ParamValue::String(v.to_string())));"
+			)
+			.unwrap();
+			writeln!(out, "{indent}}}").unwrap();
+		}
+		return;
+	}
 
 	let base_type = param
 		.rust_type
@@ -858,9 +1194,17 @@ fn emit_param_push(out: &mut String, vec_name: &str, param: &ParamDef, indent: &
 }
 
 /// Emit code to push a multipart part into a Vec<MultipartPart>.
-fn emit_multipart_part_push(out: &mut String, param: &ParamDef, indent: &str) {
+fn emit_multipart_part_push(
+	out: &mut String,
+	param: &ParamDef,
+	indent: &str,
+	enum_map: &BTreeMap<(String, EnumValues), EnumDef>,
+) {
 	let api_name = &param.api_name;
 	let field = &param.name;
+
+	let has_enum =
+		param.enum_values.is_some() && resolve_param_type(param, enum_map) != param.rust_type;
 
 	if param.is_binary {
 		// Binary field → MultipartPart::File
@@ -906,6 +1250,8 @@ fn emit_multipart_part_push(out: &mut String, param: &ParamDef, indent: &str) {
 			let value_expr = if is_vec {
 				// Vec<String> → join with space (spaceDelimited encoding)
 				format!("b.{field}.join(\" \")")
+			} else if has_enum {
+				format!("b.{field}.to_string()")
 			} else {
 				match param.param_value_variant.as_str() {
 					"String" => format!("b.{field}.clone()"),
@@ -920,6 +1266,8 @@ fn emit_multipart_part_push(out: &mut String, param: &ParamDef, indent: &str) {
 			writeln!(out, "{indent}if let Some(ref v) = b.{field} {{").unwrap();
 			let value_expr = if is_vec {
 				"v.join(\" \")".to_string()
+			} else if has_enum {
+				"v.to_string()".to_string()
 			} else {
 				match param.param_value_variant.as_str() {
 					"String" => "v.clone()".to_string(),
@@ -935,6 +1283,120 @@ fn emit_multipart_part_push(out: &mut String, param: &ParamDef, indent: &str) {
 	}
 }
 
+/// Emit a match block that destructures a oneOf enum into multipart parts.
+fn emit_one_of_multipart_match(out: &mut String, prefix: &str, one_of: &OneOfBody, indent: &str) {
+	let type_name = format!("{prefix}Body");
+	writeln!(out, "{indent}if let Some(b) = body {{").unwrap();
+	writeln!(out, "{indent}\tmatch b {{").unwrap();
+	for variant in &one_of.variants {
+		// Build destructure pattern
+		let field_names: Vec<&str> = variant.params.iter().map(|p| p.name.as_str()).collect();
+		let disc_field = &one_of.discriminator_field;
+
+		let has_disc_in_fields = matches!(
+			variant.discriminator_value,
+			OneOfDiscriminatorValue::Integer(_)
+		);
+
+		let mut pattern_fields = Vec::new();
+		if has_disc_in_fields {
+			pattern_fields.push(format!("{disc_field}: _"));
+		}
+		for name in &field_names {
+			pattern_fields.push(name.to_string());
+		}
+
+		writeln!(
+			out,
+			"{indent}\t\t{type_name}::{} {{ {} }} => {{",
+			variant.variant_name,
+			pattern_fields.join(", ")
+		)
+		.unwrap();
+
+		// Push discriminator field as a part
+		match &variant.discriminator_value {
+			OneOfDiscriminatorValue::String(s) => {
+				writeln!(out, "{indent}\t\t\tparts.push(MultipartPart::Text {{").unwrap();
+				writeln!(out, "{indent}\t\t\t\tname: \"{disc_field}\".to_string(),").unwrap();
+				writeln!(out, "{indent}\t\t\t\tvalue: \"{s}\".to_string(),").unwrap();
+				writeln!(out, "{indent}\t\t\t}});").unwrap();
+			}
+			OneOfDiscriminatorValue::Integer(n) => {
+				writeln!(out, "{indent}\t\t\tparts.push(MultipartPart::Text {{").unwrap();
+				writeln!(out, "{indent}\t\t\t\tname: \"{disc_field}\".to_string(),").unwrap();
+				writeln!(out, "{indent}\t\t\t\tvalue: {n}.to_string(),").unwrap();
+				writeln!(out, "{indent}\t\t\t}});").unwrap();
+			}
+		}
+
+		// Push each variant's fields as parts
+		for param in &variant.params {
+			let field = &param.name;
+			let api_name = &param.api_name;
+			let is_vec = param.rust_type.starts_with("Vec<")
+				|| param
+					.rust_type
+					.strip_prefix("Option<")
+					.is_some_and(|s| s.starts_with("Vec<"));
+			let base_is_vec = param
+				.rust_type
+				.strip_prefix("Option<")
+				.and_then(|s| s.strip_suffix('>'))
+				.unwrap_or(&param.rust_type)
+				.starts_with("Vec<");
+
+			if param.required {
+				if base_is_vec {
+					writeln!(out, "{indent}\t\t\tparts.push(MultipartPart::Text {{").unwrap();
+					writeln!(out, "{indent}\t\t\t\tname: \"{api_name}\".to_string(),").unwrap();
+					writeln!(
+						out,
+						"{indent}\t\t\t\tvalue: {field}.iter().map(|v| v.to_string()).collect::<Vec<_>>().join(\" \"),"
+					)
+					.unwrap();
+					writeln!(out, "{indent}\t\t\t}});").unwrap();
+				} else {
+					writeln!(out, "{indent}\t\t\tparts.push(MultipartPart::Text {{").unwrap();
+					writeln!(out, "{indent}\t\t\t\tname: \"{api_name}\".to_string(),").unwrap();
+					if param.rust_type == "String" {
+						writeln!(out, "{indent}\t\t\t\tvalue: {field}.clone(),").unwrap();
+					} else {
+						writeln!(out, "{indent}\t\t\t\tvalue: {field}.to_string(),").unwrap();
+					}
+					writeln!(out, "{indent}\t\t\t}});").unwrap();
+				}
+			} else {
+				writeln!(out, "{indent}\t\t\tif let Some(v) = {field} {{").unwrap();
+				if is_vec || base_is_vec {
+					writeln!(out, "{indent}\t\t\t\tparts.push(MultipartPart::Text {{").unwrap();
+					writeln!(out, "{indent}\t\t\t\t\tname: \"{api_name}\".to_string(),").unwrap();
+					writeln!(
+						out,
+						"{indent}\t\t\t\t\tvalue: v.iter().map(|i| i.to_string()).collect::<Vec<_>>().join(\" \"),"
+					)
+					.unwrap();
+					writeln!(out, "{indent}\t\t\t\t}});").unwrap();
+				} else {
+					writeln!(out, "{indent}\t\t\t\tparts.push(MultipartPart::Text {{").unwrap();
+					writeln!(out, "{indent}\t\t\t\t\tname: \"{api_name}\".to_string(),").unwrap();
+					if param.rust_type.contains("String") {
+						writeln!(out, "{indent}\t\t\t\t\tvalue: v.clone(),").unwrap();
+					} else {
+						writeln!(out, "{indent}\t\t\t\t\tvalue: v.to_string(),").unwrap();
+					}
+					writeln!(out, "{indent}\t\t\t\t}});").unwrap();
+				}
+				writeln!(out, "{indent}\t\t\t}}").unwrap();
+			}
+		}
+
+		writeln!(out, "{indent}\t\t}}").unwrap();
+	}
+	writeln!(out, "{indent}\t}}").unwrap();
+	writeln!(out, "{indent}}}").unwrap();
+}
+
 /// Emit the client file: all group structs + impl blocks + Client struct.
 pub fn emit_client(
 	parsed: &ParseResult,
@@ -943,6 +1405,7 @@ pub fn emit_client(
 	default_rate_limit: u32,
 	default_search_rate_limit: Option<u32>,
 	output_dir: &str,
+	enum_map: &BTreeMap<(String, EnumValues), EnumDef>,
 ) {
 	let dir = Path::new(output_dir);
 	fs::create_dir_all(dir).expect("failed to create output directory");
@@ -1008,7 +1471,7 @@ pub fn emit_client(
 	writeln!(out).unwrap();
 
 	// Emit all group structs + impl blocks
-	emit_groups_into(parsed, &mut out);
+	emit_groups_into(parsed, &mut out, enum_map);
 
 	// Struct
 	writeln!(out, "pub struct {client_name} {{").unwrap();
@@ -1149,6 +1612,59 @@ fn build_path_format_with_raw_prefix(path: &str, path_params: &[ParamDef]) -> St
 		result = result.replace(&placeholder, &replacement);
 	}
 	result
+}
+
+/// Generate a Rust expression for a default value, given the resolved type and raw JSON value.
+///
+/// Returns `None` if the value cannot be converted to a valid Rust expression.
+fn default_value_expr(
+	resolved_type: &str,
+	raw: &Value,
+	param: &ParamDef,
+	enum_map: &BTreeMap<(String, EnumValues), EnumDef>,
+) -> Option<String> {
+	// If the field maps to an enum type, generate the correct variant constructor
+	if let Some(ref ev) = param.enum_values {
+		if let Some(type_name) = enums::lookup_enum_type(enum_map, &param.api_name, ev) {
+			use heck::ToUpperCamelCase;
+			return match raw {
+				Value::String(s) => {
+					let variant = s.to_upper_camel_case();
+					Some(format!("{type_name}::{variant}"))
+				}
+				Value::Number(n) => {
+					let val = n.as_i64()?;
+					let variant = if val < 0 {
+						format!("Neg{}", val.unsigned_abs())
+					} else {
+						format!("V{val}")
+					};
+					Some(format!("{type_name}::{variant}"))
+				}
+				_ => None,
+			};
+		}
+	}
+
+	// Plain types
+	match raw {
+		Value::String(s) => Some(format!("\"{s}\".to_string()")),
+		Value::Number(n) => {
+			if resolved_type.contains("f64") {
+				Some(format!("{}_f64", n.as_f64()?))
+			} else {
+				Some(format!("{}_i64", n.as_i64()?))
+			}
+		}
+		Value::Bool(b) => Some(format!("{b}")),
+		_ => None,
+	}
+}
+
+/// Generate a unique default function name for a struct field.
+fn default_fn_name(struct_prefix: &str, field_name: &str) -> String {
+	use heck::ToSnakeCase;
+	format!("default_{}_{field_name}", struct_prefix.to_snake_case())
 }
 
 /// Wrap a type in Option if not already optional.

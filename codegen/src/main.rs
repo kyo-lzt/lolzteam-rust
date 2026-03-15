@@ -1,6 +1,6 @@
 mod emitter;
 mod parser;
-mod transforms;
+pub mod transforms;
 mod utils;
 
 use std::path::Path;
@@ -47,14 +47,16 @@ fn main() {
 		});
 
 		let parsed = parser::parse_spec(&spec);
+		let enums = transforms::enums::collect_enums(&parsed);
 
 		eprintln!(
-			"  found {} groups, {} total methods",
+			"  found {} groups, {} total methods, {} enum types",
 			parsed.groups.len(),
-			parsed.groups.iter().map(|g| g.methods.len()).sum::<usize>()
+			parsed.groups.iter().map(|g| g.methods.len()).sum::<usize>(),
+			enums.len()
 		);
 
-		emitter::emit_types(&parsed, &spec, api.output_dir);
+		emitter::emit_types(&parsed, &spec, api.output_dir, &enums);
 		emitter::emit_client(
 			&parsed,
 			api.client_name,
@@ -62,6 +64,7 @@ fn main() {
 			api.default_rate_limit,
 			api.default_search_rate_limit,
 			api.output_dir,
+			&enums,
 		);
 		emitter::emit_mod(&parsed, api.output_dir);
 	}
