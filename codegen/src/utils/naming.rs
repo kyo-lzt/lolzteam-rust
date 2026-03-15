@@ -16,7 +16,7 @@ pub fn split_operation_id(operation_id: &str) -> (String, String) {
 			.join("_");
 		sanitize_method_name(&raw)
 	} else {
-		"execute".to_string()
+		parts[0].to_snake_case()
 	};
 	(group, method)
 }

@@ -907,24 +907,18 @@ impl OAuthApi {
 	) -> Result<OAuthTokenResponse, LolzteamError> {
 		let mut parts = Vec::new();
 		if let Some(b) = body {
-			if let Some(ref v) = b.client_id {
-				parts.push(MultipartPart::Text {
-					name: "client_id".to_string(),
-					value: v.clone(),
-				});
-			}
-			if let Some(ref v) = b.client_secret {
-				parts.push(MultipartPart::Text {
-					name: "client_secret".to_string(),
-					value: v.clone(),
-				});
-			}
-			if let Some(ref v) = b.grant_type {
-				parts.push(MultipartPart::Text {
-					name: "grant_type".to_string(),
-					value: v.clone(),
-				});
-			}
+			parts.push(MultipartPart::Text {
+				name: "client_id".to_string(),
+				value: b.client_id.clone(),
+			});
+			parts.push(MultipartPart::Text {
+				name: "client_secret".to_string(),
+				value: b.client_secret.clone(),
+			});
+			parts.push(MultipartPart::Text {
+				name: "grant_type".to_string(),
+				value: b.grant_type.clone(),
+			});
 			if let Some(ref v) = b.scope {
 				parts.push(MultipartPart::Text {
 					name: "scope".to_string(),

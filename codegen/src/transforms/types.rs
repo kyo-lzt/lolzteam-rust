@@ -134,8 +134,14 @@ pub fn schema_to_rust_type(root: &Value, schema: &Value) -> (String, String) {
 			(format!("Vec<{inner}>"), "String".to_string())
 		}
 		Some("object") => {
-			// object without specific properties — use Value
-			("serde_json::Value".to_string(), "String".to_string())
+			if let Some(ap) = schema.get("additionalProperties") {
+				let ap = deref::deref(root, ap);
+				let (inner, _) = schema_to_rust_type(root, ap);
+				(format!("HashMap<String, {inner}>"), "String".to_string())
+			} else {
+				// object without specific properties — use Value
+				("serde_json::Value".to_string(), "String".to_string())
+			}
 		}
 		Some("null") => (
 			"Option<serde_json::Value>".to_string(),

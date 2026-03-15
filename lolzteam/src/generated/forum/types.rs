@@ -17,8 +17,66 @@ pub struct RespChatboxMessageModel {
 	#[serde(rename = "messageRaw")]
 	pub message_raw: String,
 	pub message_id: i64,
-	pub room: serde_json::Value,
-	pub user: serde_json::Value,
+	pub room: RespChatboxMessageModelRoom,
+	pub user: RespChatboxMessageModelUser,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct RespChatboxMessageModelRoom {
+	pub can_report: bool,
+	pub eng: bool,
+	pub market: bool,
+	pub room_id: i64,
+	pub title: String,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct RespChatboxMessageModelUserRenderedAvatars {
+	pub l: String,
+	pub m: String,
+	pub s: String,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct RespChatboxMessageModelUserRendered {
+	pub avatars: RespChatboxMessageModelUserRenderedAvatars,
+	pub link: String,
+	pub username: String,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct RespChatboxMessageModelUserUniqBanner {
+	pub banner_css: String,
+	pub banner_icon: String,
+	pub banner_text: String,
+	pub username_icon: String,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct RespChatboxMessageModelUser {
+	pub avatar_date: i64,
+	pub background_date: i64,
+	pub contest_count: i64,
+	pub custom_title: String,
+	pub display_banner_id: i64,
+	pub display_icon_group_id: i64,
+	pub display_style_group_id: i64,
+	pub is_admin: bool,
+	pub is_banned: bool,
+	pub is_moderator: bool,
+	pub is_staff: bool,
+	pub last_activity: i64,
+	pub like2_count: i64,
+	pub like_count: i64,
+	pub message_count: i64,
+	pub register_date: i64,
+	pub rendered: RespChatboxMessageModelUserRendered,
+	pub short_link: String,
+	pub trophy_points: i64,
+	pub uniq_banner: RespChatboxMessageModelUserUniqBanner,
+	pub uniq_username_css: String,
+	pub user_id: i64,
+	pub username: String,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -27,7 +85,7 @@ pub struct RespConversationMessageModel {
 	pub creator_user_id: i64,
 	pub creator_username: String,
 	pub creator_username_html: String,
-	pub links: serde_json::Value,
+	pub links: RespConversationMessageModelLinks,
 	pub message_body: String,
 	pub message_body_html: String,
 	pub message_body_plain_text: String,
@@ -37,8 +95,25 @@ pub struct RespConversationMessageModel {
 	pub message_is_system: bool,
 	pub message_is_unread: i64,
 	pub message_need_translate: bool,
-	pub permissions: serde_json::Value,
+	pub permissions: RespConversationMessageModelPermissions,
 	pub user_is_ignored: bool,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct RespConversationMessageModelLinks {
+	pub conversation: String,
+	pub creator: String,
+	pub creator_avatar: String,
+	pub detail: String,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct RespConversationMessageModelPermissions {
+	pub delete: bool,
+	pub edit: bool,
+	#[serde(rename = "stick-unstick")]
+	pub stick_unstick: bool,
+	pub view: bool,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -61,10 +136,54 @@ pub struct RespConversationModel {
 	pub is_group: i64,
 	pub is_starred: i64,
 	pub is_unread: i64,
-	pub links: serde_json::Value,
-	pub permissions: serde_json::Value,
-	pub recipient: serde_json::Value,
-	pub recipients: Vec<serde_json::Value>,
+	pub links: RespConversationModelLinks,
+	pub permissions: RespConversationModelPermissions,
+	pub recipient: RespConversationModelRecipient,
+	pub recipients: Vec<RespConversationModelRecipients>,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct RespConversationModelLinks {
+	pub avatar: String,
+	pub detail: String,
+	pub messages: String,
+	pub permalink: String,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct RespConversationModelPermissions {
+	#[serde(rename = "editOwnPost")]
+	pub edit_own_post: bool,
+	pub invite: bool,
+	pub kick: bool,
+	pub manage_invite_links: bool,
+	pub reply: bool,
+	#[serde(rename = "stickyMessages")]
+	pub sticky_messages: bool,
+	pub upload_avatar: bool,
+	pub view: bool,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct RespConversationModelRecipient {
+	pub avatar: String,
+	pub contacts_changed: bool,
+	pub is_online: bool,
+	pub last_activity: i64,
+	pub user_id: i64,
+	pub username: String,
+	pub username_html: String,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct RespConversationModelRecipients {
+	pub avatar: String,
+	pub contacts_changed: bool,
+	pub is_online: bool,
+	pub last_activity: i64,
+	pub user_id: i64,
+	pub username: String,
+	pub username_html: String,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -72,8 +191,19 @@ pub struct RespLinkModel {
 	pub link_description: String,
 	pub link_id: i64,
 	pub link_title: String,
-	pub links: serde_json::Value,
-	pub permissions: serde_json::Value,
+	pub links: RespLinkModelLinks,
+	pub permissions: RespLinkModelPermissions,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct RespLinkModelLinks {
+	pub detail: String,
+	pub target: String,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct RespLinkModelPermissions {
+	pub view: bool,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -84,7 +214,7 @@ pub struct RespNotificationModel {
 	pub creator_user_id: i64,
 	pub creator_username: String,
 	pub creator_username_html: String,
-	pub links: serde_json::Value,
+	pub links: RespNotificationModelLinks,
 	pub notification_create_date: i64,
 	pub notification_html: String,
 	pub notification_id: i64,
@@ -93,9 +223,15 @@ pub struct RespNotificationModel {
 }
 
 #[derive(Debug, Clone, Deserialize)]
+pub struct RespNotificationModelLinks {
+	pub content: String,
+	pub creator_avatar: String,
+}
+
+#[derive(Debug, Clone, Deserialize)]
 pub struct RespPostCommentModel {
-	pub links: serde_json::Value,
-	pub permissions: serde_json::Value,
+	pub links: RespPostCommentModelLinks,
+	pub permissions: RespPostCommentModelPermissions,
 	pub post_comment_body: String,
 	pub post_comment_body_html: String,
 	pub post_comment_body_plain_text: String,
@@ -114,9 +250,31 @@ pub struct RespPostCommentModel {
 }
 
 #[derive(Debug, Clone, Deserialize)]
+pub struct RespPostCommentModelLinks {
+	pub detail: String,
+	pub likes: String,
+	pub permalink: String,
+	pub post: String,
+	pub poster: String,
+	pub poster_avatar: String,
+	pub report: String,
+	pub thread: String,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct RespPostCommentModelPermissions {
+	pub delete: bool,
+	pub edit: bool,
+	pub like: bool,
+	pub reply: bool,
+	pub report: bool,
+	pub view: bool,
+}
+
+#[derive(Debug, Clone, Deserialize)]
 pub struct RespPostModel {
-	pub links: serde_json::Value,
-	pub permissions: serde_json::Value,
+	pub links: RespPostModelLinks,
+	pub permissions: RespPostModelPermissions,
 	pub post_body: String,
 	pub post_body_html: String,
 	pub post_body_plain_text: String,
@@ -139,6 +297,27 @@ pub struct RespPostModel {
 }
 
 #[derive(Debug, Clone, Deserialize)]
+pub struct RespPostModelLinks {
+	pub detail: String,
+	pub likes: String,
+	pub permalink: String,
+	pub poster: String,
+	pub poster_avatar: String,
+	pub report: String,
+	pub thread: String,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct RespPostModelPermissions {
+	pub delete: bool,
+	pub edit: bool,
+	pub like: bool,
+	pub reply: bool,
+	pub report: bool,
+	pub view: bool,
+}
+
+#[derive(Debug, Clone, Deserialize)]
 pub struct RespProfilePostCommentModel {
 	pub comment_body: String,
 	pub comment_body_html: String,
@@ -148,17 +327,33 @@ pub struct RespProfilePostCommentModel {
 	pub comment_user_id: i64,
 	pub comment_username: String,
 	pub comment_username_html: String,
-	pub links: serde_json::Value,
-	pub permissions: serde_json::Value,
+	pub links: RespProfilePostCommentModelLinks,
+	pub permissions: RespProfilePostCommentModelPermissions,
 	pub profile_post_id: i64,
 	pub timeline_user_id: i64,
 	pub user_is_ignored: bool,
 }
 
 #[derive(Debug, Clone, Deserialize)]
+pub struct RespProfilePostCommentModelLinks {
+	pub detail: String,
+	pub poster: String,
+	pub poster_avatar: String,
+	pub profile_post: String,
+	pub timeline: String,
+	pub timeline_user: String,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct RespProfilePostCommentModelPermissions {
+	pub delete: bool,
+	pub view: bool,
+}
+
+#[derive(Debug, Clone, Deserialize)]
 pub struct RespProfilePostModel {
-	pub links: serde_json::Value,
-	pub permissions: serde_json::Value,
+	pub links: RespProfilePostModelLinks,
+	pub permissions: RespProfilePostModelPermissions,
 	pub post_body: String,
 	pub post_body_html: String,
 	pub post_body_plain_text: String,
@@ -181,6 +376,30 @@ pub struct RespProfilePostModel {
 }
 
 #[derive(Debug, Clone, Deserialize)]
+pub struct RespProfilePostModelLinks {
+	pub comments: String,
+	pub detail: String,
+	pub likes: String,
+	pub permalink: String,
+	pub poster: String,
+	pub poster_avatar: String,
+	pub report: String,
+	pub timeline: String,
+	pub timeline_user: String,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct RespProfilePostModelPermissions {
+	pub comment: bool,
+	pub delete: bool,
+	pub edit: bool,
+	pub like: bool,
+	pub report: bool,
+	pub stick: bool,
+	pub view: bool,
+}
+
+#[derive(Debug, Clone, Deserialize)]
 pub struct RespSystemInfo {
 	pub time: i64,
 	pub visitor_id: i64,
@@ -188,17 +407,17 @@ pub struct RespSystemInfo {
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct RespThreadModel {
-	pub contest: serde_json::Value,
+	pub contest: RespThreadModelContest,
 	pub creator_user_id: i64,
 	pub creator_username: String,
 	pub creator_username_html: String,
-	pub first_post: serde_json::Value,
+	pub first_post: RespThreadModelFirstPost,
 	pub forum_id: i64,
-	pub last_post: serde_json::Value,
-	pub links: serde_json::Value,
+	pub last_post: RespThreadModelLastPost,
+	pub links: RespThreadModelLinks,
 	pub node_title: String,
-	pub permissions: serde_json::Value,
-	pub restrictions: serde_json::Value,
+	pub permissions: RespThreadModelPermissions,
+	pub restrictions: RespThreadModelRestrictions,
 	pub thread_create_date: i64,
 	pub thread_id: i64,
 	pub thread_is_closed: bool,
@@ -209,7 +428,7 @@ pub struct RespThreadModel {
 	pub thread_is_sticky: bool,
 	pub thread_post_count: i64,
 	pub thread_prefixes: Vec<serde_json::Value>,
-	pub thread_tags: serde_json::Value,
+	pub thread_tags: RespThreadModelThreadTags,
 	pub thread_title: String,
 	pub thread_update_date: i64,
 	pub thread_view_count: i64,
@@ -217,10 +436,182 @@ pub struct RespThreadModel {
 }
 
 #[derive(Debug, Clone, Deserialize)]
+pub struct RespThreadModelContestPermissions {
+	pub can_finish: bool,
+	pub can_participate: bool,
+	pub can_participate_error: String,
+	pub can_view_user_list: bool,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct RespThreadModelContest {
+	pub already_participate: bool,
+	pub chance_to_win: f64,
+	pub count_winners: i64,
+	pub finish_date: i64,
+	pub is_finished: i64,
+	pub is_money_places: i64,
+	pub needed_members: i64,
+	pub now_count_members: i64,
+	pub permissions: RespThreadModelContestPermissions,
+	pub prize_data: i64,
+	pub prize_type: String,
+	pub prize_type_phrase: String,
+	pub require_like_count: i64,
+	pub require_total_like_count: i64,
+	#[serde(rename = "type")]
+	pub r#type: String,
+	pub winners: Vec<i64>,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct RespThreadModelFirstPostLinks {
+	pub detail: String,
+	pub likes: String,
+	pub permalink: String,
+	pub poster: String,
+	pub poster_avatar: String,
+	pub report: String,
+	pub thread: String,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct RespThreadModelFirstPostPermissions {
+	pub delete: bool,
+	pub edit: bool,
+	pub like: bool,
+	pub reply: bool,
+	pub report: bool,
+	pub view: bool,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct RespThreadModelFirstPost {
+	pub links: RespThreadModelFirstPostLinks,
+	pub permissions: RespThreadModelFirstPostPermissions,
+	pub post_body: String,
+	pub post_body_html: String,
+	pub post_body_plain_text: String,
+	pub post_create_date: i64,
+	pub post_id: i64,
+	pub post_is_deleted: bool,
+	pub post_is_first_post: bool,
+	pub post_is_liked: bool,
+	pub post_is_published: bool,
+	pub post_like_count: i64,
+	pub post_update_date: i64,
+	pub poster_user_id: i64,
+	pub poster_username: String,
+	pub poster_username_html: String,
+	pub signature: String,
+	pub signature_html: String,
+	pub signature_plain_text: String,
+	pub thread_id: i64,
+	pub thread_is_deleted: bool,
+	pub user_is_ignored: bool,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct RespThreadModelLastPostLinks {
+	pub detail: String,
+	pub likes: String,
+	pub permalink: String,
+	pub poster: String,
+	pub poster_avatar: String,
+	pub report: String,
+	pub thread: String,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct RespThreadModelLastPostPermissions {
+	pub delete: bool,
+	pub edit: bool,
+	pub like: bool,
+	pub reply: bool,
+	pub report: bool,
+	pub view: bool,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct RespThreadModelLastPost {
+	pub links: RespThreadModelLastPostLinks,
+	pub permissions: RespThreadModelLastPostPermissions,
+	pub post_body: String,
+	pub post_body_html: String,
+	pub post_body_plain_text: String,
+	pub post_create_date: i64,
+	pub post_id: i64,
+	pub post_is_deleted: bool,
+	pub post_is_first_post: bool,
+	pub post_is_liked: bool,
+	pub post_is_published: bool,
+	pub post_like_count: i64,
+	pub post_update_date: i64,
+	pub poster_user_id: i64,
+	pub poster_username: String,
+	pub poster_username_html: String,
+	pub signature: String,
+	pub signature_html: String,
+	pub signature_plain_text: String,
+	pub thread_id: i64,
+	pub thread_is_deleted: bool,
+	pub user_is_ignored: bool,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct RespThreadModelLinks {
+	pub detail: String,
+	pub first_post: String,
+	pub first_poster: String,
+	pub first_poster_avatar: String,
+	pub followers: String,
+	pub forum: String,
+	pub last_post: String,
+	pub permalink: String,
+	pub posts: String,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct RespThreadModelPermissionsBump {
+	pub available_count: i64,
+	pub can: bool,
+	pub error: serde_json::Value,
+	pub next_available_time: serde_json::Value,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct RespThreadModelPermissions {
+	pub bump: RespThreadModelPermissionsBump,
+	pub delete: bool,
+	pub edit: bool,
+	pub edit_tags: bool,
+	pub edit_title: bool,
+	pub follow: bool,
+	pub post: bool,
+	pub view: bool,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct RespThreadModelRestrictions {
+	pub max_reply_count: i64,
+	pub reply_delay: i64,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct RespThreadModelThreadTags {
+	#[serde(rename = "193431")]
+	pub _193431: String,
+	#[serde(rename = "206")]
+	pub _206: String,
+	#[serde(rename = "97491")]
+	pub _97491: String,
+}
+
+#[derive(Debug, Clone, Deserialize)]
 pub struct RespUserModel {
 	pub balance: String,
 	pub banner: String,
-	pub birthday: serde_json::Value,
+	pub birthday: RespUserModelBirthday,
 	pub contest_count: i64,
 	pub conv_welcome_message: String,
 	pub curator_titles: Vec<String>,
@@ -228,24 +619,24 @@ pub struct RespUserModel {
 	pub custom_title: String,
 	pub display_banner_id: i64,
 	pub display_icon_group_id: i64,
-	pub edit_permissions: serde_json::Value,
-	pub fields: Vec<serde_json::Value>,
+	pub edit_permissions: RespUserModelEditPermissions,
+	pub fields: Vec<RespUserModelFields>,
 	pub hold: String,
 	pub is_banned: i64,
-	pub links: serde_json::Value,
-	pub permissions: serde_json::Value,
+	pub links: RespUserModelLinks,
+	pub permissions: RespUserModelPermissions,
 	pub secret_answer_first_letter: String,
 	pub secret_answer_rendered: String,
-	pub self_permissions: serde_json::Value,
+	pub self_permissions: RespUserModelSelfPermissions,
 	pub short_link: String,
 	pub trophy_count: i64,
 	pub user_deposit: i64,
 	pub user_email: String,
-	pub user_external_authentications: Vec<serde_json::Value>,
-	pub user_followers: serde_json::Value,
-	pub user_following: serde_json::Value,
+	pub user_external_authentications: Vec<RespUserModelUserExternalAuthentications>,
+	pub user_followers: RespUserModelUserFollowers,
+	pub user_following: RespUserModelUserFollowing,
 	pub user_group_id: i64,
-	pub user_groups: Vec<serde_json::Value>,
+	pub user_groups: Vec<RespUserModelUserGroups>,
 	pub user_id: i64,
 	pub user_is_followed: bool,
 	pub user_is_ignored: bool,
@@ -263,6 +654,135 @@ pub struct RespUserModel {
 	pub user_unread_notification_count: i64,
 	pub username: String,
 	pub username_html: String,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct RespUserModelBirthdayTimeStamp {
+	pub date: String,
+	pub timezone: String,
+	pub timezone_type: i64,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct RespUserModelBirthday {
+	pub age: i64,
+	pub format: String,
+	#[serde(rename = "timeStamp")]
+	pub time_stamp: RespUserModelBirthdayTimeStamp,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct RespUserModelEditPermissions {
+	pub fields: bool,
+	pub hide_username_logs: bool,
+	pub password: bool,
+	pub primary_group_id: bool,
+	pub secondary_group_ids: bool,
+	pub short_link: bool,
+	pub user_dob_day: bool,
+	pub user_dob_month: bool,
+	pub user_dob_year: bool,
+	pub user_email: bool,
+	pub user_title: bool,
+	pub username: bool,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct RespUserModelFieldsChoices {
+	pub key: String,
+	pub value: String,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct RespUserModelFields {
+	pub choices: Vec<RespUserModelFieldsChoices>,
+	pub description: String,
+	pub id: String,
+	pub is_multi_choice: bool,
+	pub is_required: bool,
+	pub position: String,
+	pub title: String,
+	#[serde(default)]
+	pub value: Option<String>,
+	pub values: Vec<serde_json::Value>,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct RespUserModelLinks {
+	pub avatar: String,
+	pub avatar_big: String,
+	pub avatar_small: String,
+	pub background_l: String,
+	pub background_m: String,
+	pub detail: String,
+	pub followers: String,
+	pub followings: String,
+	pub ignore: String,
+	pub permalink: String,
+	pub status: String,
+	pub timeline: String,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct RespUserModelPermissions {
+	pub edit: bool,
+	pub follow: bool,
+	pub ignore: bool,
+	pub profile_post: bool,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct RespUserModelSelfPermissions {
+	pub create_conversation: bool,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct RespUserModelUserExternalAuthentications {
+	pub provider: String,
+	pub provider_key: String,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct RespUserModelUserFollowersUsers {
+	pub avatar: String,
+	pub user_id: i64,
+	pub username: String,
+	pub username_html: String,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct RespUserModelUserFollowers {
+	pub count: i64,
+	pub users: Vec<RespUserModelUserFollowersUsers>,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct RespUserModelUserFollowingUsers {
+	pub avatar: String,
+	pub user_id: i64,
+	pub username: String,
+	pub username_html: String,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct RespUserModelUserFollowing {
+	pub count: i64,
+	pub users: Vec<RespUserModelUserFollowingUsers>,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct RespUserModelUserGroups {
+	pub display_banner_selectable: bool,
+	pub display_group_selectable: bool,
+	pub display_icon_selectable: bool,
+	pub is_primary_group: bool,
+	pub user_group_banner_css_class: String,
+	pub user_group_banner_text: String,
+	pub user_group_banner_text_en: String,
+	pub user_group_icon_class: String,
+	pub user_group_id: i64,
+	pub user_group_title: String,
+	pub user_group_title_en: String,
 }
 
 #[derive(Debug, Clone, Default, Serialize)]
@@ -1070,10 +1590,8 @@ pub struct FormsListResponse {
 
 #[derive(Debug, Clone, Default, Serialize)]
 pub struct FormsCreateBody {
-	#[serde(skip_serializing_if = "Option::is_none")]
-	pub fields: Option<serde_json::Value>,
-	#[serde(skip_serializing_if = "Option::is_none")]
-	pub form_id: Option<i64>,
+	pub fields: serde_json::Value,
+	pub form_id: i64,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -1622,9 +2140,9 @@ pub struct NotificationsGetResponse {
 
 #[derive(Debug, Clone)]
 pub struct OAuthTokenBody {
-	pub client_id: Option<String>,
-	pub client_secret: Option<String>,
-	pub grant_type: Option<String>,
+	pub client_id: String,
+	pub client_secret: String,
+	pub grant_type: String,
 	pub scope: Option<Vec<String>>,
 	pub code: Option<String>,
 	pub redirect_uri: Option<String>,
@@ -4917,7 +5435,7 @@ pub struct UsersEditBody {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub activity_visible: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub alert: Option<serde_json::Value>,
+	pub alert: Option<HashMap<String, bool>>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub allow_invite_group: Option<String>,
 	#[serde(skip_serializing_if = "Option::is_none")]

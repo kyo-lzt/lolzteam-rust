@@ -185,16 +185,35 @@ fn extract_one_of_params(root: &Value, schema: &Value) -> Vec<ParamDef> {
 		None => return Vec::new(),
 	};
 
-	let mut seen = std::collections::HashSet::new();
+	let mut seen = std::collections::BTreeSet::new();
 	let mut result = Vec::new();
+
+	// Collect required sets from each variant for intersection logic
+	let variant_required_sets: Vec<std::collections::BTreeSet<String>> = variants
+		.iter()
+		.map(|v| {
+			let v = deref::deref(root, v);
+			v.get("required")
+				.and_then(|r| r.as_array())
+				.map(|arr| {
+					arr.iter()
+						.filter_map(|s| s.as_str().map(String::from))
+						.collect()
+				})
+				.unwrap_or_default()
+		})
+		.collect();
 
 	for variant in variants {
 		let variant = deref::deref(root, variant);
 		for param in extract_properties_as_params(root, variant) {
 			if seen.insert(param.name.clone()) {
-				// Mark all as optional since they come from different variants
+				// required = true only if required in ALL variants
+				let all_required = variant_required_sets
+					.iter()
+					.all(|rs| rs.contains(&param.api_name));
 				result.push(ParamDef {
-					required: false,
+					required: all_required,
 					is_binary: false,
 					..param
 				});

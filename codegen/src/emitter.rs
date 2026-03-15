@@ -8,7 +8,8 @@ use serde_json::Value;
 use crate::parser::{MethodDef, ParamDef, ParseResult};
 use crate::transforms::parameters::BodyEncoding;
 use crate::transforms::responses::{
-	component_ref_type, component_schema_to_rust_name, ResponseFieldDef, ResponseSchema,
+	component_ref_type, component_schema_to_rust_name, resolve_response_field_type,
+	ResponseFieldDef, ResponseSchema,
 };
 use crate::transforms::types::schema_to_rust_type;
 use crate::utils::deref;
@@ -24,7 +25,7 @@ pub fn emit_types(parsed: &ParseResult, root: &Value, output_dir: &str) {
 	writeln!(out).unwrap();
 	writeln!(out, "use serde::{{Deserialize, Serialize}};").unwrap();
 
-	// Check if any type uses HashMap
+	// Check if any type uses HashMap (params, body, or component schemas)
 	let needs_hashmap = parsed.groups.iter().any(|g| {
 		g.methods.iter().any(|m| {
 			m.query_params
@@ -32,6 +33,17 @@ pub fn emit_types(parsed: &ParseResult, root: &Value, output_dir: &str) {
 				.chain(m.body_params.iter())
 				.any(|p| p.rust_type.contains("HashMap"))
 		})
+	}) || parsed.component_schemas.values().any(|schema| {
+		schema
+			.get("properties")
+			.and_then(|v| v.as_object())
+			.is_some_and(|props| {
+				props.values().any(|prop_schema| {
+					let resolved = deref::deref(root, prop_schema);
+					let (ty, _) = schema_to_rust_type(root, resolved);
+					ty.contains("HashMap")
+				})
+			})
 	});
 	if needs_hashmap {
 		writeln!(out, "use std::collections::HashMap;").unwrap();
@@ -284,6 +296,8 @@ fn emit_component_schema(out: &mut String, name: &str, schema: &Value, root: &Va
 		})
 		.unwrap_or_default();
 
+	let mut nested_structs: Vec<(String, Vec<ResponseFieldDef>)> = Vec::new();
+
 	writeln!(out, "#[derive(Debug, Clone, Deserialize)]").unwrap();
 	writeln!(out, "pub struct {rust_name} {{").unwrap();
 
@@ -296,8 +310,7 @@ fn emit_component_schema(out: &mut String, name: &str, schema: &Value, root: &Va
 			comp_type
 		} else {
 			let resolved = deref::deref(root, prop_schema);
-			let (ty, _) = schema_to_rust_type(root, resolved);
-			ty
+			resolve_response_field_type(root, resolved, &rust_name, prop_name, &mut nested_structs)
 		};
 
 		let needs_rename =
@@ -321,6 +334,11 @@ fn emit_component_schema(out: &mut String, name: &str, schema: &Value, root: &Va
 
 	writeln!(out, "}}").unwrap();
 	writeln!(out).unwrap();
+
+	// Emit nested structs generated for inline object properties
+	for (struct_name, fields) in &nested_structs {
+		emit_response_struct(out, struct_name, fields);
+	}
 }
 
 /// Emit a params struct for query parameters.

@@ -57,7 +57,7 @@ pub struct ItemFromListModel {
 	#[serde(default)]
 	pub allow_ask_discount: Option<i64>,
 	#[serde(rename = "bumpSettings", default)]
-	pub bump_settings: Option<serde_json::Value>,
+	pub bump_settings: Option<ItemFromListModelBumpSettings>,
 	#[serde(rename = "canBumpItem", default)]
 	pub can_bump_item: Option<bool>,
 	#[serde(rename = "canBuyItem", default)]
@@ -131,7 +131,7 @@ pub struct ItemFromListModel {
 	#[serde(default)]
 	pub rub_price: Option<i64>,
 	#[serde(default)]
-	pub seller: Option<serde_json::Value>,
+	pub seller: Option<ItemFromListModelSeller>,
 	#[serde(rename = "showGetEmailCodeButton", default)]
 	pub show_get_email_code_button: Option<bool>,
 	#[serde(default)]
@@ -147,11 +147,45 @@ pub struct ItemFromListModel {
 }
 
 #[derive(Debug, Clone, Deserialize)]
+pub struct ItemFromListModelBumpSettings {
+	#[serde(rename = "canBumpItem", default)]
+	pub can_bump_item: Option<bool>,
+	#[serde(rename = "canBumpItemGlobally", default)]
+	pub can_bump_item_globally: Option<bool>,
+	#[serde(rename = "errorPhrase", default)]
+	pub error_phrase: Option<String>,
+	#[serde(rename = "shortErrorPhrase", default)]
+	pub short_error_phrase: Option<String>,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct ItemFromListModelSeller {
+	#[serde(default)]
+	pub active_item_count: Option<i64>,
+	#[serde(default)]
+	pub avatar_date: Option<i64>,
+	#[serde(default)]
+	pub display_style_group_id: Option<i64>,
+	#[serde(default)]
+	pub is_banned: Option<i64>,
+	#[serde(default)]
+	pub restore_data: Option<String>,
+	#[serde(default)]
+	pub restore_percents: Option<i64>,
+	#[serde(default)]
+	pub sold_items_count: Option<i64>,
+	#[serde(default)]
+	pub user_id: Option<i64>,
+	#[serde(default)]
+	pub username: Option<String>,
+}
+
+#[derive(Debug, Clone, Deserialize)]
 pub struct ItemModel {
 	#[serde(rename = "accountLink")]
 	pub account_link: String,
 	#[serde(rename = "accountLinks")]
-	pub account_links: Vec<serde_json::Value>,
+	pub account_links: Vec<ItemModelAccountLinks>,
 	pub account_last_activity: i64,
 	#[serde(rename = "aiPrice")]
 	pub ai_price: i64,
@@ -163,8 +197,8 @@ pub struct ItemModel {
 	#[serde(rename = "autoBuyPriceCheckDate")]
 	pub auto_buy_price_check_date: i64,
 	#[serde(rename = "bumpSettings")]
-	pub bump_settings: serde_json::Value,
-	pub buyer: serde_json::Value,
+	pub bump_settings: ItemModelBumpSettings,
+	pub buyer: ItemModelBuyer,
 	pub buyer_avatar_date: i64,
 	pub buyer_display_icon_group_id: i64,
 	pub buyer_uniq_banner: String,
@@ -208,9 +242,9 @@ pub struct ItemModel {
 	pub content_id: serde_json::Value,
 	pub content_type: serde_json::Value,
 	#[serde(rename = "copyFormatData")]
-	pub copy_format_data: serde_json::Value,
+	pub copy_format_data: ItemModelCopyFormatData,
 	#[serde(rename = "customFields")]
-	pub custom_fields: serde_json::Value,
+	pub custom_fields: ItemModelCustomFields,
 	pub delete_date: i64,
 	pub delete_reason: String,
 	pub delete_user_id: i64,
@@ -233,11 +267,11 @@ pub struct ItemModel {
 	#[serde(rename = "externalAuth")]
 	pub external_auth: Vec<serde_json::Value>,
 	#[serde(rename = "extraPrices")]
-	pub extra_prices: Vec<serde_json::Value>,
+	pub extra_prices: Vec<ItemModelExtraPrices>,
 	pub feedback_data: String,
 	#[serde(rename = "getEmailCodeDisplayLogin")]
 	pub get_email_code_display_login: serde_json::Value,
-	pub guarantee: serde_json::Value,
+	pub guarantee: ItemModelGuarantee,
 	#[serde(rename = "imagePreviewLinks")]
 	pub image_preview_links: Vec<String>,
 	pub in_cart: serde_json::Value,
@@ -263,7 +297,7 @@ pub struct ItemModel {
 	pub item_state: String,
 	pub login: String,
 	#[serde(rename = "loginData")]
-	pub login_data: serde_json::Value,
+	pub login_data: ItemModelLoginData,
 	pub market_custom_title: String,
 	pub max_discount_percent: i64,
 	#[serde(rename = "needToRequireVideoToViewLoginData")]
@@ -281,10 +315,10 @@ pub struct ItemModel {
 	pub refreshed_date: i64,
 	pub resale_item_origin: String,
 	pub rub_price: i64,
-	pub seller: serde_json::Value,
+	pub seller: ItemModelSeller,
 	#[serde(rename = "showGetEmailCodeButton")]
 	pub show_get_email_code_button: bool,
-	pub tags: serde_json::Value,
+	pub tags: ItemModelTags,
 	pub temp_email: String,
 	pub title: String,
 	pub title_en: String,
@@ -295,6 +329,150 @@ pub struct ItemModel {
 	pub view_count: i64,
 	#[serde(rename = "visitorIsAuthor")]
 	pub visitor_is_author: bool,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct ItemModelAccountLinks {
+	#[serde(rename = "iconClass")]
+	pub icon_class: String,
+	pub link: String,
+	pub text: String,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct ItemModelBumpSettings {
+	#[serde(rename = "canBumpItem")]
+	pub can_bump_item: bool,
+	#[serde(rename = "canBumpItemGlobally")]
+	pub can_bump_item_globally: bool,
+	#[serde(rename = "errorPhrase")]
+	pub error_phrase: serde_json::Value,
+	#[serde(rename = "nextAllowedBumpDate")]
+	pub next_allowed_bump_date: serde_json::Value,
+	#[serde(rename = "shortErrorPhrase")]
+	pub short_error_phrase: serde_json::Value,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct ItemModelBuyer {
+	pub display_icon_group_id: i64,
+	pub display_style_group_id: i64,
+	pub is_banned: i64,
+	pub operation_date: i64,
+	pub uniq_banner: String,
+	pub uniq_username_css: String,
+	pub user_group_id: i64,
+	pub user_id: i64,
+	pub username: String,
+	#[serde(rename = "visitorIsBuyer")]
+	pub visitor_is_buyer: bool,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct ItemModelCopyFormatData {
+	pub full: String,
+	pub login_data: String,
+	pub title_link: String,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct ItemModelCustomFields {
+	pub _4: String,
+	#[serde(rename = "allowSelfUnban")]
+	pub allow_self_unban: Vec<serde_json::Value>,
+	pub ban_reason: String,
+	pub discord: String,
+	pub github: String,
+	pub jabber: String,
+	#[serde(rename = "lztUnbanAmount")]
+	pub lzt_unban_amount: String,
+	pub steam: String,
+	pub telegram: String,
+	pub vk: String,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct ItemModelExtraPrices {
+	pub currency: String,
+	pub price: String,
+	#[serde(rename = "priceValue")]
+	pub price_value: f64,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct ItemModelGuarantee {
+	pub active: bool,
+	pub cancelled: bool,
+	#[serde(rename = "cancelledReason")]
+	pub cancelled_reason: String,
+	#[serde(rename = "cancelledReasonPhrase")]
+	pub cancelled_reason_phrase: String,
+	pub class: String,
+	pub duration: i64,
+	#[serde(rename = "durationPhrase")]
+	pub duration_phrase: String,
+	#[serde(rename = "endDate")]
+	pub end_date: i64,
+	#[serde(rename = "remainingTime")]
+	pub remaining_time: i64,
+	#[serde(rename = "remainingTimePhrase")]
+	pub remaining_time_phrase: String,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct ItemModelLoginData {
+	#[serde(rename = "encodedOldPassword")]
+	pub encoded_old_password: serde_json::Value,
+	#[serde(rename = "encodedPassword")]
+	pub encoded_password: String,
+	#[serde(rename = "encodedRaw")]
+	pub encoded_raw: String,
+	pub login: String,
+	#[serde(rename = "oldPassword")]
+	pub old_password: String,
+	pub password: String,
+	pub raw: String,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct ItemModelSellerContacts {
+	pub ban_reason: String,
+	pub telegram: String,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct ItemModelSeller {
+	pub active_items_count: i64,
+	pub avatar_date: i64,
+	pub contacts: ItemModelSellerContacts,
+	pub display_style_group_id: i64,
+	pub effective_last_activity: i64,
+	#[serde(rename = "isOnline")]
+	pub is_online: bool,
+	pub is_banned: i64,
+	pub joined_date: i64,
+	pub restore_data: String,
+	pub restore_percents: serde_json::Value,
+	pub sold_items_count: i64,
+	pub user_id: i64,
+	pub username: String,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct ItemModelTags1234567890 {
+	pub bc: String,
+	#[serde(rename = "forOwnedAccountsOnly")]
+	pub for_owned_accounts_only: bool,
+	#[serde(rename = "isDefault")]
+	pub is_default: bool,
+	pub tag_id: i64,
+	pub title: String,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct ItemModelTags {
+	#[serde(rename = "1234567890")]
+	pub _1234567890: ItemModelTags1234567890,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -310,7 +488,7 @@ pub struct UserModel {
 	pub activity_visible: bool,
 	pub age: i64,
 	pub balance: String,
-	pub balances: Vec<serde_json::Value>,
+	pub balances: Vec<UserModelBalances>,
 	pub bump_item_period: i64,
 	pub can_edit: bool,
 	pub can_follow: bool,
@@ -331,14 +509,14 @@ pub struct UserModel {
 	#[serde(rename = "currencyPhrase")]
 	pub currency_phrase: String,
 	pub custom_account_download_format: String,
-	pub custom_fields: serde_json::Value,
+	pub custom_fields: UserModelCustomFields,
 	pub custom_title: String,
 	pub deposit: i64,
-	pub dob: serde_json::Value,
-	pub feedback_data: serde_json::Value,
+	pub dob: UserModelDob,
+	pub feedback_data: UserModelFeedbackData,
 	pub hold: String,
 	pub homepage: String,
-	pub imap_data: serde_json::Value,
+	pub imap_data: UserModelImapData,
 	pub is_admin: bool,
 	pub is_banned: bool,
 	pub is_followed: bool,
@@ -355,15 +533,15 @@ pub struct UserModel {
 	pub max_discount_percent: i64,
 	pub message_count: i64,
 	pub paid_mail_left: i64,
-	pub public_tags: Vec<serde_json::Value>,
+	pub public_tags: Vec<UserModelPublicTags>,
 	pub register_date: i64,
-	pub rendered: serde_json::Value,
+	pub rendered: UserModelRendered,
 	pub restore_count: i64,
-	pub restore_data: serde_json::Value,
+	pub restore_data: UserModelRestoreData,
 	pub short_link: String,
 	pub sold_items_count: i64,
-	pub tags: Vec<serde_json::Value>,
-	pub telegram_client: serde_json::Value,
+	pub tags: Vec<UserModelTags>,
+	pub telegram_client: UserModelTelegramClient,
 	pub trophy_points: i64,
 	pub user_allow_ask_discount: bool,
 	pub user_id: i64,
@@ -372,6 +550,149 @@ pub struct UserModel {
 	pub view_url: String,
 	pub visible: bool,
 	pub warning_points: i64,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct UserModelBalances {
+	pub balance: String,
+	pub balance_id: i64,
+	#[serde(rename = "convertedBalance")]
+	pub converted_balance: f64,
+	pub custom_title: serde_json::Value,
+	#[serde(rename = "fullTitle")]
+	pub full_title: String,
+	pub merchant_id: i64,
+	pub title: String,
+	#[serde(rename = "type")]
+	pub r#type: String,
+	pub user_id: i64,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct UserModelCustomFields {
+	pub _4: String,
+	#[serde(rename = "allowSelfUnban")]
+	pub allow_self_unban: Vec<serde_json::Value>,
+	pub ban_reason: String,
+	pub discord: String,
+	#[serde(rename = "favoriteAnime")]
+	pub favorite_anime: String,
+	#[serde(rename = "favoritePorn")]
+	pub favorite_porn: String,
+	#[serde(rename = "favoriteVape")]
+	pub favorite_vape: String,
+	pub github: String,
+	pub jabber: String,
+	#[serde(rename = "lztAwardUserTrophy")]
+	pub lzt_award_user_trophy: String,
+	#[serde(rename = "lztLikesIncreasing")]
+	pub lzt_likes_increasing: String,
+	#[serde(rename = "lztLikesZeroing")]
+	pub lzt_likes_zeroing: String,
+	#[serde(rename = "lztSympathyIncreasing")]
+	pub lzt_sympathy_increasing: String,
+	#[serde(rename = "lztSympathyZeroing")]
+	pub lzt_sympathy_zeroing: String,
+	#[serde(rename = "lztUnbanAmount")]
+	pub lzt_unban_amount: String,
+	#[serde(rename = "maecenasValue")]
+	pub maecenas_value: String,
+	pub matrix: String,
+	#[serde(rename = "scamURL")]
+	pub scam_url: String,
+	pub steam: String,
+	pub telegram: String,
+	pub vk: String,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct UserModelDob {
+	pub day: i64,
+	pub month: i64,
+	pub year: i64,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct UserModelFeedbackData12345 {
+	pub negative: i64,
+	pub positive: i64,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct UserModelFeedbackData {
+	#[serde(rename = "12345")]
+	pub _12345: UserModelFeedbackData12345,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct UserModelImapDataDomainZone {
+	pub domain: String,
+	pub imap_server: String,
+	pub port: i64,
+	pub secure: bool,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct UserModelImapData {
+	#[serde(rename = "domain.zone")]
+	pub domain_zone: UserModelImapDataDomainZone,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct UserModelPublicTags {
+	pub background_color: String,
+	pub tag_id: i64,
+	pub title: String,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct UserModelRenderedAvatars {
+	pub l: String,
+	pub m: String,
+	pub s: String,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct UserModelRenderedBackgrounds {
+	pub l: String,
+	pub m: String,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct UserModelRendered {
+	pub avatars: UserModelRenderedAvatars,
+	pub backgrounds: UserModelRenderedBackgrounds,
+	pub link: String,
+	pub username: String,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct UserModelRestoreData {
+	#[serde(rename = "12345")]
+	pub _12345: i64,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct UserModelTags {
+	pub bc: String,
+	#[serde(rename = "forOwnedAccountsOnly")]
+	pub for_owned_accounts_only: bool,
+	#[serde(rename = "isDefault")]
+	pub is_default: bool,
+	pub tag_id: i64,
+	pub title: String,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct UserModelTelegramClient {
+	pub telegram_api_hash: String,
+	pub telegram_api_id: String,
+	pub telegram_app_version: String,
+	pub telegram_device_model: String,
+	pub telegram_lang_code: String,
+	pub telegram_lang_pack: String,
+	pub telegram_system_lang_code: String,
+	pub telegram_system_version: String,
 }
 
 #[derive(Debug, Clone, Default, Serialize)]
@@ -492,7 +813,7 @@ pub struct AutoPaymentsListResponse {
 }
 
 #[derive(Debug, Clone, Deserialize)]
-pub struct BatchExecuteJobsJobId {
+pub struct BatchBatchJobsJobId {
 	#[serde(rename = "_job_error", default)]
 	pub job_error: Option<String>,
 	#[serde(rename = "_job_result", default)]
@@ -500,13 +821,13 @@ pub struct BatchExecuteJobsJobId {
 }
 
 #[derive(Debug, Clone, Deserialize)]
-pub struct BatchExecuteJobs {
-	pub job_id: BatchExecuteJobsJobId,
+pub struct BatchBatchJobs {
+	pub job_id: BatchBatchJobsJobId,
 }
 
 #[derive(Debug, Clone, Deserialize)]
-pub struct BatchExecuteResponse {
-	pub jobs: BatchExecuteJobs,
+pub struct BatchBatchResponse {
+	pub jobs: BatchBatchJobs,
 	#[serde(default)]
 	pub system_info: Option<RespSystemInfo>,
 }

@@ -158,7 +158,7 @@ fn extract_struct_from_schema(root: &Value, schema: &Value, prefix: &str) -> Res
 }
 
 /// Resolve the Rust type for a response field, generating nested structs when needed.
-fn resolve_response_field_type(
+pub fn resolve_response_field_type(
 	root: &Value,
 	schema: &Value,
 	parent_prefix: &str,
