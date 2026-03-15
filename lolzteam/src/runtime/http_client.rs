@@ -16,6 +16,7 @@ pub struct HttpClient {
 	base_url: String,
 	token: String,
 	rate_limiter: Option<RateLimiter>,
+	search_rate_limiter: Option<RateLimiter>,
 	retry_config: RetryConfig,
 }
 
@@ -51,11 +52,16 @@ impl HttpClient {
 			.rate_limit
 			.map(|rl| RateLimiter::new(rl.requests_per_minute));
 
+		let search_rate_limiter = config
+			.search_rate_limit
+			.map(|rl| RateLimiter::new(rl.requests_per_minute));
+
 		Ok(Self {
 			client,
 			base_url: config.base_url,
 			token: config.token,
 			rate_limiter,
+			search_rate_limiter,
 			retry_config: config.retry,
 		})
 	}
@@ -79,10 +85,16 @@ impl HttpClient {
 		path: &str,
 		query: Option<&[(String, ParamValue)]>,
 		body: Option<&[(String, ParamValue)]>,
+		is_search: bool,
 	) -> Result<T, LolzteamError> {
 		// Rate limit before making the request.
 		if let Some(ref limiter) = self.rate_limiter {
 			limiter.acquire().await;
+		}
+		if is_search {
+			if let Some(ref limiter) = self.search_rate_limiter {
+				limiter.acquire().await;
+			}
 		}
 
 		let url = format!("{}{}", self.base_url, path);
@@ -115,9 +127,15 @@ impl HttpClient {
 		path: &str,
 		query: Option<&[(String, ParamValue)]>,
 		body: Option<&B>,
+		is_search: bool,
 	) -> Result<T, LolzteamError> {
 		if let Some(ref limiter) = self.rate_limiter {
 			limiter.acquire().await;
+		}
+		if is_search {
+			if let Some(ref limiter) = self.search_rate_limiter {
+				limiter.acquire().await;
+			}
 		}
 
 		let url = format!("{}{}", self.base_url, path);
@@ -148,9 +166,15 @@ impl HttpClient {
 		method: &str,
 		path: &str,
 		query: Option<&[(String, ParamValue)]>,
+		is_search: bool,
 	) -> Result<String, LolzteamError> {
 		if let Some(ref limiter) = self.rate_limiter {
 			limiter.acquire().await;
+		}
+		if is_search {
+			if let Some(ref limiter) = self.search_rate_limiter {
+				limiter.acquire().await;
+			}
 		}
 
 		let url = format!("{}{}", self.base_url, path);
@@ -181,9 +205,15 @@ impl HttpClient {
 		method: &str,
 		path: &str,
 		parts: Vec<MultipartPart>,
+		is_search: bool,
 	) -> Result<T, LolzteamError> {
 		if let Some(ref limiter) = self.rate_limiter {
 			limiter.acquire().await;
+		}
+		if is_search {
+			if let Some(ref limiter) = self.search_rate_limiter {
+				limiter.acquire().await;
+			}
 		}
 
 		let url = format!("{}{}", self.base_url, path);

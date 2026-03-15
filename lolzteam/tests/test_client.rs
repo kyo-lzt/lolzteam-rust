@@ -35,6 +35,7 @@ fn test_client(base_url: &str, token: &str) -> HttpClient {
 			max_delay_ms: 50,
 		},
 		rate_limit: None,
+		search_rate_limit: None,
 	};
 	HttpClient::new(config).unwrap()
 }
@@ -111,6 +112,7 @@ fn client_config_minimal() {
 		proxy: None,
 		retry: RetryConfig::default(),
 		rate_limit: None,
+		search_rate_limit: None,
 	};
 	assert_eq!(cfg.token, "test-token");
 	assert_eq!(cfg.base_url, "https://example.com");
@@ -128,6 +130,7 @@ fn client_config_with_proxy() {
 		}),
 		retry: RetryConfig::default(),
 		rate_limit: None,
+		search_rate_limit: None,
 	};
 	let proxy = cfg.proxy.as_ref().unwrap();
 	assert_eq!(proxy.url, "socks5://127.0.0.1:1080");
@@ -143,6 +146,7 @@ fn client_config_with_rate_limit() {
 		rate_limit: Some(RateLimitConfig {
 			requests_per_minute: 60,
 		}),
+		search_rate_limit: None,
 	};
 	let rl = cfg.rate_limit.as_ref().unwrap();
 	assert_eq!(rl.requests_per_minute, 60);
@@ -160,6 +164,7 @@ fn config_types_are_clone_and_debug() {
 		rate_limit: Some(RateLimitConfig {
 			requests_per_minute: 100,
 		}),
+		search_rate_limit: None,
 	};
 	let cloned = cfg.clone();
 	assert_eq!(format!("{:?}", cloned), format!("{:?}", cfg));
@@ -294,6 +299,7 @@ fn forum_client_with_config_succeeds() {
 		rate_limit: Some(RateLimitConfig {
 			requests_per_minute: 300,
 		}),
+		search_rate_limit: None,
 	};
 	let client = ForumClient::with_config(config);
 	assert!(client.is_ok());
@@ -356,6 +362,7 @@ fn market_client_with_config_succeeds() {
 		rate_limit: Some(RateLimitConfig {
 			requests_per_minute: 120,
 		}),
+		search_rate_limit: None,
 	};
 	let client = MarketClient::with_config(config);
 	assert!(client.is_ok());
@@ -402,6 +409,7 @@ fn proxy_rejects_unsupported_scheme() {
 		}),
 		retry: RetryConfig::default(),
 		rate_limit: None,
+		search_rate_limit: None,
 	};
 	let result = ForumClient::with_config(cfg);
 	assert!(result.is_err());
@@ -418,6 +426,7 @@ fn proxy_rejects_invalid_url() {
 		}),
 		retry: RetryConfig::default(),
 		rate_limit: None,
+		search_rate_limit: None,
 	};
 	let result = ForumClient::with_config(cfg);
 	assert!(result.is_err());
@@ -434,6 +443,7 @@ fn proxy_rejects_no_host() {
 		}),
 		retry: RetryConfig::default(),
 		rate_limit: None,
+		search_rate_limit: None,
 	};
 	let result = ForumClient::with_config(cfg);
 	assert!(result.is_err());
@@ -450,6 +460,7 @@ fn proxy_accepts_valid_http() {
 		}),
 		retry: RetryConfig::default(),
 		rate_limit: None,
+		search_rate_limit: None,
 	};
 	let result = ForumClient::with_config(cfg);
 	assert!(result.is_ok());
@@ -465,9 +476,56 @@ fn proxy_accepts_valid_socks5() {
 		}),
 		retry: RetryConfig::default(),
 		rate_limit: None,
+		search_rate_limit: None,
 	};
 	let result = ForumClient::with_config(cfg);
 	assert!(result.is_ok());
+}
+
+// ---------------------------------------------------------------------------
+// LolzteamError variant matching
+// ---------------------------------------------------------------------------
+
+#[test]
+fn network_error_converts_to_lolzteam_error() {
+	// We can't easily construct a reqwest::Error, but we can test the enum pattern
+	let http_err = HttpError {
+		status: 503,
+		body: serde_json::Value::Null,
+		retry_after: None,
+	};
+	let err: LolzteamError = http_err.into();
+	match &err {
+		LolzteamError::Http(h) => {
+			assert!(h.is_server_error());
+			assert!(h.is_retryable());
+		}
+		_ => panic!("expected Http variant"),
+	}
+}
+
+#[test]
+fn http_error_429_retry_after_none() {
+	let err = HttpError {
+		status: 429,
+		body: serde_json::Value::Null,
+		retry_after: None,
+	};
+	assert!(err.is_rate_limit());
+	assert!(err.is_retryable());
+	assert_eq!(err.retry_after_secs(), None);
+}
+
+#[test]
+fn http_error_display_contains_body() {
+	let err = HttpError {
+		status: 400,
+		body: serde_json::json!({"message": "bad request"}),
+		retry_after: None,
+	};
+	let display = format!("{err}");
+	assert!(display.contains("400"));
+	assert!(display.contains("bad request"));
 }
 
 // ---------------------------------------------------------------------------
@@ -500,7 +558,7 @@ async fn http_mock_successful_request() {
 		write_response(&mut stream, 200, "", r#"{"ok":true,"value":42}"#).await;
 	});
 
-	let result: serde_json::Value = client.request("GET", "/test", None, None).await.unwrap();
+	let result: serde_json::Value = client.request("GET", "/test", None, None, false).await.unwrap();
 	assert_eq!(result["ok"], true);
 	assert_eq!(result["value"], 42);
 }
@@ -519,7 +577,7 @@ async fn http_mock_auth_header_sent() {
 	});
 
 	let _: serde_json::Value = client
-		.request("GET", "/auth-check", None, None)
+		.request("GET", "/auth-check", None, None, false)
 		.await
 		.unwrap();
 	let req = handle.await.unwrap();
@@ -543,7 +601,7 @@ async fn http_mock_401_auth_error() {
 	});
 
 	let result: Result<serde_json::Value, LolzteamError> =
-		client.request("GET", "/secret", None, None).await;
+		client.request("GET", "/secret", None, None, false).await;
 	let err = result.unwrap_err();
 	match &err {
 		LolzteamError::Http(http_err) => {
@@ -567,7 +625,7 @@ async fn http_mock_404_not_found() {
 	});
 
 	let result: Result<serde_json::Value, LolzteamError> =
-		client.request("GET", "/missing", None, None).await;
+		client.request("GET", "/missing", None, None, false).await;
 	let err = result.unwrap_err();
 	match &err {
 		LolzteamError::Http(http_err) => {
@@ -608,7 +666,7 @@ async fn http_mock_429_retry_then_success() {
 	});
 
 	let result: serde_json::Value = client
-		.request("GET", "/rate-limited", None, None)
+		.request("GET", "/rate-limited", None, None, false)
 		.await
 		.unwrap();
 	assert_eq!(result["retried"], true);
@@ -639,7 +697,7 @@ async fn http_mock_502_retry_then_success() {
 	});
 
 	let result: serde_json::Value = client
-		.request("GET", "/unstable", None, None)
+		.request("GET", "/unstable", None, None, false)
 		.await
 		.unwrap();
 	assert_eq!(result["recovered"], true);
@@ -661,7 +719,7 @@ async fn http_mock_path_params() {
 
 	// Simulate what threads().get(123, None) does: builds path "/threads/123"
 	let path = format!("/threads/{}", 123);
-	let _: serde_json::Value = client.request("GET", &path, None, None).await.unwrap();
+	let _: serde_json::Value = client.request("GET", &path, None, None, false).await.unwrap();
 	let req = handle.await.unwrap();
 	assert!(
 		req.contains("GET /threads/123"),
@@ -688,7 +746,7 @@ async fn http_mock_query_params() {
 		("sticky".to_string(), ParamValue::Bool(true)),
 	];
 	let _: serde_json::Value = client
-		.request("GET", "/threads", Some(query.as_slice()), None)
+		.request("GET", "/threads", Some(query.as_slice()), None, false)
 		.await
 		.unwrap();
 	let req = handle.await.unwrap();

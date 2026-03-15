@@ -62,3 +62,58 @@ fn random_jitter(base_delay_ms: u64) -> u64 {
 	}
 	fastrand::u64(0..base_delay_ms)
 }
+
+#[cfg(test)]
+mod tests {
+	use super::*;
+
+	#[test]
+	fn compute_backoff_attempt_0() {
+		let config = RetryConfig {
+			max_retries: 3,
+			base_delay_ms: 1000,
+			max_delay_ms: 30000,
+		};
+		let delay = compute_backoff(&config, 0);
+		// base_delay * 2^0 + jitter = 1000 + [0, 1000) -> [1000, 2000)
+		assert!(delay.as_millis() >= 1000);
+		assert!(delay.as_millis() < 2000);
+	}
+
+	#[test]
+	fn compute_backoff_attempt_1() {
+		let config = RetryConfig {
+			max_retries: 3,
+			base_delay_ms: 1000,
+			max_delay_ms: 30000,
+		};
+		let delay = compute_backoff(&config, 1);
+		// base_delay * 2^1 + jitter = 2000 + [0, 1000) -> [2000, 3000)
+		assert!(delay.as_millis() >= 2000);
+		assert!(delay.as_millis() < 3000);
+	}
+
+	#[test]
+	fn compute_backoff_capped_by_max_delay() {
+		let config = RetryConfig {
+			max_retries: 10,
+			base_delay_ms: 1000,
+			max_delay_ms: 5000,
+		};
+		let delay = compute_backoff(&config, 8);
+		assert!(delay.as_millis() <= 5000);
+	}
+
+	#[test]
+	fn random_jitter_zero_base() {
+		assert_eq!(random_jitter(0), 0);
+	}
+
+	#[test]
+	fn random_jitter_within_range() {
+		for _ in 0..100 {
+			let j = random_jitter(1000);
+			assert!(j < 1000);
+		}
+	}
+}

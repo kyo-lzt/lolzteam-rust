@@ -22,6 +22,7 @@ pub struct ClientConfig {
 	pub proxy: Option<ProxyConfig>,
 	pub retry: RetryConfig,
 	pub rate_limit: Option<RateLimitConfig>,
+	pub search_rate_limit: Option<RateLimitConfig>,
 }
 
 /// Proxy configuration — pass-through to reqwest.

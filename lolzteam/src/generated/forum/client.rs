@@ -40,6 +40,7 @@ impl AssetsApi {
 					Some(query.as_slice())
 				},
 				None,
+				false,
 			)
 			.await
 	}
@@ -60,7 +61,7 @@ impl BatchApi {
 		body: serde_json::Value,
 	) -> Result<BatchExecuteResponse, LolzteamError> {
 		self.http
-			.request_json("POST", "/batch", None, Some(&body))
+			.request_json("POST", "/batch", None, Some(&body), false)
 			.await
 	}
 }
@@ -101,6 +102,7 @@ impl CategoriesApi {
 					Some(query.as_slice())
 				},
 				None,
+				false,
 			)
 			.await
 	}
@@ -108,7 +110,7 @@ impl CategoriesApi {
 	/// Get Category
 	pub async fn get(&self, category_id: i64) -> Result<CategoriesGetResponse, LolzteamError> {
 		let path = format!("/categories/{category_id}");
-		self.http.request("GET", &path, None, None).await
+		self.http.request("GET", &path, None, None, false).await
 	}
 }
 
@@ -142,6 +144,7 @@ impl ChatboxApi {
 					Some(query.as_slice())
 				},
 				None,
+				false,
 			)
 			.await
 	}
@@ -152,14 +155,14 @@ impl ChatboxApi {
 		body: Option<&ChatboxDeleteIgnoreBody>,
 	) -> Result<ChatboxDeleteIgnoreResponse, LolzteamError> {
 		self.http
-			.request_json("DELETE", "/chatbox/ignore", None, body)
+			.request_json("DELETE", "/chatbox/ignore", None, body, false)
 			.await
 	}
 
 	/// Get Ignored Chat Users
 	pub async fn get_ignore(&self) -> Result<ChatboxGetIgnoreResponse, LolzteamError> {
 		self.http
-			.request("GET", "/chatbox/ignore", None, None)
+			.request("GET", "/chatbox/ignore", None, None, false)
 			.await
 	}
 
@@ -169,7 +172,7 @@ impl ChatboxApi {
 		body: Option<&ChatboxPostIgnoreBody>,
 	) -> Result<ChatboxPostIgnoreResponse, LolzteamError> {
 		self.http
-			.request_json("POST", "/chatbox/ignore", None, body)
+			.request_json("POST", "/chatbox/ignore", None, body, false)
 			.await
 	}
 
@@ -179,7 +182,7 @@ impl ChatboxApi {
 		body: Option<&ChatboxDeleteMessageBody>,
 	) -> Result<ChatboxDeleteMessageResponse, LolzteamError> {
 		self.http
-			.request_json("DELETE", "/chatbox/messages", None, body)
+			.request_json("DELETE", "/chatbox/messages", None, body, false)
 			.await
 	}
 
@@ -206,6 +209,7 @@ impl ChatboxApi {
 					Some(query.as_slice())
 				},
 				None,
+				false,
 			)
 			.await
 	}
@@ -216,7 +220,7 @@ impl ChatboxApi {
 		body: Option<&ChatboxPostMessageBody>,
 	) -> Result<ChatboxPostMessageResponse, LolzteamError> {
 		self.http
-			.request_json("POST", "/chatbox/messages", None, body)
+			.request_json("POST", "/chatbox/messages", None, body, false)
 			.await
 	}
 
@@ -226,7 +230,7 @@ impl ChatboxApi {
 		body: Option<&ChatboxEditMessageBody>,
 	) -> Result<ChatboxEditMessageResponse, LolzteamError> {
 		self.http
-			.request_json("PUT", "/chatbox/messages", None, body)
+			.request_json("PUT", "/chatbox/messages", None, body, false)
 			.await
 	}
 
@@ -251,6 +255,7 @@ impl ChatboxApi {
 					Some(query.as_slice())
 				},
 				None,
+				false,
 			)
 			.await
 	}
@@ -269,6 +274,7 @@ impl ChatboxApi {
 					Some(query.as_slice())
 				},
 				None,
+				false,
 			)
 			.await
 	}
@@ -290,6 +296,7 @@ impl ChatboxApi {
 					Some(query.as_slice())
 				},
 				None,
+				false,
 			)
 			.await
 	}
@@ -300,7 +307,7 @@ impl ChatboxApi {
 		body: Option<&ChatboxReportBody>,
 	) -> Result<ChatboxReportResponse, LolzteamError> {
 		self.http
-			.request_json("POST", "/chatbox/messages/report", None, body)
+			.request_json("POST", "/chatbox/messages/report", None, body, false)
 			.await
 	}
 }
@@ -320,7 +327,7 @@ impl ConversationsApi {
 		body: Option<&ConversationsDeleteBody>,
 	) -> Result<ConversationsDeleteResponse, LolzteamError> {
 		self.http
-			.request_json("DELETE", "/conversations", None, body)
+			.request_json("DELETE", "/conversations", None, body, false)
 			.await
 	}
 
@@ -351,6 +358,7 @@ impl ConversationsApi {
 					Some(query.as_slice())
 				},
 				None,
+				false,
 			)
 			.await
 	}
@@ -361,7 +369,7 @@ impl ConversationsApi {
 		body: Option<&ConversationsCreateBody>,
 	) -> Result<ConversationsCreateResponse, LolzteamError> {
 		self.http
-			.request_json("POST", "/conversations", None, body)
+			.request_json("POST", "/conversations", None, body, false)
 			.await
 	}
 
@@ -371,7 +379,7 @@ impl ConversationsApi {
 		body: Option<&ConversationsUpdateBody>,
 	) -> Result<ConversationsUpdateResponse, LolzteamError> {
 		self.http
-			.request_json("PUT", "/conversations", None, body)
+			.request_json("PUT", "/conversations", None, body, false)
 			.await
 	}
 
@@ -381,13 +389,13 @@ impl ConversationsApi {
 		message_id: i64,
 	) -> Result<ConversationsMessagesGetResponse, LolzteamError> {
 		let path = format!("/conversations/messages/{message_id}");
-		self.http.request("GET", &path, None, None).await
+		self.http.request("GET", &path, None, None, false).await
 	}
 
 	/// Read All Conversations
 	pub async fn read_all(&self) -> Result<ConversationsReadAllResponse, LolzteamError> {
 		self.http
-			.request("POST", "/conversations/read-all", None, None)
+			.request("POST", "/conversations/read-all", None, None, false)
 			.await
 	}
 
@@ -397,7 +405,7 @@ impl ConversationsApi {
 		body: Option<&ConversationsSaveBody>,
 	) -> Result<ConversationsSaveResponse, LolzteamError> {
 		self.http
-			.request_json("POST", "/conversations/save", None, body)
+			.request_json("POST", "/conversations/save", None, body, false)
 			.await
 	}
 
@@ -407,7 +415,7 @@ impl ConversationsApi {
 		body: Option<&ConversationsSearchBody>,
 	) -> Result<ConversationsSearchResponse, LolzteamError> {
 		self.http
-			.request_json("POST", "/conversations/search", None, body)
+			.request_json("POST", "/conversations/search", None, body, false)
 			.await
 	}
 
@@ -417,7 +425,7 @@ impl ConversationsApi {
 		body: Option<&ConversationsStartBody>,
 	) -> Result<ConversationsStartResponse, LolzteamError> {
 		self.http
-			.request_json("POST", "/conversations/start", None, body)
+			.request_json("POST", "/conversations/start", None, body, false)
 			.await
 	}
 
@@ -427,7 +435,7 @@ impl ConversationsApi {
 		conversation_id: i64,
 	) -> Result<ConversationsGetResponse, LolzteamError> {
 		let path = format!("/conversations/{conversation_id}");
-		self.http.request("GET", &path, None, None).await
+		self.http.request("GET", &path, None, None, false).await
 	}
 
 	/// Disable Conversation Alerts
@@ -436,7 +444,7 @@ impl ConversationsApi {
 		conversation_id: i64,
 	) -> Result<ConversationsAlertsDisableResponse, LolzteamError> {
 		let path = format!("/conversations/{conversation_id}/alerts");
-		self.http.request("DELETE", &path, None, None).await
+		self.http.request("DELETE", &path, None, None, false).await
 	}
 
 	/// Enable Conversation Alerts
@@ -445,7 +453,7 @@ impl ConversationsApi {
 		conversation_id: i64,
 	) -> Result<ConversationsAlertsEnableResponse, LolzteamError> {
 		let path = format!("/conversations/{conversation_id}/alerts");
-		self.http.request("POST", &path, None, None).await
+		self.http.request("POST", &path, None, None, false).await
 	}
 
 	/// Invite Users to Conversation
@@ -455,7 +463,9 @@ impl ConversationsApi {
 		body: Option<&ConversationsInviteBody>,
 	) -> Result<ConversationsInviteResponse, LolzteamError> {
 		let path = format!("/conversations/{conversation_id}/invite");
-		self.http.request_json("POST", &path, None, body).await
+		self.http
+			.request_json("POST", &path, None, body, false)
+			.await
 	}
 
 	/// Kick User from Conversation
@@ -465,7 +475,9 @@ impl ConversationsApi {
 		body: Option<&ConversationsKickBody>,
 	) -> Result<ConversationsKickResponse, LolzteamError> {
 		let path = format!("/conversations/{conversation_id}/kick");
-		self.http.request_json("POST", &path, None, body).await
+		self.http
+			.request_json("POST", &path, None, body, false)
+			.await
 	}
 
 	/// Get Conversation Messages
@@ -503,6 +515,7 @@ impl ConversationsApi {
 					Some(query.as_slice())
 				},
 				None,
+				false,
 			)
 			.await
 	}
@@ -514,7 +527,9 @@ impl ConversationsApi {
 		body: Option<&ConversationsMessagesCreateBody>,
 	) -> Result<ConversationsMessagesCreateResponse, LolzteamError> {
 		let path = format!("/conversations/{conversation_id}/messages");
-		self.http.request_json("POST", &path, None, body).await
+		self.http
+			.request_json("POST", &path, None, body, false)
+			.await
 	}
 
 	/// Delete Conversation Message
@@ -524,7 +539,7 @@ impl ConversationsApi {
 		message_id: i64,
 	) -> Result<ConversationsMessagesDeleteResponse, LolzteamError> {
 		let path = format!("/conversations/{conversation_id}/messages/{message_id}");
-		self.http.request("DELETE", &path, None, None).await
+		self.http.request("DELETE", &path, None, None, false).await
 	}
 
 	/// Edit Conversation Message
@@ -535,7 +550,9 @@ impl ConversationsApi {
 		body: Option<&ConversationsMessagesEditBody>,
 	) -> Result<ConversationsMessagesEditResponse, LolzteamError> {
 		let path = format!("/conversations/{conversation_id}/messages/{message_id}");
-		self.http.request_json("PUT", &path, None, body).await
+		self.http
+			.request_json("PUT", &path, None, body, false)
+			.await
 	}
 
 	/// Unstick Conversation Message
@@ -545,7 +562,7 @@ impl ConversationsApi {
 		message_id: i64,
 	) -> Result<ConversationsMessagesUnstickResponse, LolzteamError> {
 		let path = format!("/conversations/{conversation_id}/messages/{message_id}/stick");
-		self.http.request("DELETE", &path, None, None).await
+		self.http.request("DELETE", &path, None, None, false).await
 	}
 
 	/// Stick Conversation Message
@@ -555,7 +572,7 @@ impl ConversationsApi {
 		message_id: i64,
 	) -> Result<ConversationsMessagesStickResponse, LolzteamError> {
 		let path = format!("/conversations/{conversation_id}/messages/{message_id}/stick");
-		self.http.request("POST", &path, None, None).await
+		self.http.request("POST", &path, None, None, false).await
 	}
 
 	/// Read a Conversation
@@ -564,7 +581,7 @@ impl ConversationsApi {
 		conversation_id: i64,
 	) -> Result<ConversationsReadResponse, LolzteamError> {
 		let path = format!("/conversations/{conversation_id}/read");
-		self.http.request("POST", &path, None, None).await
+		self.http.request("POST", &path, None, None, false).await
 	}
 
 	/// Unstar Conversation
@@ -573,7 +590,7 @@ impl ConversationsApi {
 		conversation_id: i64,
 	) -> Result<ConversationsUnstarResponse, LolzteamError> {
 		let path = format!("/conversations/{conversation_id}/star");
-		self.http.request("DELETE", &path, None, None).await
+		self.http.request("DELETE", &path, None, None, false).await
 	}
 
 	/// Star Conversation
@@ -582,7 +599,7 @@ impl ConversationsApi {
 		conversation_id: i64,
 	) -> Result<ConversationsStarResponse, LolzteamError> {
 		let path = format!("/conversations/{conversation_id}/star");
-		self.http.request("POST", &path, None, None).await
+		self.http.request("POST", &path, None, None, false).await
 	}
 }
 
@@ -616,6 +633,7 @@ impl FormsApi {
 					Some(query.as_slice())
 				},
 				None,
+				false,
 			)
 			.await
 	}
@@ -626,7 +644,7 @@ impl FormsApi {
 		body: Option<&FormsCreateBody>,
 	) -> Result<FormsCreateResponse, LolzteamError> {
 		self.http
-			.request_json("POST", "/forms/save", None, body)
+			.request_json("POST", "/forms/save", None, body, false)
 			.await
 	}
 }
@@ -667,6 +685,7 @@ impl ForumsApi {
 					Some(query.as_slice())
 				},
 				None,
+				false,
 			)
 			.await
 	}
@@ -674,7 +693,7 @@ impl ForumsApi {
 	/// Get Feed Options
 	pub async fn get_feed_options(&self) -> Result<ForumsGetFeedOptionsResponse, LolzteamError> {
 		self.http
-			.request("GET", "/forums/feed/options", None, None)
+			.request("GET", "/forums/feed/options", None, None, false)
 			.await
 	}
 
@@ -684,7 +703,7 @@ impl ForumsApi {
 		body: Option<&ForumsEditFeedOptionsBody>,
 	) -> Result<ForumsEditFeedOptionsResponse, LolzteamError> {
 		self.http
-			.request_json("PUT", "/forums/feed/options", None, body)
+			.request_json("PUT", "/forums/feed/options", None, body, false)
 			.await
 	}
 
@@ -709,6 +728,7 @@ impl ForumsApi {
 					Some(query.as_slice())
 				},
 				None,
+				false,
 			)
 			.await
 	}
@@ -716,26 +736,26 @@ impl ForumsApi {
 	/// Get Forums Tree
 	pub async fn grouped(&self) -> Result<ForumsGroupedResponse, LolzteamError> {
 		self.http
-			.request("GET", "/forums/grouped", None, None)
+			.request("GET", "/forums/grouped", None, None, false)
 			.await
 	}
 
 	/// Get Forum
 	pub async fn get(&self, forum_id: i64) -> Result<ForumsGetResponse, LolzteamError> {
 		let path = format!("/forums/{forum_id}");
-		self.http.request("GET", &path, None, None).await
+		self.http.request("GET", &path, None, None, false).await
 	}
 
 	/// Unfollow Forum
 	pub async fn unfollow(&self, forum_id: i64) -> Result<ForumsUnfollowResponse, LolzteamError> {
 		let path = format!("/forums/{forum_id}/followers");
-		self.http.request("DELETE", &path, None, None).await
+		self.http.request("DELETE", &path, None, None, false).await
 	}
 
 	/// Get Followers
 	pub async fn followers(&self, forum_id: i64) -> Result<ForumsFollowersResponse, LolzteamError> {
 		let path = format!("/forums/{forum_id}/followers");
-		self.http.request("GET", &path, None, None).await
+		self.http.request("GET", &path, None, None, false).await
 	}
 
 	/// Follow Forum
@@ -745,7 +765,9 @@ impl ForumsApi {
 		body: Option<&ForumsFollowBody>,
 	) -> Result<ForumsFollowResponse, LolzteamError> {
 		let path = format!("/forums/{forum_id}/followers");
-		self.http.request_json("POST", &path, None, body).await
+		self.http
+			.request_json("POST", &path, None, body, false)
+			.await
 	}
 }
 
@@ -760,13 +782,15 @@ impl LinksApi {
 
 	/// Get Links Forum
 	pub async fn list(&self) -> Result<LinksListResponse, LolzteamError> {
-		self.http.request("GET", "/link-forums", None, None).await
+		self.http
+			.request("GET", "/link-forums", None, None, false)
+			.await
 	}
 
 	/// Get Link Forum
 	pub async fn get(&self, link_id: i64) -> Result<LinksGetResponse, LolzteamError> {
 		let path = format!("/link-forums/{link_id}");
-		self.http.request("GET", &path, None, None).await
+		self.http.request("GET", &path, None, None, false).await
 	}
 }
 
@@ -800,6 +824,7 @@ impl NavigationApi {
 					Some(query.as_slice())
 				},
 				None,
+				false,
 			)
 			.await
 	}
@@ -841,6 +866,7 @@ impl NotificationsApi {
 					Some(query.as_slice())
 				},
 				None,
+				false,
 			)
 			.await
 	}
@@ -851,7 +877,7 @@ impl NotificationsApi {
 		body: Option<&NotificationsReadBody>,
 	) -> Result<NotificationsReadResponse, LolzteamError> {
 		self.http
-			.request_json("POST", "/notifications/read", None, body)
+			.request_json("POST", "/notifications/read", None, body, false)
 			.await
 	}
 
@@ -861,7 +887,7 @@ impl NotificationsApi {
 		notification_id: i64,
 	) -> Result<NotificationsGetResponse, LolzteamError> {
 		let path = format!("/notifications/{notification_id}/content");
-		self.http.request("GET", &path, None, None).await
+		self.http.request("GET", &path, None, None, false).await
 	}
 }
 
@@ -937,7 +963,7 @@ impl OAuthApi {
 			}
 		}
 		self.http
-			.request_multipart("POST", "/oauth/token", parts)
+			.request_multipart("POST", "/oauth/token", parts, false)
 			.await
 	}
 }
@@ -975,6 +1001,7 @@ impl PagesApi {
 					Some(query.as_slice())
 				},
 				None,
+				false,
 			)
 			.await
 	}
@@ -982,7 +1009,7 @@ impl PagesApi {
 	/// Get Page
 	pub async fn get(&self, page_id: i64) -> Result<PagesGetResponse, LolzteamError> {
 		let path = format!("/pages/{page_id}");
-		self.http.request("GET", &path, None, None).await
+		self.http.request("GET", &path, None, None, false).await
 	}
 }
 
@@ -1028,6 +1055,7 @@ impl PostsApi {
 					Some(query.as_slice())
 				},
 				None,
+				false,
 			)
 			.await
 	}
@@ -1037,7 +1065,9 @@ impl PostsApi {
 		&self,
 		body: Option<&PostsCreateBody>,
 	) -> Result<PostsCreateResponse, LolzteamError> {
-		self.http.request_json("POST", "/posts", None, body).await
+		self.http
+			.request_json("POST", "/posts", None, body, false)
+			.await
 	}
 
 	/// Delete Post Comment
@@ -1046,7 +1076,7 @@ impl PostsApi {
 		body: Option<&PostsCommentsDeleteBody>,
 	) -> Result<PostsCommentsDeleteResponse, LolzteamError> {
 		self.http
-			.request_json("DELETE", "/posts/comments", None, body)
+			.request_json("DELETE", "/posts/comments", None, body, false)
 			.await
 	}
 
@@ -1076,6 +1106,7 @@ impl PostsApi {
 					Some(query.as_slice())
 				},
 				None,
+				false,
 			)
 			.await
 	}
@@ -1086,7 +1117,7 @@ impl PostsApi {
 		body: Option<&PostsCommentsCreateBody>,
 	) -> Result<PostsCommentsCreateResponse, LolzteamError> {
 		self.http
-			.request_json("POST", "/posts/comments", None, body)
+			.request_json("POST", "/posts/comments", None, body, false)
 			.await
 	}
 
@@ -1096,7 +1127,7 @@ impl PostsApi {
 		body: Option<&PostsCommentsEditBody>,
 	) -> Result<PostsCommentsEditResponse, LolzteamError> {
 		self.http
-			.request_json("PUT", "/posts/comments", None, body)
+			.request_json("PUT", "/posts/comments", None, body, false)
 			.await
 	}
 
@@ -1106,7 +1137,7 @@ impl PostsApi {
 		body: Option<&PostsCommentsReportBody>,
 	) -> Result<PostsCommentsReportResponse, LolzteamError> {
 		self.http
-			.request_json("POST", "/posts/comments/report", None, body)
+			.request_json("POST", "/posts/comments/report", None, body, false)
 			.await
 	}
 
@@ -1117,13 +1148,15 @@ impl PostsApi {
 		body: Option<&PostsDeleteBody>,
 	) -> Result<PostsDeleteResponse, LolzteamError> {
 		let path = format!("/posts/{post_id}");
-		self.http.request_json("DELETE", &path, None, body).await
+		self.http
+			.request_json("DELETE", &path, None, body, false)
+			.await
 	}
 
 	/// Get Post
 	pub async fn get(&self, post_id: i64) -> Result<PostsGetResponse, LolzteamError> {
 		let path = format!("/posts/{post_id}");
-		self.http.request("GET", &path, None, None).await
+		self.http.request("GET", &path, None, None, false).await
 	}
 
 	/// Edit Post
@@ -1133,13 +1166,15 @@ impl PostsApi {
 		body: Option<&PostsEditBody>,
 	) -> Result<PostsEditResponse, LolzteamError> {
 		let path = format!("/posts/{post_id}");
-		self.http.request_json("PUT", &path, None, body).await
+		self.http
+			.request_json("PUT", &path, None, body, false)
+			.await
 	}
 
 	/// Unlike Post
 	pub async fn unlike(&self, post_id: i64) -> Result<PostsUnlikeResponse, LolzteamError> {
 		let path = format!("/posts/{post_id}/likes");
-		self.http.request("DELETE", &path, None, None).await
+		self.http.request("DELETE", &path, None, None, false).await
 	}
 
 	/// Get Post Likes
@@ -1168,6 +1203,7 @@ impl PostsApi {
 					Some(query.as_slice())
 				},
 				None,
+				false,
 			)
 			.await
 	}
@@ -1175,7 +1211,7 @@ impl PostsApi {
 	/// Like Post
 	pub async fn like(&self, post_id: i64) -> Result<PostsLikeResponse, LolzteamError> {
 		let path = format!("/posts/{post_id}/likes");
-		self.http.request("POST", &path, None, None).await
+		self.http.request("POST", &path, None, None, false).await
 	}
 
 	/// Get Post Report Reasons
@@ -1184,7 +1220,7 @@ impl PostsApi {
 		post_id: i64,
 	) -> Result<PostsReportReasonsResponse, LolzteamError> {
 		let path = format!("/posts/{post_id}/report");
-		self.http.request("GET", &path, None, None).await
+		self.http.request("GET", &path, None, None, false).await
 	}
 
 	/// Report Post
@@ -1194,7 +1230,9 @@ impl PostsApi {
 		body: Option<&PostsReportBody>,
 	) -> Result<PostsReportResponse, LolzteamError> {
 		let path = format!("/posts/{post_id}/report");
-		self.http.request_json("POST", &path, None, body).await
+		self.http
+			.request_json("POST", &path, None, body, false)
+			.await
 	}
 }
 
@@ -1213,7 +1251,7 @@ impl ProfilePostsApi {
 		body: Option<&ProfilePostsCreateBody>,
 	) -> Result<ProfilePostsCreateResponse, LolzteamError> {
 		self.http
-			.request_json("POST", "/profile-posts", None, body)
+			.request_json("POST", "/profile-posts", None, body, false)
 			.await
 	}
 
@@ -1223,7 +1261,7 @@ impl ProfilePostsApi {
 		body: Option<&ProfilePostsCommentsDeleteBody>,
 	) -> Result<ProfilePostsCommentsDeleteResponse, LolzteamError> {
 		self.http
-			.request_json("DELETE", "/profile-posts/comments", None, body)
+			.request_json("DELETE", "/profile-posts/comments", None, body, false)
 			.await
 	}
 
@@ -1256,6 +1294,7 @@ impl ProfilePostsApi {
 					Some(query.as_slice())
 				},
 				None,
+				false,
 			)
 			.await
 	}
@@ -1266,7 +1305,7 @@ impl ProfilePostsApi {
 		body: Option<&ProfilePostsCommentsCreateBody>,
 	) -> Result<ProfilePostsCommentsCreateResponse, LolzteamError> {
 		self.http
-			.request_json("POST", "/profile-posts/comments", None, body)
+			.request_json("POST", "/profile-posts/comments", None, body, false)
 			.await
 	}
 
@@ -1276,7 +1315,7 @@ impl ProfilePostsApi {
 		body: Option<&ProfilePostsCommentsEditBody>,
 	) -> Result<ProfilePostsCommentsEditResponse, LolzteamError> {
 		self.http
-			.request_json("PUT", "/profile-posts/comments", None, body)
+			.request_json("PUT", "/profile-posts/comments", None, body, false)
 			.await
 	}
 
@@ -1287,7 +1326,9 @@ impl ProfilePostsApi {
 		body: Option<&ProfilePostsCommentsReportBody>,
 	) -> Result<ProfilePostsCommentsReportResponse, LolzteamError> {
 		let path = format!("/profile-posts/comments/{comment_id}/report");
-		self.http.request_json("POST", &path, None, body).await
+		self.http
+			.request_json("POST", &path, None, body, false)
+			.await
 	}
 
 	/// Delete Profile Post
@@ -1313,6 +1354,7 @@ impl ProfilePostsApi {
 					Some(query.as_slice())
 				},
 				None,
+				false,
 			)
 			.await
 	}
@@ -1323,7 +1365,7 @@ impl ProfilePostsApi {
 		profile_post_id: i64,
 	) -> Result<ProfilePostsGetResponse, LolzteamError> {
 		let path = format!("/profile-posts/{profile_post_id}");
-		self.http.request("GET", &path, None, None).await
+		self.http.request("GET", &path, None, None, false).await
 	}
 
 	/// Edit Profile Post
@@ -1333,7 +1375,9 @@ impl ProfilePostsApi {
 		body: Option<&ProfilePostsEditBody>,
 	) -> Result<ProfilePostsEditResponse, LolzteamError> {
 		let path = format!("/profile-posts/{profile_post_id}");
-		self.http.request_json("PUT", &path, None, body).await
+		self.http
+			.request_json("PUT", &path, None, body, false)
+			.await
 	}
 
 	/// Get Profile Post Comment
@@ -1343,7 +1387,7 @@ impl ProfilePostsApi {
 		comment_id: i64,
 	) -> Result<ProfilePostsCommentsGetResponse, LolzteamError> {
 		let path = format!("/profile-posts/{profile_post_id}/comments/{comment_id}");
-		self.http.request("GET", &path, None, None).await
+		self.http.request("GET", &path, None, None, false).await
 	}
 
 	/// Unlike Profile Post
@@ -1352,7 +1396,7 @@ impl ProfilePostsApi {
 		profile_post_id: i64,
 	) -> Result<ProfilePostsUnlikeResponse, LolzteamError> {
 		let path = format!("/profile-posts/{profile_post_id}/likes");
-		self.http.request("DELETE", &path, None, None).await
+		self.http.request("DELETE", &path, None, None, false).await
 	}
 
 	/// Get Profile Post Likes
@@ -1361,7 +1405,7 @@ impl ProfilePostsApi {
 		profile_post_id: i64,
 	) -> Result<ProfilePostsLikesResponse, LolzteamError> {
 		let path = format!("/profile-posts/{profile_post_id}/likes");
-		self.http.request("GET", &path, None, None).await
+		self.http.request("GET", &path, None, None, false).await
 	}
 
 	/// Like Profile Post
@@ -1370,7 +1414,7 @@ impl ProfilePostsApi {
 		profile_post_id: i64,
 	) -> Result<ProfilePostsLikeResponse, LolzteamError> {
 		let path = format!("/profile-posts/{profile_post_id}/likes");
-		self.http.request("POST", &path, None, None).await
+		self.http.request("POST", &path, None, None, false).await
 	}
 
 	/// Get Profile Post Report Reasons
@@ -1379,7 +1423,7 @@ impl ProfilePostsApi {
 		profile_post_id: i64,
 	) -> Result<ProfilePostsReportReasonsResponse, LolzteamError> {
 		let path = format!("/profile-posts/{profile_post_id}/report");
-		self.http.request("GET", &path, None, None).await
+		self.http.request("GET", &path, None, None, false).await
 	}
 
 	/// Report a Profile Post
@@ -1389,7 +1433,9 @@ impl ProfilePostsApi {
 		body: Option<&ProfilePostsReportBody>,
 	) -> Result<ProfilePostsReportResponse, LolzteamError> {
 		let path = format!("/profile-posts/{profile_post_id}/report");
-		self.http.request_json("POST", &path, None, body).await
+		self.http
+			.request_json("POST", &path, None, body, false)
+			.await
 	}
 
 	/// Unstick Profile Post
@@ -1398,7 +1444,7 @@ impl ProfilePostsApi {
 		profile_post_id: i64,
 	) -> Result<ProfilePostsUnstickResponse, LolzteamError> {
 		let path = format!("/profile-posts/{profile_post_id}/stick");
-		self.http.request("DELETE", &path, None, None).await
+		self.http.request("DELETE", &path, None, None, false).await
 	}
 
 	/// Stick Profile Post
@@ -1407,7 +1453,7 @@ impl ProfilePostsApi {
 		profile_post_id: i64,
 	) -> Result<ProfilePostsStickResponse, LolzteamError> {
 		let path = format!("/profile-posts/{profile_post_id}/stick");
-		self.http.request("POST", &path, None, None).await
+		self.http.request("POST", &path, None, None, false).await
 	}
 
 	/// Get Profile Posts
@@ -1447,6 +1493,7 @@ impl ProfilePostsApi {
 					Some(query.as_slice())
 				},
 				None,
+				false,
 			)
 			.await
 	}
@@ -1466,7 +1513,9 @@ impl SearchApi {
 		&self,
 		body: Option<&SearchAllBody>,
 	) -> Result<SearchAllResponse, LolzteamError> {
-		self.http.request_json("POST", "/search", None, body).await
+		self.http
+			.request_json("POST", "/search", None, body, false)
+			.await
 	}
 
 	/// Search Post
@@ -1475,7 +1524,7 @@ impl SearchApi {
 		body: Option<&SearchPostsBody>,
 	) -> Result<SearchPostsResponse, LolzteamError> {
 		self.http
-			.request_json("POST", "/search/posts", None, body)
+			.request_json("POST", "/search/posts", None, body, false)
 			.await
 	}
 
@@ -1485,7 +1534,7 @@ impl SearchApi {
 		body: Option<&SearchProfilePostsBody>,
 	) -> Result<SearchProfilePostsResponse, LolzteamError> {
 		self.http
-			.request_json("POST", "/search/profile-posts", None, body)
+			.request_json("POST", "/search/profile-posts", None, body, false)
 			.await
 	}
 
@@ -1495,7 +1544,7 @@ impl SearchApi {
 		body: Option<&SearchTaggedBody>,
 	) -> Result<SearchTaggedResponse, LolzteamError> {
 		self.http
-			.request_json("POST", "/search/tagged", None, body)
+			.request_json("POST", "/search/tagged", None, body, false)
 			.await
 	}
 
@@ -1505,7 +1554,7 @@ impl SearchApi {
 		body: Option<&SearchThreadsBody>,
 	) -> Result<SearchThreadsResponse, LolzteamError> {
 		self.http
-			.request_json("POST", "/search/threads", None, body)
+			.request_json("POST", "/search/threads", None, body, false)
 			.await
 	}
 
@@ -1515,7 +1564,7 @@ impl SearchApi {
 		body: Option<&SearchUsersBody>,
 	) -> Result<SearchUsersResponse, LolzteamError> {
 		self.http
-			.request_json("POST", "/search/users", None, body)
+			.request_json("POST", "/search/users", None, body, false)
 			.await
 	}
 
@@ -1536,7 +1585,7 @@ impl SearchApi {
 			}
 		}
 		self.http
-			.request_json(
+			.request(
 				"GET",
 				&path,
 				if query.is_empty() {
@@ -1544,7 +1593,8 @@ impl SearchApi {
 				} else {
 					Some(query.as_slice())
 				},
-				None::<&()>,
+				None,
+				false,
 			)
 			.await
 	}
@@ -1561,7 +1611,7 @@ impl TagsApi {
 
 	/// Get Popular Tags
 	pub async fn popular(&self) -> Result<TagsPopularResponse, LolzteamError> {
-		self.http.request("GET", "/tags", None, None).await
+		self.http.request("GET", "/tags", None, None, false).await
 	}
 
 	/// Get Filtered Content
@@ -1578,6 +1628,7 @@ impl TagsApi {
 					Some(query.as_slice())
 				},
 				None,
+				false,
 			)
 			.await
 	}
@@ -1606,6 +1657,7 @@ impl TagsApi {
 					Some(query.as_slice())
 				},
 				None,
+				false,
 			)
 			.await
 	}
@@ -1636,6 +1688,7 @@ impl TagsApi {
 					Some(query.as_slice())
 				},
 				None,
+				false,
 			)
 			.await
 	}
@@ -1655,7 +1708,9 @@ impl ThreadsApi {
 		&self,
 		body: Option<&ThreadsClaimBody>,
 	) -> Result<ThreadsClaimResponse, LolzteamError> {
-		self.http.request_json("POST", "/claims", None, body).await
+		self.http
+			.request_json("POST", "/claims", None, body, false)
+			.await
 	}
 
 	/// Create Contest
@@ -1664,14 +1719,14 @@ impl ThreadsApi {
 		body: Option<&ThreadsCreateContestBody>,
 	) -> Result<ThreadsCreateContestResponse, LolzteamError> {
 		self.http
-			.request_json("POST", "/contests", None, body)
+			.request_json("POST", "/contests", None, body, false)
 			.await
 	}
 
 	/// Finish Contest
 	pub async fn finish(&self, thread_id: i64) -> Result<ThreadsFinishResponse, LolzteamError> {
 		let path = format!("/contests/{thread_id}/finish");
-		self.http.request("POST", &path, None, None).await
+		self.http.request("POST", &path, None, None, false).await
 	}
 
 	/// Get Threads
@@ -1758,6 +1813,7 @@ impl ThreadsApi {
 					Some(query.as_slice())
 				},
 				None,
+				false,
 			)
 			.await
 	}
@@ -1767,7 +1823,9 @@ impl ThreadsApi {
 		&self,
 		body: Option<&ThreadsCreateBody>,
 	) -> Result<ThreadsCreateResponse, LolzteamError> {
-		self.http.request_json("POST", "/threads", None, body).await
+		self.http
+			.request_json("POST", "/threads", None, body, false)
+			.await
 	}
 
 	/// Get Followed Threads
@@ -1799,6 +1857,7 @@ impl ThreadsApi {
 					Some(query.as_slice())
 				},
 				None,
+				false,
 			)
 			.await
 	}
@@ -1830,6 +1889,7 @@ impl ThreadsApi {
 					Some(query.as_slice())
 				},
 				None,
+				false,
 			)
 			.await
 	}
@@ -1864,6 +1924,7 @@ impl ThreadsApi {
 					Some(query.as_slice())
 				},
 				None,
+				false,
 			)
 			.await
 	}
@@ -1875,7 +1936,9 @@ impl ThreadsApi {
 		body: Option<&ThreadsDeleteBody>,
 	) -> Result<ThreadsDeleteResponse, LolzteamError> {
 		let path = format!("/threads/{thread_id}");
-		self.http.request_json("DELETE", &path, None, body).await
+		self.http
+			.request_json("DELETE", &path, None, body, false)
+			.await
 	}
 
 	/// Get Thread
@@ -1906,6 +1969,7 @@ impl ThreadsApi {
 					Some(query.as_slice())
 				},
 				None,
+				false,
 			)
 			.await
 	}
@@ -1917,19 +1981,21 @@ impl ThreadsApi {
 		body: Option<&ThreadsEditBody>,
 	) -> Result<ThreadsEditResponse, LolzteamError> {
 		let path = format!("/threads/{thread_id}");
-		self.http.request_json("PUT", &path, None, body).await
+		self.http
+			.request_json("PUT", &path, None, body, false)
+			.await
 	}
 
 	/// Bump Thread
 	pub async fn bump(&self, thread_id: i64) -> Result<ThreadsBumpResponse, LolzteamError> {
 		let path = format!("/threads/{thread_id}/bump");
-		self.http.request("POST", &path, None, None).await
+		self.http.request("POST", &path, None, None, false).await
 	}
 
 	/// Unfollow Thread
 	pub async fn unfollow(&self, thread_id: i64) -> Result<ThreadsUnfollowResponse, LolzteamError> {
 		let path = format!("/threads/{thread_id}/followers");
-		self.http.request("DELETE", &path, None, None).await
+		self.http.request("DELETE", &path, None, None, false).await
 	}
 
 	/// Get Thread Followers
@@ -1938,7 +2004,7 @@ impl ThreadsApi {
 		thread_id: i64,
 	) -> Result<ThreadsFollowersResponse, LolzteamError> {
 		let path = format!("/threads/{thread_id}/followers");
-		self.http.request("GET", &path, None, None).await
+		self.http.request("GET", &path, None, None, false).await
 	}
 
 	/// Follow Thread
@@ -1948,13 +2014,15 @@ impl ThreadsApi {
 		body: Option<&ThreadsFollowBody>,
 	) -> Result<ThreadsFollowResponse, LolzteamError> {
 		let path = format!("/threads/{thread_id}/followers");
-		self.http.request_json("POST", &path, None, body).await
+		self.http
+			.request_json("POST", &path, None, body, false)
+			.await
 	}
 
 	/// Hide Thread
 	pub async fn hide(&self, thread_id: i64) -> Result<ThreadsHideResponse, LolzteamError> {
 		let path = format!("/threads/{thread_id}/hide");
-		self.http.request("POST", &path, None, None).await
+		self.http.request("POST", &path, None, None, false).await
 	}
 
 	/// Move Thread
@@ -1964,7 +2032,9 @@ impl ThreadsApi {
 		body: Option<&ThreadsMoveBody>,
 	) -> Result<ThreadsMoveResponse, LolzteamError> {
 		let path = format!("/threads/{thread_id}/move");
-		self.http.request_json("POST", &path, None, body).await
+		self.http
+			.request_json("POST", &path, None, body, false)
+			.await
 	}
 
 	/// Get Navigation Elements
@@ -1973,13 +2043,13 @@ impl ThreadsApi {
 		thread_id: i64,
 	) -> Result<ThreadsNavigationResponse, LolzteamError> {
 		let path = format!("/threads/{thread_id}/navigation");
-		self.http.request("GET", &path, None, None).await
+		self.http.request("GET", &path, None, None, false).await
 	}
 
 	/// Get Poll
 	pub async fn poll_get(&self, thread_id: i64) -> Result<ThreadsPollGetResponse, LolzteamError> {
 		let path = format!("/threads/{thread_id}/poll");
-		self.http.request("GET", &path, None, None).await
+		self.http.request("GET", &path, None, None, false).await
 	}
 
 	/// Vote Poll
@@ -1989,19 +2059,21 @@ impl ThreadsApi {
 		body: Option<&ThreadsPollVoteBody>,
 	) -> Result<ThreadsPollVoteResponse, LolzteamError> {
 		let path = format!("/threads/{thread_id}/poll/votes");
-		self.http.request_json("POST", &path, None, body).await
+		self.http
+			.request_json("POST", &path, None, body, false)
+			.await
 	}
 
 	/// Unbookmark Thread
 	pub async fn unstar(&self, thread_id: i64) -> Result<ThreadsUnstarResponse, LolzteamError> {
 		let path = format!("/threads/{thread_id}/star");
-		self.http.request("DELETE", &path, None, None).await
+		self.http.request("DELETE", &path, None, None, false).await
 	}
 
 	/// Bookmark Thread
 	pub async fn star(&self, thread_id: i64) -> Result<ThreadsStarResponse, LolzteamError> {
 		let path = format!("/threads/{thread_id}/star");
-		self.http.request("POST", &path, None, None).await
+		self.http.request("POST", &path, None, None, false).await
 	}
 }
 
@@ -2017,14 +2089,14 @@ impl UsersApi {
 	/// Cancel Secret Answer Reset
 	pub async fn sa_cancel_reset(&self) -> Result<UsersSaCancelResetResponse, LolzteamError> {
 		self.http
-			.request("DELETE", "/account/secret-answer/reset", None, None)
+			.request("DELETE", "/account/secret-answer/reset", None, None, false)
 			.await
 	}
 
 	/// Reset Secret Answer
 	pub async fn sa_reset(&self) -> Result<UsersSaResetResponse, LolzteamError> {
 		self.http
-			.request("POST", "/account/secret-answer/reset", None, None)
+			.request("POST", "/account/secret-answer/reset", None, None, false)
 			.await
 	}
 
@@ -2060,13 +2132,16 @@ impl UsersApi {
 					Some(query.as_slice())
 				},
 				None,
+				false,
 			)
 			.await
 	}
 
 	/// Get User Fields
 	pub async fn fields(&self) -> Result<UsersFieldsResponse, LolzteamError> {
-		self.http.request("GET", "/users/fields", None, None).await
+		self.http
+			.request("GET", "/users/fields", None, None, false)
+			.await
 	}
 
 	/// Find Users
@@ -2106,6 +2181,7 @@ impl UsersApi {
 					Some(query.as_slice())
 				},
 				None,
+				false,
 			)
 			.await
 	}
@@ -2131,6 +2207,7 @@ impl UsersApi {
 					Some(query.as_slice())
 				},
 				None,
+				false,
 			)
 			.await
 	}
@@ -2140,7 +2217,7 @@ impl UsersApi {
 		&self,
 	) -> Result<UsersSecretAnswerTypesResponse, LolzteamError> {
 		self.http
-			.request("GET", "/users/secret-answer/types", None, None)
+			.request("GET", "/users/secret-answer/types", None, None, false)
 			.await
 	}
 
@@ -2172,6 +2249,7 @@ impl UsersApi {
 					Some(query.as_slice())
 				},
 				None,
+				false,
 			)
 			.await
 	}
@@ -2183,7 +2261,9 @@ impl UsersApi {
 		body: Option<&UsersEditBody>,
 	) -> Result<UsersEditResponse, LolzteamError> {
 		let path = format!("/users/{user_id}");
-		self.http.request_json("PUT", &path, None, body).await
+		self.http
+			.request_json("PUT", &path, None, body, false)
+			.await
 	}
 
 	/// Delete Avatar
@@ -2192,7 +2272,7 @@ impl UsersApi {
 		user_id: StringOrInt,
 	) -> Result<UsersAvatarDeleteResponse, LolzteamError> {
 		let path = format!("/users/{user_id}/avatar");
-		self.http.request("DELETE", &path, None, None).await
+		self.http.request("DELETE", &path, None, None, false).await
 	}
 
 	/// Upload Avatar
@@ -2229,7 +2309,9 @@ impl UsersApi {
 				});
 			}
 		}
-		self.http.request_multipart("POST", &path, parts).await
+		self.http
+			.request_multipart("POST", &path, parts, false)
+			.await
 	}
 
 	/// Crop Avatar
@@ -2239,7 +2321,9 @@ impl UsersApi {
 		body: Option<&UsersAvatarCropBody>,
 	) -> Result<UsersAvatarCropResponse, LolzteamError> {
 		let path = format!("/users/{user_id}/avatar/crop");
-		self.http.request_json("POST", &path, None, body).await
+		self.http
+			.request_json("POST", &path, None, body, false)
+			.await
 	}
 
 	/// Delete Background
@@ -2248,7 +2332,7 @@ impl UsersApi {
 		user_id: StringOrInt,
 	) -> Result<UsersBackgroundDeleteResponse, LolzteamError> {
 		let path = format!("/users/{user_id}/background");
-		self.http.request("DELETE", &path, None, None).await
+		self.http.request("DELETE", &path, None, None, false).await
 	}
 
 	/// Upload Background
@@ -2285,7 +2369,9 @@ impl UsersApi {
 				});
 			}
 		}
-		self.http.request_multipart("POST", &path, parts).await
+		self.http
+			.request_multipart("POST", &path, parts, false)
+			.await
 	}
 
 	/// Crop Background
@@ -2295,7 +2381,9 @@ impl UsersApi {
 		body: Option<&UsersBackgroundCropBody>,
 	) -> Result<UsersBackgroundCropResponse, LolzteamError> {
 		let path = format!("/users/{user_id}/background/crop");
-		self.http.request_json("POST", &path, None, body).await
+		self.http
+			.request_json("POST", &path, None, body, false)
+			.await
 	}
 
 	/// Get User Claims
@@ -2324,6 +2412,7 @@ impl UsersApi {
 					Some(query.as_slice())
 				},
 				None,
+				false,
 			)
 			.await
 	}
@@ -2334,7 +2423,7 @@ impl UsersApi {
 		user_id: StringOrInt,
 	) -> Result<UsersUnfollowResponse, LolzteamError> {
 		let path = format!("/users/{user_id}/followers");
-		self.http.request("DELETE", &path, None, None).await
+		self.http.request("DELETE", &path, None, None, false).await
 	}
 
 	/// Get User Followers
@@ -2366,6 +2455,7 @@ impl UsersApi {
 					Some(query.as_slice())
 				},
 				None,
+				false,
 			)
 			.await
 	}
@@ -2373,7 +2463,7 @@ impl UsersApi {
 	/// Follow User
 	pub async fn follow(&self, user_id: StringOrInt) -> Result<UsersFollowResponse, LolzteamError> {
 		let path = format!("/users/{user_id}/followers");
-		self.http.request("POST", &path, None, None).await
+		self.http.request("POST", &path, None, None, false).await
 	}
 
 	/// Get Followed Users By User
@@ -2405,6 +2495,7 @@ impl UsersApi {
 					Some(query.as_slice())
 				},
 				None,
+				false,
 			)
 			.await
 	}
@@ -2415,13 +2506,13 @@ impl UsersApi {
 		user_id: StringOrInt,
 	) -> Result<UsersUnignoreResponse, LolzteamError> {
 		let path = format!("/users/{user_id}/ignore");
-		self.http.request("DELETE", &path, None, None).await
+		self.http.request("DELETE", &path, None, None, false).await
 	}
 
 	/// Ignore User
 	pub async fn ignore(&self, user_id: StringOrInt) -> Result<UsersIgnoreResponse, LolzteamError> {
 		let path = format!("/users/{user_id}/ignore");
-		self.http.request("POST", &path, None, None).await
+		self.http.request("POST", &path, None, None, false).await
 	}
 
 	/// Edit Ignoring Options
@@ -2453,6 +2544,7 @@ impl UsersApi {
 					Some(query.as_slice())
 				},
 				None,
+				false,
 			)
 			.await
 	}
@@ -2498,6 +2590,7 @@ impl UsersApi {
 					Some(query.as_slice())
 				},
 				None,
+				false,
 			)
 			.await
 	}
@@ -2528,6 +2621,7 @@ impl UsersApi {
 					Some(query.as_slice())
 				},
 				None,
+				false,
 			)
 			.await
 	}
@@ -2538,7 +2632,7 @@ impl UsersApi {
 		user_id: StringOrInt,
 	) -> Result<UsersTrophiesResponse, LolzteamError> {
 		let path = format!("/users/{user_id}/trophies");
-		self.http.request("GET", &path, None, None).await
+		self.http.request("GET", &path, None, None, false).await
 	}
 }
 
@@ -2574,6 +2668,7 @@ impl ForumClient {
 			rate_limit: Some(RateLimitConfig {
 				requests_per_minute: 300,
 			}),
+			search_rate_limit: None,
 		};
 		Self::with_config(config)
 	}

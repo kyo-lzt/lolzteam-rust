@@ -240,9 +240,10 @@ fn emit_groups_into(parsed: &ParseResult, out: &mut String) {
 		writeln!(out, "\t\tSelf {{ http }}").unwrap();
 		writeln!(out, "\t}}").unwrap();
 
+		let is_search_group = group.name == "category";
 		for method in &group.methods {
 			writeln!(out).unwrap();
-			emit_method(out, &group.name, method);
+			emit_method(out, &group.name, method, is_search_group);
 		}
 
 		writeln!(out, "}}").unwrap();
@@ -251,7 +252,7 @@ fn emit_groups_into(parsed: &ParseResult, out: &mut String) {
 }
 
 /// Emit a single method inside an impl block.
-fn emit_method(out: &mut String, group_name: &str, method: &MethodDef) {
+fn emit_method(out: &mut String, group_name: &str, method: &MethodDef, is_search: bool) {
 	let prefix = method_type_prefix(group_name, &method.name);
 
 	let required_query: Vec<_> = method.query_params.iter().filter(|p| p.required).collect();
@@ -362,6 +363,7 @@ fn emit_method(out: &mut String, group_name: &str, method: &MethodDef) {
 	};
 
 	let query_arg_some = "if query.is_empty() { None } else { Some(query.as_slice()) }";
+	let is_search_arg = if is_search { "true" } else { "false" };
 
 	if method.response_is_text {
 		let query_arg = if has_any_query {
@@ -371,7 +373,7 @@ fn emit_method(out: &mut String, group_name: &str, method: &MethodDef) {
 		};
 		writeln!(
 			out,
-			"\t\tself.http.request_text(\"{}\", {path_arg}, {query_arg}).await",
+			"\t\tself.http.request_text(\"{}\", {path_arg}, {query_arg}, {is_search_arg}).await",
 			method.http_method
 		)
 		.unwrap();
@@ -384,14 +386,14 @@ fn emit_method(out: &mut String, group_name: &str, method: &MethodDef) {
 		};
 		writeln!(
 			out,
-			"\t\tself.http.request_json(\"{}\", {path_arg}, {query_arg}, Some(&body)).await",
+			"\t\tself.http.request_json(\"{}\", {path_arg}, {query_arg}, Some(&body), {is_search_arg}).await",
 			method.http_method
 		)
 		.unwrap();
 	} else if method.body_encoding == BodyEncoding::Multipart {
 		writeln!(
 			out,
-			"\t\tself.http.request_multipart(\"{}\", {path_arg}, parts).await",
+			"\t\tself.http.request_multipart(\"{}\", {path_arg}, parts, {is_search_arg}).await",
 			method.http_method
 		)
 		.unwrap();
@@ -408,7 +410,7 @@ fn emit_method(out: &mut String, group_name: &str, method: &MethodDef) {
 		};
 		writeln!(
 			out,
-			"\t\tself.http.request_json(\"{}\", {path_arg}, {query_arg}, {body_arg}).await",
+			"\t\tself.http.request_json(\"{}\", {path_arg}, {query_arg}, {body_arg}, {is_search_arg}).await",
 			method.http_method
 		)
 		.unwrap();
@@ -427,7 +429,7 @@ fn emit_method(out: &mut String, group_name: &str, method: &MethodDef) {
 
 		writeln!(
 			out,
-			"\t\tself.http.request(\"{}\", {path_arg}, {query_arg}, {body_arg}).await",
+			"\t\tself.http.request(\"{}\", {path_arg}, {query_arg}, {body_arg}, {is_search_arg}).await",
 			method.http_method
 		)
 		.unwrap();
@@ -681,6 +683,7 @@ pub fn emit_client(
 	client_name: &str,
 	default_base_url: &str,
 	default_rate_limit: u32,
+	default_search_rate_limit: Option<u32>,
 	output_dir: &str,
 ) {
 	let dir = Path::new(output_dir);
@@ -777,6 +780,18 @@ pub fn emit_client(
 		"\t\t\trate_limit: Some(RateLimitConfig {{ requests_per_minute: {default_rate_limit} }}),"
 	)
 	.unwrap();
+	match default_search_rate_limit {
+		Some(srl) => {
+			writeln!(
+				out,
+				"\t\t\tsearch_rate_limit: Some(RateLimitConfig {{ requests_per_minute: {srl} }}),"
+			)
+			.unwrap();
+		}
+		None => {
+			writeln!(out, "\t\t\tsearch_rate_limit: None,").unwrap();
+		}
+	}
 	writeln!(out, "\t\t}};").unwrap();
 	writeln!(out, "\t\tSelf::with_config(config)").unwrap();
 	writeln!(out, "\t}}").unwrap();

@@ -22,7 +22,7 @@ impl AutoPaymentsApi {
 		body: Option<&AutoPaymentsDeleteBody>,
 	) -> Result<AutoPaymentsDeleteResponse, LolzteamError> {
 		self.http
-			.request_json("DELETE", "/auto-payment", None, body)
+			.request_json("DELETE", "/auto-payment", None, body, false)
 			.await
 	}
 
@@ -32,13 +32,15 @@ impl AutoPaymentsApi {
 		body: Option<&AutoPaymentsCreateBody>,
 	) -> Result<AutoPaymentsCreateResponse, LolzteamError> {
 		self.http
-			.request_json("POST", "/auto-payment", None, body)
+			.request_json("POST", "/auto-payment", None, body, false)
 			.await
 	}
 
 	/// Get Auto Payments
 	pub async fn list(&self) -> Result<AutoPaymentsListResponse, LolzteamError> {
-		self.http.request("GET", "/auto-payments", None, None).await
+		self.http
+			.request("GET", "/auto-payments", None, None, false)
+			.await
 	}
 }
 
@@ -57,7 +59,7 @@ impl BatchApi {
 		body: serde_json::Value,
 	) -> Result<BatchExecuteResponse, LolzteamError> {
 		self.http
-			.request_json("POST", "/batch", None, Some(&body))
+			.request_json("POST", "/batch", None, Some(&body), false)
 			.await
 	}
 }
@@ -76,7 +78,9 @@ impl CartApi {
 		&self,
 		body: Option<&CartDeleteBody>,
 	) -> Result<CartDeleteResponse, LolzteamError> {
-		self.http.request_json("DELETE", "/cart", None, body).await
+		self.http
+			.request_json("DELETE", "/cart", None, body, false)
+			.await
 	}
 
 	/// Get Cart Items
@@ -191,13 +195,16 @@ impl CartApi {
 					Some(query.as_slice())
 				},
 				None,
+				false,
 			)
 			.await
 	}
 
 	/// Add Item to Cart
 	pub async fn add(&self, body: Option<&CartAddBody>) -> Result<CartAddResponse, LolzteamError> {
-		self.http.request_json("POST", "/cart", None, body).await
+		self.http
+			.request_json("POST", "/cart", None, body, false)
+			.await
 	}
 }
 
@@ -319,6 +326,7 @@ impl CategoryApi {
 					Some(query.as_slice())
 				},
 				None,
+				true,
 			)
 			.await
 	}
@@ -485,6 +493,7 @@ impl CategoryApi {
 					Some(query.as_slice())
 				},
 				None,
+				true,
 			)
 			.await
 	}
@@ -510,6 +519,7 @@ impl CategoryApi {
 					Some(query.as_slice())
 				},
 				None,
+				true,
 			)
 			.await
 	}
@@ -671,6 +681,7 @@ impl CategoryApi {
 					Some(query.as_slice())
 				},
 				None,
+				true,
 			)
 			.await
 	}
@@ -923,6 +934,7 @@ impl CategoryApi {
 					Some(query.as_slice())
 				},
 				None,
+				true,
 			)
 			.await
 	}
@@ -1114,6 +1126,7 @@ impl CategoryApi {
 					Some(query.as_slice())
 				},
 				None,
+				true,
 			)
 			.await
 	}
@@ -1293,6 +1306,7 @@ impl CategoryApi {
 					Some(query.as_slice())
 				},
 				None,
+				true,
 			)
 			.await
 	}
@@ -1440,6 +1454,7 @@ impl CategoryApi {
 					Some(query.as_slice())
 				},
 				None,
+				true,
 			)
 			.await
 	}
@@ -1734,6 +1749,7 @@ impl CategoryApi {
 					Some(query.as_slice())
 				},
 				None,
+				true,
 			)
 			.await
 	}
@@ -1856,6 +1872,7 @@ impl CategoryApi {
 					Some(query.as_slice())
 				},
 				None,
+				true,
 			)
 			.await
 	}
@@ -1980,6 +1997,7 @@ impl CategoryApi {
 					Some(query.as_slice())
 				},
 				None,
+				true,
 			)
 			.await
 	}
@@ -2141,6 +2159,7 @@ impl CategoryApi {
 					Some(query.as_slice())
 				},
 				None,
+				true,
 			)
 			.await
 	}
@@ -2521,6 +2540,7 @@ impl CategoryApi {
 					Some(query.as_slice())
 				},
 				None,
+				true,
 			)
 			.await
 	}
@@ -2762,6 +2782,7 @@ impl CategoryApi {
 					Some(query.as_slice())
 				},
 				None,
+				true,
 			)
 			.await
 	}
@@ -3086,6 +3107,7 @@ impl CategoryApi {
 					Some(query.as_slice())
 				},
 				None,
+				true,
 			)
 			.await
 	}
@@ -3321,6 +3343,7 @@ impl CategoryApi {
 					Some(query.as_slice())
 				},
 				None,
+				true,
 			)
 			.await
 	}
@@ -3460,6 +3483,7 @@ impl CategoryApi {
 					Some(query.as_slice())
 				},
 				None,
+				true,
 			)
 			.await
 	}
@@ -3897,6 +3921,7 @@ impl CategoryApi {
 					Some(query.as_slice())
 				},
 				None,
+				true,
 			)
 			.await
 	}
@@ -4179,6 +4204,7 @@ impl CategoryApi {
 					Some(query.as_slice())
 				},
 				None,
+				true,
 			)
 			.await
 	}
@@ -4444,6 +4470,7 @@ impl CategoryApi {
 					Some(query.as_slice())
 				},
 				None,
+				true,
 			)
 			.await
 	}
@@ -4607,6 +4634,7 @@ impl CategoryApi {
 					Some(query.as_slice())
 				},
 				None,
+				true,
 			)
 			.await
 	}
@@ -4822,6 +4850,7 @@ impl CategoryApi {
 					Some(query.as_slice())
 				},
 				None,
+				true,
 			)
 			.await
 	}
@@ -4949,6 +4978,7 @@ impl CategoryApi {
 					Some(query.as_slice())
 				},
 				None,
+				true,
 			)
 			.await
 	}
@@ -5092,6 +5122,7 @@ impl CategoryApi {
 					Some(query.as_slice())
 				},
 				None,
+				true,
 			)
 			.await
 	}
@@ -5332,6 +5363,7 @@ impl CategoryApi {
 					Some(query.as_slice())
 				},
 				None,
+				true,
 			)
 			.await
 	}
@@ -5572,6 +5604,7 @@ impl CategoryApi {
 					Some(query.as_slice())
 				},
 				None,
+				true,
 			)
 			.await
 	}
@@ -5582,7 +5615,7 @@ impl CategoryApi {
 		category_name: String,
 	) -> Result<CategoryGamesResponse, LolzteamError> {
 		let path = format!("/{category_name}/games");
-		self.http.request("GET", &path, None, None).await
+		self.http.request("GET", &path, None, None, true).await
 	}
 
 	/// Get Category Search Params
@@ -5591,7 +5624,7 @@ impl CategoryApi {
 		category_name: String,
 	) -> Result<CategoryParamsResponse, LolzteamError> {
 		let path = format!("/{category_name}/params");
-		self.http.request("GET", &path, None, None).await
+		self.http.request("GET", &path, None, None, true).await
 	}
 }
 
@@ -5610,14 +5643,14 @@ impl CustomDiscountsApi {
 		body: Option<&CustomDiscountsDeleteBody>,
 	) -> Result<CustomDiscountsDeleteResponse, LolzteamError> {
 		self.http
-			.request_json("DELETE", "/custom-discounts", None, body)
+			.request_json("DELETE", "/custom-discounts", None, body, false)
 			.await
 	}
 
 	/// Get Custom Discounts
 	pub async fn get(&self) -> Result<CustomDiscountsGetResponse, LolzteamError> {
 		self.http
-			.request("GET", "/custom-discounts", None, None)
+			.request("GET", "/custom-discounts", None, None, false)
 			.await
 	}
 
@@ -5627,7 +5660,7 @@ impl CustomDiscountsApi {
 		body: Option<&CustomDiscountsCreateBody>,
 	) -> Result<CustomDiscountsCreateResponse, LolzteamError> {
 		self.http
-			.request_json("POST", "/custom-discounts", None, body)
+			.request_json("POST", "/custom-discounts", None, body, false)
 			.await
 	}
 
@@ -5637,7 +5670,7 @@ impl CustomDiscountsApi {
 		body: Option<&CustomDiscountsEditBody>,
 	) -> Result<CustomDiscountsEditResponse, LolzteamError> {
 		self.http
-			.request_json("PUT", "/custom-discounts", None, body)
+			.request_json("PUT", "/custom-discounts", None, body, false)
 			.await
 	}
 }
@@ -5656,7 +5689,9 @@ impl ImapApi {
 		&self,
 		body: Option<&ImapDeleteBody>,
 	) -> Result<ImapDeleteResponse, LolzteamError> {
-		self.http.request_json("DELETE", "/imap", None, body).await
+		self.http
+			.request_json("DELETE", "/imap", None, body, false)
+			.await
 	}
 
 	/// Create IMAP Configuration
@@ -5664,7 +5699,9 @@ impl ImapApi {
 		&self,
 		body: Option<&ImapCreateBody>,
 	) -> Result<ImapCreateResponse, LolzteamError> {
-		self.http.request_json("POST", "/imap", None, body).await
+		self.http
+			.request_json("POST", "/imap", None, body, false)
+			.await
 	}
 }
 
@@ -5735,6 +5772,7 @@ impl ListApi {
 					Some(query.as_slice())
 				},
 				None,
+				false,
 			)
 			.await
 	}
@@ -5765,6 +5803,7 @@ impl ListApi {
 					Some(query.as_slice())
 				},
 				None,
+				false,
 			)
 			.await
 	}
@@ -5872,6 +5911,7 @@ impl ListApi {
 					Some(query.as_slice())
 				},
 				None,
+				false,
 			)
 			.await
 	}
@@ -5943,6 +5983,7 @@ impl ListApi {
 					Some(query.as_slice())
 				},
 				None,
+				false,
 			)
 			.await
 	}
@@ -6052,6 +6093,7 @@ impl ListApi {
 				} else {
 					Some(query.as_slice())
 				},
+				false,
 			)
 			.await
 	}
@@ -6114,6 +6156,7 @@ impl ListApi {
 					Some(query.as_slice())
 				},
 				None,
+				false,
 			)
 			.await
 	}
@@ -6134,7 +6177,7 @@ impl ManagingApi {
 		body: Option<&ManagingBulkGetBody>,
 	) -> Result<ManagingBulkGetResponse, LolzteamError> {
 		self.http
-			.request_json("POST", "/bulk/items", None, body)
+			.request_json("POST", "/bulk/items", None, body, false)
 			.await
 	}
 
@@ -6143,7 +6186,9 @@ impl ManagingApi {
 		&self,
 		body: Option<&ManagingCreateClaimBody>,
 	) -> Result<ManagingCreateClaimResponse, LolzteamError> {
-		self.http.request_json("POST", "/claims", None, body).await
+		self.http
+			.request_json("POST", "/claims", None, body, false)
+			.await
 	}
 
 	/// Get Email Letters
@@ -6176,6 +6221,7 @@ impl ManagingApi {
 					Some(query.as_slice())
 				},
 				None,
+				false,
 			)
 			.await
 	}
@@ -6209,6 +6255,7 @@ impl ManagingApi {
 					Some(query.as_slice())
 				},
 				None,
+				false,
 			)
 			.await
 	}
@@ -6220,7 +6267,9 @@ impl ManagingApi {
 		body: Option<&ManagingDeleteBody>,
 	) -> Result<ManagingDeleteResponse, LolzteamError> {
 		let path = format!("/{item_id}");
-		self.http.request_json("DELETE", &path, None, body).await
+		self.http
+			.request_json("DELETE", &path, None, body, false)
+			.await
 	}
 
 	/// Get Account
@@ -6246,6 +6295,7 @@ impl ManagingApi {
 					Some(query.as_slice())
 				},
 				None,
+				false,
 			)
 			.await
 	}
@@ -6253,7 +6303,7 @@ impl ManagingApi {
 	/// Get AI Price
 	pub async fn ai_price(&self, item_id: i64) -> Result<ManagingAiPriceResponse, LolzteamError> {
 		let path = format!("/{item_id}/ai-price");
-		self.http.request("GET", &path, None, None).await
+		self.http.request("GET", &path, None, None, false).await
 	}
 
 	/// Disable Auto Bump
@@ -6262,7 +6312,7 @@ impl ManagingApi {
 		item_id: i64,
 	) -> Result<ManagingAutoBumpDisableResponse, LolzteamError> {
 		let path = format!("/{item_id}/auto-bump");
-		self.http.request("DELETE", &path, None, None).await
+		self.http.request("DELETE", &path, None, None, false).await
 	}
 
 	/// Auto Bump
@@ -6272,7 +6322,9 @@ impl ManagingApi {
 		body: Option<&ManagingAutoBumpBody>,
 	) -> Result<ManagingAutoBumpResponse, LolzteamError> {
 		let path = format!("/{item_id}/auto-bump");
-		self.http.request_json("POST", &path, None, body).await
+		self.http
+			.request_json("POST", &path, None, body, false)
+			.await
 	}
 
 	/// Get Auto Buy Price
@@ -6281,13 +6333,13 @@ impl ManagingApi {
 		item_id: i64,
 	) -> Result<ManagingAutoBuyPriceResponse, LolzteamError> {
 		let path = format!("/{item_id}/auto-buy-price");
-		self.http.request("GET", &path, None, None).await
+		self.http.request("GET", &path, None, None, false).await
 	}
 
 	/// Bump Account
 	pub async fn bump(&self, item_id: i64) -> Result<ManagingBumpResponse, LolzteamError> {
 		let path = format!("/{item_id}/bump");
-		self.http.request("POST", &path, None, None).await
+		self.http.request("POST", &path, None, None, false).await
 	}
 
 	/// Change Account Owner
@@ -6297,7 +6349,9 @@ impl ManagingApi {
 		body: Option<&ManagingTransferBody>,
 	) -> Result<ManagingTransferResponse, LolzteamError> {
 		let path = format!("/{item_id}/change-owner");
-		self.http.request_json("POST", &path, None, body).await
+		self.http
+			.request_json("POST", &path, None, body, false)
+			.await
 	}
 
 	/// Change Password
@@ -6307,7 +6361,9 @@ impl ManagingApi {
 		body: Option<&ManagingChangePasswordBody>,
 	) -> Result<ManagingChangePasswordResponse, LolzteamError> {
 		let path = format!("/{item_id}/change-password");
-		self.http.request_json("POST", &path, None, body).await
+		self.http
+			.request_json("POST", &path, None, body, false)
+			.await
 	}
 
 	/// Check Guarantee
@@ -6316,13 +6372,13 @@ impl ManagingApi {
 		item_id: i64,
 	) -> Result<ManagingCheckGuaranteeResponse, LolzteamError> {
 		let path = format!("/{item_id}/check-guarantee");
-		self.http.request("POST", &path, None, None).await
+		self.http.request("POST", &path, None, None, false).await
 	}
 
 	/// Close Account
 	pub async fn close(&self, item_id: i64) -> Result<ManagingCloseResponse, LolzteamError> {
 		let path = format!("/{item_id}/close");
-		self.http.request("POST", &path, None, None).await
+		self.http.request("POST", &path, None, None, false).await
 	}
 
 	/// Confirm SDA
@@ -6332,7 +6388,9 @@ impl ManagingApi {
 		body: Option<&ManagingSteamSdaBody>,
 	) -> Result<ManagingSteamSdaResponse, LolzteamError> {
 		let path = format!("/{item_id}/confirm-sda");
-		self.http.request_json("POST", &path, None, body).await
+		self.http
+			.request_json("POST", &path, None, body, false)
+			.await
 	}
 
 	/// Decline Video Recording Request
@@ -6342,7 +6400,9 @@ impl ManagingApi {
 		body: Option<&ManagingDeclineVideoRecordingBody>,
 	) -> Result<ManagingDeclineVideoRecordingResponse, LolzteamError> {
 		let path = format!("/{item_id}/decline-video-recording");
-		self.http.request_json("POST", &path, None, body).await
+		self.http
+			.request_json("POST", &path, None, body, false)
+			.await
 	}
 
 	/// Edit Account
@@ -6352,7 +6412,9 @@ impl ManagingApi {
 		body: Option<&ManagingEditBody>,
 	) -> Result<ManagingEditResponse, LolzteamError> {
 		let path = format!("/{item_id}/edit");
-		self.http.request_json("PUT", &path, None, body).await
+		self.http
+			.request_json("PUT", &path, None, body, false)
+			.await
 	}
 
 	/// Get Email Confirmation Code
@@ -6361,7 +6423,7 @@ impl ManagingApi {
 		item_id: i64,
 	) -> Result<ManagingEmailCodeResponse, LolzteamError> {
 		let path = format!("/{item_id}/email-code");
-		self.http.request("GET", &path, None, None).await
+		self.http.request("GET", &path, None, None, false).await
 	}
 
 	/// Get Mafile Confirmation Code
@@ -6370,7 +6432,7 @@ impl ManagingApi {
 		item_id: i64,
 	) -> Result<ManagingSteamMafileCodeResponse, LolzteamError> {
 		let path = format!("/{item_id}/guard-code");
-		self.http.request("GET", &path, None, None).await
+		self.http.request("GET", &path, None, None, false).await
 	}
 
 	/// Get Account Image
@@ -6392,6 +6454,7 @@ impl ManagingApi {
 					Some(query.as_slice())
 				},
 				None,
+				false,
 			)
 			.await
 	}
@@ -6425,6 +6488,7 @@ impl ManagingApi {
 					Some(query.as_slice())
 				},
 				None,
+				false,
 			)
 			.await
 	}
@@ -6435,7 +6499,7 @@ impl ManagingApi {
 		item_id: i64,
 	) -> Result<ManagingSteamRemoveMafileResponse, LolzteamError> {
 		let path = format!("/{item_id}/mafile");
-		self.http.request("DELETE", &path, None, None).await
+		self.http.request("DELETE", &path, None, None, false).await
 	}
 
 	/// Get Mafile
@@ -6444,7 +6508,7 @@ impl ManagingApi {
 		item_id: i64,
 	) -> Result<ManagingSteamGetMafileResponse, LolzteamError> {
 		let path = format!("/{item_id}/mafile");
-		self.http.request("GET", &path, None, None).await
+		self.http.request("GET", &path, None, None, false).await
 	}
 
 	/// Add Mafile
@@ -6453,7 +6517,7 @@ impl ManagingApi {
 		item_id: i64,
 	) -> Result<ManagingSteamAddMafileResponse, LolzteamError> {
 		let path = format!("/{item_id}/mafile");
-		self.http.request("POST", &path, None, None).await
+		self.http.request("POST", &path, None, None, false).await
 	}
 
 	/// Edit Note
@@ -6463,13 +6527,15 @@ impl ManagingApi {
 		body: Option<&ManagingNoteBody>,
 	) -> Result<ManagingNoteResponse, LolzteamError> {
 		let path = format!("/{item_id}/note-save");
-		self.http.request_json("POST", &path, None, body).await
+		self.http
+			.request_json("POST", &path, None, body, false)
+			.await
 	}
 
 	/// Open Account
 	pub async fn open(&self, item_id: i64) -> Result<ManagingOpenResponse, LolzteamError> {
 		let path = format!("/{item_id}/open");
-		self.http.request("POST", &path, None, None).await
+		self.http.request("POST", &path, None, None, false).await
 	}
 
 	/// Remove a Public Tag
@@ -6479,7 +6545,9 @@ impl ManagingApi {
 		body: Option<&ManagingPublicUntagBody>,
 	) -> Result<ManagingPublicUntagResponse, LolzteamError> {
 		let path = format!("/{item_id}/public-tag");
-		self.http.request_json("DELETE", &path, None, body).await
+		self.http
+			.request_json("DELETE", &path, None, body, false)
+			.await
 	}
 
 	/// Add a Public Tag
@@ -6489,7 +6557,9 @@ impl ManagingApi {
 		body: Option<&ManagingPublicTagBody>,
 	) -> Result<ManagingPublicTagResponse, LolzteamError> {
 		let path = format!("/{item_id}/public-tag");
-		self.http.request_json("POST", &path, None, body).await
+		self.http
+			.request_json("POST", &path, None, body, false)
+			.await
 	}
 
 	/// Cancel Guarantee
@@ -6498,7 +6568,7 @@ impl ManagingApi {
 		item_id: i64,
 	) -> Result<ManagingRefuseGuaranteeResponse, LolzteamError> {
 		let path = format!("/{item_id}/refuse-guarantee");
-		self.http.request("POST", &path, None, None).await
+		self.http.request("POST", &path, None, None, false).await
 	}
 
 	/// Unfavorite
@@ -6507,13 +6577,13 @@ impl ManagingApi {
 		item_id: i64,
 	) -> Result<ManagingUnfavoriteResponse, LolzteamError> {
 		let path = format!("/{item_id}/star");
-		self.http.request("DELETE", &path, None, None).await
+		self.http.request("DELETE", &path, None, None, false).await
 	}
 
 	/// Favorite
 	pub async fn favorite(&self, item_id: i64) -> Result<ManagingFavoriteResponse, LolzteamError> {
 		let path = format!("/{item_id}/star");
-		self.http.request("POST", &path, None, None).await
+		self.http.request("POST", &path, None, None, false).await
 	}
 
 	/// Get Steam HTML
@@ -6538,6 +6608,7 @@ impl ManagingApi {
 				} else {
 					Some(query.as_slice())
 				},
+				false,
 			)
 			.await
 	}
@@ -6545,13 +6616,13 @@ impl ManagingApi {
 	/// Unstick Account
 	pub async fn unstick(&self, item_id: i64) -> Result<ManagingUnstickResponse, LolzteamError> {
 		let path = format!("/{item_id}/stick");
-		self.http.request("DELETE", &path, None, None).await
+		self.http.request("DELETE", &path, None, None, false).await
 	}
 
 	/// Stick Account
 	pub async fn stick(&self, item_id: i64) -> Result<ManagingStickResponse, LolzteamError> {
 		let path = format!("/{item_id}/stick");
-		self.http.request("POST", &path, None, None).await
+		self.http.request("POST", &path, None, None, false).await
 	}
 
 	/// Remove a Tag
@@ -6561,7 +6632,9 @@ impl ManagingApi {
 		body: Option<&ManagingUntagBody>,
 	) -> Result<ManagingUntagResponse, LolzteamError> {
 		let path = format!("/{item_id}/tag");
-		self.http.request_json("DELETE", &path, None, body).await
+		self.http
+			.request_json("DELETE", &path, None, body, false)
+			.await
 	}
 
 	/// Add a Tag
@@ -6571,7 +6644,9 @@ impl ManagingApi {
 		body: Option<&ManagingTagBody>,
 	) -> Result<ManagingTagResponse, LolzteamError> {
 		let path = format!("/{item_id}/tag");
-		self.http.request_json("POST", &path, None, body).await
+		self.http
+			.request_json("POST", &path, None, body, false)
+			.await
 	}
 
 	/// Get Telegram Confirmation Code
@@ -6580,7 +6655,7 @@ impl ManagingApi {
 		item_id: i64,
 	) -> Result<ManagingTelegramCodeResponse, LolzteamError> {
 		let path = format!("/{item_id}/telegram-login-code");
-		self.http.request("GET", &path, None, None).await
+		self.http.request("GET", &path, None, None, false).await
 	}
 
 	/// Telegram Reset Auth
@@ -6589,7 +6664,7 @@ impl ManagingApi {
 		item_id: i64,
 	) -> Result<ManagingTelegramResetAuthResponse, LolzteamError> {
 		let path = format!("/{item_id}/telegram-reset-authorizations");
-		self.http.request("POST", &path, None, None).await
+		self.http.request("POST", &path, None, None, false).await
 	}
 
 	/// Get Temp Email Password
@@ -6598,7 +6673,7 @@ impl ManagingApi {
 		item_id: i64,
 	) -> Result<ManagingTempEmailPasswordResponse, LolzteamError> {
 		let path = format!("/{item_id}/temp-email-password");
-		self.http.request("GET", &path, None, None).await
+		self.http.request("GET", &path, None, None, false).await
 	}
 
 	/// Update Inventory Value
@@ -6608,7 +6683,9 @@ impl ManagingApi {
 		body: Option<&ManagingSteamUpdateValueBody>,
 	) -> Result<ManagingSteamUpdateValueResponse, LolzteamError> {
 		let path = format!("/{item_id}/update-inventory");
-		self.http.request_json("POST", &path, None, body).await
+		self.http
+			.request_json("POST", &path, None, body, false)
+			.await
 	}
 }
 
@@ -6624,7 +6701,7 @@ impl PaymentsApi {
 	/// Get List Of Balances
 	pub async fn balance_list(&self) -> Result<PaymentsBalanceListResponse, LolzteamError> {
 		self.http
-			.request("GET", "/balance/exchange", None, None)
+			.request("GET", "/balance/exchange", None, None, false)
 			.await
 	}
 
@@ -6634,7 +6711,7 @@ impl PaymentsApi {
 		body: Option<&PaymentsBalanceExchangeBody>,
 	) -> Result<PaymentsBalanceExchangeResponse, LolzteamError> {
 		self.http
-			.request_json("POST", "/balance/exchange", None, body)
+			.request_json("POST", "/balance/exchange", None, body, false)
 			.await
 	}
 
@@ -6644,14 +6721,14 @@ impl PaymentsApi {
 		body: Option<&PaymentsPayoutBody>,
 	) -> Result<PaymentsPayoutResponse, LolzteamError> {
 		self.http
-			.request_json("POST", "/balance/payout", None, body)
+			.request_json("POST", "/balance/payout", None, body, false)
 			.await
 	}
 
 	/// Get Payout Services
 	pub async fn payout_services(&self) -> Result<PaymentsPayoutServicesResponse, LolzteamError> {
 		self.http
-			.request("GET", "/balance/payout/services", None, None)
+			.request("GET", "/balance/payout/services", None, None, false)
 			.await
 	}
 
@@ -6661,7 +6738,7 @@ impl PaymentsApi {
 		body: Option<&PaymentsTransferBody>,
 	) -> Result<PaymentsTransferResponse, LolzteamError> {
 		self.http
-			.request_json("POST", "/balance/transfer", None, body)
+			.request_json("POST", "/balance/transfer", None, body, false)
 			.await
 	}
 
@@ -6671,7 +6748,7 @@ impl PaymentsApi {
 		body: Option<&PaymentsCancelBody>,
 	) -> Result<PaymentsCancelResponse, LolzteamError> {
 		self.http
-			.request_json("POST", "/balance/transfer/cancel", None, body)
+			.request_json("POST", "/balance/transfer/cancel", None, body, false)
 			.await
 	}
 
@@ -6696,13 +6773,16 @@ impl PaymentsApi {
 					Some(query.as_slice())
 				},
 				None,
+				false,
 			)
 			.await
 	}
 
 	/// Get Currency
 	pub async fn currency(&self) -> Result<PaymentsCurrencyResponse, LolzteamError> {
-		self.http.request("GET", "/currency", None, None).await
+		self.http
+			.request("GET", "/currency", None, None, false)
+			.await
 	}
 
 	/// Get Invoice
@@ -6729,6 +6809,7 @@ impl PaymentsApi {
 					Some(query.as_slice())
 				},
 				None,
+				false,
 			)
 			.await
 	}
@@ -6738,7 +6819,9 @@ impl PaymentsApi {
 		&self,
 		body: Option<&PaymentsInvoiceCreateBody>,
 	) -> Result<PaymentsInvoiceCreateResponse, LolzteamError> {
-		self.http.request_json("POST", "/invoice", None, body).await
+		self.http
+			.request_json("POST", "/invoice", None, body, false)
+			.await
 	}
 
 	/// Get Invoice List
@@ -6774,6 +6857,7 @@ impl PaymentsApi {
 					Some(query.as_slice())
 				},
 				None,
+				false,
 			)
 			.await
 	}
@@ -6841,6 +6925,7 @@ impl PaymentsApi {
 					Some(query.as_slice())
 				},
 				None,
+				false,
 			)
 			.await
 	}
@@ -6879,6 +6964,7 @@ impl ProfileApi {
 					Some(query.as_slice())
 				},
 				None,
+				false,
 			)
 			.await
 	}
@@ -6909,6 +6995,7 @@ impl ProfileApi {
 					Some(query.as_slice())
 				},
 				None,
+				false,
 			)
 			.await
 	}
@@ -6918,7 +7005,9 @@ impl ProfileApi {
 		&self,
 		body: Option<&ProfileEditBody>,
 	) -> Result<ProfileEditResponse, LolzteamError> {
-		self.http.request_json("PUT", "/me", None, body).await
+		self.http
+			.request_json("PUT", "/me", None, body, false)
+			.await
 	}
 }
 
@@ -6936,12 +7025,14 @@ impl ProxyApi {
 		&self,
 		body: Option<&ProxyDeleteBody>,
 	) -> Result<ProxyDeleteResponse, LolzteamError> {
-		self.http.request_json("DELETE", "/proxy", None, body).await
+		self.http
+			.request_json("DELETE", "/proxy", None, body, false)
+			.await
 	}
 
 	/// Get Proxy
 	pub async fn get(&self) -> Result<ProxyGetResponse, LolzteamError> {
-		self.http.request("GET", "/proxy", None, None).await
+		self.http.request("GET", "/proxy", None, None, false).await
 	}
 
 	/// Add Proxy
@@ -6949,7 +7040,9 @@ impl ProxyApi {
 		&self,
 		body: Option<&ProxyAddBody>,
 	) -> Result<ProxyAddResponse, LolzteamError> {
-		self.http.request_json("POST", "/proxy", None, body).await
+		self.http
+			.request_json("POST", "/proxy", None, body, false)
+			.await
 	}
 }
 
@@ -6968,7 +7061,7 @@ impl PublishingApi {
 		body: Option<&PublishingAddBody>,
 	) -> Result<PublishingAddResponse, LolzteamError> {
 		self.http
-			.request_json("POST", "/item/add", None, body)
+			.request_json("POST", "/item/add", None, body, false)
 			.await
 	}
 
@@ -6978,7 +7071,7 @@ impl PublishingApi {
 		body: Option<&PublishingFastSellBody>,
 	) -> Result<PublishingFastSellResponse, LolzteamError> {
 		self.http
-			.request_json("POST", "/item/fast-sell", None, body)
+			.request_json("POST", "/item/fast-sell", None, body, false)
 			.await
 	}
 
@@ -6989,7 +7082,9 @@ impl PublishingApi {
 		body: Option<&PublishingExternalBody>,
 	) -> Result<PublishingExternalResponse, LolzteamError> {
 		let path = format!("/{item_id}/external-account");
-		self.http.request_json("POST", &path, None, body).await
+		self.http
+			.request_json("POST", &path, None, body, false)
+			.await
 	}
 
 	/// Check Account Details
@@ -6999,7 +7094,9 @@ impl PublishingApi {
 		body: Option<&PublishingCheckBody>,
 	) -> Result<PublishingCheckResponse, LolzteamError> {
 		let path = format!("/{item_id}/goods/check");
-		self.http.request_json("POST", &path, None, body).await
+		self.http
+			.request_json("POST", &path, None, body, false)
+			.await
 	}
 }
 
@@ -7015,7 +7112,7 @@ impl PurchasingApi {
 	/// Check Account
 	pub async fn check(&self, item_id: i64) -> Result<PurchasingCheckResponse, LolzteamError> {
 		let path = format!("/{item_id}/check-account");
-		self.http.request("POST", &path, None, None).await
+		self.http.request("POST", &path, None, None, false).await
 	}
 
 	/// Confirm Buy
@@ -7025,7 +7122,9 @@ impl PurchasingApi {
 		body: Option<&PurchasingConfirmBody>,
 	) -> Result<PurchasingConfirmResponse, LolzteamError> {
 		let path = format!("/{item_id}/confirm-buy");
-		self.http.request_json("POST", &path, None, body).await
+		self.http
+			.request_json("POST", &path, None, body, false)
+			.await
 	}
 
 	/// Cancel Discount Request
@@ -7034,7 +7133,7 @@ impl PurchasingApi {
 		item_id: i64,
 	) -> Result<PurchasingDiscountCancelResponse, LolzteamError> {
 		let path = format!("/{item_id}/discount");
-		self.http.request("DELETE", &path, None, None).await
+		self.http.request("DELETE", &path, None, None, false).await
 	}
 
 	/// Discount Request
@@ -7044,7 +7143,9 @@ impl PurchasingApi {
 		body: Option<&PurchasingDiscountRequestBody>,
 	) -> Result<PurchasingDiscountRequestResponse, LolzteamError> {
 		let path = format!("/{item_id}/discount");
-		self.http.request_json("POST", &path, None, body).await
+		self.http
+			.request_json("POST", &path, None, body, false)
+			.await
 	}
 
 	/// Fast Buy Account
@@ -7054,7 +7155,9 @@ impl PurchasingApi {
 		body: Option<&PurchasingFastBuyBody>,
 	) -> Result<PurchasingFastBuyResponse, LolzteamError> {
 		let path = format!("/{item_id}/fast-buy");
-		self.http.request_json("POST", &path, None, body).await
+		self.http
+			.request_json("POST", &path, None, body, false)
+			.await
 	}
 }
 
@@ -7084,6 +7187,9 @@ impl MarketClient {
 			retry: RetryConfig::default(),
 			rate_limit: Some(RateLimitConfig {
 				requests_per_minute: 120,
+			}),
+			search_rate_limit: Some(RateLimitConfig {
+				requests_per_minute: 20,
 			}),
 		};
 		Self::with_config(config)

@@ -11,6 +11,7 @@ struct ApiConfig {
 	client_name: &'static str,
 	default_base_url: &'static str,
 	default_rate_limit: u32,
+	default_search_rate_limit: Option<u32>,
 }
 
 fn main() {
@@ -21,6 +22,7 @@ fn main() {
 			client_name: "ForumClient",
 			default_base_url: "https://prod-api.lolz.live",
 			default_rate_limit: 300,
+			default_search_rate_limit: None,
 		},
 		ApiConfig {
 			schema_path: "schemas/market.json",
@@ -28,6 +30,7 @@ fn main() {
 			client_name: "MarketClient",
 			default_base_url: "https://prod-api.lzt.market",
 			default_rate_limit: 120,
+			default_search_rate_limit: Some(20),
 		},
 	];
 
@@ -57,6 +60,7 @@ fn main() {
 			api.client_name,
 			api.default_base_url,
 			api.default_rate_limit,
+			api.default_search_rate_limit,
 			api.output_dir,
 		);
 		emitter::emit_mod(&parsed, api.output_dir);

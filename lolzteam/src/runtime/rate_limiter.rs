@@ -59,3 +59,47 @@ impl RateLimiter {
 		}
 	}
 }
+
+#[cfg(test)]
+mod tests {
+	use super::*;
+
+	#[tokio::test]
+	async fn allows_burst_within_limit() {
+		let limiter = RateLimiter::new(60); // 1 per sec, bucket starts full with 60
+		let start = Instant::now();
+		for _ in 0..5 {
+			limiter.acquire().await;
+		}
+		let elapsed = start.elapsed();
+		assert!(
+			elapsed.as_millis() < 100,
+			"burst should be near-instant, took {}ms",
+			elapsed.as_millis()
+		);
+	}
+
+	#[tokio::test]
+	async fn delays_when_tokens_exhausted() {
+		let limiter = RateLimiter::new(60); // 1 per sec
+									  // Drain all 60 tokens
+		for _ in 0..60 {
+			limiter.acquire().await;
+		}
+		let start = Instant::now();
+		limiter.acquire().await;
+		let elapsed = start.elapsed();
+		assert!(
+			elapsed.as_millis() >= 500,
+			"expected delay after exhaustion, got {}ms",
+			elapsed.as_millis()
+		);
+	}
+
+	#[test]
+	fn new_sets_correct_rate() {
+		let limiter = RateLimiter::new(120);
+		assert!((limiter.tokens_per_sec - 2.0).abs() < f64::EPSILON);
+		assert!((limiter.max_tokens - 120.0).abs() < f64::EPSILON);
+	}
+}
