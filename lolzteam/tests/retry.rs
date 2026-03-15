@@ -1,9 +1,7 @@
 use std::sync::atomic::{AtomicUsize, Ordering};
 use std::sync::Arc;
 
-use lolzteam::runtime::{
-	ClientConfig, HttpClient, LolzteamError, RetryConfig, RetryInfo,
-};
+use lolzteam::runtime::{ClientConfig, HttpClient, LolzteamError, RetryConfig, RetryInfo};
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
 use tokio::net::TcpListener;
 // ---------------------------------------------------------------------------
@@ -35,10 +33,7 @@ fn fast_retry_client(base_url: &str) -> HttpClient {
 	.unwrap()
 }
 
-fn client_with_on_retry(
-	base_url: &str,
-	cb: Arc<dyn Fn(RetryInfo) + Send + Sync>,
-) -> HttpClient {
+fn client_with_on_retry(base_url: &str, cb: Arc<dyn Fn(RetryInfo) + Send + Sync>) -> HttpClient {
 	HttpClient::new(ClientConfig {
 		token: "test".to_string(),
 		base_url: base_url.to_string(),
@@ -310,8 +305,7 @@ async fn retry_exhausted_wraps_last_error() {
 #[tokio::test]
 async fn on_retry_callback_invoked() {
 	let (listener, base_url) = mock_listener().await;
-	let infos: Arc<std::sync::Mutex<Vec<RetryInfo>>> =
-		Arc::new(std::sync::Mutex::new(Vec::new()));
+	let infos: Arc<std::sync::Mutex<Vec<RetryInfo>>> = Arc::new(std::sync::Mutex::new(Vec::new()));
 	let infos_clone = Arc::clone(&infos);
 
 	let cb: Arc<dyn Fn(RetryInfo) + Send + Sync> = Arc::new(move |info| {
