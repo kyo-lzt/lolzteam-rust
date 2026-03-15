@@ -249,10 +249,7 @@ pub fn component_ref_type(schema: &Value) -> Option<String> {
 /// Check if schema is `type: array` with items that have a `$ref` to a component schema.
 fn is_array_with_component_ref(schema: &Value) -> bool {
 	schema.get("type").and_then(|v| v.as_str()) == Some("array")
-		&& schema
-			.get("items")
-			.and_then(component_ref_type)
-			.is_some()
+		&& schema.get("items").and_then(component_ref_type).is_some()
 }
 
 /// Convert a component schema name to a PascalCase Rust type name.
