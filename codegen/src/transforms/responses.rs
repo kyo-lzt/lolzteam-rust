@@ -251,7 +251,7 @@ fn is_array_with_component_ref(schema: &Value) -> bool {
 	schema.get("type").and_then(|v| v.as_str()) == Some("array")
 		&& schema
 			.get("items")
-			.and_then(|items| component_ref_type(items))
+			.and_then(component_ref_type)
 			.is_some()
 }
 
