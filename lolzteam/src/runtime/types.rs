@@ -38,6 +38,22 @@ pub struct ClientConfig {
 	pub on_retry: Option<Arc<dyn Fn(RetryInfo) + Send + Sync>>,
 }
 
+impl ClientConfig {
+	/// Create a config with sensible defaults. Only `token` is required.
+	pub fn new(token: impl Into<String>) -> Self {
+		Self {
+			token: token.into(),
+			base_url: String::new(),
+			proxy: None,
+			retry: Some(RetryConfig::default()),
+			rate_limit: None,
+			search_rate_limit: None,
+			timeout_ms: None,
+			on_retry: None,
+		}
+	}
+}
+
 impl std::fmt::Debug for ClientConfig {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
 		f.debug_struct("ClientConfig")
