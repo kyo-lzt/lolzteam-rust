@@ -774,7 +774,7 @@ pub fn emit_client(
 	writeln!(out, "\t\t\ttoken: token.into(),").unwrap();
 	writeln!(out, "\t\t\tbase_url: \"{default_base_url}\".to_string(),").unwrap();
 	writeln!(out, "\t\t\tproxy: None,").unwrap();
-	writeln!(out, "\t\t\tretry: RetryConfig::default(),").unwrap();
+	writeln!(out, "\t\t\tretry: Some(RetryConfig::default()),").unwrap();
 	writeln!(
 		out,
 		"\t\t\trate_limit: Some(RateLimitConfig {{ requests_per_minute: {default_rate_limit} }}),"
@@ -792,6 +792,8 @@ pub fn emit_client(
 			writeln!(out, "\t\t\tsearch_rate_limit: None,").unwrap();
 		}
 	}
+	writeln!(out, "\t\t\ttimeout_ms: None,").unwrap();
+	writeln!(out, "\t\t\ton_retry: None,").unwrap();
 	writeln!(out, "\t\t}};").unwrap();
 	writeln!(out, "\t\tSelf::with_config(config)").unwrap();
 	writeln!(out, "\t}}").unwrap();

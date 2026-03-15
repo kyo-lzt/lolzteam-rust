@@ -29,13 +29,15 @@ fn test_client(base_url: &str, token: &str) -> HttpClient {
 		token: token.to_string(),
 		base_url: base_url.to_string(),
 		proxy: None,
-		retry: RetryConfig {
+		retry: Some(RetryConfig {
 			max_retries: 3,
 			base_delay_ms: 10,
 			max_delay_ms: 50,
-		},
+		}),
 		rate_limit: None,
 		search_rate_limit: None,
+		timeout_ms: None,
+		on_retry: None,
 	};
 	HttpClient::new(config).unwrap()
 }
@@ -110,9 +112,11 @@ fn client_config_minimal() {
 		token: "test-token".to_string(),
 		base_url: "https://example.com".to_string(),
 		proxy: None,
-		retry: RetryConfig::default(),
+		retry: Some(RetryConfig::default()),
 		rate_limit: None,
 		search_rate_limit: None,
+		timeout_ms: None,
+		on_retry: None,
 	};
 	assert_eq!(cfg.token, "test-token");
 	assert_eq!(cfg.base_url, "https://example.com");
@@ -128,9 +132,11 @@ fn client_config_with_proxy() {
 		proxy: Some(ProxyConfig {
 			url: "socks5://127.0.0.1:1080".to_string(),
 		}),
-		retry: RetryConfig::default(),
+		retry: Some(RetryConfig::default()),
 		rate_limit: None,
 		search_rate_limit: None,
+		timeout_ms: None,
+		on_retry: None,
 	};
 	let proxy = cfg.proxy.as_ref().unwrap();
 	assert_eq!(proxy.url, "socks5://127.0.0.1:1080");
@@ -142,11 +148,13 @@ fn client_config_with_rate_limit() {
 		token: "t".to_string(),
 		base_url: "https://example.com".to_string(),
 		proxy: None,
-		retry: RetryConfig::default(),
+		retry: Some(RetryConfig::default()),
 		rate_limit: Some(RateLimitConfig {
 			requests_per_minute: 60,
 		}),
 		search_rate_limit: None,
+		timeout_ms: None,
+		on_retry: None,
 	};
 	let rl = cfg.rate_limit.as_ref().unwrap();
 	assert_eq!(rl.requests_per_minute, 60);
@@ -160,11 +168,13 @@ fn config_types_are_clone_and_debug() {
 		proxy: Some(ProxyConfig {
 			url: "http://proxy".to_string(),
 		}),
-		retry: RetryConfig::default(),
+		retry: Some(RetryConfig::default()),
 		rate_limit: Some(RateLimitConfig {
 			requests_per_minute: 100,
 		}),
 		search_rate_limit: None,
+		timeout_ms: None,
+		on_retry: None,
 	};
 	let cloned = cfg.clone();
 	assert_eq!(format!("{:?}", cloned), format!("{:?}", cfg));
@@ -207,8 +217,8 @@ fn http_error_server_errors() {
 #[test]
 fn http_error_retryable_statuses() {
 	// 429, 502, 503 are retryable; 500, 504, 400 are not
-	let retryable = [429, 502, 503];
-	let not_retryable = [400, 401, 403, 404, 500, 504];
+	let retryable = [429, 502, 503, 504];
+	let not_retryable = [400, 401, 403, 404, 500];
 
 	for status in retryable {
 		let err = HttpError {
@@ -291,15 +301,17 @@ fn forum_client_with_config_succeeds() {
 		token: "test-token".to_string(),
 		base_url: "https://prod-api.lolz.live".to_string(),
 		proxy: None,
-		retry: RetryConfig {
+		retry: Some(RetryConfig {
 			max_retries: 5,
 			base_delay_ms: 2000,
 			max_delay_ms: 60000,
-		},
+		}),
 		rate_limit: Some(RateLimitConfig {
 			requests_per_minute: 300,
 		}),
 		search_rate_limit: None,
+		timeout_ms: None,
+		on_retry: None,
 	};
 	let client = ForumClient::with_config(config);
 	assert!(client.is_ok());
@@ -354,15 +366,17 @@ fn market_client_with_config_succeeds() {
 		token: "test-token".to_string(),
 		base_url: "https://prod-api.lzt.market".to_string(),
 		proxy: None,
-		retry: RetryConfig {
+		retry: Some(RetryConfig {
 			max_retries: 2,
 			base_delay_ms: 500,
 			max_delay_ms: 15000,
-		},
+		}),
 		rate_limit: Some(RateLimitConfig {
 			requests_per_minute: 120,
 		}),
 		search_rate_limit: None,
+		timeout_ms: None,
+		on_retry: None,
 	};
 	let client = MarketClient::with_config(config);
 	assert!(client.is_ok());
@@ -407,9 +421,11 @@ fn proxy_rejects_unsupported_scheme() {
 		proxy: Some(ProxyConfig {
 			url: "ftp://proxy:8080".to_string(),
 		}),
-		retry: RetryConfig::default(),
+		retry: Some(RetryConfig::default()),
 		rate_limit: None,
 		search_rate_limit: None,
+		timeout_ms: None,
+		on_retry: None,
 	};
 	let result = ForumClient::with_config(cfg);
 	assert!(result.is_err());
@@ -424,9 +440,11 @@ fn proxy_rejects_invalid_url() {
 		proxy: Some(ProxyConfig {
 			url: "not a url".to_string(),
 		}),
-		retry: RetryConfig::default(),
+		retry: Some(RetryConfig::default()),
 		rate_limit: None,
 		search_rate_limit: None,
+		timeout_ms: None,
+		on_retry: None,
 	};
 	let result = ForumClient::with_config(cfg);
 	assert!(result.is_err());
@@ -441,9 +459,11 @@ fn proxy_rejects_no_host() {
 		proxy: Some(ProxyConfig {
 			url: "http://".to_string(),
 		}),
-		retry: RetryConfig::default(),
+		retry: Some(RetryConfig::default()),
 		rate_limit: None,
 		search_rate_limit: None,
+		timeout_ms: None,
+		on_retry: None,
 	};
 	let result = ForumClient::with_config(cfg);
 	assert!(result.is_err());
@@ -458,9 +478,11 @@ fn proxy_accepts_valid_http() {
 		proxy: Some(ProxyConfig {
 			url: "http://proxy:8080".to_string(),
 		}),
-		retry: RetryConfig::default(),
+		retry: Some(RetryConfig::default()),
 		rate_limit: None,
 		search_rate_limit: None,
+		timeout_ms: None,
+		on_retry: None,
 	};
 	let result = ForumClient::with_config(cfg);
 	assert!(result.is_ok());
@@ -474,9 +496,11 @@ fn proxy_accepts_valid_socks5() {
 		proxy: Some(ProxyConfig {
 			url: "socks5://127.0.0.1:1080".to_string(),
 		}),
-		retry: RetryConfig::default(),
+		retry: Some(RetryConfig::default()),
 		rate_limit: None,
 		search_rate_limit: None,
+		timeout_ms: None,
+		on_retry: None,
 	};
 	let result = ForumClient::with_config(cfg);
 	assert!(result.is_ok());

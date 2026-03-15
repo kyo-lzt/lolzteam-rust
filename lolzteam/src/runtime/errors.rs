@@ -80,10 +80,10 @@ impl HttpError {
 		self.retry_after
 	}
 
-	/// Returns `true` if this error should be retried (429, 502, 503).
+	/// Returns `true` if this error should be retried (429, 502, 503, 504).
 	#[must_use]
 	pub fn is_retryable(&self) -> bool {
-		self.status == 429 || self.status == 502 || self.status == 503
+		self.status == 429 || self.status == 502 || self.status == 503 || self.status == 504
 	}
 }
 
@@ -99,6 +99,14 @@ impl std::error::Error for HttpError {}
 #[derive(Debug, thiserror::Error)]
 #[error("network error: {0}")]
 pub struct NetworkError(#[from] pub reqwest::Error);
+
+impl NetworkError {
+	/// Returns `true` if the underlying error is transient (timeout or connection failure).
+	#[must_use]
+	pub fn is_transient(&self) -> bool {
+		self.0.is_timeout() || self.0.is_connect()
+	}
+}
 
 /// A configuration error (e.g. invalid proxy URL).
 #[derive(Debug, thiserror::Error)]

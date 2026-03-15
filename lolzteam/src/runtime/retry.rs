@@ -1,13 +1,22 @@
 use std::future::Future;
+use std::sync::Arc;
 use std::time::Duration;
 
+use crate::runtime::types::RetryInfo;
 use crate::runtime::{LolzteamError, RetryConfig};
 
 /// Execute an async closure with retry on transient errors.
 ///
-/// Retries on 429 (rate limit) and 502/503 (server error) with exponential
-/// backoff and jitter. Respects `Retry-After` header on 429 responses.
-pub async fn with_retry<T, F, Fut>(config: &RetryConfig, f: F) -> Result<T, LolzteamError>
+/// Retries on 429 (rate limit), 502/503/504 (server error), and transient
+/// network errors (timeout, connection failure) with exponential backoff
+/// and jitter. Respects `Retry-After` header on 429 responses.
+pub async fn with_retry<T, F, Fut>(
+	config: &RetryConfig,
+	on_retry: Option<&Arc<dyn Fn(RetryInfo) + Send + Sync>>,
+	method: &str,
+	path: &str,
+	f: F,
+) -> Result<T, LolzteamError>
 where
 	F: Fn() -> Fut,
 	Fut: Future<Output = Result<T, LolzteamError>>,
@@ -20,7 +29,8 @@ where
 			Err(err) => {
 				let should_retry = match &err {
 					LolzteamError::Http(http_err) => http_err.is_retryable(),
-					LolzteamError::Network(_) | LolzteamError::Config(_) => false,
+					LolzteamError::Network(net_err) => net_err.is_transient(),
+					LolzteamError::Config(_) => false,
 				};
 
 				if !should_retry || attempt >= config.max_retries {
@@ -37,6 +47,15 @@ where
 					}
 					_ => compute_backoff(config, attempt),
 				};
+
+				if let Some(cb) = on_retry {
+					cb(RetryInfo {
+						attempt,
+						delay_ms: delay.as_millis() as u64,
+						method: method.to_string(),
+						path: path.to_string(),
+					});
+				}
 
 				tokio::time::sleep(delay).await;
 				attempt += 1;

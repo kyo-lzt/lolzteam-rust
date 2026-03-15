@@ -7184,13 +7184,15 @@ impl MarketClient {
 			token: token.into(),
 			base_url: "https://prod-api.lzt.market".to_string(),
 			proxy: None,
-			retry: RetryConfig::default(),
+			retry: Some(RetryConfig::default()),
 			rate_limit: Some(RateLimitConfig {
 				requests_per_minute: 120,
 			}),
 			search_rate_limit: Some(RateLimitConfig {
 				requests_per_minute: 20,
 			}),
+			timeout_ms: None,
+			on_retry: None,
 		};
 		Self::with_config(config)
 	}

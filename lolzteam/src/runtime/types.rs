@@ -1,3 +1,5 @@
+use std::sync::Arc;
+
 use serde::Serialize;
 
 /// A single part of a multipart form body.
@@ -14,15 +16,41 @@ pub enum MultipartPart {
 	},
 }
 
-/// Top-level client configuration.
+/// Information passed to the on-retry callback.
 #[derive(Debug, Clone)]
+pub struct RetryInfo {
+	pub attempt: u32,
+	pub delay_ms: u64,
+	pub method: String,
+	pub path: String,
+}
+
+/// Top-level client configuration.
+#[derive(Clone)]
 pub struct ClientConfig {
 	pub token: String,
 	pub base_url: String,
 	pub proxy: Option<ProxyConfig>,
-	pub retry: RetryConfig,
+	pub retry: Option<RetryConfig>,
 	pub rate_limit: Option<RateLimitConfig>,
 	pub search_rate_limit: Option<RateLimitConfig>,
+	pub timeout_ms: Option<u64>,
+	pub on_retry: Option<Arc<dyn Fn(RetryInfo) + Send + Sync>>,
+}
+
+impl std::fmt::Debug for ClientConfig {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		f.debug_struct("ClientConfig")
+			.field("token", &"[redacted]")
+			.field("base_url", &self.base_url)
+			.field("proxy", &self.proxy)
+			.field("retry", &self.retry)
+			.field("rate_limit", &self.rate_limit)
+			.field("search_rate_limit", &self.search_rate_limit)
+			.field("timeout_ms", &self.timeout_ms)
+			.field("on_retry", &self.on_retry.as_ref().map(|_| ".."))
+			.finish()
+	}
 }
 
 /// Proxy configuration — pass-through to reqwest.

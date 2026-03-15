@@ -1,10 +1,12 @@
+use std::sync::Arc;
+
 use serde::de::DeserializeOwned;
 use serde::Serialize;
 
 use crate::runtime::errors::{ConfigError, HttpError, NetworkError};
 use crate::runtime::rate_limiter::RateLimiter;
 use crate::runtime::retry::with_retry;
-use crate::runtime::types::{ClientConfig, MultipartPart, ParamValue, RetryConfig};
+use crate::runtime::types::{ClientConfig, MultipartPart, ParamValue, RetryConfig, RetryInfo};
 use crate::runtime::LolzteamError;
 
 /// HTTP client for the Lolzteam API.
@@ -17,7 +19,8 @@ pub struct HttpClient {
 	token: String,
 	rate_limiter: Option<RateLimiter>,
 	search_rate_limiter: Option<RateLimiter>,
-	retry_config: RetryConfig,
+	retry_config: Option<RetryConfig>,
+	on_retry: Option<Arc<dyn Fn(RetryInfo) + Send + Sync>>,
 }
 
 impl HttpClient {
@@ -46,6 +49,10 @@ impl HttpClient {
 			builder = builder.proxy(proxy);
 		}
 
+		if let Some(timeout_ms) = config.timeout_ms {
+			builder = builder.timeout(std::time::Duration::from_millis(timeout_ms));
+		}
+
 		let client = builder.build().map_err(NetworkError)?;
 
 		let rate_limiter = config
@@ -63,6 +70,7 @@ impl HttpClient {
 			rate_limiter,
 			search_rate_limiter,
 			retry_config: config.retry,
+			on_retry: config.on_retry,
 		})
 	}
 
@@ -102,10 +110,18 @@ impl HttpClient {
 			.parse::<reqwest::Method>()
 			.unwrap_or(reqwest::Method::GET);
 
-		with_retry(&self.retry_config, || {
-			self.execute_request::<T>(http_method.clone(), &url, query, body)
-		})
-		.await
+		match &self.retry_config {
+			Some(cfg) => {
+				with_retry(cfg, self.on_retry.as_ref(), method, path, || {
+					self.execute_request::<T>(http_method.clone(), &url, query, body)
+				})
+				.await
+			}
+			None => {
+				self.execute_request::<T>(http_method, &url, query, body)
+					.await
+			}
+		}
 	}
 
 	/// Send a request with JSON body.
@@ -143,10 +159,18 @@ impl HttpClient {
 			.parse::<reqwest::Method>()
 			.unwrap_or(reqwest::Method::POST);
 
-		with_retry(&self.retry_config, || {
-			self.execute_json_request::<T, B>(http_method.clone(), &url, query, body)
-		})
-		.await
+		match &self.retry_config {
+			Some(cfg) => {
+				with_retry(cfg, self.on_retry.as_ref(), method, path, || {
+					self.execute_json_request::<T, B>(http_method.clone(), &url, query, body)
+				})
+				.await
+			}
+			None => {
+				self.execute_json_request::<T, B>(http_method, &url, query, body)
+					.await
+			}
+		}
 	}
 
 	/// Send a request expecting a text response (not JSON).
@@ -182,10 +206,15 @@ impl HttpClient {
 			.parse::<reqwest::Method>()
 			.unwrap_or(reqwest::Method::GET);
 
-		with_retry(&self.retry_config, || {
-			self.execute_text_request(http_method.clone(), &url, query)
-		})
-		.await
+		match &self.retry_config {
+			Some(cfg) => {
+				with_retry(cfg, self.on_retry.as_ref(), method, path, || {
+					self.execute_text_request(http_method.clone(), &url, query)
+				})
+				.await
+			}
+			None => self.execute_text_request(http_method, &url, query).await,
+		}
 	}
 
 	/// Send an API request with multipart/form-data body.
@@ -221,10 +250,18 @@ impl HttpClient {
 			.parse::<reqwest::Method>()
 			.unwrap_or(reqwest::Method::POST);
 
-		with_retry(&self.retry_config, || {
-			self.execute_multipart_request::<T>(http_method.clone(), &url, &parts)
-		})
-		.await
+		match &self.retry_config {
+			Some(cfg) => {
+				with_retry(cfg, self.on_retry.as_ref(), method, path, || {
+					self.execute_multipart_request::<T>(http_method.clone(), &url, &parts)
+				})
+				.await
+			}
+			None => {
+				self.execute_multipart_request::<T>(http_method, &url, &parts)
+					.await
+			}
+		}
 	}
 
 	/// Execute a single multipart HTTP request (no retry, no rate limit).

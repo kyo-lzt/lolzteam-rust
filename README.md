@@ -82,12 +82,30 @@ Failed requests are retried automatically for transient errors. The delay uses e
 | Status | Retried | Behavior |
 |--------|---------|----------|
 | 429 | Yes | Uses `Retry-After` header if present |
-| 502, 503 | Yes | Exponential backoff with jitter |
-| 401, 403 | No | Returned immediately |
-| 404 | No | Returned immediately |
-| Other | No | Returned immediately |
+| 502, 503, 504 | Yes | Exponential backoff with jitter |
+| Network errors | Yes | Timeout and connection errors |
+| 401, 403 | No | Thrown immediately |
+| 404 | No | Thrown immediately |
 
 Delay formula: `min(base_delay * 2^attempt + random(0, base_delay), max_delay)`
+
+```rust
+// Disable retry
+let client = MarketClient::with_config(ClientConfig {
+    token: "...".to_string(),
+    retry: None,
+    ..Default::default()
+})?;
+
+// on_retry callback
+let client = MarketClient::with_config(ClientConfig {
+    token: "...".to_string(),
+    on_retry: Some(Arc::new(|info| {
+        println!("Retry #{}", info.attempt);
+    })),
+    ..Default::default()
+})?;
+```
 
 ## Proxy
 
@@ -151,6 +169,15 @@ The built-in rate limiter uses a token bucket algorithm. Thread-safe via `tokio:
 |--------|---------------|
 | Forum  | 300 req/min   |
 | Market | 120 req/min   |
+| Market (search) | 20 req/min |
+
+```rust
+let client = MarketClient::with_config(ClientConfig {
+    token: "...".to_string(),
+    search_rate_limit: Some(RateLimitConfig { requests_per_minute: 30 }),
+    ..Default::default()
+})?;
+```
 
 ## Code Generation
 

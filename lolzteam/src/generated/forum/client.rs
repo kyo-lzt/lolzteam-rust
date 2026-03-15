@@ -2664,11 +2664,13 @@ impl ForumClient {
 			token: token.into(),
 			base_url: "https://prod-api.lolz.live".to_string(),
 			proxy: None,
-			retry: RetryConfig::default(),
+			retry: Some(RetryConfig::default()),
 			rate_limit: Some(RateLimitConfig {
 				requests_per_minute: 300,
 			}),
 			search_rate_limit: None,
+			timeout_ms: None,
+			on_retry: None,
 		};
 		Self::with_config(config)
 	}
