@@ -558,7 +558,10 @@ async fn http_mock_successful_request() {
 		write_response(&mut stream, 200, "", r#"{"ok":true,"value":42}"#).await;
 	});
 
-	let result: serde_json::Value = client.request("GET", "/test", None, None, false).await.unwrap();
+	let result: serde_json::Value = client
+		.request("GET", "/test", None, None, false)
+		.await
+		.unwrap();
 	assert_eq!(result["ok"], true);
 	assert_eq!(result["value"], 42);
 }
@@ -719,7 +722,10 @@ async fn http_mock_path_params() {
 
 	// Simulate what threads().get(123, None) does: builds path "/threads/123"
 	let path = format!("/threads/{}", 123);
-	let _: serde_json::Value = client.request("GET", &path, None, None, false).await.unwrap();
+	let _: serde_json::Value = client
+		.request("GET", &path, None, None, false)
+		.await
+		.unwrap();
 	let req = handle.await.unwrap();
 	assert!(
 		req.contains("GET /threads/123"),
