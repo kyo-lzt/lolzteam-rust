@@ -289,7 +289,9 @@ impl HttpClient {
 						file_part = file_part.file_name(fname.clone());
 					}
 					if let Some(mime) = mime_type {
-						file_part = file_part.mime_str(mime).map_err(NetworkError)?;
+						file_part = file_part
+						.mime_str(mime)
+						.map_err(|e| ConfigError(format!("invalid MIME type '{}': {}", mime, e)))?;
 					}
 					form = form.part(name.clone(), file_part);
 				}

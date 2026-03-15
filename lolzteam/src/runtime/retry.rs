@@ -30,11 +30,21 @@ where
 				let should_retry = match &err {
 					LolzteamError::Http(http_err) => http_err.is_retryable(),
 					LolzteamError::Network(net_err) => net_err.is_transient(),
-					LolzteamError::Config(_) => false,
+					LolzteamError::Config(_) | LolzteamError::RetryExhausted { .. } => false,
 				};
 
-				if !should_retry || attempt >= config.max_retries {
+				if !should_retry {
 					return Err(err);
+				}
+				if attempt >= config.max_retries {
+					return if attempt > 0 {
+						Err(LolzteamError::RetryExhausted {
+							attempts: attempt + 1,
+							last_error: Box::new(err),
+						})
+					} else {
+						Err(err)
+					};
 				}
 
 				let delay = match &err {
@@ -134,5 +144,71 @@ mod tests {
 			let j = random_jitter(1000);
 			assert!(j < 1000);
 		}
+	}
+
+	#[tokio::test]
+	async fn retry_exhausted_after_max_retries() {
+		use crate::runtime::errors::HttpError;
+		use std::sync::atomic::{AtomicU32, Ordering};
+
+		let config = RetryConfig {
+			max_retries: 1,
+			base_delay_ms: 1, // minimal delay for fast test
+			max_delay_ms: 1,
+		};
+
+		let call_count = AtomicU32::new(0);
+
+		let result: Result<(), LolzteamError> = with_retry(&config, None, "GET", "/test", || {
+			call_count.fetch_add(1, Ordering::SeqCst);
+			async {
+				Err(LolzteamError::Http(HttpError {
+					status: 429,
+					body: serde_json::Value::Null,
+					retry_after: None,
+				}))
+			}
+		})
+		.await;
+
+		let err = result.unwrap_err();
+		match &err {
+			LolzteamError::RetryExhausted {
+				attempts,
+				last_error,
+			} => {
+				assert_eq!(*attempts, 2);
+				assert!(matches!(**last_error, LolzteamError::Http(_)));
+			}
+			other => panic!("expected RetryExhausted, got: {other}"),
+		}
+		assert_eq!(call_count.load(Ordering::SeqCst), 2);
+	}
+
+	#[tokio::test]
+	async fn no_retry_exhausted_when_max_retries_zero() {
+		use crate::runtime::errors::HttpError;
+
+		let config = RetryConfig {
+			max_retries: 0,
+			base_delay_ms: 1,
+			max_delay_ms: 1,
+		};
+
+		let result: Result<(), LolzteamError> = with_retry(&config, None, "GET", "/test", || async {
+			Err(LolzteamError::Http(HttpError {
+				status: 429,
+				body: serde_json::Value::Null,
+				retry_after: None,
+			}))
+		})
+		.await;
+
+		let err = result.unwrap_err();
+		// With max_retries=0, attempt=0 so attempt > 0 is false → original error returned
+		assert!(
+			matches!(err, LolzteamError::Http(_)),
+			"expected Http error, got: {err}"
+		);
 	}
 }

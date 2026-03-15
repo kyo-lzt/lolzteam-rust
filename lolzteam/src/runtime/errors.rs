@@ -14,6 +14,13 @@ pub enum LolzteamError {
 	/// Configuration error — invalid client configuration.
 	#[error("{0}")]
 	Config(#[from] ConfigError),
+
+	/// All retry attempts exhausted.
+	#[error("request failed after {attempts} attempts: {last_error}")]
+	RetryExhausted {
+		attempts: u32,
+		last_error: Box<LolzteamError>,
+	},
 }
 
 /// An HTTP error response from the API.
