@@ -38,18 +38,19 @@ pub fn emit_types(parsed: &ParseResult, root: &Value, output_dir: &str) {
 	}
 
 	// Check if any type uses StringOrInt (in params, body, responses, or component schemas)
-	let needs_string_or_int = parsed.groups.iter().any(|g| {
-		g.methods.iter().any(|m| {
-			let in_params = m
-				.path_params
-				.iter()
-				.chain(m.query_params.iter())
-				.chain(m.body_params.iter())
-				.any(|p| p.rust_type.contains("StringOrInt"));
-			let in_response = response_uses_string_or_int(&m.response_schema);
-			in_params || in_response
-		})
-	}) || component_schemas_use_string_or_int(&parsed.component_schemas, root);
+	let needs_string_or_int =
+		parsed.groups.iter().any(|g| {
+			g.methods.iter().any(|m| {
+				let in_params = m
+					.path_params
+					.iter()
+					.chain(m.query_params.iter())
+					.chain(m.body_params.iter())
+					.any(|p| p.rust_type.contains("StringOrInt"));
+				let in_response = response_uses_string_or_int(&m.response_schema);
+				in_params || in_response
+			})
+		}) || component_schemas_use_string_or_int(&parsed.component_schemas, root);
 	if needs_string_or_int {
 		writeln!(out, "use crate::runtime::StringOrInt;").unwrap();
 	}

@@ -81,11 +81,7 @@ pub fn parse_spec(root: &Value) -> ParseResult {
 		.get("components")
 		.and_then(|c| c.get("schemas"))
 		.and_then(|s| s.as_object())
-		.map(|obj| {
-			obj.iter()
-				.map(|(k, v)| (k.clone(), v.clone()))
-				.collect()
-		})
+		.map(|obj| obj.iter().map(|(k, v)| (k.clone(), v.clone())).collect())
 		.unwrap_or_default();
 
 	let paths = match root.get("paths").and_then(|v| v.as_object()) {
