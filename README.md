@@ -54,6 +54,7 @@ Market API groups: `auto_payments`, `batch`, `cart`, `category`, `custom_discoun
 ## Configuration
 
 ```rust
+use std::sync::Arc;
 use lolzteam::runtime::{ClientConfig, ProxyConfig, RetryConfig, RateLimitConfig};
 
 let config = ClientConfig {
@@ -62,14 +63,21 @@ let config = ClientConfig {
     proxy: Some(ProxyConfig {
         url: "socks5://127.0.0.1:1080".to_string(),
     }),
-    retry: RetryConfig {
+    retry: Some(RetryConfig {
         max_retries: 5,        // default: 3
         base_delay_ms: 1000,   // default: 1000
         max_delay_ms: 30_000,  // default: 30000
-    },
+    }),
     rate_limit: Some(RateLimitConfig {
         requests_per_minute: 200,  // default: 300 (Forum), 120 (Market)
     }),
+    search_rate_limit: Some(RateLimitConfig {
+        requests_per_minute: 30,   // default: 20 (Market search)
+    }),
+    timeout_ms: Some(10_000),      // request timeout in milliseconds
+    on_retry: Some(Arc::new(|info| {
+        println!("Retry #{} after {}ms", info.attempt, info.delay_ms);
+    })),
 };
 
 let forum = ForumClient::with_config(config)?;
