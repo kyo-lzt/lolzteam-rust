@@ -195,14 +195,15 @@ mod tests {
 			max_delay_ms: 1,
 		};
 
-		let result: Result<(), LolzteamError> = with_retry(&config, None, "GET", "/test", || async {
-			Err(LolzteamError::Http(HttpError {
-				status: 429,
-				body: serde_json::Value::Null,
-				retry_after: None,
-			}))
-		})
-		.await;
+		let result: Result<(), LolzteamError> =
+			with_retry(&config, None, "GET", "/test", || async {
+				Err(LolzteamError::Http(HttpError {
+					status: 429,
+					body: serde_json::Value::Null,
+					retry_after: None,
+				}))
+			})
+			.await;
 
 		let err = result.unwrap_err();
 		// With max_retries=0, attempt=0 so attempt > 0 is false → original error returned
