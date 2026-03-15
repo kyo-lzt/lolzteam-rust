@@ -54,7 +54,7 @@ fn main() {
 			parsed.groups.iter().map(|g| g.methods.len()).sum::<usize>()
 		);
 
-		emitter::emit_types(&parsed, api.output_dir);
+		emitter::emit_types(&parsed, &spec, api.output_dir);
 		emitter::emit_client(
 			&parsed,
 			api.client_name,

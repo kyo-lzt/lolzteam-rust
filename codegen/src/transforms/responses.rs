@@ -1,4 +1,4 @@
-use std::collections::HashSet;
+use std::collections::BTreeSet;
 
 use serde_json::Value;
 
@@ -119,7 +119,7 @@ fn extract_struct_from_schema(root: &Value, schema: &Value, prefix: &str) -> Res
 
 	let mut fields = Vec::new();
 	let mut nested_structs: Vec<(String, Vec<ResponseFieldDef>)> = Vec::new();
-	let mut seen_fields = HashSet::new();
+	let mut seen_fields = BTreeSet::new();
 
 	for (prop_name, prop_schema) in properties {
 		let field_name = sanitize_ident(prop_name);
@@ -129,11 +129,19 @@ fn extract_struct_from_schema(root: &Value, schema: &Value, prefix: &str) -> Res
 			continue;
 		}
 
-		let prop_schema = deref::deref(root, prop_schema);
 		let required = required_fields.contains(prop_name);
 
-		let rust_type =
-			resolve_response_field_type(root, prop_schema, prefix, prop_name, &mut nested_structs);
+		// Check for direct $ref to a component schema before deref-ing
+		let rust_type = if let Some(component_type) = component_ref_type(prop_schema) {
+			component_type
+		} else if is_array_with_component_ref(prop_schema) {
+			let items = prop_schema.get("items").unwrap();
+			let component_type = component_ref_type(items).unwrap();
+			format!("Vec<{component_type}>")
+		} else {
+			let prop_schema = deref::deref(root, prop_schema);
+			resolve_response_field_type(root, prop_schema, prefix, prop_name, &mut nested_structs)
+		};
 
 		fields.push(ResponseFieldDef {
 			name: field_name,
@@ -228,4 +236,34 @@ fn resolve_response_field_type(
 fn nested_struct_name(parent_prefix: &str, prop_name: &str) -> String {
 	use heck::ToUpperCamelCase;
 	format!("{parent_prefix}{}", prop_name.to_upper_camel_case())
+}
+
+/// If the schema is a `$ref` pointing to `#/components/schemas/*`, return the
+/// PascalCase Rust type name. Otherwise return `None`.
+pub fn component_ref_type(schema: &Value) -> Option<String> {
+	let ref_path = schema.get("$ref")?.as_str()?;
+	let name = ref_path.strip_prefix("#/components/schemas/")?;
+	Some(component_schema_to_rust_name(name))
+}
+
+/// Check if schema is `type: array` with items that have a `$ref` to a component schema.
+fn is_array_with_component_ref(schema: &Value) -> bool {
+	schema.get("type").and_then(|v| v.as_str()) == Some("array")
+		&& schema
+			.get("items")
+			.and_then(|items| component_ref_type(items))
+			.is_some()
+}
+
+/// Convert a component schema name to a PascalCase Rust type name.
+/// e.g. `Resp_SystemInfo` → `RespSystemInfo`, `ItemFromListModel` → `ItemFromListModel`
+pub fn component_schema_to_rust_name(name: &str) -> String {
+	use heck::ToUpperCamelCase;
+	// If the name contains underscores, convert to PascalCase.
+	// Otherwise keep as-is (already PascalCase).
+	if name.contains('_') {
+		name.to_upper_camel_case()
+	} else {
+		name.to_string()
+	}
 }

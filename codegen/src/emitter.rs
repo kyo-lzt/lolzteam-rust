@@ -1,14 +1,21 @@
+use std::collections::BTreeMap;
 use std::fmt::Write;
 use std::fs;
 use std::path::Path;
 
+use serde_json::Value;
+
 use crate::parser::{MethodDef, ParamDef, ParseResult};
 use crate::transforms::parameters::BodyEncoding;
-use crate::transforms::responses::{ResponseFieldDef, ResponseSchema};
-use crate::utils::naming::method_type_prefix;
+use crate::transforms::responses::{
+	component_ref_type, component_schema_to_rust_name, ResponseFieldDef, ResponseSchema,
+};
+use crate::transforms::types::schema_to_rust_type;
+use crate::utils::deref;
+use crate::utils::naming::{method_type_prefix, sanitize_ident};
 
 /// Emit the types file (params, bodies, response aliases) for all groups.
-pub fn emit_types(parsed: &ParseResult, output_dir: &str) {
+pub fn emit_types(parsed: &ParseResult, root: &Value, output_dir: &str) {
 	let dir = Path::new(output_dir);
 	fs::create_dir_all(dir).expect("failed to create output directory");
 
@@ -30,21 +37,36 @@ pub fn emit_types(parsed: &ParseResult, output_dir: &str) {
 		writeln!(out, "use std::collections::HashMap;").unwrap();
 	}
 
-	// Check if any type uses StringOrInt
+	// Check if any type uses StringOrInt (in params, body, responses, or component schemas)
 	let needs_string_or_int = parsed.groups.iter().any(|g| {
 		g.methods.iter().any(|m| {
-			m.path_params
+			let in_params = m
+				.path_params
 				.iter()
 				.chain(m.query_params.iter())
 				.chain(m.body_params.iter())
-				.any(|p| p.rust_type.contains("StringOrInt"))
+				.any(|p| p.rust_type.contains("StringOrInt"));
+			let in_response = response_uses_string_or_int(&m.response_schema);
+			in_params || in_response
 		})
-	});
+	}) || component_schemas_use_string_or_int(&parsed.component_schemas, root);
 	if needs_string_or_int {
 		writeln!(out, "use crate::runtime::StringOrInt;").unwrap();
 	}
 
 	writeln!(out).unwrap();
+
+	// Emit component schemas (shared types referenced by multiple responses)
+	let used_components = collect_used_component_schemas(parsed);
+	if !used_components.is_empty() {
+		writeln!(out, "// ── Component Schemas ──").unwrap();
+		writeln!(out).unwrap();
+		for name in &used_components {
+			if let Some(schema) = parsed.component_schemas.get(name.as_str()) {
+				emit_component_schema(&mut out, name, schema, root);
+			}
+		}
+	}
 
 	for group in &parsed.groups {
 		for method in &group.methods {
@@ -81,6 +103,223 @@ pub fn emit_types(parsed: &ParseResult, output_dir: &str) {
 	let path = dir.join("types.rs");
 	fs::write(&path, &out).expect("failed to write types.rs");
 	eprintln!("  wrote {}", path.display());
+}
+
+/// Check whether any response type references StringOrInt.
+fn response_uses_string_or_int(schema: &ResponseSchema) -> bool {
+	match schema {
+		ResponseSchema::Alias(ty) => ty.contains("StringOrInt"),
+		ResponseSchema::Struct {
+			fields,
+			nested_structs,
+		} => {
+			fields.iter().any(|f| f.rust_type.contains("StringOrInt"))
+				|| nested_structs
+					.iter()
+					.any(|(_, fs)| fs.iter().any(|f| f.rust_type.contains("StringOrInt")))
+		}
+	}
+}
+
+/// Check whether any used component schema resolves to StringOrInt.
+fn component_schemas_use_string_or_int(
+	component_schemas: &BTreeMap<String, Value>,
+	root: &Value,
+) -> bool {
+	component_schemas.values().any(|schema| {
+		let (ty, _) = schema_to_rust_type(root, schema);
+		ty.contains("StringOrInt")
+	})
+}
+
+/// Collect the set of component schema original names that are actually referenced by response types.
+/// Returns original schema names (e.g. `Resp_SystemInfo`), not Rust names.
+fn collect_used_component_schemas(parsed: &ParseResult) -> Vec<String> {
+	use std::collections::BTreeSet;
+
+	// Build a reverse map: Rust name → original name
+	let rust_to_original: BTreeMap<String, String> = parsed
+		.component_schemas
+		.keys()
+		.map(|name| (component_schema_to_rust_name(name), name.clone()))
+		.collect();
+
+	let mut used_rust_names = BTreeSet::new();
+	for group in &parsed.groups {
+		for method in &group.methods {
+			collect_component_refs_from_response(
+				&method.response_schema,
+				&rust_to_original,
+				&mut used_rust_names,
+			);
+		}
+	}
+
+	// Map back to original names, preserving order
+	used_rust_names
+		.into_iter()
+		.filter_map(|rust_name| rust_to_original.get(&rust_name).cloned())
+		.collect()
+}
+
+/// Walk a ResponseSchema and collect Rust type names that match component schemas.
+fn collect_component_refs_from_response(
+	schema: &ResponseSchema,
+	rust_to_original: &BTreeMap<String, String>,
+	used: &mut std::collections::BTreeSet<String>,
+) {
+	let fields_iter: Box<dyn Iterator<Item = &ResponseFieldDef>> = match schema {
+		ResponseSchema::Alias(_) => return,
+		ResponseSchema::Struct {
+			fields,
+			nested_structs,
+		} => Box::new(
+			fields
+				.iter()
+				.chain(nested_structs.iter().flat_map(|(_, fs)| fs.iter())),
+		),
+	};
+	for field in fields_iter {
+		let ty = &field.rust_type;
+		let inner = ty
+			.strip_prefix("Vec<")
+			.and_then(|s| s.strip_suffix('>'))
+			.unwrap_or(ty);
+		let inner = inner
+			.strip_prefix("Option<")
+			.and_then(|s| s.strip_suffix('>'))
+			.unwrap_or(inner);
+		if rust_to_original.contains_key(inner) {
+			used.insert(inner.to_string());
+		}
+	}
+}
+
+/// Emit a component schema as a Rust type (struct, type alias, etc).
+fn emit_component_schema(out: &mut String, name: &str, schema: &Value, root: &Value) {
+	let rust_name = component_schema_to_rust_name(name);
+
+	// Check for union types like ["string", "integer"] → use type alias to StringOrInt
+	if let Some(type_arr) = schema.get("type").and_then(|v| v.as_array()) {
+		let non_null: Vec<&str> = type_arr
+			.iter()
+			.filter_map(|v| v.as_str())
+			.filter(|s| *s != "null")
+			.collect();
+		let mut sorted = non_null.clone();
+		sorted.sort();
+		if sorted == ["integer", "string"] {
+			writeln!(out, "pub type {rust_name} = StringOrInt;").unwrap();
+			writeln!(out).unwrap();
+			return;
+		}
+		// Single primitive type
+		if non_null.len() == 1 {
+			let alias = match non_null[0] {
+				"integer" => "i64",
+				"string" => "String",
+				"number" => "f64",
+				"boolean" => "bool",
+				_ => "serde_json::Value",
+			};
+			writeln!(out, "pub type {rust_name} = {alias};").unwrap();
+			writeln!(out).unwrap();
+			return;
+		}
+	}
+
+	// Single type: integer → type alias
+	if let Some(type_str) = schema.get("type").and_then(|v| v.as_str()) {
+		match type_str {
+			"integer" => {
+				writeln!(out, "pub type {rust_name} = i64;").unwrap();
+				writeln!(out).unwrap();
+				return;
+			}
+			"string" => {
+				writeln!(out, "pub type {rust_name} = String;").unwrap();
+				writeln!(out).unwrap();
+				return;
+			}
+			"number" => {
+				writeln!(out, "pub type {rust_name} = f64;").unwrap();
+				writeln!(out).unwrap();
+				return;
+			}
+			"boolean" => {
+				writeln!(out, "pub type {rust_name} = bool;").unwrap();
+				writeln!(out).unwrap();
+				return;
+			}
+			"object" => {
+				// Fall through to struct generation below
+			}
+			_ => {
+				writeln!(out, "pub type {rust_name} = serde_json::Value;").unwrap();
+				writeln!(out).unwrap();
+				return;
+			}
+		}
+	}
+
+	// Object with properties → generate struct
+	let properties = match schema.get("properties").and_then(|v| v.as_object()) {
+		Some(p) if !p.is_empty() => p,
+		_ => {
+			// Object without properties or no type
+			writeln!(out, "pub type {rust_name} = serde_json::Value;").unwrap();
+			writeln!(out).unwrap();
+			return;
+		}
+	};
+
+	let required_fields: Vec<String> = schema
+		.get("required")
+		.and_then(|v| v.as_array())
+		.map(|arr| {
+			arr.iter()
+				.filter_map(|v| v.as_str().map(String::from))
+				.collect()
+		})
+		.unwrap_or_default();
+
+	writeln!(out, "#[derive(Debug, Clone, Deserialize)]").unwrap();
+	writeln!(out, "pub struct {rust_name} {{").unwrap();
+
+	for (prop_name, prop_schema) in properties {
+		let field_name = sanitize_ident(prop_name);
+		let required = required_fields.contains(prop_name);
+
+		// Resolve type — check for nested $ref first
+		let rust_type = if let Some(comp_type) = component_ref_type(prop_schema) {
+			comp_type
+		} else {
+			let resolved = deref::deref(root, prop_schema);
+			let (ty, _) = schema_to_rust_type(root, resolved);
+			ty
+		};
+
+		let needs_rename =
+			field_name != *prop_name || prop_name.contains('-') || field_name.starts_with("r#");
+
+		if required {
+			if needs_rename {
+				writeln!(out, "\t#[serde(rename = \"{prop_name}\")]").unwrap();
+			}
+			writeln!(out, "\tpub {field_name}: {rust_type},").unwrap();
+		} else {
+			if needs_rename {
+				writeln!(out, "\t#[serde(rename = \"{prop_name}\", default)]").unwrap();
+			} else {
+				writeln!(out, "\t#[serde(default)]").unwrap();
+			}
+			let rust_type = optionalize(&rust_type);
+			writeln!(out, "\tpub {field_name}: {rust_type},").unwrap();
+		}
+	}
+
+	writeln!(out, "}}").unwrap();
+	writeln!(out).unwrap();
 }
 
 /// Emit a params struct for query parameters.

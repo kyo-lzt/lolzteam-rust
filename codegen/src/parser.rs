@@ -11,6 +11,8 @@ use crate::utils::naming::{group_to_struct_name, split_operation_id};
 #[derive(Debug)]
 pub struct ParseResult {
 	pub groups: Vec<ParsedGroup>,
+	/// Component schemas from `#/components/schemas/*`, keyed by schema name.
+	pub component_schemas: BTreeMap<String, Value>,
 }
 
 /// A group of related API operations (e.g. all "threads" endpoints).
@@ -74,9 +76,26 @@ pub struct ParamDef {
 
 /// Parse an OpenAPI spec into grouped operations.
 pub fn parse_spec(root: &Value) -> ParseResult {
+	// Extract component schemas
+	let component_schemas: BTreeMap<String, Value> = root
+		.get("components")
+		.and_then(|c| c.get("schemas"))
+		.and_then(|s| s.as_object())
+		.map(|obj| {
+			obj.iter()
+				.map(|(k, v)| (k.clone(), v.clone()))
+				.collect()
+		})
+		.unwrap_or_default();
+
 	let paths = match root.get("paths").and_then(|v| v.as_object()) {
 		Some(p) => p,
-		None => return ParseResult { groups: Vec::new() },
+		None => {
+			return ParseResult {
+				groups: Vec::new(),
+				component_schemas,
+			}
+		}
 	};
 
 	// Collect all operations grouped by their prefix
@@ -135,5 +154,8 @@ pub fn parse_spec(root: &Value) -> ParseResult {
 		})
 		.collect();
 
-	ParseResult { groups }
+	ParseResult {
+		groups,
+		component_schemas,
+	}
 }

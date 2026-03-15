@@ -29,12 +29,40 @@ pub fn schema_to_rust_type(root: &Value, schema: &Value) -> (String, String) {
 		return ("serde_json::Value".to_string(), "String".to_string());
 	}
 
-	// Handle allOf — flatten
+	// Handle allOf — merge all schemas' properties
 	if let Some(all_of) = schema.get("allOf").and_then(|v| v.as_array()) {
 		if all_of.len() == 1 {
 			if let Some(inner) = all_of.first() {
 				return schema_to_rust_type(root, inner);
 			}
+		}
+		// Merge properties from all schemas
+		let mut merged = serde_json::Map::new();
+		let mut merged_required = Vec::new();
+		let mut has_props = false;
+		for item in all_of {
+			if let Some(props) = item.get("properties").and_then(|v| v.as_object()) {
+				for (k, v) in props {
+					merged.insert(k.clone(), v.clone());
+				}
+				has_props = true;
+			}
+			if let Some(req) = item.get("required").and_then(|v| v.as_array()) {
+				for r in req {
+					if let Some(s) = r.as_str() {
+						merged_required.push(Value::String(s.to_string()));
+					}
+				}
+			}
+		}
+		if has_props {
+			let mut merged_schema = serde_json::Map::new();
+			merged_schema.insert("type".to_string(), Value::String("object".to_string()));
+			merged_schema.insert("properties".to_string(), Value::Object(merged));
+			if !merged_required.is_empty() {
+				merged_schema.insert("required".to_string(), Value::Array(merged_required));
+			}
+			return schema_to_rust_type(root, &Value::Object(merged_schema));
 		}
 		return ("serde_json::Value".to_string(), "String".to_string());
 	}
