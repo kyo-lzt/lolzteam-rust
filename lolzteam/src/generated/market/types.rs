@@ -988,7 +988,6 @@ impl std::fmt::Display for Cancel {
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(into = "i64", try_from = "i64")]
 pub enum CategoryEg {
-	Neg1 = -1,
 	V0 = 0,
 	V1 = 1,
 }
@@ -1003,7 +1002,6 @@ impl TryFrom<i64> for CategoryEg {
 	type Error = String;
 	fn try_from(v: i64) -> Result<Self, Self::Error> {
 		match v {
-			-1 => Ok(Self::Neg1),
 			0 => Ok(Self::V0),
 			1 => Ok(Self::V1),
 			other => Err(format!("unknown CategoryEg value: {other}")),
@@ -1014,6 +1012,67 @@ impl TryFrom<i64> for CategoryEg {
 impl std::fmt::Display for CategoryEg {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
 		write!(f, "{}", *self as i64)
+	}
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(into = "i64", try_from = "i64")]
+pub enum CategoryEpicGamesEg {
+	Neg1 = -1,
+	V0 = 0,
+	V1 = 1,
+	V2 = 2,
+}
+
+impl From<CategoryEpicGamesEg> for i64 {
+	fn from(v: CategoryEpicGamesEg) -> i64 {
+		v as i64
+	}
+}
+
+impl TryFrom<i64> for CategoryEpicGamesEg {
+	type Error = String;
+	fn try_from(v: i64) -> Result<Self, Self::Error> {
+		match v {
+			-1 => Ok(Self::Neg1),
+			0 => Ok(Self::V0),
+			1 => Ok(Self::V1),
+			2 => Ok(Self::V2),
+			other => Err(format!("unknown CategoryEpicGamesEg value: {other}")),
+		}
+	}
+}
+
+impl std::fmt::Display for CategoryEpicGamesEg {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		write!(f, "{}", *self as i64)
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum CategoryGiftsSubscription {
+	#[serde(rename = "discord_nitro")]
+	DiscordNitro,
+	#[serde(rename = "discord_nitro_basic")]
+	DiscordNitroBasic,
+	#[serde(rename = "discord_nitro_trial")]
+	DiscordNitroTrial,
+	#[serde(rename = "telegram_premium")]
+	TelegramPremium,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for CategoryGiftsSubscription {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::DiscordNitro => write!(f, "discord_nitro"),
+			Self::DiscordNitroBasic => write!(f, "discord_nitro_basic"),
+			Self::DiscordNitroTrial => write!(f, "discord_nitro_trial"),
+			Self::TelegramPremium => write!(f, "telegram_premium"),
+			Self::Unknown => write!(f, "unknown"),
+		}
 	}
 }
 
@@ -1088,6 +1147,27 @@ impl TryFrom<i64> for CategoryId {
 impl std::fmt::Display for CategoryId {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
 		write!(f, "{}", *self as i64)
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum CategoryMinecraftSubscription {
+	#[serde(rename = "PC Game Pass")]
+	PcGamePass,
+	#[serde(rename = "Xbox Game Pass Ultimate")]
+	XboxGamePassUltimate,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for CategoryMinecraftSubscription {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::PcGamePass => write!(f, "PC Game Pass"),
+			Self::XboxGamePassUltimate => write!(f, "Xbox Game Pass Ultimate"),
+			Self::Unknown => write!(f, "unknown"),
+		}
 	}
 }
 
@@ -1179,6 +1259,67 @@ impl std::fmt::Display for CategoryName {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum CategoryRobloxSubscription {
+	RobloxPremium1000,
+	RobloxPremium100012Months,
+	RobloxPremium1000OneMonth,
+	RobloxPremium2200,
+	RobloxPremium2200OneMonth,
+	RobloxPremium450,
+	RobloxPremium450OneMonth,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for CategoryRobloxSubscription {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::RobloxPremium1000 => write!(f, "RobloxPremium1000"),
+			Self::RobloxPremium100012Months => write!(f, "RobloxPremium100012Months"),
+			Self::RobloxPremium1000OneMonth => write!(f, "RobloxPremium1000OneMonth"),
+			Self::RobloxPremium2200 => write!(f, "RobloxPremium2200"),
+			Self::RobloxPremium2200OneMonth => write!(f, "RobloxPremium2200OneMonth"),
+			Self::RobloxPremium450 => write!(f, "RobloxPremium450"),
+			Self::RobloxPremium450OneMonth => write!(f, "RobloxPremium450OneMonth"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(into = "i64", try_from = "i64")]
+pub enum CategorySteamEg {
+	Neg1 = -1,
+	V0 = 0,
+	V1 = 1,
+}
+
+impl From<CategorySteamEg> for i64 {
+	fn from(v: CategorySteamEg) -> i64 {
+		v as i64
+	}
+}
+
+impl TryFrom<i64> for CategorySteamEg {
+	type Error = String;
+	fn try_from(v: i64) -> Result<Self, Self::Error> {
+		match v {
+			-1 => Ok(Self::Neg1),
+			0 => Ok(Self::V0),
+			1 => Ok(Self::V1),
+			other => Err(format!("unknown CategorySteamEg value: {other}")),
+		}
+	}
+}
+
+impl std::fmt::Display for CategorySteamEg {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		write!(f, "{}", *self as i64)
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum CategorySubscription {
 	#[serde(rename = "EA Play")]
 	EaPlay,
@@ -1194,6 +1335,30 @@ impl std::fmt::Display for CategorySubscription {
 		match self {
 			Self::EaPlay => write!(f, "EA Play"),
 			Self::EaPlayPro => write!(f, "EA Play Pro"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum CategoryUplaySubscription {
+	#[serde(rename = "basic")]
+	Basic,
+	#[serde(rename = "premium")]
+	Premium,
+	#[serde(rename = "premiumAnywhere")]
+	PremiumAnywhere,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for CategoryUplaySubscription {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Basic => write!(f, "basic"),
+			Self::Premium => write!(f, "premium"),
+			Self::PremiumAnywhere => write!(f, "premiumAnywhere"),
 			Self::Unknown => write!(f, "unknown"),
 		}
 	}
@@ -2274,7 +2439,7 @@ impl std::fmt::Display for ManagingItemOrigin {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
-pub enum ManagingType {
+pub enum ManagingSteamPreviewType {
 	#[serde(rename = "profiles")]
 	Profiles,
 	#[serde(rename = "games")]
@@ -2284,11 +2449,47 @@ pub enum ManagingType {
 	Unknown,
 }
 
-impl std::fmt::Display for ManagingType {
+impl std::fmt::Display for ManagingSteamPreviewType {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
 		match self {
 			Self::Profiles => write!(f, "profiles"),
 			Self::Games => write!(f, "games"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum ManagingType {
+	#[serde(rename = "skins")]
+	Skins,
+	#[serde(rename = "pickaxes")]
+	Pickaxes,
+	#[serde(rename = "dances")]
+	Dances,
+	#[serde(rename = "gliders")]
+	Gliders,
+	#[serde(rename = "weapons")]
+	Weapons,
+	#[serde(rename = "agents")]
+	Agents,
+	#[serde(rename = "buddies")]
+	Buddies,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for ManagingType {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Skins => write!(f, "skins"),
+			Self::Pickaxes => write!(f, "pickaxes"),
+			Self::Dances => write!(f, "dances"),
+			Self::Gliders => write!(f, "gliders"),
+			Self::Weapons => write!(f, "weapons"),
+			Self::Agents => write!(f, "agents"),
+			Self::Buddies => write!(f, "buddies"),
 			Self::Unknown => write!(f, "unknown"),
 		}
 	}
@@ -4805,7 +5006,7 @@ pub struct CategoryEpicGamesParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub item_domain: Option<String>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub eg: Option<CategoryEg>,
+	pub eg: Option<CategoryEpicGamesEg>,
 	#[serde(rename = "game[]", skip_serializing_if = "Option::is_none")]
 	pub game: Option<Vec<String>>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -5327,7 +5528,7 @@ pub struct CategoryFortniteParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub item_domain: Option<String>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub eg: Option<CategoryEg>,
+	pub eg: Option<CategoryEpicGamesEg>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub smin: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -5754,7 +5955,7 @@ pub struct CategoryGiftsParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub parse_same_item_ids: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub subscription: Option<CategorySubscription>,
+	pub subscription: Option<CategoryGiftsSubscription>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub subscription_length: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -6989,7 +7190,7 @@ pub struct CategoryMinecraftParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub parse_same_item_ids: Option<bool>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub subscription: Option<CategorySubscription>,
+	pub subscription: Option<CategoryMinecraftSubscription>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub subscription_length: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -7705,7 +7906,7 @@ pub struct CategoryRobloxParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub reg_period: Option<RegPeriod>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub subscription: Option<CategorySubscription>,
+	pub subscription: Option<CategoryRobloxSubscription>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub subscription_length: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -8256,7 +8457,7 @@ pub struct CategorySteamParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub hours_played_max: Option<HashMap<String, i64>>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub eg: Option<CategoryEg>,
+	pub eg: Option<CategorySteamEg>,
 	#[serde(rename = "vac[]", skip_serializing_if = "Option::is_none")]
 	pub vac: Option<Vec<i64>>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -8933,7 +9134,7 @@ pub struct CategorySupercellParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub item_domain: Option<String>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub eg: Option<CategoryEg>,
+	pub eg: Option<CategoryEpicGamesEg>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub tel: Option<Tel>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -9849,7 +10050,7 @@ pub struct CategoryUplayParams {
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub gmax: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub subscription: Option<CategorySubscription>,
+	pub subscription: Option<CategoryUplaySubscription>,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub subscription_length: Option<i64>,
 	#[serde(skip_serializing_if = "Option::is_none")]
@@ -15577,7 +15778,7 @@ pub struct ManagingFavoriteResponse {
 #[derive(Debug, Clone, Default, Serialize)]
 pub struct ManagingSteamPreviewParams {
 	#[serde(rename = "type", skip_serializing_if = "Option::is_none")]
-	pub r#type: Option<ManagingType>,
+	pub r#type: Option<ManagingSteamPreviewType>,
 }
 
 pub type ManagingSteamPreviewResponse = serde_json::Value;

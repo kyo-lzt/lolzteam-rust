@@ -71,8 +71,15 @@ pub fn collect_enums(parsed: &ParseResult) -> BTreeMap<(String, EnumValues), Enu
 		}
 	}
 
-	// Register conflicting enums with group prefix
+	// Register conflicting enums with group prefix (+ method prefix when needed)
 	if !conflicting_names.is_empty() {
+		// Track which type names are already assigned to which value sets,
+		// so we can detect when group-level disambiguation is insufficient.
+		let mut type_name_to_values: BTreeMap<String, EnumValues> = BTreeMap::new();
+		for def in result.values() {
+			type_name_to_values.insert(def.type_name.clone(), def.values.clone());
+		}
+
 		for group in &parsed.groups {
 			for method in &group.methods {
 				let all_params = method
@@ -86,10 +93,27 @@ pub fn collect_enums(parsed: &ParseResult) -> BTreeMap<(String, EnumValues), Enu
 						if conflicting_names.contains(&param.api_name) {
 							let key = (param.api_name.clone(), ev.clone());
 							result.entry(key).or_insert_with(|| {
-								let prefix = group.name.to_upper_camel_case();
+								let group_prefix = group.name.to_upper_camel_case();
 								let base = param_name_to_enum_type(&param.api_name);
+								let candidate = format!("{group_prefix}{base}");
+
+								// If this type name is already taken by a different value set,
+								// add the method name for further disambiguation.
+								let type_name =
+									if let Some(existing) = type_name_to_values.get(&candidate) {
+										if existing != ev {
+											let method_prefix = method.name.to_upper_camel_case();
+											format!("{group_prefix}{method_prefix}{base}")
+										} else {
+											candidate.clone()
+										}
+									} else {
+										candidate.clone()
+									};
+
+								type_name_to_values.insert(type_name.clone(), ev.clone());
 								EnumDef {
-									type_name: format!("{prefix}{base}"),
+									type_name,
 									values: ev.clone(),
 								}
 							});
