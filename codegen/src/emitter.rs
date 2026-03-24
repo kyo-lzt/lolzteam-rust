@@ -1513,7 +1513,7 @@ pub fn emit_client(
 			writeln!(out, "\t\t\tsearch_rate_limit: None,").unwrap();
 		}
 	}
-	writeln!(out, "\t\t\ttimeout_ms: None,").unwrap();
+	writeln!(out, "\t\t\ttimeout_ms: Some(30_000),").unwrap();
 	writeln!(out, "\t\t\ton_retry: None,").unwrap();
 	writeln!(out, "\t\t}};").unwrap();
 	writeln!(out, "\t\tSelf::with_config(config)").unwrap();

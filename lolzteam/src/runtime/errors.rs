@@ -43,7 +43,14 @@ impl HttpError {
 			.headers()
 			.get("retry-after")
 			.and_then(|v| v.to_str().ok())
-			.and_then(|v| v.parse::<u64>().ok());
+			.and_then(|v| {
+				v.parse::<u64>().ok().or_else(|| {
+					httpdate::parse_http_date(v).ok().and_then(|date| {
+						let now = std::time::SystemTime::now();
+						date.duration_since(now).ok().map(|d| d.as_secs())
+					})
+				})
+			});
 
 		let body = response
 			.json::<serde_json::Value>()

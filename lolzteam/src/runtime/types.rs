@@ -48,7 +48,7 @@ impl ClientConfig {
 			retry: Some(RetryConfig::default()),
 			rate_limit: None,
 			search_rate_limit: None,
-			timeout_ms: None,
+			timeout_ms: Some(30_000),
 			on_retry: None,
 		}
 	}

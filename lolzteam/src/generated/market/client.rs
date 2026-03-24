@@ -7169,7 +7169,7 @@ impl MarketClient {
 			search_rate_limit: Some(RateLimitConfig {
 				requests_per_minute: 20,
 			}),
-			timeout_ms: None,
+			timeout_ms: Some(30_000),
 			on_retry: None,
 		};
 		Self::with_config(config)

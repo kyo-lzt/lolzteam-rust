@@ -2737,7 +2737,7 @@ impl ForumClient {
 				requests_per_minute: 300,
 			}),
 			search_rate_limit: None,
-			timeout_ms: None,
+			timeout_ms: Some(30_000),
 			on_retry: None,
 		};
 		Self::with_config(config)
