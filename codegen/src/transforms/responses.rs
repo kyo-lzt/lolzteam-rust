@@ -95,6 +95,37 @@ pub fn extract_response_schema(root: &Value, operation: &Value, prefix: &str) ->
 	extract_struct_from_schema(root, schema, prefix)
 }
 
+/// Check whether all property names in an object schema are numeric (e.g. "97491", "193431").
+/// Such objects represent dynamic maps, not fixed structs.
+fn all_property_keys_numeric(properties: &serde_json::Map<String, Value>) -> bool {
+	!properties.is_empty()
+		&& properties
+			.keys()
+			.all(|k| k.chars().all(|c| c.is_ascii_digit()))
+}
+
+/// Remap `i64` to `f64` in response field types, since the API may return floats
+/// for schema-declared integer fields.
+fn remap_response_type(rust_type: String) -> String {
+	// Direct i64 → f64
+	if rust_type == "i64" {
+		return "f64".to_string();
+	}
+	// Option<i64> → Option<f64>
+	if rust_type == "Option<i64>" {
+		return "Option<f64>".to_string();
+	}
+	// Vec<i64> → Vec<f64>
+	if rust_type == "Vec<i64>" {
+		return "Vec<f64>".to_string();
+	}
+	// HashMap<String, i64> → HashMap<String, f64>
+	if rust_type == "HashMap<String, i64>" {
+		return "HashMap<String, f64>".to_string();
+	}
+	rust_type
+}
+
 /// Try to extract a struct definition from a schema with properties.
 /// Falls back to Alias("serde_json::Value") if no properties found.
 fn extract_struct_from_schema(root: &Value, schema: &Value, prefix: &str) -> ResponseSchema {
@@ -104,6 +135,11 @@ fn extract_struct_from_schema(root: &Value, schema: &Value, prefix: &str) -> Res
 	};
 
 	if properties.is_empty() {
+		return ResponseSchema::Alias("serde_json::Value".to_string());
+	}
+
+	// Objects with all-numeric property keys are dynamic maps, not structs
+	if all_property_keys_numeric(properties) {
 		return ResponseSchema::Alias("serde_json::Value".to_string());
 	}
 
@@ -146,7 +182,7 @@ fn extract_struct_from_schema(root: &Value, schema: &Value, prefix: &str) -> Res
 		fields.push(ResponseFieldDef {
 			name: field_name,
 			api_name: prop_name.clone(),
-			rust_type,
+			rust_type: remap_response_type(rust_type),
 			required,
 		});
 	}
@@ -217,7 +253,7 @@ pub fn resolve_response_field_type(
 
 			// Simple array items — use schema_to_rust_type
 			let (inner_ty, _) = schema_to_rust_type(root, items);
-			return format!("Vec<{inner_ty}>");
+			return format!("Vec<{}>", remap_response_type(inner_ty));
 		}
 	}
 
@@ -228,7 +264,7 @@ pub fn resolve_response_field_type(
 
 	// Fall back to schema_to_rust_type for primitives
 	let (ty, _) = schema_to_rust_type(root, schema);
-	ty
+	remap_response_type(ty)
 }
 
 /// Generate a PascalCase struct name for a nested response field.

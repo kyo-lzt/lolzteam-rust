@@ -17,6 +17,11 @@ impl AutoPaymentsApi {
 	}
 
 	/// Delete Auto Payment
+	///
+	/// Deletes an auto payment.
+	///
+	/// Required scopes:
+	/// + payment
 	pub async fn delete(
 		&self,
 		body: Option<&AutoPaymentsDeleteBody>,
@@ -27,6 +32,11 @@ impl AutoPaymentsApi {
 	}
 
 	/// Create Auto Payment
+	///
+	/// Creates auto payment.
+	///
+	/// Required scopes:
+	/// + payment
 	pub async fn create(
 		&self,
 		body: Option<&AutoPaymentsCreateBody>,
@@ -37,6 +47,11 @@ impl AutoPaymentsApi {
 	}
 
 	/// Get Auto Payments
+	///
+	/// Get auto payments list.
+	///
+	/// Required scopes:
+	/// + payment
 	pub async fn list(&self) -> Result<AutoPaymentsListResponse, LolzteamError> {
 		self.http
 			.request("GET", "/auto-payments", None, None, false)
@@ -54,6 +69,11 @@ impl BatchApi {
 	}
 
 	/// Batch
+	///
+	/// Execute multiple API requests at once (separated by comma). Maximum batch jobs is 10.
+	/// Following methods are unavailable in Batch:
+	/// - GET /{item_id}/image
+	/// - /item/fast-sell
 	pub async fn batch(
 		&self,
 		body: serde_json::Value,
@@ -74,6 +94,8 @@ impl CartApi {
 	}
 
 	/// Delete Item From Cart
+	///
+	/// Deletes an item from the cart.
 	pub async fn delete(
 		&self,
 		body: Option<&CartDeleteBody>,
@@ -84,6 +106,8 @@ impl CartApi {
 	}
 
 	/// Get Cart Items
+	///
+	/// Returns the list of items currently in your cart.
 	pub async fn get(
 		&self,
 		params: Option<&CartGetParams>,
@@ -199,6 +223,8 @@ impl CartApi {
 	}
 
 	/// Add Item to Cart
+	///
+	/// Adds item to your cart.
 	pub async fn add(&self, body: Option<&CartAddBody>) -> Result<CartAddResponse, LolzteamError> {
 		self.http
 			.request_json("POST", "/cart", None, body, false)
@@ -216,6 +242,8 @@ impl CategoryApi {
 	}
 
 	/// Get Last Accounts
+	///
+	/// Displays a list of latest accounts.
 	pub async fn all(
 		&self,
 		params: Option<&CategoryAllParams>,
@@ -328,6 +356,8 @@ impl CategoryApi {
 	}
 
 	/// BattleNet
+	///
+	/// Displays a list of accounts in a specific category according to your parameters.
 	pub async fn battle_net(
 		&self,
 		params: Option<&CategoryBattleNetParams>,
@@ -493,6 +523,8 @@ impl CategoryApi {
 	}
 
 	/// Get Categories
+	///
+	/// Display category list.
 	pub async fn list(
 		&self,
 		params: Option<&CategoryListParams>,
@@ -519,6 +551,8 @@ impl CategoryApi {
 	}
 
 	/// ChatGPT
+	///
+	/// Displays a list of accounts in a specific category according to your parameters.
 	pub async fn chat_gpt(
 		&self,
 		params: Option<&CategoryChatGptParams>,
@@ -682,6 +716,8 @@ impl CategoryApi {
 	}
 
 	/// Discord
+	///
+	/// Displays a list of accounts in a specific category according to your parameters.
 	pub async fn discord(
 		&self,
 		params: Option<&CategoryDiscordParams>,
@@ -933,6 +969,8 @@ impl CategoryApi {
 	}
 
 	/// EA (Origin)
+	///
+	/// Displays a list of accounts in a specific category according to your parameters.
 	pub async fn ea(
 		&self,
 		params: Option<&CategoryEaParams>,
@@ -1126,6 +1164,8 @@ impl CategoryApi {
 	}
 
 	/// Epic Games
+	///
+	/// Displays a list of accounts in a specific category according to your parameters.
 	pub async fn epic_games(
 		&self,
 		params: Option<&CategoryEpicGamesParams>,
@@ -1304,6 +1344,8 @@ impl CategoryApi {
 	}
 
 	/// Escape from Tarkov
+	///
+	/// Displays a list of accounts in a specific category according to your parameters.
 	pub async fn escape_from_tarkov(
 		&self,
 		params: Option<&CategoryEscapeFromTarkovParams>,
@@ -1450,6 +1492,8 @@ impl CategoryApi {
 	}
 
 	/// Fortnite
+	///
+	/// Displays a list of accounts in a specific category according to your parameters.
 	pub async fn fortnite(
 		&self,
 		params: Option<&CategoryFortniteParams>,
@@ -1743,6 +1787,8 @@ impl CategoryApi {
 	}
 
 	/// Gifts
+	///
+	/// Displays a list of accounts in a specific category according to your parameters.
 	pub async fn gifts(
 		&self,
 		params: Option<&CategoryGiftsParams>,
@@ -1867,6 +1913,8 @@ impl CategoryApi {
 	}
 
 	/// Hytale
+	///
+	/// Displays a list of accounts in a specific category according to your parameters.
 	pub async fn hytale(
 		&self,
 		params: Option<&CategoryHytaleParams>,
@@ -1990,6 +2038,8 @@ impl CategoryApi {
 	}
 
 	/// Instagram
+	///
+	/// Displays a list of accounts in a specific category according to your parameters.
 	pub async fn instagram(
 		&self,
 		params: Option<&CategoryInstagramParams>,
@@ -2150,6 +2200,8 @@ impl CategoryApi {
 	}
 
 	/// miHoYo
+	///
+	/// Displays a list of accounts in a specific category according to your parameters.
 	pub async fn mihoyo(
 		&self,
 		params: Option<&CategoryMihoyoParams>,
@@ -2529,6 +2581,8 @@ impl CategoryApi {
 	}
 
 	/// Minecraft
+	///
+	/// Displays a list of accounts in a specific category according to your parameters.
 	pub async fn minecraft(
 		&self,
 		params: Option<&CategoryMinecraftParams>,
@@ -2778,6 +2832,8 @@ impl CategoryApi {
 	}
 
 	/// Riot
+	///
+	/// Displays a list of accounts in a specific category according to your parameters.
 	pub async fn riot(
 		&self,
 		params: Option<&CategoryRiotParams>,
@@ -3101,6 +3157,8 @@ impl CategoryApi {
 	}
 
 	/// Roblox
+	///
+	/// Displays a list of accounts in a specific category according to your parameters.
 	pub async fn roblox(
 		&self,
 		params: Option<&CategoryRobloxParams>,
@@ -3338,6 +3396,8 @@ impl CategoryApi {
 	}
 
 	/// Social Club
+	///
+	/// Displays a list of accounts in a specific category according to your parameters.
 	pub async fn social_club(
 		&self,
 		params: Option<&CategorySocialClubParams>,
@@ -3476,6 +3536,8 @@ impl CategoryApi {
 	}
 
 	/// Steam
+	///
+	/// Displays a list of accounts in a specific category according to your parameters.
 	pub async fn steam(
 		&self,
 		params: Option<&CategorySteamParams>,
@@ -3915,6 +3977,8 @@ impl CategoryApi {
 	}
 
 	/// Supercell
+	///
+	/// Displays a list of accounts in a specific category according to your parameters.
 	pub async fn supercell(
 		&self,
 		params: Option<&CategorySupercellParams>,
@@ -4196,6 +4260,8 @@ impl CategoryApi {
 	}
 
 	/// Telegram
+	///
+	/// Displays a list of accounts in a specific category according to your parameters.
 	pub async fn telegram(
 		&self,
 		params: Option<&CategoryTelegramParams>,
@@ -4460,6 +4526,8 @@ impl CategoryApi {
 	}
 
 	/// TikTok
+	///
+	/// Displays a list of accounts in a specific category according to your parameters.
 	pub async fn tik_tok(
 		&self,
 		params: Option<&CategoryTikTokParams>,
@@ -4622,6 +4690,8 @@ impl CategoryApi {
 	}
 
 	/// Uplay
+	///
+	/// Displays a list of accounts in a specific category according to your parameters.
 	pub async fn uplay(
 		&self,
 		params: Option<&CategoryUplayParams>,
@@ -4839,6 +4909,8 @@ impl CategoryApi {
 	}
 
 	/// VPN
+	///
+	/// Displays a list of accounts in a specific category according to your parameters.
 	pub async fn vpn(
 		&self,
 		params: Option<&CategoryVpnParams>,
@@ -4968,6 +5040,8 @@ impl CategoryApi {
 	}
 
 	/// Warface
+	///
+	/// Displays a list of accounts in a specific category according to your parameters.
 	pub async fn warface(
 		&self,
 		params: Option<&CategoryWarfaceParams>,
@@ -5110,6 +5184,8 @@ impl CategoryApi {
 	}
 
 	/// World of Tanks
+	///
+	/// Displays a list of accounts in a specific category according to your parameters.
 	pub async fn wot(
 		&self,
 		params: Option<&CategoryWotParams>,
@@ -5349,6 +5425,8 @@ impl CategoryApi {
 	}
 
 	/// WoT Blitz
+	///
+	/// Displays a list of accounts in a specific category according to your parameters.
 	pub async fn wot_blitz(
 		&self,
 		params: Option<&CategoryWotBlitzParams>,
@@ -5588,6 +5666,8 @@ impl CategoryApi {
 	}
 
 	/// Get Category Games
+	///
+	/// Displays a list of games in the category.
 	pub async fn games(
 		&self,
 		category_name: String,
@@ -5597,6 +5677,8 @@ impl CategoryApi {
 	}
 
 	/// Get Category Search Params
+	///
+	/// Displays search parameters for a category.
 	pub async fn params(
 		&self,
 		category_name: String,
@@ -5616,6 +5698,8 @@ impl CustomDiscountsApi {
 	}
 
 	/// Delete Custom Discount
+	///
+	/// Delete an existing custom discount.
 	pub async fn delete(
 		&self,
 		body: Option<&CustomDiscountsDeleteBody>,
@@ -5626,6 +5710,8 @@ impl CustomDiscountsApi {
 	}
 
 	/// Get Custom Discounts
+	///
+	/// Get a list of custom discounts.
 	pub async fn get(&self) -> Result<CustomDiscountsGetResponse, LolzteamError> {
 		self.http
 			.request("GET", "/custom-discounts", None, None, false)
@@ -5633,6 +5719,8 @@ impl CustomDiscountsApi {
 	}
 
 	/// Create Custom Discount
+	///
+	/// Creates a new custom discount.
 	pub async fn create(
 		&self,
 		body: Option<&CustomDiscountsCreateBody>,
@@ -5643,6 +5731,8 @@ impl CustomDiscountsApi {
 	}
 
 	/// Edit Custom Discount
+	///
+	/// Edit an existing custom discount.
 	pub async fn edit(
 		&self,
 		body: Option<&CustomDiscountsEditBody>,
@@ -5663,6 +5753,8 @@ impl ImapApi {
 	}
 
 	/// Delete IMAP Configuration
+	///
+	/// Delete an IMAP configuration for a domain.
 	pub async fn delete(
 		&self,
 		body: Option<&ImapDeleteBody>,
@@ -5673,6 +5765,8 @@ impl ImapApi {
 	}
 
 	/// Create IMAP Configuration
+	///
+	/// Create an IMAP configuration for a domain.
 	pub async fn create(
 		&self,
 		body: Option<&ImapCreateBody>,
@@ -5693,6 +5787,8 @@ impl ListApi {
 	}
 
 	/// Get All Favourites Accounts
+	///
+	/// Displays a list of favourites accounts.
 	pub async fn favorites(
 		&self,
 		params: Option<&ListFavoritesParams>,
@@ -5756,6 +5852,8 @@ impl ListApi {
 	}
 
 	/// Get User Items States
+	///
+	/// Returns the states of user items.
 	pub async fn states(
 		&self,
 		params: Option<&ListStatesParams>,
@@ -5787,6 +5885,8 @@ impl ListApi {
 	}
 
 	/// Get All User Accounts
+	///
+	/// Displays a list of user accounts.
 	pub async fn user(
 		&self,
 		params: Option<&ListUserParams>,
@@ -5895,6 +5995,8 @@ impl ListApi {
 	}
 
 	/// Get All Purchased Accounts
+	///
+	/// Displays a list of purchased accounts.
 	pub async fn orders(
 		&self,
 		params: Option<&ListOrdersParams>,
@@ -5967,6 +6069,8 @@ impl ListApi {
 	}
 
 	/// Download Accounts Data
+	///
+	/// Download accounts data in the specified format.
 	pub async fn download(
 		&self,
 		r#type: String,
@@ -6077,6 +6181,8 @@ impl ListApi {
 	}
 
 	/// Get All Viewed Accounts
+	///
+	/// Displays a list of viewed accounts.
 	pub async fn viewed(
 		&self,
 		params: Option<&ListViewedParams>,
@@ -6150,6 +6256,8 @@ impl ManagingApi {
 	}
 
 	/// Bulk Get Accounts
+	///
+	/// Bulk get up to 250 accounts.
 	pub async fn bulk_get(
 		&self,
 		body: Option<&ManagingBulkGetBody>,
@@ -6160,6 +6268,8 @@ impl ManagingApi {
 	}
 
 	/// Create Claim
+	///
+	/// Create a claim.
 	pub async fn create_claim(
 		&self,
 		body: Option<&ManagingCreateClaimBody>,
@@ -6170,6 +6280,10 @@ impl ManagingApi {
 	}
 
 	/// Get Email Letters
+	///
+	/// Returns account letters.
+	///
+	/// > ❗️ If you receive a "retry_request" error, you should repeat the same request (up to a maximum of 100 times)
 	pub async fn get_letters2(
 		&self,
 		params: Option<&ManagingGetLetters2Params>,
@@ -6205,6 +6319,9 @@ impl ManagingApi {
 	}
 
 	/// Get Steam Inventory Value
+	///
+	/// Gets steam inventory value.
+	/// > 📘 This method is rate limited. You can send 20 requests per minute (3s delay between requests)
 	pub async fn steam_value(
 		&self,
 		link: String,
@@ -6239,6 +6356,8 @@ impl ManagingApi {
 	}
 
 	/// Delete Account
+	///
+	/// Deletes your account from public search. Deletion type is soft. You can restore account after deletion if you want.
 	pub async fn delete(
 		&self,
 		item_id: i64,
@@ -6251,6 +6370,8 @@ impl ManagingApi {
 	}
 
 	/// Get Account
+	///
+	/// Displays account information.
 	pub async fn get(
 		&self,
 		item_id: i64,
@@ -6279,12 +6400,16 @@ impl ManagingApi {
 	}
 
 	/// Get AI Price
+	///
+	/// Get AI-suggested price for the account.
 	pub async fn ai_price(&self, item_id: i64) -> Result<ManagingAiPriceResponse, LolzteamError> {
 		let path = format!("/{item_id}/ai-price");
 		self.http.request("GET", &path, None, None, false).await
 	}
 
 	/// Disable Auto Bump
+	///
+	/// Disables automatic bumping for the specified account.
 	pub async fn auto_bump_disable(
 		&self,
 		item_id: i64,
@@ -6294,6 +6419,8 @@ impl ManagingApi {
 	}
 
 	/// Auto Bump
+	///
+	/// Enables/edits automatic bumping for the specified account.
 	pub async fn auto_bump(
 		&self,
 		item_id: i64,
@@ -6306,6 +6433,8 @@ impl ManagingApi {
 	}
 
 	/// Get Auto Buy Price
+	///
+	/// Get auto buy price for the account.
 	pub async fn auto_buy_price(
 		&self,
 		item_id: i64,
@@ -6315,12 +6444,16 @@ impl ManagingApi {
 	}
 
 	/// Bump Account
+	///
+	/// Bumps account in the search.
 	pub async fn bump(&self, item_id: i64) -> Result<ManagingBumpResponse, LolzteamError> {
 		let path = format!("/{item_id}/bump");
 		self.http.request("POST", &path, None, None, false).await
 	}
 
 	/// Change Account Owner
+	///
+	/// Transfer account to another user.
 	pub async fn transfer(
 		&self,
 		item_id: i64,
@@ -6333,6 +6466,8 @@ impl ManagingApi {
 	}
 
 	/// Change Password
+	///
+	/// Changes password of account.
 	pub async fn change_password(
 		&self,
 		item_id: i64,
@@ -6345,6 +6480,8 @@ impl ManagingApi {
 	}
 
 	/// Check Guarantee
+	///
+	/// Checks the guarantee and cancels it if there are reasons to cancel it.
 	pub async fn check_guarantee(
 		&self,
 		item_id: i64,
@@ -6354,12 +6491,20 @@ impl ManagingApi {
 	}
 
 	/// Close Account
+	///
+	/// Closes account.
 	pub async fn close(&self, item_id: i64) -> Result<ManagingCloseResponse, LolzteamError> {
 		let path = format!("/{item_id}/close");
 		self.http.request("POST", &path, None, None, false).await
 	}
 
 	/// Confirm SDA
+	///
+	/// Confirm steam action.
+	///
+	/// Don't set id and nonce parameters to get list of available confirmation requests.
+	///
+	/// > ❗️ This action is cancelling active account guarantee
 	pub async fn steam_sda(
 		&self,
 		item_id: i64,
@@ -6372,6 +6517,8 @@ impl ManagingApi {
 	}
 
 	/// Decline Video Recording Request
+	///
+	/// Waiver of the requirement to record a video and any claims regarding this account.
 	pub async fn decline_video_recording(
 		&self,
 		item_id: i64,
@@ -6384,6 +6531,8 @@ impl ManagingApi {
 	}
 
 	/// Edit Account
+	///
+	/// Edits any details of account.
 	pub async fn edit(
 		&self,
 		item_id: i64,
@@ -6396,6 +6545,10 @@ impl ManagingApi {
 	}
 
 	/// Get Email Confirmation Code
+	///
+	/// Gets confirmation code or link.
+	///
+	/// > ❗️ If you receive a "retry_request" error, you should repeat the same request (up to a maximum of 100 times)
 	pub async fn email_code(
 		&self,
 		item_id: i64,
@@ -6405,6 +6558,8 @@ impl ManagingApi {
 	}
 
 	/// Get Mafile Confirmation Code
+	///
+	/// Gets confirmation code from MaFile (Only for Steam accounts).
 	pub async fn steam_mafile_code(
 		&self,
 		item_id: i64,
@@ -6414,6 +6569,8 @@ impl ManagingApi {
 	}
 
 	/// Get Account Image
+	///
+	/// Get account image.
 	pub async fn image(
 		&self,
 		item_id: i64,
@@ -6438,6 +6595,8 @@ impl ManagingApi {
 	}
 
 	/// Get Account Steam Inventory Value
+	///
+	/// Gets Account steam inventory value.
 	pub async fn steam_inventory_value(
 		&self,
 		item_id: i64,
@@ -6472,6 +6631,9 @@ impl ManagingApi {
 	}
 
 	/// Remove Mafile
+	///
+	/// Remove steam mafile.
+	/// > ❗️ This will unlink the authenticator from the account and remove mafile from the item
 	pub async fn steam_remove_mafile(
 		&self,
 		item_id: i64,
@@ -6481,6 +6643,9 @@ impl ManagingApi {
 	}
 
 	/// Get Mafile
+	///
+	/// Returns steam mafile.
+	/// > ❗️ This action is cancelling active account guarantee
 	pub async fn steam_get_mafile(
 		&self,
 		item_id: i64,
@@ -6490,6 +6655,8 @@ impl ManagingApi {
 	}
 
 	/// Add Mafile
+	///
+	/// Add a new Steam mafile to the account.
 	pub async fn steam_add_mafile(
 		&self,
 		item_id: i64,
@@ -6499,6 +6666,8 @@ impl ManagingApi {
 	}
 
 	/// Edit Note
+	///
+	/// Edits a note for the account.
 	pub async fn note(
 		&self,
 		item_id: i64,
@@ -6511,12 +6680,16 @@ impl ManagingApi {
 	}
 
 	/// Open Account
+	///
+	/// Opens account.
 	pub async fn open(&self, item_id: i64) -> Result<ManagingOpenResponse, LolzteamError> {
 		let path = format!("/{item_id}/open");
 		self.http.request("POST", &path, None, None, false).await
 	}
 
 	/// Remove a Public Tag
+	///
+	/// Removes a public tag from the specified account.
 	pub async fn public_untag(
 		&self,
 		item_id: i64,
@@ -6529,6 +6702,8 @@ impl ManagingApi {
 	}
 
 	/// Add a Public Tag
+	///
+	/// Adds a public tag to the specified account.
 	pub async fn public_tag(
 		&self,
 		item_id: i64,
@@ -6541,6 +6716,8 @@ impl ManagingApi {
 	}
 
 	/// Cancel Guarantee
+	///
+	/// Cancel guarantee of account. It can be useful for account reselling.
 	pub async fn refuse_guarantee(
 		&self,
 		item_id: i64,
@@ -6550,6 +6727,8 @@ impl ManagingApi {
 	}
 
 	/// Unfavorite
+	///
+	/// Delete account from favorites.
 	pub async fn unfavorite(
 		&self,
 		item_id: i64,
@@ -6559,12 +6738,16 @@ impl ManagingApi {
 	}
 
 	/// Favorite
+	///
+	/// Adds account to favorites.
 	pub async fn favorite(&self, item_id: i64) -> Result<ManagingFavoriteResponse, LolzteamError> {
 		let path = format!("/{item_id}/star");
 		self.http.request("POST", &path, None, None, false).await
 	}
 
 	/// Get Steam HTML
+	///
+	/// Returns Steam account profile/games preview.
 	pub async fn steam_preview(
 		&self,
 		item_id: i64,
@@ -6592,18 +6775,24 @@ impl ManagingApi {
 	}
 
 	/// Unstick Account
+	///
+	/// Unstick account from the top of search.
 	pub async fn unstick(&self, item_id: i64) -> Result<ManagingUnstickResponse, LolzteamError> {
 		let path = format!("/{item_id}/stick");
 		self.http.request("DELETE", &path, None, None, false).await
 	}
 
 	/// Stick Account
+	///
+	/// Stick account in the top of search.
 	pub async fn stick(&self, item_id: i64) -> Result<ManagingStickResponse, LolzteamError> {
 		let path = format!("/{item_id}/stick");
 		self.http.request("POST", &path, None, None, false).await
 	}
 
 	/// Remove a Tag
+	///
+	/// Removes a tag from from the specified account.
 	pub async fn untag(
 		&self,
 		item_id: i64,
@@ -6616,6 +6805,8 @@ impl ManagingApi {
 	}
 
 	/// Add a Tag
+	///
+	/// Adds a tag to the specified account.
 	pub async fn tag(
 		&self,
 		item_id: i64,
@@ -6628,6 +6819,8 @@ impl ManagingApi {
 	}
 
 	/// Get Telegram Confirmation Code
+	///
+	/// Gets confirmation code from Telegram.
 	pub async fn telegram_code(
 		&self,
 		item_id: i64,
@@ -6637,6 +6830,8 @@ impl ManagingApi {
 	}
 
 	/// Telegram Reset Auth
+	///
+	/// Resets Telegram authorizations.
 	pub async fn telegram_reset_auth(
 		&self,
 		item_id: i64,
@@ -6646,6 +6841,9 @@ impl ManagingApi {
 	}
 
 	/// Get Temp Email Password
+	///
+	/// Gets password from temp email of account. After calling of this method, the guarantee will be cancelled and you cannot automatically resell account.
+	/// > ❗️ This action is cancelling active account guarantee
 	pub async fn temp_email_password(
 		&self,
 		item_id: i64,
@@ -6655,6 +6853,8 @@ impl ManagingApi {
 	}
 
 	/// Update Inventory Value
+	///
+	/// Update inventory value.
 	pub async fn steam_update_value(
 		&self,
 		item_id: i64,
@@ -6677,6 +6877,8 @@ impl PaymentsApi {
 	}
 
 	/// Get List Of Balances
+	///
+	/// Returns list of balances.
 	pub async fn balance_list(&self) -> Result<PaymentsBalanceListResponse, LolzteamError> {
 		self.http
 			.request("GET", "/balance/exchange", None, None, false)
@@ -6684,6 +6886,8 @@ impl PaymentsApi {
 	}
 
 	/// Exchange Balance
+	///
+	/// Transfer funds from one balance to another.
 	pub async fn balance_exchange(
 		&self,
 		body: Option<&PaymentsBalanceExchangeBody>,
@@ -6694,6 +6898,8 @@ impl PaymentsApi {
 	}
 
 	/// Create Payout
+	///
+	/// Creates a payout request.
 	pub async fn payout(
 		&self,
 		body: Option<&PaymentsPayoutBody>,
@@ -6704,6 +6910,8 @@ impl PaymentsApi {
 	}
 
 	/// Get Payout Services
+	///
+	/// Get a list of available payout services.
 	pub async fn payout_services(&self) -> Result<PaymentsPayoutServicesResponse, LolzteamError> {
 		self.http
 			.request("GET", "/balance/payout/services", None, None, false)
@@ -6711,6 +6919,11 @@ impl PaymentsApi {
 	}
 
 	/// Transfer Money
+	///
+	/// Transfer money to any user.
+	///
+	/// Required scopes:
+	/// + payment
 	pub async fn transfer(
 		&self,
 		body: Option<&PaymentsTransferBody>,
@@ -6721,6 +6934,11 @@ impl PaymentsApi {
 	}
 
 	/// Cancel Transfer
+	///
+	/// Cancels a transfer with a hold that was sent to your account.
+	///
+	/// Required scopes:
+	/// + payment
 	pub async fn cancel(
 		&self,
 		body: Option<&PaymentsCancelBody>,
@@ -6731,6 +6949,11 @@ impl PaymentsApi {
 	}
 
 	/// Check Transfer Fee
+	///
+	/// Get transfer limits and get fee amount for transfer.
+	///
+	/// Required scopes:
+	/// + payment
 	pub async fn fee(
 		&self,
 		params: Option<&PaymentsFeeParams>,
@@ -6757,6 +6980,8 @@ impl PaymentsApi {
 	}
 
 	/// Get Currency
+	///
+	/// Get currency list.
 	pub async fn currency(&self) -> Result<PaymentsCurrencyResponse, LolzteamError> {
 		self.http
 			.request("GET", "/currency", None, None, false)
@@ -6764,6 +6989,11 @@ impl PaymentsApi {
 	}
 
 	/// Get Invoice
+	///
+	/// Get invoice.
+	///
+	/// Required scopes:
+	/// + invoice
 	pub async fn invoice_get(
 		&self,
 		params: Option<&PaymentsInvoiceGetParams>,
@@ -6793,6 +7023,11 @@ impl PaymentsApi {
 	}
 
 	/// Create Invoice
+	///
+	/// Create invoice.
+	///
+	/// Required scopes:
+	/// + invoice
 	pub async fn invoice_create(
 		&self,
 		body: Option<&PaymentsInvoiceCreateBody>,
@@ -6803,6 +7038,11 @@ impl PaymentsApi {
 	}
 
 	/// Get Invoice List
+	///
+	/// Get invoice list.
+	///
+	/// Required scopes:
+	/// + invoice
 	pub async fn invoice_list(
 		&self,
 		params: Option<&PaymentsInvoiceListParams>,
@@ -6841,6 +7081,11 @@ impl PaymentsApi {
 	}
 
 	/// Payments History
+	///
+	/// Displays list of your payments.
+	///
+	/// Required scopes:
+	/// + payment
 	pub async fn history(
 		&self,
 		params: Option<&PaymentsHistoryParams>,
@@ -6919,6 +7164,8 @@ impl ProfileApi {
 	}
 
 	/// Get Claims
+	///
+	/// Returns a list of claims filed against you.
 	pub async fn claims(
 		&self,
 		params: Option<&ProfileClaimsParams>,
@@ -6948,6 +7195,8 @@ impl ProfileApi {
 	}
 
 	/// Get Profile
+	///
+	/// Displays info about your profile.
 	pub async fn get(
 		&self,
 		params: Option<&ProfileGetParams>,
@@ -6979,6 +7228,8 @@ impl ProfileApi {
 	}
 
 	/// Edit Market Settings
+	///
+	/// Change settings about your profile on the market.
 	pub async fn edit(
 		&self,
 		body: Option<&ProfileEditBody>,
@@ -6999,6 +7250,8 @@ impl ProxyApi {
 	}
 
 	/// Delete Proxy
+	///
+	/// Delete single or all proxies.
 	pub async fn delete(
 		&self,
 		body: Option<&ProxyDeleteBody>,
@@ -7009,11 +7262,29 @@ impl ProxyApi {
 	}
 
 	/// Get Proxy
+	///
+	/// Gets your proxy list.
 	pub async fn get(&self) -> Result<ProxyGetResponse, LolzteamError> {
 		self.http.request("GET", "/proxy", None, None, false).await
 	}
 
 	/// Add Proxy
+	///
+	/// Add single proxy or proxy list.
+	///
+	///
+	/// To add single proxy use this parameters:
+	///
+	///
+	/// + proxy_ip (required) - proxy ip or host
+	/// + proxy_port (required) - proxy port
+	/// + proxy_user (optional) - proxy username
+	/// + proxy_pass (optional) - proxy password
+	///
+	/// To add proxy list use this parameters:
+	///
+	///
+	/// + proxy_row (required) - proxy list in String format ip:port:user:pass. Each proxy must be start with new line (use \n separator)
 	pub async fn add(
 		&self,
 		body: Option<&ProxyAddBody>,
@@ -7034,6 +7305,13 @@ impl PublishingApi {
 	}
 
 	/// Add Account
+	///
+	/// Adds account on the market.
+	///
+	/// Required email login data categories:
+	/// + 9 - Fortnite
+	/// + 12 - Epic games
+	/// + 18 - Escape from Tarkov
 	pub async fn add(
 		&self,
 		body: Option<&PublishingAddBody>,
@@ -7044,6 +7322,10 @@ impl PublishingApi {
 	}
 
 	/// Fast Account Upload
+	///
+	/// Adds and checks the account for validity.
+	///
+	/// > ❗️ If you receive a "retry_request" error, you should repeat the same request (up to a maximum of 100 times).
 	pub async fn fast_sell(
 		&self,
 		body: Option<&PublishingFastSellBody>,
@@ -7054,6 +7336,10 @@ impl PublishingApi {
 	}
 
 	/// Add an External Account
+	///
+	/// Check and add an external account to your item.
+	///
+	/// > ❗️ Please note that if you're linking a Social Club account to Steam, it will update the last activity on your account (This is a limitation of Steam). If Social Club Games does not have a linked account, do not enter any data.
 	pub async fn external(
 		&self,
 		item_id: i64,
@@ -7066,6 +7352,10 @@ impl PublishingApi {
 	}
 
 	/// Check Account Details
+	///
+	/// Check and put up to sale not published account OR update account information existing account.
+	///
+	/// > ❗️ If you receive a "retry_request" error, you should repeat the same request (up to a maximum of 100 times).
 	pub async fn check(
 		&self,
 		item_id: i64,
@@ -7088,12 +7378,20 @@ impl PurchasingApi {
 	}
 
 	/// Check Account
+	///
+	/// Checking account for validity.
+	///
+	/// > ❗️ If you receive a "retry_request" error, you should repeat the same request (up to a maximum of 100 times).
 	pub async fn check(&self, item_id: i64) -> Result<PurchasingCheckResponse, LolzteamError> {
 		let path = format!("/{item_id}/check-account");
 		self.http.request("POST", &path, None, None, false).await
 	}
 
 	/// Confirm Buy
+	///
+	/// Confirm buy.
+	///
+	/// > ❗️ This method doesn't check account for validity. If you want to confirm validity before buying, you should use [FastBuy](https://lzt-market.readme.io/reference/purchasingfastbuy) method
 	pub async fn confirm(
 		&self,
 		item_id: i64,
@@ -7106,6 +7404,8 @@ impl PurchasingApi {
 	}
 
 	/// Cancel Discount Request
+	///
+	/// Cancel a requested discount for the specified item.
 	pub async fn discount_cancel(
 		&self,
 		item_id: i64,
@@ -7115,6 +7415,8 @@ impl PurchasingApi {
 	}
 
 	/// Discount Request
+	///
+	/// Request a discount for the specified item.
 	pub async fn discount_request(
 		&self,
 		item_id: i64,
@@ -7127,6 +7429,10 @@ impl PurchasingApi {
 	}
 
 	/// Fast Buy Account
+	///
+	/// Check and buy account.
+	///
+	/// > ❗️ If you receive a "retry_request" error, you should repeat the same request (up to a maximum of 100 times).
 	pub async fn fast_buy(
 		&self,
 		item_id: i64,
@@ -7176,7 +7482,10 @@ impl MarketClient {
 	}
 
 	/// Create a new client with custom configuration.
-	pub fn with_config(config: ClientConfig) -> Result<Self, LolzteamError> {
+	pub fn with_config(mut config: ClientConfig) -> Result<Self, LolzteamError> {
+		if config.base_url.is_empty() {
+			config.base_url = "https://prod-api.lzt.market".to_string();
+		}
 		let http = Arc::new(HttpClient::new(config)?);
 		Ok(Self {
 			auto_payments: AutoPaymentsApi::new(Arc::clone(&http)),

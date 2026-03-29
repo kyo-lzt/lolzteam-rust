@@ -18,6 +18,8 @@ impl AssetsApi {
 	}
 
 	/// Get CSS
+	///
+	/// Gets css rulesets for requested selectors.
 	pub async fn css(
 		&self,
 		params: Option<&AssetsCssParams>,
@@ -56,6 +58,11 @@ impl BatchApi {
 	}
 
 	/// Batch
+	///
+	/// Execute multiple API requests at once (Separated by comma). Maximum batch jobs is 10.
+	///
+	/// Required scopes:
+	/// + Same as called API requests.
 	pub async fn execute(
 		&self,
 		body: serde_json::Value,
@@ -76,6 +83,11 @@ impl CategoriesApi {
 	}
 
 	/// Get Categories
+	///
+	/// List of all categories in the system.
+	///
+	/// Required scopes:
+	/// + read
 	pub async fn list(
 		&self,
 		params: Option<&CategoriesListParams>,
@@ -108,6 +120,11 @@ impl CategoriesApi {
 	}
 
 	/// Get Category
+	///
+	/// Detail information of a category.
+	///
+	/// Required scopes:
+	/// + read
 	pub async fn get(&self, category_id: i64) -> Result<CategoriesGetResponse, LolzteamError> {
 		let path = format!("/categories/{category_id}");
 		self.http.request("GET", &path, None, None, false).await
@@ -124,6 +141,11 @@ impl ChatboxApi {
 	}
 
 	/// Get Chats
+	///
+	/// Get chat rooms.
+	///
+	/// Required scopes:
+	/// + chatbox
 	pub async fn index(
 		&self,
 		params: Option<&ChatboxIndexParams>,
@@ -150,6 +172,11 @@ impl ChatboxApi {
 	}
 
 	/// Unignore Chat User
+	///
+	/// Unignore chat user.
+	///
+	/// Required scopes:
+	/// + chatbox
 	pub async fn delete_ignore(
 		&self,
 		body: Option<&ChatboxDeleteIgnoreBody>,
@@ -160,6 +187,11 @@ impl ChatboxApi {
 	}
 
 	/// Get Ignored Chat Users
+	///
+	/// Get list of ignored chat users.
+	///
+	/// Required scopes:
+	/// + chatbox
 	pub async fn get_ignore(&self) -> Result<ChatboxGetIgnoreResponse, LolzteamError> {
 		self.http
 			.request("GET", "/chatbox/ignore", None, None, false)
@@ -167,6 +199,11 @@ impl ChatboxApi {
 	}
 
 	/// Ignore Chat User
+	///
+	/// Ignore chat user.
+	///
+	/// Required scopes:
+	/// + chatbox
 	pub async fn post_ignore(
 		&self,
 		body: Option<&ChatboxPostIgnoreBody>,
@@ -177,6 +214,11 @@ impl ChatboxApi {
 	}
 
 	/// Delete Chat Message
+	///
+	/// Delete chat message.
+	///
+	/// Required scopes:
+	/// + chatbox
 	pub async fn delete_message(
 		&self,
 		body: Option<&ChatboxDeleteMessageBody>,
@@ -187,6 +229,11 @@ impl ChatboxApi {
 	}
 
 	/// Get Chat Messages
+	///
+	/// Get chat messages.
+	///
+	/// Required scopes:
+	/// + chatbox
 	pub async fn get_messages(
 		&self,
 		room_id: RoomId,
@@ -215,6 +262,11 @@ impl ChatboxApi {
 	}
 
 	/// Create Chat Message
+	///
+	/// Create chat message.
+	///
+	/// Required scopes:
+	/// + chatbox
 	pub async fn post_message(
 		&self,
 		body: Option<&ChatboxPostMessageBody>,
@@ -225,6 +277,11 @@ impl ChatboxApi {
 	}
 
 	/// Edit Chat Message
+	///
+	/// Edit chat message.
+	///
+	/// Required scopes:
+	/// + chatbox
 	pub async fn edit_message(
 		&self,
 		body: Option<&ChatboxEditMessageBody>,
@@ -235,6 +292,11 @@ impl ChatboxApi {
 	}
 
 	/// Get Chat Leaderboard
+	///
+	/// Get chat leaderboard.
+	///
+	/// Required scopes:
+	/// + chatbox
 	pub async fn get_leaderboard(
 		&self,
 		params: Option<&ChatboxGetLeaderboardParams>,
@@ -261,6 +323,11 @@ impl ChatboxApi {
 	}
 
 	/// Get Chat Online
+	///
+	/// Get chat Online Users.
+	///
+	/// Required scopes:
+	/// + chatbox
 	pub async fn online(&self, room_id: RoomId) -> Result<ChatboxOnlineResponse, LolzteamError> {
 		let mut query = Vec::new();
 		query.push(("room_id".into(), ParamValue::String(room_id.to_string())));
@@ -280,6 +347,11 @@ impl ChatboxApi {
 	}
 
 	/// Get Chat Message Report Reasons
+	///
+	/// Report chat message.
+	///
+	/// Required scopes:
+	/// + chatbox
 	pub async fn report_reasons(
 		&self,
 		message_id: i64,
@@ -302,6 +374,11 @@ impl ChatboxApi {
 	}
 
 	/// Report Chat Message
+	///
+	/// Report chat message.
+	///
+	/// Required scopes:
+	/// + chatbox
 	pub async fn report(
 		&self,
 		body: Option<&ChatboxReportBody>,
@@ -322,6 +399,12 @@ impl ConversationsApi {
 	}
 
 	/// Leave Conversation
+	///
+	/// Leave the conversation.
+	///
+	/// Required scopes:
+	/// + post
+	/// + conversate
 	pub async fn delete(
 		&self,
 		body: Option<&ConversationsDeleteBody>,
@@ -332,6 +415,12 @@ impl ConversationsApi {
 	}
 
 	/// Get Conversations
+	///
+	/// List of conversations (with pagination).
+	///
+	/// Required scopes:
+	/// + read
+	/// + conversate
 	pub async fn list(
 		&self,
 		params: Option<&ConversationsListParams>,
@@ -364,6 +453,12 @@ impl ConversationsApi {
 	}
 
 	/// Create Conversation
+	///
+	/// Create a new conversation.
+	///
+	/// Required scopes:
+	/// + post
+	/// + conversate
 	pub async fn create(
 		&self,
 		body: Option<&ConversationsCreateBody>,
@@ -374,6 +469,11 @@ impl ConversationsApi {
 	}
 
 	/// Edit Conversation
+	///
+	/// Edit conversation.
+	///
+	/// Required scopes:
+	/// + conversate
 	pub async fn update(
 		&self,
 		body: Option<&ConversationsUpdateBody>,
@@ -384,6 +484,12 @@ impl ConversationsApi {
 	}
 
 	/// Get Conversation Message
+	///
+	/// Detail information of a message.
+	///
+	/// Required scopes:
+	/// + read
+	/// + conversate
 	pub async fn messages_get(
 		&self,
 		message_id: i64,
@@ -393,6 +499,12 @@ impl ConversationsApi {
 	}
 
 	/// Read All Conversations
+	///
+	/// Mark all conversations as read.
+	///
+	/// Required scopes:
+	/// + read
+	/// + conversate
 	pub async fn read_all(&self) -> Result<ConversationsReadAllResponse, LolzteamError> {
 		self.http
 			.request("POST", "/conversations/read-all", None, None, false)
@@ -400,6 +512,11 @@ impl ConversationsApi {
 	}
 
 	/// Send Content To Saved Messages
+	///
+	/// Send content to Saved Messages.
+	///
+	/// Required scopes:
+	/// + conversate
 	pub async fn save(
 		&self,
 		body: Option<&ConversationsSaveBody>,
@@ -410,6 +527,12 @@ impl ConversationsApi {
 	}
 
 	/// Search Conversations Messages
+	///
+	/// Search for conversations messages or recipients.
+	///
+	/// Required scopes:
+	/// + read
+	/// + conversate
 	pub async fn search(
 		&self,
 		body: Option<&ConversationsSearchBody>,
@@ -420,6 +543,11 @@ impl ConversationsApi {
 	}
 
 	/// Start Conversation
+	///
+	/// Start a new conversation with a user.
+	///
+	/// Required scopes:
+	/// + conversate
 	pub async fn start(
 		&self,
 		body: Option<&ConversationsStartBody>,
@@ -430,6 +558,12 @@ impl ConversationsApi {
 	}
 
 	/// Get Conversation
+	///
+	/// Detail information of a conversation.
+	///
+	/// Required scopes:
+	/// + read
+	/// + conversate
 	pub async fn get(
 		&self,
 		conversation_id: i64,
@@ -439,6 +573,12 @@ impl ConversationsApi {
 	}
 
 	/// Disable Conversation Alerts
+	///
+	/// Disable alerts for conversation.
+	///
+	/// Required scopes:
+	/// + post
+	/// + conversate
 	pub async fn alerts_disable(
 		&self,
 		conversation_id: i64,
@@ -448,6 +588,12 @@ impl ConversationsApi {
 	}
 
 	/// Enable Conversation Alerts
+	///
+	/// Enable alerts for conversation.
+	///
+	/// Required scopes:
+	/// + post
+	/// + conversate
 	pub async fn alerts_enable(
 		&self,
 		conversation_id: i64,
@@ -457,6 +603,12 @@ impl ConversationsApi {
 	}
 
 	/// Invite Users to Conversation
+	///
+	/// Invite one or more users to an existing conversation.
+	///
+	/// Required scopes:
+	/// + conversate
+	/// + post
 	pub async fn invite(
 		&self,
 		conversation_id: i64,
@@ -469,6 +621,11 @@ impl ConversationsApi {
 	}
 
 	/// Kick User from Conversation
+	///
+	/// Kicks a user from a conversation.
+	///
+	/// Required scopes:
+	/// + conversate
 	pub async fn kick(
 		&self,
 		conversation_id: i64,
@@ -481,6 +638,12 @@ impl ConversationsApi {
 	}
 
 	/// Get Conversation Messages
+	///
+	/// List of messages in a conversation (with pagination).
+	///
+	/// Required scopes:
+	/// + read
+	/// + conversate
 	pub async fn messages_list(
 		&self,
 		conversation_id: i64,
@@ -521,6 +684,12 @@ impl ConversationsApi {
 	}
 
 	/// Create Conversation Message
+	///
+	/// Create a new conversation message.
+	///
+	/// Required scopes:
+	/// + post
+	/// + conversate
 	pub async fn messages_create(
 		&self,
 		conversation_id: i64,
@@ -533,6 +702,11 @@ impl ConversationsApi {
 	}
 
 	/// Delete Conversation Message
+	///
+	/// Deletes a message from a conversation.
+	///
+	/// Required scopes:
+	/// + conversate
 	pub async fn messages_delete(
 		&self,
 		conversation_id: i64,
@@ -543,6 +717,12 @@ impl ConversationsApi {
 	}
 
 	/// Edit Conversation Message
+	///
+	/// Edit a message.
+	///
+	/// Required scopes:
+	/// + post
+	/// + conversate
 	pub async fn messages_edit(
 		&self,
 		conversation_id: i64,
@@ -556,6 +736,12 @@ impl ConversationsApi {
 	}
 
 	/// Unstick Conversation Message
+	///
+	/// Unstick a message in a conversation.
+	///
+	/// Required scopes:
+	/// + post
+	/// + conversate
 	pub async fn messages_unstick(
 		&self,
 		conversation_id: i64,
@@ -566,6 +752,12 @@ impl ConversationsApi {
 	}
 
 	/// Stick Conversation Message
+	///
+	/// Stick a message in a conversation.
+	///
+	/// Required scopes:
+	/// + post
+	/// + conversate
 	pub async fn messages_stick(
 		&self,
 		conversation_id: i64,
@@ -576,6 +768,11 @@ impl ConversationsApi {
 	}
 
 	/// Read a Conversation
+	///
+	/// Read a specific conversation.
+	///
+	/// Required scopes:
+	/// + conversate
 	pub async fn read(
 		&self,
 		conversation_id: i64,
@@ -585,6 +782,12 @@ impl ConversationsApi {
 	}
 
 	/// Unstar Conversation
+	///
+	/// Unstar conversation.
+	///
+	/// Required scopes:
+	/// + post
+	/// + conversate
 	pub async fn unstar(
 		&self,
 		conversation_id: i64,
@@ -594,6 +797,12 @@ impl ConversationsApi {
 	}
 
 	/// Star Conversation
+	///
+	/// Star conversation.
+	///
+	/// Required scopes:
+	/// + post
+	/// + conversate
 	pub async fn star(
 		&self,
 		conversation_id: i64,
@@ -612,6 +821,8 @@ impl FormsApi {
 		Self { http }
 	}
 
+	/// Get Forms List
+	///
 	/// Get Forms List
 	pub async fn list(
 		&self,
@@ -639,6 +850,8 @@ impl FormsApi {
 	}
 
 	/// Create Form
+	///
+	/// Create Form.
 	pub async fn create(
 		&self,
 		body: Option<&FormsCreateBody>,
@@ -659,6 +872,11 @@ impl ForumsApi {
 	}
 
 	/// Get Forums
+	///
+	/// List of all forums in the system.
+	///
+	/// Required scopes:
+	/// + read
 	pub async fn list(
 		&self,
 		params: Option<&ForumsListParams>,
@@ -691,6 +909,11 @@ impl ForumsApi {
 	}
 
 	/// Get Feed Options
+	///
+	/// Returns available options for the forums feed.
+	///
+	/// Required scopes:
+	/// + read
 	pub async fn get_feed_options(&self) -> Result<ForumsGetFeedOptionsResponse, LolzteamError> {
 		self.http
 			.request("GET", "/forums/feed/options", None, None, false)
@@ -698,6 +921,11 @@ impl ForumsApi {
 	}
 
 	/// Edit Feed Options
+	///
+	/// Edit feed options.
+	///
+	/// Required scopes:
+	/// + post
 	pub async fn edit_feed_options(
 		&self,
 		body: Option<&ForumsEditFeedOptionsBody>,
@@ -708,6 +936,11 @@ impl ForumsApi {
 	}
 
 	/// Get Followed Forums
+	///
+	/// List of followed forums by current user.
+	///
+	/// Required scopes:
+	/// + read
 	pub async fn followed(
 		&self,
 		params: Option<&ForumsFollowedParams>,
@@ -734,6 +967,11 @@ impl ForumsApi {
 	}
 
 	/// Get Forums Tree
+	///
+	/// Returns grouped forums.
+	///
+	/// Required scopes:
+	/// + read
 	pub async fn grouped(&self) -> Result<ForumsGroupedResponse, LolzteamError> {
 		self.http
 			.request("GET", "/forums/grouped", None, None, false)
@@ -741,24 +979,44 @@ impl ForumsApi {
 	}
 
 	/// Get Forum
+	///
+	/// Detail information of a forum.
+	///
+	/// Required scopes:
+	/// + read
 	pub async fn get(&self, forum_id: i64) -> Result<ForumsGetResponse, LolzteamError> {
 		let path = format!("/forums/{forum_id}");
 		self.http.request("GET", &path, None, None, false).await
 	}
 
 	/// Unfollow Forum
+	///
+	/// Unfollow a forum.
+	///
+	/// Required scopes:
+	/// + post
 	pub async fn unfollow(&self, forum_id: i64) -> Result<ForumsUnfollowResponse, LolzteamError> {
 		let path = format!("/forums/{forum_id}/followers");
 		self.http.request("DELETE", &path, None, None, false).await
 	}
 
 	/// Get Followers
+	///
+	/// List of a forum's followers. For privacy reason, only the current user will be included in the list (if the user follows the specified forum).
+	///
+	/// Required scopes:
+	/// + read
 	pub async fn followers(&self, forum_id: i64) -> Result<ForumsFollowersResponse, LolzteamError> {
 		let path = format!("/forums/{forum_id}/followers");
 		self.http.request("GET", &path, None, None, false).await
 	}
 
 	/// Follow Forum
+	///
+	/// Follow a forum.
+	///
+	/// Required scopes:
+	/// + post
 	pub async fn follow(
 		&self,
 		forum_id: i64,
@@ -781,6 +1039,11 @@ impl LinksApi {
 	}
 
 	/// Get Links Forum
+	///
+	/// List of all link forums.
+	///
+	/// Required scopes:
+	/// + read
 	pub async fn list(&self) -> Result<LinksListResponse, LolzteamError> {
 		self.http
 			.request("GET", "/link-forums", None, None, false)
@@ -788,6 +1051,11 @@ impl LinksApi {
 	}
 
 	/// Get Link Forum
+	///
+	/// Detail information of a link forum.
+	///
+	/// Required scopes:
+	/// + read
 	pub async fn get(&self, link_id: i64) -> Result<LinksGetResponse, LolzteamError> {
 		let path = format!("/link-forums/{link_id}");
 		self.http.request("GET", &path, None, None, false).await
@@ -804,6 +1072,11 @@ impl NavigationApi {
 	}
 
 	/// Get Navigation
+	///
+	/// List of navigation elements within the system.
+	///
+	/// Required scopes:
+	/// + read
 	pub async fn list(
 		&self,
 		params: Option<&NavigationListParams>,
@@ -840,6 +1113,11 @@ impl NotificationsApi {
 	}
 
 	/// Get Notifications
+	///
+	/// List of notifications (both read and unread).
+	///
+	/// Required scopes:
+	/// + read
 	pub async fn list(
 		&self,
 		params: Option<&NotificationsListParams>,
@@ -872,6 +1150,11 @@ impl NotificationsApi {
 	}
 
 	/// Mark Notification Read
+	///
+	/// Mark single notification or all existing notifications read.
+	///
+	/// Required scopes:
+	/// + post
 	pub async fn read(
 		&self,
 		body: Option<&NotificationsReadBody>,
@@ -882,6 +1165,11 @@ impl NotificationsApi {
 	}
 
 	/// Get Notification
+	///
+	/// Get associated content of notification. The response depends on the content type.
+	///
+	/// Required scopes:
+	/// + read
 	pub async fn get(
 		&self,
 		notification_id: i64,
@@ -901,6 +1189,14 @@ impl OAuthApi {
 	}
 
 	/// Get Access Token
+	///
+	/// Obtain an access token using various grant types.
+	///
+	/// Supports the following grant types:
+	/// - Client Credentials
+	/// - Authorization Code
+	/// - Refresh Token
+	/// - Password
 	pub async fn token(
 		&self,
 		body: Option<&OAuthTokenBody>,
@@ -1046,6 +1342,11 @@ impl PagesApi {
 	}
 
 	/// Get Pages
+	///
+	/// List of all pages in the system.
+	///
+	/// Required scopes:
+	/// + read
 	pub async fn list(
 		&self,
 		params: Option<&PagesListParams>,
@@ -1075,6 +1376,11 @@ impl PagesApi {
 	}
 
 	/// Get Page
+	///
+	/// Detail information of a page.
+	///
+	/// Required scopes:
+	/// + read
 	pub async fn get(&self, page_id: i64) -> Result<PagesGetResponse, LolzteamError> {
 		let path = format!("/pages/{page_id}");
 		self.http.request("GET", &path, None, None, false).await
@@ -1091,6 +1397,11 @@ impl PostsApi {
 	}
 
 	/// Get Posts
+	///
+	/// List of posts in a thread (with pagination).
+	///
+	/// Required scopes:
+	/// + read
 	pub async fn list(
 		&self,
 		params: Option<&PostsListParams>,
@@ -1129,6 +1440,11 @@ impl PostsApi {
 	}
 
 	/// Create Post
+	///
+	/// Create a new post.
+	///
+	/// Required scopes:
+	/// + post
 	pub async fn create(
 		&self,
 		body: Option<&PostsCreateBody>,
@@ -1139,6 +1455,11 @@ impl PostsApi {
 	}
 
 	/// Delete Post Comment
+	///
+	/// Delete a post comment.
+	///
+	/// Required scopes:
+	/// + post
 	pub async fn comments_delete(
 		&self,
 		body: Option<&PostsCommentsDeleteBody>,
@@ -1149,6 +1470,11 @@ impl PostsApi {
 	}
 
 	/// Get Post Comments
+	///
+	/// List of post comments in a thread.
+	///
+	/// Required scopes:
+	/// + read
 	pub async fn comments_get(
 		&self,
 		post_id: i64,
@@ -1180,6 +1506,11 @@ impl PostsApi {
 	}
 
 	/// Create Post Comment
+	///
+	/// Create a post comment.
+	///
+	/// Required scopes:
+	/// + post
 	pub async fn comments_create(
 		&self,
 		body: Option<&PostsCommentsCreateBody>,
@@ -1190,6 +1521,11 @@ impl PostsApi {
 	}
 
 	/// Edit Post Comment
+	///
+	/// Edit a post comment.
+	///
+	/// Required scopes:
+	/// + post
 	pub async fn comments_edit(
 		&self,
 		body: Option<&PostsCommentsEditBody>,
@@ -1200,6 +1536,11 @@ impl PostsApi {
 	}
 
 	/// Report Post Comment
+	///
+	/// Report a post comment.
+	///
+	/// Required scopes:
+	/// + post
 	pub async fn comments_report(
 		&self,
 		body: Option<&PostsCommentsReportBody>,
@@ -1210,6 +1551,11 @@ impl PostsApi {
 	}
 
 	/// Delete Post
+	///
+	/// Delete a post.
+	///
+	/// Required scopes:
+	/// + post
 	pub async fn delete(
 		&self,
 		post_id: i64,
@@ -1222,12 +1568,22 @@ impl PostsApi {
 	}
 
 	/// Get Post
+	///
+	/// Detail information of a post.
+	///
+	/// Required scopes:
+	/// + read
 	pub async fn get(&self, post_id: i64) -> Result<PostsGetResponse, LolzteamError> {
 		let path = format!("/posts/{post_id}");
 		self.http.request("GET", &path, None, None, false).await
 	}
 
 	/// Edit Post
+	///
+	/// Edit a post.
+	///
+	/// Required scopes:
+	/// + post
 	pub async fn edit(
 		&self,
 		post_id: i64,
@@ -1240,12 +1596,22 @@ impl PostsApi {
 	}
 
 	/// Unlike Post
+	///
+	/// Unlike a post.
+	///
+	/// Required scopes:
+	/// + post
 	pub async fn unlike(&self, post_id: i64) -> Result<PostsUnlikeResponse, LolzteamError> {
 		let path = format!("/posts/{post_id}/likes");
 		self.http.request("DELETE", &path, None, None, false).await
 	}
 
 	/// Get Post Likes
+	///
+	/// List of users who liked a post.
+	///
+	/// Required scopes:
+	/// + read
 	pub async fn likes(
 		&self,
 		post_id: i64,
@@ -1277,12 +1643,22 @@ impl PostsApi {
 	}
 
 	/// Like Post
+	///
+	/// Like a post.
+	///
+	/// Required scopes:
+	/// + post
 	pub async fn like(&self, post_id: i64) -> Result<PostsLikeResponse, LolzteamError> {
 		let path = format!("/posts/{post_id}/likes");
 		self.http.request("POST", &path, None, None, false).await
 	}
 
 	/// Get Post Report Reasons
+	///
+	/// Get post report reasons.
+	///
+	/// Required scopes:
+	/// + read
 	pub async fn report_reasons(
 		&self,
 		post_id: i64,
@@ -1292,6 +1668,11 @@ impl PostsApi {
 	}
 
 	/// Report Post
+	///
+	/// Report a post.
+	///
+	/// Required scopes:
+	/// + post
 	pub async fn report(
 		&self,
 		post_id: i64,
@@ -1314,6 +1695,11 @@ impl ProfilePostsApi {
 	}
 
 	/// Create Profile Post
+	///
+	/// Create a profile post on a user profile.
+	///
+	/// Required scopes:
+	/// + post
 	pub async fn create(
 		&self,
 		body: Option<&ProfilePostsCreateBody>,
@@ -1324,6 +1710,11 @@ impl ProfilePostsApi {
 	}
 
 	/// Delete Profile Post Comment
+	///
+	/// Delete a profile post comment.
+	///
+	/// Required scopes:
+	/// + post
 	pub async fn comments_delete(
 		&self,
 		body: Option<&ProfilePostsCommentsDeleteBody>,
@@ -1334,6 +1725,11 @@ impl ProfilePostsApi {
 	}
 
 	/// Get Profile Post Comments
+	///
+	/// List of comments of a profile post.
+	///
+	/// Required scopes:
+	/// + read
 	pub async fn comments_list(
 		&self,
 		profile_post_id: i64,
@@ -1368,6 +1764,11 @@ impl ProfilePostsApi {
 	}
 
 	/// Create Profile Post Comment
+	///
+	/// Create a new profile post comment.
+	///
+	/// Required scopes:
+	/// + post
 	pub async fn comments_create(
 		&self,
 		body: Option<&ProfilePostsCommentsCreateBody>,
@@ -1378,6 +1779,11 @@ impl ProfilePostsApi {
 	}
 
 	/// Edit Profile Post Comment
+	///
+	/// Edit a profile post comment.
+	///
+	/// Required scopes:
+	/// + post
 	pub async fn comments_edit(
 		&self,
 		body: Option<&ProfilePostsCommentsEditBody>,
@@ -1388,6 +1794,11 @@ impl ProfilePostsApi {
 	}
 
 	/// Report a Profile Post Comment
+	///
+	/// Report a profile post comment.
+	///
+	/// Required scopes:
+	/// + post
 	pub async fn comments_report(
 		&self,
 		comment_id: i64,
@@ -1400,6 +1811,11 @@ impl ProfilePostsApi {
 	}
 
 	/// Delete Profile Post
+	///
+	/// Delete a profile post.
+	///
+	/// Required scopes:
+	/// + post
 	pub async fn delete(
 		&self,
 		profile_post_id: i64,
@@ -1428,6 +1844,11 @@ impl ProfilePostsApi {
 	}
 
 	/// Get Profile Post
+	///
+	/// Detail information of a profile post.
+	///
+	/// Required scopes:
+	/// + read
 	pub async fn get(
 		&self,
 		profile_post_id: i64,
@@ -1437,6 +1858,11 @@ impl ProfilePostsApi {
 	}
 
 	/// Edit Profile Post
+	///
+	/// Edit a profile post.
+	///
+	/// Required scopes:
+	/// + post
 	pub async fn edit(
 		&self,
 		profile_post_id: i64,
@@ -1449,6 +1875,11 @@ impl ProfilePostsApi {
 	}
 
 	/// Get Profile Post Comment
+	///
+	/// Detail information of a profile post comment.
+	///
+	/// Required scopes:
+	/// + read
 	pub async fn comments_get(
 		&self,
 		profile_post_id: i64,
@@ -1459,6 +1890,11 @@ impl ProfilePostsApi {
 	}
 
 	/// Unlike Profile Post
+	///
+	/// Unlike a profile post.
+	///
+	/// Required scopes:
+	/// + post
 	pub async fn unlike(
 		&self,
 		profile_post_id: i64,
@@ -1468,6 +1904,11 @@ impl ProfilePostsApi {
 	}
 
 	/// Get Profile Post Likes
+	///
+	/// List of users who liked a profile post.
+	///
+	/// Required scopes:
+	/// + read
 	pub async fn likes(
 		&self,
 		profile_post_id: i64,
@@ -1477,6 +1918,11 @@ impl ProfilePostsApi {
 	}
 
 	/// Like Profile Post
+	///
+	/// Like a profile post.
+	///
+	/// Required scopes:
+	/// + post
 	pub async fn like(
 		&self,
 		profile_post_id: i64,
@@ -1486,6 +1932,11 @@ impl ProfilePostsApi {
 	}
 
 	/// Get Profile Post Report Reasons
+	///
+	/// Get Profile Post Report Reasons.
+	///
+	/// Required scopes:
+	/// + read
 	pub async fn report_reasons(
 		&self,
 		profile_post_id: i64,
@@ -1495,6 +1946,11 @@ impl ProfilePostsApi {
 	}
 
 	/// Report a Profile Post
+	///
+	/// Report a profile post.
+	///
+	/// Required scopes:
+	/// + post
 	pub async fn report(
 		&self,
 		profile_post_id: i64,
@@ -1507,6 +1963,11 @@ impl ProfilePostsApi {
 	}
 
 	/// Unstick Profile Post
+	///
+	/// Unstick a profile post.
+	///
+	/// Required scopes:
+	/// + post
 	pub async fn unstick(
 		&self,
 		profile_post_id: i64,
@@ -1516,6 +1977,11 @@ impl ProfilePostsApi {
 	}
 
 	/// Stick Profile Post
+	///
+	/// Stick a profile post.
+	///
+	/// Required scopes:
+	/// + post
 	pub async fn stick(
 		&self,
 		profile_post_id: i64,
@@ -1525,6 +1991,11 @@ impl ProfilePostsApi {
 	}
 
 	/// Get Profile Posts
+	///
+	/// List of profile posts (with pagination).
+	///
+	/// Required scopes:
+	/// + read
 	pub async fn list(
 		&self,
 		user_id: StringOrInt,
@@ -1577,6 +2048,11 @@ impl SearchApi {
 	}
 
 	/// Search
+	///
+	/// Search for all supported contents.
+	///
+	/// Required scopes:
+	/// + post
 	pub async fn all(
 		&self,
 		body: Option<&SearchAllBody>,
@@ -1587,6 +2063,11 @@ impl SearchApi {
 	}
 
 	/// Search Post
+	///
+	/// Search for posts.
+	///
+	/// Required scopes:
+	/// + post
 	pub async fn posts(
 		&self,
 		body: Option<&SearchPostsBody>,
@@ -1597,6 +2078,11 @@ impl SearchApi {
 	}
 
 	/// Search Profile Posts
+	///
+	/// Search for profile posts.
+	///
+	/// Required scopes:
+	/// + post
 	pub async fn profile_posts(
 		&self,
 		body: Option<&SearchProfilePostsBody>,
@@ -1607,6 +2093,11 @@ impl SearchApi {
 	}
 
 	/// Search Tagged
+	///
+	/// Search for tagged contents.
+	///
+	/// Required scopes:
+	/// + post
 	pub async fn tagged(
 		&self,
 		body: Option<&SearchTaggedBody>,
@@ -1617,6 +2108,11 @@ impl SearchApi {
 	}
 
 	/// Search Thread
+	///
+	/// Search for threads.
+	///
+	/// Required scopes:
+	/// + post
 	pub async fn threads(
 		&self,
 		body: Option<&SearchThreadsBody>,
@@ -1627,6 +2123,11 @@ impl SearchApi {
 	}
 
 	/// Search Users
+	///
+	/// Search for users.
+	///
+	/// Required scopes:
+	/// + post
 	pub async fn users(
 		&self,
 		body: Option<&SearchUsersBody>,
@@ -1637,6 +2138,11 @@ impl SearchApi {
 	}
 
 	/// Get Search Results
+	///
+	/// List of search results (with pagination).
+	///
+	/// Required scopes:
+	/// + get
 	pub async fn results(
 		&self,
 		search_id: StringOrInt,
@@ -1678,11 +2184,21 @@ impl TagsApi {
 	}
 
 	/// Get Popular Tags
+	///
+	/// List of popular tags (no pagination).
+	///
+	/// Required scopes:
+	/// + read
 	pub async fn popular(&self) -> Result<TagsPopularResponse, LolzteamError> {
 		self.http.request("GET", "/tags", None, None, false).await
 	}
 
 	/// Get Filtered Content
+	///
+	/// Filtered list of tags.
+	///
+	/// Required scopes:
+	/// + read
 	pub async fn find(&self, tag: String) -> Result<TagsFindResponse, LolzteamError> {
 		let mut query = Vec::new();
 		query.push(("tag".into(), ParamValue::String(tag.clone())));
@@ -1702,6 +2218,11 @@ impl TagsApi {
 	}
 
 	/// Get Tags
+	///
+	/// List of tags.
+	///
+	/// Required scopes:
+	/// + read
 	pub async fn list(
 		&self,
 		params: Option<&TagsListParams>,
@@ -1731,6 +2252,11 @@ impl TagsApi {
 	}
 
 	/// Get Tagged Content
+	///
+	/// List of tagged contents.
+	///
+	/// Required scopes:
+	/// + read
 	pub async fn get(
 		&self,
 		tag_id: i64,
@@ -1772,6 +2298,11 @@ impl ThreadsApi {
 	}
 
 	/// Create Claim
+	///
+	/// Create a Claim.
+	///
+	/// Required scopes:
+	/// + post
 	pub async fn claim(
 		&self,
 		body: Option<&ThreadsClaimBody>,
@@ -1782,6 +2313,11 @@ impl ThreadsApi {
 	}
 
 	/// Create Contest
+	///
+	/// Create a new contest.
+	///
+	/// Required scopes:
+	/// + post
 	pub async fn create_contest(
 		&self,
 		body: Option<&ThreadsCreateContestBody>,
@@ -1792,12 +2328,22 @@ impl ThreadsApi {
 	}
 
 	/// Finish Contest
+	///
+	/// Finishes a contest.
+	///
+	/// Required scopes:
+	/// + post
 	pub async fn finish(&self, thread_id: i64) -> Result<ThreadsFinishResponse, LolzteamError> {
 		let path = format!("/contests/{thread_id}/finish");
 		self.http.request("POST", &path, None, None, false).await
 	}
 
 	/// Get Threads
+	///
+	/// List of threads in a forum (with pagination).
+	///
+	/// Required scopes:
+	/// + read
 	pub async fn list(
 		&self,
 		params: Option<&ThreadsListParams>,
@@ -1887,6 +2433,11 @@ impl ThreadsApi {
 	}
 
 	/// Create Thread
+	///
+	/// Create a new thread.
+	///
+	/// Required scopes:
+	/// + post
 	pub async fn create(
 		&self,
 		body: Option<&ThreadsCreateBody>,
@@ -1897,6 +2448,11 @@ impl ThreadsApi {
 	}
 
 	/// Get Followed Threads
+	///
+	/// List of followed threads by current user.
+	///
+	/// Required scopes:
+	/// + read
 	pub async fn followed(
 		&self,
 		params: Option<&ThreadsFollowedParams>,
@@ -1931,6 +2487,11 @@ impl ThreadsApi {
 	}
 
 	/// Get Unread Threads
+	///
+	/// List of unread threads (must be logged in).
+	///
+	/// Required scopes:
+	/// + read
 	pub async fn unread(
 		&self,
 		params: Option<&ThreadsUnreadParams>,
@@ -1963,6 +2524,11 @@ impl ThreadsApi {
 	}
 
 	/// Get Recent Threads
+	///
+	/// List of recent threads.
+	///
+	/// Required scopes:
+	/// + read
 	pub async fn recent(
 		&self,
 		params: Option<&ThreadsRecentParams>,
@@ -1998,6 +2564,11 @@ impl ThreadsApi {
 	}
 
 	/// Delete Thread
+	///
+	/// Delete a thread.
+	///
+	/// Required scopes:
+	/// + post
 	pub async fn delete(
 		&self,
 		thread_id: i64,
@@ -2010,6 +2581,11 @@ impl ThreadsApi {
 	}
 
 	/// Get Thread
+	///
+	/// Detail information of a thread.
+	///
+	/// Required scopes:
+	/// + read
 	pub async fn get(
 		&self,
 		thread_id: i64,
@@ -2043,6 +2619,11 @@ impl ThreadsApi {
 	}
 
 	/// Edit thread
+	///
+	/// Edit a thread.
+	///
+	/// Required scopes:
+	/// + post
 	pub async fn edit(
 		&self,
 		thread_id: i64,
@@ -2055,18 +2636,33 @@ impl ThreadsApi {
 	}
 
 	/// Bump Thread
+	///
+	/// Bump a thread.
+	///
+	/// Required scopes:
+	/// + post
 	pub async fn bump(&self, thread_id: i64) -> Result<ThreadsBumpResponse, LolzteamError> {
 		let path = format!("/threads/{thread_id}/bump");
 		self.http.request("POST", &path, None, None, false).await
 	}
 
 	/// Unfollow Thread
+	///
+	/// Unfollow a thread.
+	///
+	/// Required scopes:
+	/// + post
 	pub async fn unfollow(&self, thread_id: i64) -> Result<ThreadsUnfollowResponse, LolzteamError> {
 		let path = format!("/threads/{thread_id}/followers");
 		self.http.request("DELETE", &path, None, None, false).await
 	}
 
 	/// Get Thread Followers
+	///
+	/// List of a thread's followers. For privacy reason, only the current user will be included in the list.
+	///
+	/// Required scopes:
+	/// + read
 	pub async fn followers(
 		&self,
 		thread_id: i64,
@@ -2076,6 +2672,11 @@ impl ThreadsApi {
 	}
 
 	/// Follow Thread
+	///
+	/// Follow a thread.
+	///
+	/// Required scopes:
+	/// + post
 	pub async fn follow(
 		&self,
 		thread_id: i64,
@@ -2088,12 +2689,22 @@ impl ThreadsApi {
 	}
 
 	/// Hide Thread
+	///
+	/// Hide a thread from your feed.
+	///
+	/// Required scopes:
+	/// + post
 	pub async fn hide(&self, thread_id: i64) -> Result<ThreadsHideResponse, LolzteamError> {
 		let path = format!("/threads/{thread_id}/hide");
 		self.http.request("POST", &path, None, None, false).await
 	}
 
 	/// Move Thread
+	///
+	/// Move a thread to another forum.
+	///
+	/// Required scopes:
+	/// + post
 	pub async fn move_(
 		&self,
 		thread_id: i64,
@@ -2106,6 +2717,11 @@ impl ThreadsApi {
 	}
 
 	/// Get Navigation Elements
+	///
+	/// List of navigation elements to reach the specified thread.
+	///
+	/// Required scopes:
+	/// + read
 	pub async fn navigation(
 		&self,
 		thread_id: i64,
@@ -2115,12 +2731,22 @@ impl ThreadsApi {
 	}
 
 	/// Get Poll
+	///
+	/// Detail information of a poll.
+	///
+	/// Required scopes:
+	/// + read
 	pub async fn poll_get(&self, thread_id: i64) -> Result<ThreadsPollGetResponse, LolzteamError> {
 		let path = format!("/threads/{thread_id}/poll");
 		self.http.request("GET", &path, None, None, false).await
 	}
 
 	/// Vote Poll
+	///
+	/// Vote on a thread poll.
+	///
+	/// Required scopes:
+	/// + post
 	pub async fn poll_vote(
 		&self,
 		thread_id: i64,
@@ -2133,12 +2759,22 @@ impl ThreadsApi {
 	}
 
 	/// Unbookmark Thread
+	///
+	/// Unbookmark a thread.
+	///
+	/// Required scopes:
+	/// + post
 	pub async fn unstar(&self, thread_id: i64) -> Result<ThreadsUnstarResponse, LolzteamError> {
 		let path = format!("/threads/{thread_id}/star");
 		self.http.request("DELETE", &path, None, None, false).await
 	}
 
 	/// Bookmark Thread
+	///
+	/// Bookmark a thread.
+	///
+	/// Required scopes:
+	/// + post
 	pub async fn star(&self, thread_id: i64) -> Result<ThreadsStarResponse, LolzteamError> {
 		let path = format!("/threads/{thread_id}/star");
 		self.http.request("POST", &path, None, None, false).await
@@ -2155,6 +2791,11 @@ impl UsersApi {
 	}
 
 	/// Cancel Secret Answer Reset
+	///
+	/// Cancel a pending secret answer reset request for the account.
+	///
+	/// Required scopes:
+	/// + post
 	pub async fn sa_cancel_reset(&self) -> Result<UsersSaCancelResetResponse, LolzteamError> {
 		self.http
 			.request("DELETE", "/account/secret-answer/reset", None, None, false)
@@ -2162,6 +2803,11 @@ impl UsersApi {
 	}
 
 	/// Reset Secret Answer
+	///
+	/// Request a reset of the secret answer for the account.
+	///
+	/// Required scopes:
+	/// + post
 	pub async fn sa_reset(&self) -> Result<UsersSaResetResponse, LolzteamError> {
 		self.http
 			.request("POST", "/account/secret-answer/reset", None, None, false)
@@ -2169,6 +2815,11 @@ impl UsersApi {
 	}
 
 	/// Get Users
+	///
+	/// List of users (with pagination).
+	///
+	/// Required scopes:
+	/// + read
 	pub async fn list(
 		&self,
 		params: Option<&UsersListParams>,
@@ -2206,6 +2857,11 @@ impl UsersApi {
 	}
 
 	/// Get User Fields
+	///
+	/// List of user fields.
+	///
+	/// Required scopes:
+	/// + read
 	pub async fn fields(&self) -> Result<UsersFieldsResponse, LolzteamError> {
 		self.http
 			.request("GET", "/users/fields", None, None, false)
@@ -2213,6 +2869,11 @@ impl UsersApi {
 	}
 
 	/// Find Users
+	///
+	/// List of users filtered by username, email or custom fields.
+	///
+	/// Required scopes:
+	/// + read
 	pub async fn find(
 		&self,
 		params: Option<&UsersFindParams>,
@@ -2255,6 +2916,11 @@ impl UsersApi {
 	}
 
 	/// Get Ignored Users
+	///
+	/// List of ignored users of current user.
+	///
+	/// Required scopes:
+	/// + read
 	pub async fn ignored(
 		&self,
 		params: Option<&UsersIgnoredParams>,
@@ -2281,6 +2947,11 @@ impl UsersApi {
 	}
 
 	/// Get Secret Answer Types
+	///
+	/// Get available secret answer types for user account security.
+	///
+	/// Required scopes:
+	/// + read
 	pub async fn secret_answer_types(
 		&self,
 	) -> Result<UsersSecretAnswerTypesResponse, LolzteamError> {
@@ -2290,6 +2961,12 @@ impl UsersApi {
 	}
 
 	/// Get User
+	///
+	/// Detail information of a user.
+	///
+	/// Required scopes:
+	/// + read
+	/// + basic
 	pub async fn get(
 		&self,
 		user_id: StringOrInt,
@@ -2323,6 +3000,11 @@ impl UsersApi {
 	}
 
 	/// Edit User
+	///
+	/// Edit a user.
+	///
+	/// Required scopes:
+	/// + post
 	pub async fn edit(
 		&self,
 		user_id: StringOrInt,
@@ -2335,6 +3017,11 @@ impl UsersApi {
 	}
 
 	/// Delete Avatar
+	///
+	/// Delete avatar for a user.
+	///
+	/// Required scopes:
+	/// + post
 	pub async fn avatar_delete(
 		&self,
 		user_id: StringOrInt,
@@ -2344,6 +3031,11 @@ impl UsersApi {
 	}
 
 	/// Upload Avatar
+	///
+	/// Upload avatar for a user.
+	///
+	/// Required scopes:
+	/// + post
 	pub async fn avatar_upload(
 		&self,
 		user_id: StringOrInt,
@@ -2383,6 +3075,11 @@ impl UsersApi {
 	}
 
 	/// Crop Avatar
+	///
+	/// Crop avatar for a user.
+	///
+	/// Required scopes:
+	/// + post
 	pub async fn avatar_crop(
 		&self,
 		user_id: StringOrInt,
@@ -2395,6 +3092,11 @@ impl UsersApi {
 	}
 
 	/// Delete Background
+	///
+	/// Delete background for a user.
+	///
+	/// Required scopes:
+	/// + post
 	pub async fn background_delete(
 		&self,
 		user_id: StringOrInt,
@@ -2404,6 +3106,11 @@ impl UsersApi {
 	}
 
 	/// Upload Background
+	///
+	/// Upload background for a user.
+	///
+	/// Required scopes:
+	/// + post
 	pub async fn background_upload(
 		&self,
 		user_id: StringOrInt,
@@ -2443,6 +3150,11 @@ impl UsersApi {
 	}
 
 	/// Crop Background
+	///
+	/// Crop background for a user.
+	///
+	/// Required scopes:
+	/// + post
 	pub async fn background_crop(
 		&self,
 		user_id: StringOrInt,
@@ -2455,6 +3167,11 @@ impl UsersApi {
 	}
 
 	/// Get User Claims
+	///
+	/// Get user claims.
+	///
+	/// Required scopes:
+	/// + read
 	pub async fn claims(
 		&self,
 		user_id: StringOrInt,
@@ -2486,6 +3203,11 @@ impl UsersApi {
 	}
 
 	/// Unfollow User
+	///
+	/// Unfollow a user.
+	///
+	/// Required scopes:
+	/// + post
 	pub async fn unfollow(
 		&self,
 		user_id: StringOrInt,
@@ -2495,6 +3217,11 @@ impl UsersApi {
 	}
 
 	/// Get User Followers
+	///
+	/// List of a user's followers.
+	///
+	/// Required scopes:
+	/// + read
 	pub async fn followers(
 		&self,
 		user_id: StringOrInt,
@@ -2529,12 +3256,22 @@ impl UsersApi {
 	}
 
 	/// Follow User
+	///
+	/// Follow a user.
+	///
+	/// Required scopes:
+	/// + post
 	pub async fn follow(&self, user_id: StringOrInt) -> Result<UsersFollowResponse, LolzteamError> {
 		let path = format!("/users/{user_id}/followers");
 		self.http.request("POST", &path, None, None, false).await
 	}
 
 	/// Get Followed Users By User
+	///
+	/// List of users whom are followed by a user.
+	///
+	/// Required scopes:
+	/// + read
 	pub async fn followings(
 		&self,
 		user_id: StringOrInt,
@@ -2569,6 +3306,11 @@ impl UsersApi {
 	}
 
 	/// Unignore User
+	///
+	/// Stop ignoring a user.
+	///
+	/// Required scopes:
+	/// + post
 	pub async fn unignore(
 		&self,
 		user_id: StringOrInt,
@@ -2578,12 +3320,22 @@ impl UsersApi {
 	}
 
 	/// Ignore User
+	///
+	/// Ignore a user.
+	///
+	/// Required scopes:
+	/// + post
 	pub async fn ignore(&self, user_id: StringOrInt) -> Result<UsersIgnoreResponse, LolzteamError> {
 		let path = format!("/users/{user_id}/ignore");
 		self.http.request("POST", &path, None, None, false).await
 	}
 
 	/// Edit Ignoring Options
+	///
+	/// Edit ignoring options.
+	///
+	/// Required scopes:
+	/// + post
 	pub async fn ignore_edit(
 		&self,
 		user_id: StringOrInt,
@@ -2618,6 +3370,11 @@ impl UsersApi {
 	}
 
 	/// Get User Likes
+	///
+	/// Get information about user likes.
+	///
+	/// Required scopes:
+	/// + read
 	pub async fn likes(
 		&self,
 		user_id: StringOrInt,
@@ -2664,6 +3421,11 @@ impl UsersApi {
 	}
 
 	/// Get Contents
+	///
+	/// List of contents created by user (with pagination).
+	///
+	/// Required scopes:
+	/// + read
 	pub async fn contents(
 		&self,
 		user_id: StringOrInt,
@@ -2695,6 +3457,11 @@ impl UsersApi {
 	}
 
 	/// Get Trophies
+	///
+	/// List of user trophies.
+	///
+	/// Required scopes:
+	/// + read
 	pub async fn trophies(
 		&self,
 		user_id: StringOrInt,
@@ -2744,7 +3511,10 @@ impl ForumClient {
 	}
 
 	/// Create a new client with custom configuration.
-	pub fn with_config(config: ClientConfig) -> Result<Self, LolzteamError> {
+	pub fn with_config(mut config: ClientConfig) -> Result<Self, LolzteamError> {
+		if config.base_url.is_empty() {
+			config.base_url = "https://prod-api.lolz.live".to_string();
+		}
 		let http = Arc::new(HttpClient::new(config)?);
 		Ok(Self {
 			assets: AssetsApi::new(Arc::clone(&http)),

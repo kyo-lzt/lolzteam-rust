@@ -29,8 +29,12 @@ pub fn build_method_def(
 	let query_params = extract_query_params(root, &parameters);
 	let body_result = extract_body_params(root, operation);
 
-	let description = operation
+	let summary = operation
 		.get("summary")
+		.and_then(|v| v.as_str())
+		.map(String::from);
+	let description = operation
+		.get("description")
 		.and_then(|v| v.as_str())
 		.map(String::from);
 
@@ -74,6 +78,7 @@ pub fn build_method_def(
 		body_encoding: final_encoding,
 		response_schema,
 		response_is_text,
+		summary,
 		description,
 		one_of_body: body_result.one_of_body,
 	}

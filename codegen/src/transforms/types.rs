@@ -1,5 +1,6 @@
 use serde_json::Value;
 
+use crate::transforms::responses::component_ref_type;
 use crate::utils::deref;
 
 /// Map an OpenAPI schema to a Rust type string.
@@ -7,6 +8,11 @@ use crate::utils::deref;
 /// Returns `(rust_type, param_value_variant)` where `param_value_variant`
 /// is the `ParamValue` enum variant name for query/body building.
 pub fn schema_to_rust_type(root: &Value, schema: &Value) -> (String, String) {
+	// Check for $ref to a component schema before dereffing (deref loses the ref info)
+	if let Some(component_type) = component_ref_type(schema) {
+		return (component_type, "String".to_string());
+	}
+
 	let schema = deref::deref(root, schema);
 
 	// Handle nullable wrapper
@@ -115,7 +121,10 @@ pub fn schema_to_rust_type(root: &Value, schema: &Value) -> (String, String) {
 
 	match type_str {
 		Some("string") => {
-			if schema.get("enum").is_some() {
+			let format = schema.get("format").and_then(|v| v.as_str()).unwrap_or("");
+			if format == "binary" {
+				("Vec<u8>".to_string(), "String".to_string())
+			} else if schema.get("enum").is_some() {
 				// String enums — just use String for simplicity
 				("String".to_string(), "String".to_string())
 			} else {
@@ -159,6 +168,7 @@ fn primitive_type(type_str: &str, schema: &Value) -> (String, String) {
 		"string" => {
 			let format = schema.get("format").and_then(|v| v.as_str()).unwrap_or("");
 			match format {
+				"binary" => ("Vec<u8>".to_string(), "String".to_string()),
 				"int64" | "int32" => ("i64".to_string(), "Integer".to_string()),
 				"float" | "double" => ("f64".to_string(), "Float".to_string()),
 				_ => ("String".to_string(), "String".to_string()),

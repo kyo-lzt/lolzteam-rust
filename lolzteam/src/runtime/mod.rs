@@ -7,6 +7,6 @@ mod types;
 pub use errors::{ConfigError, HttpError, LolzteamError, NetworkError};
 pub use http_client::HttpClient;
 pub use types::{
-	ClientConfig, MultipartPart, ParamValue, ProxyConfig, RateLimitConfig, RetryConfig, RetryInfo,
-	StringOrInt,
+	deserialize_lenient_option, deserialize_null_default, ClientConfig, MultipartPart, ParamValue,
+	ProxyConfig, RateLimitConfig, RetryConfig, RetryInfo, StringOrInt,
 };

@@ -51,7 +51,9 @@ pub struct MethodDef {
 	pub response_schema: ResponseSchema,
 	/// Whether the response is text (not JSON)
 	pub response_is_text: bool,
-	/// Summary/description from the OpenAPI spec
+	/// Summary line from the OpenAPI spec
+	pub summary: Option<String>,
+	/// Full description from the OpenAPI spec
 	pub description: Option<String>,
 	/// Discriminated union body (oneOf with discriminator), if detected
 	pub one_of_body: Option<OneOfBody>,
@@ -110,6 +112,8 @@ pub struct ParamDef {
 	pub is_deep_object: bool,
 	/// Enum constraint from the schema, if present
 	pub enum_values: Option<EnumValues>,
+	/// Human-readable description from the OpenAPI spec
+	pub description: Option<String>,
 	/// Default value from the schema, if present (rendered as doc comment)
 	pub default_value: Option<String>,
 	/// Raw JSON default value from the schema, for generating Rust default expressions

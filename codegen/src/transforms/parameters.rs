@@ -104,6 +104,10 @@ fn extract_params_by_location(root: &Value, parameters: &[Value], location: &str
 		}
 
 		let enum_values = extract_enum_values(schema);
+		let description = param
+			.get("description")
+			.and_then(|v| v.as_str())
+			.map(String::from);
 		let default_value = extract_default_value(schema);
 		let default_value_raw = extract_default_value_raw(schema);
 
@@ -116,6 +120,7 @@ fn extract_params_by_location(root: &Value, parameters: &[Value], location: &str
 			is_binary: false,
 			is_deep_object,
 			enum_values,
+			description,
 			default_value,
 			default_value_raw,
 		});
@@ -394,6 +399,10 @@ fn extract_properties_as_params(root: &Value, schema: &Value) -> Vec<ParamDef> {
 		let (rust_type, param_value_variant) = schema_to_rust_type(root, prop_schema);
 		let required = required_fields.contains(prop_name);
 		let enum_values = extract_enum_values(prop_schema);
+		let description = prop_schema
+			.get("description")
+			.and_then(|v| v.as_str())
+			.map(String::from);
 		let default_value = extract_default_value(prop_schema);
 		let default_value_raw = extract_default_value_raw(prop_schema);
 
@@ -406,6 +415,7 @@ fn extract_properties_as_params(root: &Value, schema: &Value) -> Vec<ParamDef> {
 			is_binary,
 			is_deep_object: false,
 			enum_values,
+			description,
 			default_value,
 			default_value_raw,
 		});

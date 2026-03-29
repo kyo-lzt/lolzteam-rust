@@ -2,6 +2,43 @@ use std::sync::Arc;
 
 use serde::Serialize;
 
+/// Deserialize an `Option<T>` that returns `None` when the value is present
+/// but has an incompatible type (e.g. the API returns `[]` instead of an object).
+pub fn deserialize_lenient_option<'de, D, T>(deserializer: D) -> Result<Option<T>, D::Error>
+where
+	D: serde::Deserializer<'de>,
+	T: serde::de::DeserializeOwned,
+{
+	use serde::Deserialize;
+	let value = serde_json::Value::deserialize(deserializer)?;
+	if value.is_null() {
+		return Ok(None);
+	}
+	match serde_json::from_value(value) {
+		Ok(v) => Ok(Some(v)),
+		Err(_) => Ok(None),
+	}
+}
+
+/// Deserialize a value that may be `null` or an unexpected type in JSON into
+/// `T::default()`. Use on required (non-Option) fields where the API may
+/// return `null` or a mismatched type (e.g. `false` instead of a string).
+pub fn deserialize_null_default<'de, D, T>(deserializer: D) -> Result<T, D::Error>
+where
+	D: serde::Deserializer<'de>,
+	T: Default + serde::de::DeserializeOwned,
+{
+	use serde::Deserialize;
+	let value = serde_json::Value::deserialize(deserializer)?;
+	if value.is_null() {
+		return Ok(T::default());
+	}
+	match serde_json::from_value(value) {
+		Ok(v) => Ok(v),
+		Err(_) => Ok(T::default()),
+	}
+}
+
 /// A single part of a multipart form body.
 #[derive(Debug, Clone)]
 pub enum MultipartPart {
