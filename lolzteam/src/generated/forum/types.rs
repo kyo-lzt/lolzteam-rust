@@ -322,6 +322,100 @@ pub struct RespConversationModelRecipients {
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
+pub struct RespForumModel {
+	#[serde(default, deserialize_with = "deserialize_null_default")]
+	pub active_icon_content: String,
+	#[serde(default, deserialize_with = "deserialize_null_default")]
+	pub forum_description: String,
+	#[serde(default, deserialize_with = "deserialize_null_default")]
+	pub forum_id: f64,
+	#[serde(default, deserialize_with = "deserialize_null_default")]
+	pub forum_is_followed: bool,
+	#[serde(default, deserialize_with = "deserialize_null_default")]
+	pub forum_post_count: f64,
+	#[serde(default, deserialize_with = "deserialize_null_default")]
+	pub forum_prefixes: Vec<RespForumModelForumPrefixes>,
+	#[serde(default, deserialize_with = "deserialize_null_default")]
+	pub forum_rules_thread_id: f64,
+	#[serde(default, deserialize_with = "deserialize_null_default")]
+	pub forum_thread_count: f64,
+	#[serde(default, deserialize_with = "deserialize_null_default")]
+	pub forum_title: String,
+	#[serde(default, deserialize_with = "deserialize_null_default")]
+	pub icon_content: String,
+	#[serde(default, deserialize_with = "deserialize_null_default")]
+	pub links: RespForumModelLinks,
+	#[serde(default, deserialize_with = "deserialize_null_default")]
+	pub node_type_id: String,
+	#[serde(default, deserialize_with = "deserialize_null_default")]
+	pub parent_node_id: f64,
+	#[serde(default, deserialize_with = "deserialize_null_default")]
+	pub permissions: RespForumModelPermissions,
+	#[serde(default, deserialize_with = "deserialize_null_default")]
+	pub thread_default_prefix_id: f64,
+	#[serde(default, deserialize_with = "deserialize_null_default")]
+	pub thread_prefix_is_required: bool,
+}
+
+#[derive(Debug, Clone, Default, Deserialize)]
+pub struct RespForumModelForumPrefixesGroupPrefixes {
+	#[serde(default, deserialize_with = "deserialize_null_default")]
+	pub css_class: String,
+	#[serde(default, deserialize_with = "deserialize_null_default")]
+	pub prefix_id: f64,
+	#[serde(default, deserialize_with = "deserialize_null_default")]
+	pub prefix_title: String,
+}
+
+#[derive(Debug, Clone, Default, Deserialize)]
+pub struct RespForumModelForumPrefixes {
+	#[serde(default, deserialize_with = "deserialize_null_default")]
+	pub group_prefixes: Vec<RespForumModelForumPrefixesGroupPrefixes>,
+	#[serde(default, deserialize_with = "deserialize_null_default")]
+	pub group_title: String,
+}
+
+#[derive(Debug, Clone, Default, Deserialize)]
+pub struct RespForumModelLinks {
+	#[serde(default, deserialize_with = "deserialize_null_default")]
+	pub detail: String,
+	#[serde(default, deserialize_with = "deserialize_null_default")]
+	pub followers: String,
+	#[serde(default, deserialize_with = "deserialize_null_default")]
+	pub permalink: String,
+	#[serde(
+		rename = "sub-categories",
+		default,
+		deserialize_with = "deserialize_null_default"
+	)]
+	pub sub_categories: String,
+	#[serde(
+		rename = "sub-forums",
+		default,
+		deserialize_with = "deserialize_null_default"
+	)]
+	pub sub_forums: String,
+	#[serde(default, deserialize_with = "deserialize_null_default")]
+	pub threads: String,
+}
+
+#[derive(Debug, Clone, Default, Deserialize)]
+pub struct RespForumModelPermissions {
+	#[serde(default, deserialize_with = "deserialize_null_default")]
+	pub create_thread: bool,
+	#[serde(default, deserialize_with = "deserialize_null_default")]
+	pub delete: bool,
+	#[serde(default, deserialize_with = "deserialize_null_default")]
+	pub edit: bool,
+	#[serde(default, deserialize_with = "deserialize_null_default")]
+	pub follow: bool,
+	#[serde(default, deserialize_with = "deserialize_null_default")]
+	pub tag_thread: bool,
+	#[serde(default, deserialize_with = "deserialize_null_default")]
+	pub view: bool,
+}
+
+#[derive(Debug, Clone, Default, Deserialize)]
 pub struct RespLinkModel {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub link_description: String,
@@ -689,8 +783,8 @@ pub struct RespSystemInfo {
 
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct RespThreadModel {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub contest: RespThreadModelContest,
+	#[serde(default, deserialize_with = "deserialize_lenient_option")]
+	pub contest: Option<RespThreadModelContest>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub creator_user_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -699,18 +793,18 @@ pub struct RespThreadModel {
 	pub creator_username_html: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub first_post: RespThreadModelFirstPost,
+	#[serde(default, deserialize_with = "deserialize_lenient_option")]
+	pub forum: Option<RespForumModel>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub forum_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub last_post: RespThreadModelLastPost,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub links: RespThreadModelLinks,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub node_title: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub permissions: RespThreadModelPermissions,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub restrictions: RespThreadModelRestrictions,
+	#[serde(default, deserialize_with = "deserialize_lenient_option")]
+	pub restrictions: Option<RespThreadModelRestrictions>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub thread_create_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -730,7 +824,7 @@ pub struct RespThreadModel {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub thread_post_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_prefixes: Vec<serde_json::Value>,
+	pub thread_prefixes: Vec<RespThreadModelThreadPrefixes>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub thread_tags: serde_json::Value,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -791,8 +885,8 @@ pub struct RespThreadModelContest {
 		deserialize_with = "deserialize_null_default"
 	)]
 	pub r#type: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub winners: Vec<f64>,
+	#[serde(default, deserialize_with = "deserialize_lenient_option")]
+	pub winners: Option<Vec<f64>>,
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
@@ -878,88 +972,6 @@ pub struct RespThreadModelFirstPost {
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
-pub struct RespThreadModelLastPostLinks {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub detail: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub likes: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permalink: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub poster: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub poster_avatar: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub report: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread: String,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct RespThreadModelLastPostPermissions {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub delete: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub like: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub reply: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub report: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub view: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct RespThreadModelLastPost {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub links: RespThreadModelLastPostLinks,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permissions: RespThreadModelLastPostPermissions,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_body: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_body_html: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_body_plain_text: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_create_date: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_is_deleted: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_is_first_post: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_is_liked: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_is_published: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_like_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_update_date: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub poster_user_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub poster_username: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub poster_username_html: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub signature: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub signature_html: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub signature_plain_text: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_is_deleted: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_is_ignored: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
 pub struct RespThreadModelLinks {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub detail: String,
@@ -988,9 +1000,9 @@ pub struct RespThreadModelPermissionsBump {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub can: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub error: serde_json::Value,
+	pub error: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub next_available_time: serde_json::Value,
+	pub next_available_time: f64,
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
@@ -1019,6 +1031,14 @@ pub struct RespThreadModelRestrictions {
 	pub max_reply_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub reply_delay: f64,
+}
+
+#[derive(Debug, Clone, Default, Deserialize)]
+pub struct RespThreadModelThreadPrefixes {
+	#[serde(default, deserialize_with = "deserialize_null_default")]
+	pub prefix_id: f64,
+	#[serde(default, deserialize_with = "deserialize_null_default")]
+	pub prefix_title: String,
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
@@ -3678,87 +3698,9 @@ impl FormsCreateBody {
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
-pub struct FormsCreateContentLinks {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub detail: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub first_post: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub first_poster: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub first_poster_avatar: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub followers: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permalink: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub posts: String,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct FormsCreateContentPermissions {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub delete: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub follow: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub view: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct FormsCreateContent {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub creator_user_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub creator_username: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub creator_username_html: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub links: FormsCreateContentLinks,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub node_title: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permissions: FormsCreateContentPermissions,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_create_date: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_is_closed: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_is_deleted: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_is_followed: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_is_published: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_is_sticky: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_post_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_prefixes: Vec<serde_json::Value>,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_tags: Vec<serde_json::Value>,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_title: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_update_date: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_view_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_is_ignored: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
 pub struct FormsCreateResponse {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub content: FormsCreateContent,
+	pub content: RespThreadModel,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub message: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -3776,88 +3718,6 @@ pub struct ForumsListParams {
 	/// Ordering of forums.
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub order: Option<CategoriesOrder>,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct ForumsListForumsForumPrefixesGroupPrefixes {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub prefix_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub prefix_title: String,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct ForumsListForumsForumPrefixes {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub group_prefixes: Vec<ForumsListForumsForumPrefixesGroupPrefixes>,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub group_title: String,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct ForumsListForumsLinks {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub detail: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub followers: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permalink: String,
-	#[serde(
-		rename = "sub-categories",
-		default,
-		deserialize_with = "deserialize_null_default"
-	)]
-	pub sub_categories: String,
-	#[serde(
-		rename = "sub-forums",
-		default,
-		deserialize_with = "deserialize_null_default"
-	)]
-	pub sub_forums: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub threads: String,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct ForumsListForumsPermissions {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub create_thread: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub delete: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub follow: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub tag_thread: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub view: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct ForumsListForums {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_description: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_is_followed: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_post_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_prefixes: Vec<ForumsListForumsForumPrefixes>,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_thread_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_title: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub links: ForumsListForumsLinks,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permissions: ForumsListForumsPermissions,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_default_prefix_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_prefix_is_required: bool,
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
@@ -3883,7 +3743,7 @@ pub struct ForumsListTabs {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct ForumsListResponse {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forums: Vec<ForumsListForums>,
+	pub forums: Vec<RespForumModel>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub forums_total: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -3893,73 +3753,13 @@ pub struct ForumsListResponse {
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
-pub struct ForumsGetFeedOptionsForumsLinks {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub detail: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub followers: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permalink: String,
-	#[serde(
-		rename = "sub-categories",
-		default,
-		deserialize_with = "deserialize_null_default"
-	)]
-	pub sub_categories: String,
-	#[serde(
-		rename = "sub-forums",
-		default,
-		deserialize_with = "deserialize_null_default"
-	)]
-	pub sub_forums: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub threads: String,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct ForumsGetFeedOptionsForumsPermissions {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub create_thread: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub delete: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub follow: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub tag_thread: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub view: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct ForumsGetFeedOptionsForums {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_description: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_is_followed: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_title: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub has_children: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub links: ForumsGetFeedOptionsForumsLinks,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub parent_node_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permissions: ForumsGetFeedOptionsForumsPermissions,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
 pub struct ForumsGetFeedOptionsResponse {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub default_excluded_forums_ids: Vec<f64>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub excluded_forums_ids: Vec<f64>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forums: Vec<ForumsGetFeedOptionsForums>,
+	pub forums: Vec<RespForumModel>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub keywords: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -3994,125 +3794,45 @@ pub struct ForumsFollowedParams {
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
-pub struct ForumsFollowedForumsFollow {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub alert: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub email: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct ForumsFollowedForumsForumPrefixesGroupPrefixes {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub prefix_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub prefix_title: String,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct ForumsFollowedForumsForumPrefixes {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub group_prefixes: Vec<ForumsFollowedForumsForumPrefixesGroupPrefixes>,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub group_title: String,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct ForumsFollowedForumsLinks {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub detail: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub followers: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permalink: String,
-	#[serde(
-		rename = "sub-categories",
-		default,
-		deserialize_with = "deserialize_null_default"
-	)]
-	pub sub_categories: String,
-	#[serde(
-		rename = "sub-forums",
-		default,
-		deserialize_with = "deserialize_null_default"
-	)]
-	pub sub_forums: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub threads: String,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct ForumsFollowedForumsPermissions {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub create_thread: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub delete: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub follow: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub tag_thread: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub upload_attachment: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub view: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct ForumsFollowedForums {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub follow: ForumsFollowedForumsFollow,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_description: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_is_followed: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_post_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_prefixes: Vec<ForumsFollowedForumsForumPrefixes>,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_thread_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_title: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub links: ForumsFollowedForumsLinks,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permissions: ForumsFollowedForumsPermissions,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_default_prefix_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_prefix_is_required: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
 pub struct ForumsFollowedResponse {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forums: Vec<ForumsFollowedForums>,
+	pub forums: Vec<RespForumModel>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub system_info: RespSystemInfo,
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct ForumsGroupedTabs {
+	#[serde(default, deserialize_with = "deserialize_null_default")]
+	pub direction: String,
 	#[serde(
-		rename = "isDefault",
+		rename = "isExtendedTab",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub is_default: bool,
-	#[serde(
-		rename = "isHidden",
-		default,
-		deserialize_with = "deserialize_null_default"
-	)]
-	pub is_hidden: bool,
+	pub is_extended_tab: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub link_title: String,
+	#[serde(default, deserialize_with = "deserialize_null_default")]
+	pub node_ids: String,
+	#[serde(default, deserialize_with = "deserialize_null_default")]
+	pub order: String,
+	#[serde(default, deserialize_with = "deserialize_null_default")]
+	pub period: String,
+	#[serde(default, deserialize_with = "deserialize_null_default")]
+	pub prefixes: Vec<serde_json::Value>,
+	#[serde(default, deserialize_with = "deserialize_null_default")]
+	pub prefixes_not: Vec<serde_json::Value>,
+	#[serde(default, deserialize_with = "deserialize_null_default")]
+	pub q: String,
+	#[serde(default, deserialize_with = "deserialize_null_default")]
+	pub state: String,
+	#[serde(
+		rename = "tabLink",
+		default,
+		deserialize_with = "deserialize_null_default"
+	)]
+	pub tab_link: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub title: String,
 }
@@ -4120,7 +3840,7 @@ pub struct ForumsGroupedTabs {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct ForumsGroupedResponse {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub data: serde_json::Value,
+	pub data: Vec<Vec<RespForumModel>>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub system_info: RespSystemInfo,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -4128,93 +3848,9 @@ pub struct ForumsGroupedResponse {
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
-pub struct ForumsGetForumForumPrefixesGroupPrefixes {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub prefix_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub prefix_title: String,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct ForumsGetForumForumPrefixes {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub group_prefixes: Vec<ForumsGetForumForumPrefixesGroupPrefixes>,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub group_title: String,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct ForumsGetForumLinks {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub detail: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub followers: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permalink: String,
-	#[serde(
-		rename = "sub-categories",
-		default,
-		deserialize_with = "deserialize_null_default"
-	)]
-	pub sub_categories: String,
-	#[serde(
-		rename = "sub-forums",
-		default,
-		deserialize_with = "deserialize_null_default"
-	)]
-	pub sub_forums: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub threads: String,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct ForumsGetForumPermissions {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub create_thread: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub delete: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub follow: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub tag_thread: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub upload_attachment: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub view: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct ForumsGetForum {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_description: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_is_followed: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_post_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_prefixes: Vec<ForumsGetForumForumPrefixes>,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_thread_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_title: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub links: ForumsGetForumLinks,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permissions: ForumsGetForumPermissions,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_default_prefix_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_prefix_is_required: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
 pub struct ForumsGetResponse {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum: ForumsGetForum,
+	pub forum: RespForumModel,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub system_info: RespSystemInfo,
 }
@@ -5641,348 +5277,6 @@ pub struct SearchAllBody {
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
-pub struct SearchAllDataFirstPostLinks {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub detail: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub likes: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permalink: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub poster: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub poster_avatar: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub report: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread: String,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct SearchAllDataFirstPostPermissions {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub delete: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub like: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub reply: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub report: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub view: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct SearchAllDataFirstPost {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub links: SearchAllDataFirstPostLinks,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permissions: SearchAllDataFirstPostPermissions,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_body: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_body_html: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_body_plain_text: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_create_date: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_is_deleted: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_is_first_post: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_is_liked: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_is_published: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_like_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_update_date: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub poster_user_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub poster_username: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub poster_username_html: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub signature: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub signature_html: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub signature_plain_text: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_is_deleted: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_is_ignored: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct SearchAllDataForumLinks {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub detail: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub followers: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permalink: String,
-	#[serde(
-		rename = "sub-categories",
-		default,
-		deserialize_with = "deserialize_null_default"
-	)]
-	pub sub_categories: String,
-	#[serde(
-		rename = "sub-forums",
-		default,
-		deserialize_with = "deserialize_null_default"
-	)]
-	pub sub_forums: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub threads: String,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct SearchAllDataForumPermissions {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub create_thread: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub delete: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub follow: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub tag_thread: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub view: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct SearchAllDataForum {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_description: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_is_followed: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_post_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_prefixes: Vec<serde_json::Value>,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_thread_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_title: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub links: SearchAllDataForumLinks,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub parent_node_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permissions: SearchAllDataForumPermissions,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_default_prefix_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_prefix_is_required: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct SearchAllDataLastPostLinks {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub detail: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub likes: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permalink: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub poster: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub poster_avatar: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub report: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread: String,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct SearchAllDataLastPostPermissions {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub delete: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub like: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub reply: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub report: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub view: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct SearchAllDataLastPost {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub links: SearchAllDataLastPostLinks,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permissions: SearchAllDataLastPostPermissions,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_body: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_body_html: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_body_plain_text: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_create_date: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_is_deleted: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_is_first_post: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_is_liked: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_is_published: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_like_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_update_date: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub poster_user_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub poster_username: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub poster_username_html: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub signature: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub signature_html: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub signature_plain_text: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_is_deleted: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_is_ignored: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct SearchAllDataLinks {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub detail: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub first_post: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub first_poster: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub first_poster_avatar: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub followers: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub last_post: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub last_poster: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permalink: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub posts: String,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct SearchAllDataPermissionsBump {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub available_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub can: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub error: serde_json::Value,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub next_available_time: serde_json::Value,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct SearchAllDataPermissions {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub bump: SearchAllDataPermissionsBump,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub delete: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub follow: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub view: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct SearchAllData {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub content_id: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub content_type: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub creator_user_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub creator_username: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub creator_username_html: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub first_post: SearchAllDataFirstPost,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum: SearchAllDataForum,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub last_post: SearchAllDataLastPost,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub links: SearchAllDataLinks,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub node_title: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permissions: SearchAllDataPermissions,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_create_date: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_is_closed: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_is_deleted: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_is_followed: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_is_published: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_is_starred: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_is_sticky: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_post_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_prefixes: Vec<serde_json::Value>,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_tags: Vec<serde_json::Value>,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_title: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_update_date: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_view_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_is_ignored: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
 pub struct SearchAllLinks {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub next: String,
@@ -5995,7 +5289,7 @@ pub struct SearchAllLinks {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct SearchAllResponse {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub data: Vec<SearchAllData>,
+	pub data: Vec<RespForumModel>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub data_total: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -6034,246 +5328,6 @@ pub struct SearchPostsBody {
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
-pub struct SearchPostsDataFirstPostLinks {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub attachments: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub detail: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub likes: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permalink: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub poster: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub poster_avatar: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub report: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread: String,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct SearchPostsDataFirstPostPermissions {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub delete: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub like: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub reply: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub report: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub upload_attachment: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub view: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct SearchPostsDataFirstPost {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub links: SearchPostsDataFirstPostLinks,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permissions: SearchPostsDataFirstPostPermissions,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_attachment_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_body: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_body_html: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_body_plain_text: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_create_date: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_is_deleted: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_is_first_post: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_is_published: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_like_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_update_date: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub poster_user_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub poster_username: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub poster_username_html: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub signature: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub signature_html: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub signature_plain_text: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_is_ignored: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct SearchPostsDataForumLinks {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub detail: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub followers: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permalink: String,
-	#[serde(
-		rename = "sub-categories",
-		default,
-		deserialize_with = "deserialize_null_default"
-	)]
-	pub sub_categories: String,
-	#[serde(
-		rename = "sub-forums",
-		default,
-		deserialize_with = "deserialize_null_default"
-	)]
-	pub sub_forums: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub threads: String,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct SearchPostsDataForumPermissions {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub create_thread: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub delete: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub follow: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub tag_thread: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub upload_attachment: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub view: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct SearchPostsDataForum {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_description: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_is_followed: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_post_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_prefixes: Vec<serde_json::Value>,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_thread_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_title: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub links: SearchPostsDataForumLinks,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permissions: SearchPostsDataForumPermissions,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_default_prefix_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_prefix_is_required: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct SearchPostsDataLinks {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub detail: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub first_post: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub first_poster: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub first_poster_avatar: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub followers: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub last_post: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permalink: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub posts: String,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct SearchPostsDataPermissions {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub delete: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub follow: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub upload_attachment: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub view: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct SearchPostsData {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub content_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub content_type: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub creator_user_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub creator_username: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub creator_username_html: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub first_post: SearchPostsDataFirstPost,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum: SearchPostsDataForum,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub links: SearchPostsDataLinks,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permissions: SearchPostsDataPermissions,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_create_date: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_is_deleted: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_is_followed: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_is_published: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_is_sticky: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_post_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_prefixes: Vec<serde_json::Value>,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_tags: Vec<serde_json::Value>,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_title: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_update_date: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_view_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_is_ignored: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
 pub struct SearchPostsLinks {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub next: String,
@@ -6286,7 +5340,7 @@ pub struct SearchPostsLinks {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct SearchPostsResponse {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub data: Vec<SearchPostsData>,
+	pub data: Vec<RespPostModel>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub data_total: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -6431,269 +5485,9 @@ pub struct SearchTaggedBody {
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
-pub struct SearchTaggedDataFirstPostLinks {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub attachments: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub detail: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub likes: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permalink: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub poster: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub poster_avatar: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub report: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread: String,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct SearchTaggedDataFirstPostPermissions {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub delete: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub like: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub reply: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub report: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub upload_attachment: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub view: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct SearchTaggedDataFirstPost {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub links: SearchTaggedDataFirstPostLinks,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permissions: SearchTaggedDataFirstPostPermissions,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_attachment_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_body: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_body_html: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_body_plain_text: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_create_date: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_is_deleted: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_is_first_post: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_is_published: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_like_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_update_date: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub poster_user_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub poster_username: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub poster_username_html: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub signature: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub signature_html: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub signature_plain_text: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_is_ignored: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct SearchTaggedDataForumForumPrefixesGroupPrefixes {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub prefix_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub prefix_title: String,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct SearchTaggedDataForumForumPrefixes {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub group_prefixes: Vec<SearchTaggedDataForumForumPrefixesGroupPrefixes>,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub group_title: String,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct SearchTaggedDataForumLinks {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub detail: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub followers: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permalink: String,
-	#[serde(
-		rename = "sub-categories",
-		default,
-		deserialize_with = "deserialize_null_default"
-	)]
-	pub sub_categories: String,
-	#[serde(
-		rename = "sub-forums",
-		default,
-		deserialize_with = "deserialize_null_default"
-	)]
-	pub sub_forums: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub threads: String,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct SearchTaggedDataForumPermissions {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub create_thread: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub delete: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub follow: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub tag_thread: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub upload_attachment: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub view: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct SearchTaggedDataForum {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_description: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_is_followed: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_post_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_prefixes: Vec<SearchTaggedDataForumForumPrefixes>,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_thread_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_title: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub links: SearchTaggedDataForumLinks,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permissions: SearchTaggedDataForumPermissions,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_default_prefix_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_prefix_is_required: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct SearchTaggedDataLinks {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub detail: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub first_post: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub first_poster: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub first_poster_avatar: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub followers: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub last_post: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permalink: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub posts: String,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct SearchTaggedDataPermissions {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub delete: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit_tags: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit_title: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub follow: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub upload_attachment: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub view: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct SearchTaggedData {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub content_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub content_type: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub creator_user_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub creator_username: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub creator_username_html: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub first_post: SearchTaggedDataFirstPost,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum: SearchTaggedDataForum,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub links: SearchTaggedDataLinks,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permissions: SearchTaggedDataPermissions,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_create_date: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_is_deleted: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_is_followed: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_is_published: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_is_sticky: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_post_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_prefixes: Vec<serde_json::Value>,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_tags: serde_json::Value,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_title: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_update_date: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_view_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_is_ignored: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
 pub struct SearchTaggedResponse {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub data: Vec<SearchTaggedData>,
+	pub data: Vec<RespThreadModel>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub data_total: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -6730,246 +5524,6 @@ pub struct SearchThreadsBody {
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
-pub struct SearchThreadsDataFirstPostLinks {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub attachments: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub detail: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub likes: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permalink: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub poster: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub poster_avatar: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub report: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread: String,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct SearchThreadsDataFirstPostPermissions {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub delete: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub like: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub reply: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub report: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub upload_attachment: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub view: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct SearchThreadsDataFirstPost {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub links: SearchThreadsDataFirstPostLinks,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permissions: SearchThreadsDataFirstPostPermissions,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_attachment_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_body: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_body_html: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_body_plain_text: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_create_date: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_is_deleted: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_is_first_post: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_is_published: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_like_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_update_date: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub poster_user_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub poster_username: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub poster_username_html: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub signature: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub signature_html: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub signature_plain_text: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_is_ignored: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct SearchThreadsDataForumLinks {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub detail: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub followers: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permalink: String,
-	#[serde(
-		rename = "sub-categories",
-		default,
-		deserialize_with = "deserialize_null_default"
-	)]
-	pub sub_categories: String,
-	#[serde(
-		rename = "sub-forums",
-		default,
-		deserialize_with = "deserialize_null_default"
-	)]
-	pub sub_forums: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub threads: String,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct SearchThreadsDataForumPermissions {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub create_thread: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub delete: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub follow: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub tag_thread: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub upload_attachment: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub view: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct SearchThreadsDataForum {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_description: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_is_followed: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_post_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_prefixes: Vec<serde_json::Value>,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_thread_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_title: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub links: SearchThreadsDataForumLinks,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permissions: SearchThreadsDataForumPermissions,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_default_prefix_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_prefix_is_required: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct SearchThreadsDataLinks {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub detail: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub first_post: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub first_poster: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub first_poster_avatar: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub followers: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub last_post: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permalink: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub posts: String,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct SearchThreadsDataPermissions {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub delete: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub follow: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub upload_attachment: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub view: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct SearchThreadsData {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub content_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub content_type: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub creator_user_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub creator_username: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub creator_username_html: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub first_post: SearchThreadsDataFirstPost,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum: SearchThreadsDataForum,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub links: SearchThreadsDataLinks,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permissions: SearchThreadsDataPermissions,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_create_date: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_is_deleted: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_is_followed: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_is_published: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_is_sticky: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_post_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_prefixes: Vec<serde_json::Value>,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_tags: Vec<serde_json::Value>,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_title: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_update_date: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_view_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_is_ignored: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
 pub struct SearchThreadsLinks {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub next: String,
@@ -6982,7 +5536,7 @@ pub struct SearchThreadsLinks {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct SearchThreadsResponse {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub data: Vec<SearchThreadsData>,
+	pub data: Vec<RespForumModel>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub data_total: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -7017,269 +5571,9 @@ pub struct SearchResultsParams {
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
-pub struct SearchResultsDataFirstPostLinks {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub attachments: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub detail: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub likes: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permalink: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub poster: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub poster_avatar: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub report: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread: String,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct SearchResultsDataFirstPostPermissions {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub delete: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub like: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub reply: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub report: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub upload_attachment: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub view: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct SearchResultsDataFirstPost {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub links: SearchResultsDataFirstPostLinks,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permissions: SearchResultsDataFirstPostPermissions,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_attachment_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_body: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_body_html: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_body_plain_text: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_create_date: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_is_deleted: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_is_first_post: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_is_published: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_like_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_update_date: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub poster_user_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub poster_username: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub poster_username_html: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub signature: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub signature_html: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub signature_plain_text: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_is_ignored: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct SearchResultsDataForumForumPrefixesGroupPrefixes {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub prefix_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub prefix_title: String,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct SearchResultsDataForumForumPrefixes {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub group_prefixes: Vec<SearchResultsDataForumForumPrefixesGroupPrefixes>,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub group_title: String,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct SearchResultsDataForumLinks {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub detail: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub followers: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permalink: String,
-	#[serde(
-		rename = "sub-categories",
-		default,
-		deserialize_with = "deserialize_null_default"
-	)]
-	pub sub_categories: String,
-	#[serde(
-		rename = "sub-forums",
-		default,
-		deserialize_with = "deserialize_null_default"
-	)]
-	pub sub_forums: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub threads: String,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct SearchResultsDataForumPermissions {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub create_thread: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub delete: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub follow: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub tag_thread: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub upload_attachment: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub view: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct SearchResultsDataForum {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_description: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_is_followed: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_post_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_prefixes: Vec<SearchResultsDataForumForumPrefixes>,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_thread_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_title: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub links: SearchResultsDataForumLinks,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permissions: SearchResultsDataForumPermissions,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_default_prefix_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_prefix_is_required: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct SearchResultsDataLinks {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub detail: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub first_post: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub first_poster: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub first_poster_avatar: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub followers: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub last_post: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permalink: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub posts: String,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct SearchResultsDataPermissions {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub delete: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit_tags: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit_title: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub follow: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub upload_attachment: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub view: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct SearchResultsData {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub content_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub content_type: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub creator_user_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub creator_username: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub creator_username_html: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub first_post: SearchResultsDataFirstPost,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum: SearchResultsDataForum,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub links: SearchResultsDataLinks,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permissions: SearchResultsDataPermissions,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_create_date: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_is_deleted: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_is_followed: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_is_published: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_is_sticky: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_post_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_prefixes: Vec<serde_json::Value>,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_tags: serde_json::Value,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_title: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_update_date: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_view_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_is_ignored: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
 pub struct SearchResultsResponse {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub data: Vec<SearchResultsData>,
+	pub data: Vec<RespThreadModel>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub data_total: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -7379,272 +5673,6 @@ pub struct TagsGetTag {
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
-pub struct TagsGetTaggedFirstPostLinks {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub attachments: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub detail: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub likes: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permalink: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub poster: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub poster_avatar: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub report: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread: String,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct TagsGetTaggedFirstPostPermissions {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub delete: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub like: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub reply: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub report: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub upload_attachment: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub view: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct TagsGetTaggedFirstPost {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub links: TagsGetTaggedFirstPostLinks,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permissions: TagsGetTaggedFirstPostPermissions,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_attachment_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_body: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_body_html: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_body_plain_text: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_create_date: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_is_deleted: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_is_first_post: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_is_published: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_like_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_update_date: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub poster_user_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub poster_username: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub poster_username_html: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub signature: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub signature_html: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub signature_plain_text: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_is_ignored: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct TagsGetTaggedForumForumPrefixesGroupPrefixes {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub prefix_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub prefix_title: String,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct TagsGetTaggedForumForumPrefixes {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub group_prefixes: Vec<TagsGetTaggedForumForumPrefixesGroupPrefixes>,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub group_title: String,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct TagsGetTaggedForumLinks {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub detail: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub followers: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permalink: String,
-	#[serde(
-		rename = "sub-categories",
-		default,
-		deserialize_with = "deserialize_null_default"
-	)]
-	pub sub_categories: String,
-	#[serde(
-		rename = "sub-forums",
-		default,
-		deserialize_with = "deserialize_null_default"
-	)]
-	pub sub_forums: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub threads: String,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct TagsGetTaggedForumPermissions {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub create_thread: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub delete: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub follow: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub tag_thread: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub upload_attachment: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub view: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct TagsGetTaggedForum {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_description: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_is_followed: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_post_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_prefixes: Vec<TagsGetTaggedForumForumPrefixes>,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_thread_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_title: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub links: TagsGetTaggedForumLinks,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permissions: TagsGetTaggedForumPermissions,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_default_prefix_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_prefix_is_required: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct TagsGetTaggedLinks {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub detail: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub first_post: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub first_poster: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub first_poster_avatar: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub followers: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub last_post: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub last_poster: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permalink: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub posts: String,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct TagsGetTaggedPermissions {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub delete: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub follow: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub upload_attachment: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub view: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct TagsGetTaggedThreadPrefixes {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub prefix_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub prefix_title: String,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct TagsGetTagged {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub content_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub content_type: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub creator_user_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub creator_username: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub creator_username_html: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub first_post: TagsGetTaggedFirstPost,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum: TagsGetTaggedForum,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub links: TagsGetTaggedLinks,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permissions: TagsGetTaggedPermissions,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_create_date: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_is_deleted: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_is_followed: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_is_published: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_is_sticky: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_post_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_prefixes: Vec<TagsGetTaggedThreadPrefixes>,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_tags: serde_json::Value,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_title: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_update_date: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_view_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_is_ignored: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
 pub struct TagsGetResponse {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub links: TagsGetLinks,
@@ -7653,7 +5681,7 @@ pub struct TagsGetResponse {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub tag: TagsGetTag,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub tagged: Vec<TagsGetTagged>,
+	pub tagged: Vec<RespThreadModel>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub tagged_total: f64,
 }
@@ -8083,277 +6111,11 @@ pub struct ThreadsFollowedParams {
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
-pub struct ThreadsFollowedThreadsFirstPostLikeUsers {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub display_style_group_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub is_banned: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub uniq_username_css: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub username: String,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct ThreadsFollowedThreadsFirstPostLinks {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub attachments: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub detail: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub likes: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permalink: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub poster: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub poster_avatar: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub report: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread: String,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct ThreadsFollowedThreadsFirstPostPermissions {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub delete: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub like: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub reply: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub report: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub upload_attachment: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub view: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct ThreadsFollowedThreadsFirstPost {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub like_users: Vec<ThreadsFollowedThreadsFirstPostLikeUsers>,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub links: ThreadsFollowedThreadsFirstPostLinks,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permissions: ThreadsFollowedThreadsFirstPostPermissions,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_attachment_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_body: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_body_html: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_body_plain_text: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_create_date: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_is_deleted: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_is_first_post: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_is_published: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_like_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_update_date: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub poster_user_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub poster_username: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub poster_username_html: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub signature: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub signature_html: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub signature_plain_text: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_is_ignored: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct ThreadsFollowedThreadsFollow {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub alert: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub email: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct ThreadsFollowedThreadsForumLinks {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub detail: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub followers: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permalink: String,
-	#[serde(
-		rename = "sub-categories",
-		default,
-		deserialize_with = "deserialize_null_default"
-	)]
-	pub sub_categories: String,
-	#[serde(
-		rename = "sub-forums",
-		default,
-		deserialize_with = "deserialize_null_default"
-	)]
-	pub sub_forums: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub threads: String,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct ThreadsFollowedThreadsForumPermissions {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub create_thread: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub delete: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub follow: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub tag_thread: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub upload_attachment: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub view: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct ThreadsFollowedThreadsForum {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_description: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_is_followed: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_post_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_prefixes: Vec<serde_json::Value>,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_thread_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_title: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub links: ThreadsFollowedThreadsForumLinks,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permissions: ThreadsFollowedThreadsForumPermissions,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_default_prefix_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_prefix_is_required: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct ThreadsFollowedThreadsLinks {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub detail: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub first_post: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub first_poster: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub first_poster_avatar: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub followers: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub last_post: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permalink: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub posts: String,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct ThreadsFollowedThreadsPermissions {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub delete: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit_tags: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit_title: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub follow: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub upload_attachment: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub view: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct ThreadsFollowedThreads {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub creator_user_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub creator_username: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub creator_username_html: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub first_post: ThreadsFollowedThreadsFirstPost,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub follow: ThreadsFollowedThreadsFollow,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum: ThreadsFollowedThreadsForum,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub links: ThreadsFollowedThreadsLinks,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permissions: ThreadsFollowedThreadsPermissions,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_create_date: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_is_deleted: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_is_followed: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_is_published: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_is_sticky: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_post_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_prefixes: Vec<serde_json::Value>,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_tags: serde_json::Value,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_title: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_update_date: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_view_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_is_ignored: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
 pub struct ThreadsFollowedResponse {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub system_info: RespSystemInfo,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub threads: Vec<ThreadsFollowedThreads>,
+	pub threads: Vec<RespThreadModel>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub threads_total: f64,
 }
@@ -8372,271 +6134,19 @@ pub struct ThreadsUnreadParams {
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
-pub struct ThreadsUnreadDataFirstPostLikeUsers {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub display_style_group_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub is_banned: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub uniq_username_css: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub username: String,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct ThreadsUnreadDataFirstPostLinks {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub attachments: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub detail: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub likes: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permalink: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub poster: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub poster_avatar: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub report: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread: String,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct ThreadsUnreadDataFirstPostPermissions {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub delete: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub like: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub reply: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub report: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub upload_attachment: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub view: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct ThreadsUnreadDataFirstPost {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub like_users: Vec<ThreadsUnreadDataFirstPostLikeUsers>,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub links: ThreadsUnreadDataFirstPostLinks,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permissions: ThreadsUnreadDataFirstPostPermissions,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_attachment_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_body: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_body_html: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_body_plain_text: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_create_date: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_is_deleted: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_is_first_post: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_is_published: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_like_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_update_date: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub poster_user_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub poster_username: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub poster_username_html: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub signature: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub signature_html: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub signature_plain_text: String,
+pub struct ThreadsUnreadThreads {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub thread_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_is_ignored: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct ThreadsUnreadDataForumLinks {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub detail: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub followers: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permalink: String,
-	#[serde(
-		rename = "sub-categories",
-		default,
-		deserialize_with = "deserialize_null_default"
-	)]
-	pub sub_categories: String,
-	#[serde(
-		rename = "sub-forums",
-		default,
-		deserialize_with = "deserialize_null_default"
-	)]
-	pub sub_forums: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub threads: String,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct ThreadsUnreadDataForumPermissions {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub create_thread: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub delete: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub follow: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub tag_thread: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub upload_attachment: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub view: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct ThreadsUnreadDataForum {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_description: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_is_followed: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_post_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_prefixes: Vec<serde_json::Value>,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_thread_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_title: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub links: ThreadsUnreadDataForumLinks,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permissions: ThreadsUnreadDataForumPermissions,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_default_prefix_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_prefix_is_required: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct ThreadsUnreadDataLinks {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub detail: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub first_post: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub first_poster: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub first_poster_avatar: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub followers: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub last_post: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub last_poster: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permalink: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub posts: String,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct ThreadsUnreadDataPermissions {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub delete: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub follow: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub upload_attachment: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub view: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct ThreadsUnreadData {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub content_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub content_type: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub creator_user_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub creator_username: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub creator_username_html: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub first_post: ThreadsUnreadDataFirstPost,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum: ThreadsUnreadDataForum,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub links: ThreadsUnreadDataLinks,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permissions: ThreadsUnreadDataPermissions,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_create_date: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_is_deleted: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_is_followed: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_is_published: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_is_sticky: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_post_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_prefixes: Vec<serde_json::Value>,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_tags: Vec<serde_json::Value>,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_title: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_update_date: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_view_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_is_ignored: bool,
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct ThreadsUnreadResponse {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub data: Vec<ThreadsUnreadData>,
+	pub data: Vec<RespThreadModel>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub system_info: RespSystemInfo,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub threads: Vec<RespThreadModel>,
+	pub threads: Vec<ThreadsUnreadThreads>,
 }
 
 #[derive(Debug, Clone, Default, Serialize)]
@@ -8656,255 +6166,19 @@ pub struct ThreadsRecentParams {
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
-pub struct ThreadsRecentDataFirstPostLinks {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub attachments: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub detail: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub likes: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permalink: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub poster: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub poster_avatar: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub report: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread: String,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct ThreadsRecentDataFirstPostPermissions {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub delete: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub like: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub reply: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub report: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub upload_attachment: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub view: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct ThreadsRecentDataFirstPost {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub links: ThreadsRecentDataFirstPostLinks,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permissions: ThreadsRecentDataFirstPostPermissions,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_attachment_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_body: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_body_html: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_body_plain_text: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_create_date: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_is_deleted: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_is_first_post: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_is_published: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_like_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_update_date: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub poster_user_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub poster_username: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub poster_username_html: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub signature: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub signature_html: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub signature_plain_text: String,
+pub struct ThreadsRecentThreads {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub thread_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_is_ignored: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct ThreadsRecentDataForumLinks {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub detail: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub followers: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permalink: String,
-	#[serde(
-		rename = "sub-categories",
-		default,
-		deserialize_with = "deserialize_null_default"
-	)]
-	pub sub_categories: String,
-	#[serde(
-		rename = "sub-forums",
-		default,
-		deserialize_with = "deserialize_null_default"
-	)]
-	pub sub_forums: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub threads: String,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct ThreadsRecentDataForumPermissions {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub create_thread: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub delete: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub follow: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub tag_thread: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub upload_attachment: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub view: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct ThreadsRecentDataForum {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_description: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_is_followed: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_post_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_prefixes: Vec<serde_json::Value>,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_thread_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_title: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub links: ThreadsRecentDataForumLinks,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permissions: ThreadsRecentDataForumPermissions,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_default_prefix_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_prefix_is_required: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct ThreadsRecentDataLinks {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub detail: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub first_post: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub first_poster: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub first_poster_avatar: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub followers: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub last_post: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub last_poster: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permalink: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub posts: String,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct ThreadsRecentDataPermissions {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub delete: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub follow: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub upload_attachment: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub view: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct ThreadsRecentData {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub content_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub content_type: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub creator_user_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub creator_username: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub creator_username_html: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub first_post: ThreadsRecentDataFirstPost,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum: ThreadsRecentDataForum,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub links: ThreadsRecentDataLinks,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permissions: ThreadsRecentDataPermissions,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_create_date: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_is_deleted: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_is_followed: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_is_published: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_is_sticky: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_post_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_prefixes: Vec<serde_json::Value>,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_tags: Vec<serde_json::Value>,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_title: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_update_date: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_view_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_is_ignored: bool,
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct ThreadsRecentResponse {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub data: Vec<ThreadsRecentData>,
+	pub data: Vec<RespThreadModel>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub system_info: RespSystemInfo,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub threads: Vec<RespThreadModel>,
+	pub threads: Vec<ThreadsRecentThreads>,
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
@@ -10398,86 +7672,6 @@ pub struct UsersContentsDataPermissions {
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
-pub struct UsersContentsDataThreadLinks {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub detail: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub first_post: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub first_poster: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub first_poster_avatar: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub followers: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub last_post: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub last_poster: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permalink: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub posts: String,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct UsersContentsDataThreadPermissions {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub delete: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub follow: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub upload_attachment: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub view: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-pub struct UsersContentsDataThread {
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub creator_user_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub creator_username: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub creator_username_html: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub links: UsersContentsDataThreadLinks,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub permissions: UsersContentsDataThreadPermissions,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_create_date: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_id: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_is_deleted: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_is_followed: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_is_published: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_is_sticky: bool,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_post_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_prefixes: Vec<serde_json::Value>,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_tags: Vec<serde_json::Value>,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_title: String,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_update_date: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_view_count: f64,
-	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_is_ignored: bool,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
 pub struct UsersContentsData {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub content_id: f64,
@@ -10524,7 +7718,7 @@ pub struct UsersContentsData {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub signature_plain_text: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread: UsersContentsDataThread,
+	pub thread: RespThreadModel,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub thread_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]

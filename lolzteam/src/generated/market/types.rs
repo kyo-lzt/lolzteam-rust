@@ -957,6 +957,8 @@ pub struct ItemModelSeller {
 	pub username: String,
 }
 
+pub type ItemOriginModel = String;
+
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct RespSystemInfo {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -2848,6 +2850,48 @@ impl std::fmt::Display for HypixelSkyblockApiEnabled {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum ItemOrigin {
+	#[serde(rename = "brute")]
+	Brute,
+	#[serde(rename = "phishing")]
+	Phishing,
+	#[serde(rename = "stealer")]
+	Stealer,
+	#[serde(rename = "autoreg")]
+	Autoreg,
+	#[serde(rename = "personal")]
+	Personal,
+	#[serde(rename = "resale")]
+	Resale,
+	#[serde(rename = "dummy")]
+	Dummy,
+	#[serde(rename = "self_registration")]
+	SelfRegistration,
+	#[serde(rename = "retrieve_via_support")]
+	RetrieveViaSupport,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for ItemOrigin {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Brute => write!(f, "brute"),
+			Self::Phishing => write!(f, "phishing"),
+			Self::Stealer => write!(f, "stealer"),
+			Self::Autoreg => write!(f, "autoreg"),
+			Self::Personal => write!(f, "personal"),
+			Self::Resale => write!(f, "resale"),
+			Self::Dummy => write!(f, "dummy"),
+			Self::SelfRegistration => write!(f, "self_registration"),
+			Self::RetrieveViaSupport => write!(f, "retrieve_via_support"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Java {
 	#[serde(rename = "yes")]
 	Yes,
@@ -3055,42 +3099,6 @@ impl std::fmt::Display for Mafile {
 			Self::Yes => write!(f, "yes"),
 			Self::No => write!(f, "no"),
 			Self::Nomatter => write!(f, "nomatter"),
-			Self::Unknown => write!(f, "unknown"),
-		}
-	}
-}
-
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
-pub enum ManagingItemOrigin {
-	#[serde(rename = "brute")]
-	Brute,
-	#[serde(rename = "phishing")]
-	Phishing,
-	#[serde(rename = "stealer")]
-	Stealer,
-	#[serde(rename = "personal")]
-	Personal,
-	#[serde(rename = "resale")]
-	Resale,
-	#[serde(rename = "autoreg")]
-	Autoreg,
-	#[serde(rename = "dummy")]
-	Dummy,
-	/// Unknown variant not yet in the schema.
-	#[serde(other)]
-	Unknown,
-}
-
-impl std::fmt::Display for ManagingItemOrigin {
-	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		match self {
-			Self::Brute => write!(f, "brute"),
-			Self::Phishing => write!(f, "phishing"),
-			Self::Stealer => write!(f, "stealer"),
-			Self::Personal => write!(f, "personal"),
-			Self::Resale => write!(f, "resale"),
-			Self::Autoreg => write!(f, "autoreg"),
-			Self::Dummy => write!(f, "dummy"),
 			Self::Unknown => write!(f, "unknown"),
 		}
 	}
@@ -3328,6 +3336,48 @@ impl std::fmt::Display for OrderBy {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum Origin {
+	#[serde(rename = "brute")]
+	Brute,
+	#[serde(rename = "phishing")]
+	Phishing,
+	#[serde(rename = "stealer")]
+	Stealer,
+	#[serde(rename = "autoreg")]
+	Autoreg,
+	#[serde(rename = "personal")]
+	Personal,
+	#[serde(rename = "resale")]
+	Resale,
+	#[serde(rename = "dummy")]
+	Dummy,
+	#[serde(rename = "self_registration")]
+	SelfRegistration,
+	#[serde(rename = "retrieve_via_support")]
+	RetrieveViaSupport,
+	/// Unknown variant not yet in the schema.
+	#[serde(other)]
+	Unknown,
+}
+
+impl std::fmt::Display for Origin {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Brute => write!(f, "brute"),
+			Self::Phishing => write!(f, "phishing"),
+			Self::Stealer => write!(f, "stealer"),
+			Self::Autoreg => write!(f, "autoreg"),
+			Self::Personal => write!(f, "personal"),
+			Self::Resale => write!(f, "resale"),
+			Self::Dummy => write!(f, "dummy"),
+			Self::SelfRegistration => write!(f, "self_registration"),
+			Self::RetrieveViaSupport => write!(f, "retrieve_via_support"),
+			Self::Unknown => write!(f, "unknown"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum ParentControl {
 	#[serde(rename = "yes")]
 	Yes,
@@ -3541,45 +3591,6 @@ impl std::fmt::Display for PsnLinkable {
 			Self::Yes => write!(f, "yes"),
 			Self::No => write!(f, "no"),
 			Self::Nomatter => write!(f, "nomatter"),
-			Self::Unknown => write!(f, "unknown"),
-		}
-	}
-}
-
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
-pub enum PublishingItemOrigin {
-	#[serde(rename = "brute")]
-	Brute,
-	#[serde(rename = "phishing")]
-	Phishing,
-	#[serde(rename = "stealer")]
-	Stealer,
-	#[serde(rename = "personal")]
-	Personal,
-	#[serde(rename = "resale")]
-	Resale,
-	#[serde(rename = "autoreg")]
-	Autoreg,
-	#[serde(rename = "dummy")]
-	Dummy,
-	#[serde(rename = "self_registration")]
-	SelfRegistration,
-	/// Unknown variant not yet in the schema.
-	#[serde(other)]
-	Unknown,
-}
-
-impl std::fmt::Display for PublishingItemOrigin {
-	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		match self {
-			Self::Brute => write!(f, "brute"),
-			Self::Phishing => write!(f, "phishing"),
-			Self::Stealer => write!(f, "stealer"),
-			Self::Personal => write!(f, "personal"),
-			Self::Resale => write!(f, "resale"),
-			Self::Autoreg => write!(f, "autoreg"),
-			Self::Dummy => write!(f, "dummy"),
-			Self::SelfRegistration => write!(f, "self_registration"),
 			Self::Unknown => write!(f, "unknown"),
 		}
 	}
@@ -4310,10 +4321,10 @@ pub struct CartGetParams {
 	pub not_public_tag_id: Option<Vec<i64>>,
 	/// List of account origins.
 	#[serde(rename = "origin[]", skip_serializing_if = "Option::is_none")]
-	pub origin: Option<Vec<String>>,
+	pub origin: Option<Origin>,
 	/// List of account origins that won't be included.
 	#[serde(rename = "not_origin[]", skip_serializing_if = "Option::is_none")]
-	pub not_origin: Option<Vec<String>>,
+	pub not_origin: Option<Vec<ItemOriginModel>>,
 	/// Search accounts of user.
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub user_id: Option<i64>,
@@ -4443,10 +4454,10 @@ pub struct CategoryAllParams {
 	pub not_public_tag_id: Option<Vec<i64>>,
 	/// List of account origins.
 	#[serde(rename = "origin[]", skip_serializing_if = "Option::is_none")]
-	pub origin: Option<Vec<String>>,
+	pub origin: Option<Origin>,
 	/// List of account origins that won't be included.
 	#[serde(rename = "not_origin[]", skip_serializing_if = "Option::is_none")]
-	pub not_origin: Option<Vec<String>>,
+	pub not_origin: Option<Vec<ItemOriginModel>>,
 	/// Search accounts of user.
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub user_id: Option<i64>,
@@ -4562,10 +4573,10 @@ pub struct CategoryBattleNetParams {
 	pub not_public_tag_id: Option<Vec<i64>>,
 	/// List of account origins.
 	#[serde(rename = "origin[]", skip_serializing_if = "Option::is_none")]
-	pub origin: Option<Vec<String>>,
+	pub origin: Option<Origin>,
 	/// List of account origins that won't be included.
 	#[serde(rename = "not_origin[]", skip_serializing_if = "Option::is_none")]
-	pub not_origin: Option<Vec<String>>,
+	pub not_origin: Option<Vec<ItemOriginModel>>,
 	/// Search accounts of user.
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub user_id: Option<i64>,
@@ -5189,10 +5200,10 @@ pub struct CategoryChatGptParams {
 	pub not_public_tag_id: Option<Vec<i64>>,
 	/// List of account origins.
 	#[serde(rename = "origin[]", skip_serializing_if = "Option::is_none")]
-	pub origin: Option<Vec<String>>,
+	pub origin: Option<Origin>,
 	/// List of account origins that won't be included.
 	#[serde(rename = "not_origin[]", skip_serializing_if = "Option::is_none")]
-	pub not_origin: Option<Vec<String>>,
+	pub not_origin: Option<Vec<ItemOriginModel>>,
 	/// Search accounts of user.
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub user_id: Option<i64>,
@@ -5707,10 +5718,10 @@ pub struct CategoryDiscordParams {
 	pub not_public_tag_id: Option<Vec<i64>>,
 	/// List of account origins.
 	#[serde(rename = "origin[]", skip_serializing_if = "Option::is_none")]
-	pub origin: Option<Vec<String>>,
+	pub origin: Option<Origin>,
 	/// List of account origins that won't be included.
 	#[serde(rename = "not_origin[]", skip_serializing_if = "Option::is_none")]
-	pub not_origin: Option<Vec<String>>,
+	pub not_origin: Option<Vec<ItemOriginModel>>,
 	/// Search accounts of user.
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub user_id: Option<i64>,
@@ -6288,10 +6299,10 @@ pub struct CategoryEaParams {
 	pub not_public_tag_id: Option<Vec<i64>>,
 	/// List of account origins.
 	#[serde(rename = "origin[]", skip_serializing_if = "Option::is_none")]
-	pub origin: Option<Vec<String>>,
+	pub origin: Option<Origin>,
 	/// List of account origins that won't be included.
 	#[serde(rename = "not_origin[]", skip_serializing_if = "Option::is_none")]
-	pub not_origin: Option<Vec<String>>,
+	pub not_origin: Option<Vec<ItemOriginModel>>,
 	/// Search accounts of user.
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub user_id: Option<i64>,
@@ -6854,10 +6865,10 @@ pub struct CategoryEpicGamesParams {
 	pub not_public_tag_id: Option<Vec<i64>>,
 	/// List of account origins.
 	#[serde(rename = "origin[]", skip_serializing_if = "Option::is_none")]
-	pub origin: Option<Vec<String>>,
+	pub origin: Option<Origin>,
 	/// List of account origins that won't be included.
 	#[serde(rename = "not_origin[]", skip_serializing_if = "Option::is_none")]
-	pub not_origin: Option<Vec<String>>,
+	pub not_origin: Option<Vec<ItemOriginModel>>,
 	/// Search accounts of user.
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub user_id: Option<i64>,
@@ -7398,10 +7409,10 @@ pub struct CategoryEscapeFromTarkovParams {
 	pub not_public_tag_id: Option<Vec<i64>>,
 	/// List of account origins.
 	#[serde(rename = "origin[]", skip_serializing_if = "Option::is_none")]
-	pub origin: Option<Vec<String>>,
+	pub origin: Option<Origin>,
 	/// List of account origins that won't be included.
 	#[serde(rename = "not_origin[]", skip_serializing_if = "Option::is_none")]
-	pub not_origin: Option<Vec<String>>,
+	pub not_origin: Option<Vec<ItemOriginModel>>,
 	/// Search accounts of user.
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub user_id: Option<i64>,
@@ -7915,10 +7926,10 @@ pub struct CategoryFortniteParams {
 	pub not_public_tag_id: Option<Vec<i64>>,
 	/// List of account origins.
 	#[serde(rename = "origin[]", skip_serializing_if = "Option::is_none")]
-	pub origin: Option<Vec<String>>,
+	pub origin: Option<Origin>,
 	/// List of account origins that won't be included.
 	#[serde(rename = "not_origin[]", skip_serializing_if = "Option::is_none")]
-	pub not_origin: Option<Vec<String>>,
+	pub not_origin: Option<Vec<ItemOriginModel>>,
 	/// Search accounts of user.
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub user_id: Option<i64>,
@@ -8794,10 +8805,10 @@ pub struct CategoryGiftsParams {
 	pub not_public_tag_id: Option<Vec<i64>>,
 	/// List of account origins.
 	#[serde(rename = "origin[]", skip_serializing_if = "Option::is_none")]
-	pub origin: Option<Vec<String>>,
+	pub origin: Option<Origin>,
 	/// List of account origins that won't be included.
 	#[serde(rename = "not_origin[]", skip_serializing_if = "Option::is_none")]
-	pub not_origin: Option<Vec<String>>,
+	pub not_origin: Option<Vec<ItemOriginModel>>,
 	/// Search accounts of user.
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub user_id: Option<i64>,
@@ -9234,10 +9245,10 @@ pub struct CategoryHytaleParams {
 	pub not_public_tag_id: Option<Vec<i64>>,
 	/// List of account origins.
 	#[serde(rename = "origin[]", skip_serializing_if = "Option::is_none")]
-	pub origin: Option<Vec<String>>,
+	pub origin: Option<Origin>,
 	/// List of account origins that won't be included.
 	#[serde(rename = "not_origin[]", skip_serializing_if = "Option::is_none")]
-	pub not_origin: Option<Vec<String>>,
+	pub not_origin: Option<Vec<ItemOriginModel>>,
 	/// Search accounts of user.
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub user_id: Option<i64>,
@@ -9724,10 +9735,10 @@ pub struct CategoryInstagramParams {
 	pub not_public_tag_id: Option<Vec<i64>>,
 	/// List of account origins.
 	#[serde(rename = "origin[]", skip_serializing_if = "Option::is_none")]
-	pub origin: Option<Vec<String>>,
+	pub origin: Option<Origin>,
 	/// List of account origins that won't be included.
 	#[serde(rename = "not_origin[]", skip_serializing_if = "Option::is_none")]
-	pub not_origin: Option<Vec<String>>,
+	pub not_origin: Option<Vec<ItemOriginModel>>,
 	/// Search accounts of user.
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub user_id: Option<i64>,
@@ -10228,10 +10239,10 @@ pub struct CategoryMihoyoParams {
 	pub not_public_tag_id: Option<Vec<i64>>,
 	/// List of account origins.
 	#[serde(rename = "origin[]", skip_serializing_if = "Option::is_none")]
-	pub origin: Option<Vec<String>>,
+	pub origin: Option<Origin>,
 	/// List of account origins that won't be included.
 	#[serde(rename = "not_origin[]", skip_serializing_if = "Option::is_none")]
-	pub not_origin: Option<Vec<String>>,
+	pub not_origin: Option<Vec<ItemOriginModel>>,
 	/// Search accounts of user.
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub user_id: Option<i64>,
@@ -11292,10 +11303,10 @@ pub struct CategoryMinecraftParams {
 	pub not_public_tag_id: Option<Vec<i64>>,
 	/// List of account origins.
 	#[serde(rename = "origin[]", skip_serializing_if = "Option::is_none")]
-	pub origin: Option<Vec<String>>,
+	pub origin: Option<Origin>,
 	/// List of account origins that won't be included.
 	#[serde(rename = "not_origin[]", skip_serializing_if = "Option::is_none")]
-	pub not_origin: Option<Vec<String>>,
+	pub not_origin: Option<Vec<ItemOriginModel>>,
 	/// Search accounts of user.
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub user_id: Option<i64>,
@@ -11896,10 +11907,10 @@ pub struct CategoryRiotParams {
 	pub not_public_tag_id: Option<Vec<i64>>,
 	/// List of account origins.
 	#[serde(rename = "origin[]", skip_serializing_if = "Option::is_none")]
-	pub origin: Option<Vec<String>>,
+	pub origin: Option<Origin>,
 	/// List of account origins that won't be included.
 	#[serde(rename = "not_origin[]", skip_serializing_if = "Option::is_none")]
-	pub not_origin: Option<Vec<String>>,
+	pub not_origin: Option<Vec<ItemOriginModel>>,
 	/// Search accounts of user.
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub user_id: Option<i64>,
@@ -12678,10 +12689,10 @@ pub struct CategoryRobloxParams {
 	pub not_public_tag_id: Option<Vec<i64>>,
 	/// List of account origins.
 	#[serde(rename = "origin[]", skip_serializing_if = "Option::is_none")]
-	pub origin: Option<Vec<String>>,
+	pub origin: Option<Origin>,
 	/// List of account origins that won't be included.
 	#[serde(rename = "not_origin[]", skip_serializing_if = "Option::is_none")]
-	pub not_origin: Option<Vec<String>>,
+	pub not_origin: Option<Vec<ItemOriginModel>>,
 	/// Search accounts of user.
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub user_id: Option<i64>,
@@ -13328,10 +13339,10 @@ pub struct CategorySocialClubParams {
 	pub not_public_tag_id: Option<Vec<i64>>,
 	/// List of account origins.
 	#[serde(rename = "origin[]", skip_serializing_if = "Option::is_none")]
-	pub origin: Option<Vec<String>>,
+	pub origin: Option<Origin>,
 	/// List of account origins that won't be included.
 	#[serde(rename = "not_origin[]", skip_serializing_if = "Option::is_none")]
-	pub not_origin: Option<Vec<String>>,
+	pub not_origin: Option<Vec<ItemOriginModel>>,
 	/// Search accounts of user.
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub user_id: Option<i64>,
@@ -13837,10 +13848,10 @@ pub struct CategorySteamParams {
 	pub not_public_tag_id: Option<Vec<i64>>,
 	/// List of account origins.
 	#[serde(rename = "origin[]", skip_serializing_if = "Option::is_none")]
-	pub origin: Option<Vec<String>>,
+	pub origin: Option<Origin>,
 	/// List of account origins that won't be included.
 	#[serde(rename = "not_origin[]", skip_serializing_if = "Option::is_none")]
-	pub not_origin: Option<Vec<String>>,
+	pub not_origin: Option<Vec<ItemOriginModel>>,
 	/// Search accounts of user.
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub user_id: Option<i64>,
@@ -15006,10 +15017,10 @@ pub struct CategorySupercellParams {
 	pub not_public_tag_id: Option<Vec<i64>>,
 	/// List of account origins.
 	#[serde(rename = "origin[]", skip_serializing_if = "Option::is_none")]
-	pub origin: Option<Vec<String>>,
+	pub origin: Option<Origin>,
 	/// List of account origins that won't be included.
 	#[serde(rename = "not_origin[]", skip_serializing_if = "Option::is_none")]
-	pub not_origin: Option<Vec<String>>,
+	pub not_origin: Option<Vec<ItemOriginModel>>,
 	/// Search accounts of user.
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub user_id: Option<i64>,
@@ -15672,10 +15683,10 @@ pub struct CategoryTelegramParams {
 	pub not_public_tag_id: Option<Vec<i64>>,
 	/// List of account origins.
 	#[serde(rename = "origin[]", skip_serializing_if = "Option::is_none")]
-	pub origin: Option<Vec<String>>,
+	pub origin: Option<Origin>,
 	/// List of account origins that won't be included.
 	#[serde(rename = "not_origin[]", skip_serializing_if = "Option::is_none")]
-	pub not_origin: Option<Vec<String>>,
+	pub not_origin: Option<Vec<ItemOriginModel>>,
 	/// Search accounts of user.
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub user_id: Option<i64>,
@@ -16273,10 +16284,10 @@ pub struct CategoryTikTokParams {
 	pub not_public_tag_id: Option<Vec<i64>>,
 	/// List of account origins.
 	#[serde(rename = "origin[]", skip_serializing_if = "Option::is_none")]
-	pub origin: Option<Vec<String>>,
+	pub origin: Option<Origin>,
 	/// List of account origins that won't be included.
 	#[serde(rename = "not_origin[]", skip_serializing_if = "Option::is_none")]
-	pub not_origin: Option<Vec<String>>,
+	pub not_origin: Option<Vec<ItemOriginModel>>,
 	/// Search accounts of user.
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub user_id: Option<i64>,
@@ -16824,10 +16835,10 @@ pub struct CategoryUplayParams {
 	pub not_public_tag_id: Option<Vec<i64>>,
 	/// List of account origins.
 	#[serde(rename = "origin[]", skip_serializing_if = "Option::is_none")]
-	pub origin: Option<Vec<String>>,
+	pub origin: Option<Origin>,
 	/// List of account origins that won't be included.
 	#[serde(rename = "not_origin[]", skip_serializing_if = "Option::is_none")]
-	pub not_origin: Option<Vec<String>>,
+	pub not_origin: Option<Vec<ItemOriginModel>>,
 	/// Search accounts of user.
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub user_id: Option<i64>,
@@ -17458,10 +17469,10 @@ pub struct CategoryVpnParams {
 	pub not_public_tag_id: Option<Vec<i64>>,
 	/// List of account origins.
 	#[serde(rename = "origin[]", skip_serializing_if = "Option::is_none")]
-	pub origin: Option<Vec<String>>,
+	pub origin: Option<Origin>,
 	/// List of account origins that won't be included.
 	#[serde(rename = "not_origin[]", skip_serializing_if = "Option::is_none")]
-	pub not_origin: Option<Vec<String>>,
+	pub not_origin: Option<Vec<ItemOriginModel>>,
 	/// Search accounts of user.
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub user_id: Option<i64>,
@@ -17899,10 +17910,10 @@ pub struct CategoryWarfaceParams {
 	pub not_public_tag_id: Option<Vec<i64>>,
 	/// List of account origins.
 	#[serde(rename = "origin[]", skip_serializing_if = "Option::is_none")]
-	pub origin: Option<Vec<String>>,
+	pub origin: Option<Origin>,
 	/// List of account origins that won't be included.
 	#[serde(rename = "not_origin[]", skip_serializing_if = "Option::is_none")]
-	pub not_origin: Option<Vec<String>>,
+	pub not_origin: Option<Vec<ItemOriginModel>>,
 	/// Search accounts of user.
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub user_id: Option<i64>,
@@ -18390,10 +18401,10 @@ pub struct CategoryWotParams {
 	pub not_public_tag_id: Option<Vec<i64>>,
 	/// List of account origins.
 	#[serde(rename = "origin[]", skip_serializing_if = "Option::is_none")]
-	pub origin: Option<Vec<String>>,
+	pub origin: Option<Origin>,
 	/// List of account origins that won't be included.
 	#[serde(rename = "not_origin[]", skip_serializing_if = "Option::is_none")]
-	pub not_origin: Option<Vec<String>>,
+	pub not_origin: Option<Vec<ItemOriginModel>>,
 	/// Search accounts of user.
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub user_id: Option<i64>,
@@ -19002,10 +19013,10 @@ pub struct CategoryWotBlitzParams {
 	pub not_public_tag_id: Option<Vec<i64>>,
 	/// List of account origins.
 	#[serde(rename = "origin[]", skip_serializing_if = "Option::is_none")]
-	pub origin: Option<Vec<String>>,
+	pub origin: Option<Origin>,
 	/// List of account origins that won't be included.
 	#[serde(rename = "not_origin[]", skip_serializing_if = "Option::is_none")]
-	pub not_origin: Option<Vec<String>>,
+	pub not_origin: Option<Vec<ItemOriginModel>>,
 	/// Search accounts of user.
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub user_id: Option<i64>,
@@ -19839,10 +19850,10 @@ pub struct ListFavoritesParams {
 	pub pmax: Option<i64>,
 	/// List of account origins.
 	#[serde(rename = "origin[]", skip_serializing_if = "Option::is_none")]
-	pub origin: Option<Vec<String>>,
+	pub origin: Option<Origin>,
 	/// List of account origins that won't be included.
 	#[serde(rename = "not_origin[]", skip_serializing_if = "Option::is_none")]
-	pub not_origin: Option<Vec<String>>,
+	pub not_origin: Option<Vec<ItemOriginModel>>,
 	/// Order by.
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub order_by: Option<OrderBy>,
@@ -20122,10 +20133,10 @@ pub struct ListUserParams {
 	pub login: Option<String>,
 	/// List of account origins.
 	#[serde(rename = "origin[]", skip_serializing_if = "Option::is_none")]
-	pub origin: Option<Vec<String>>,
+	pub origin: Option<Origin>,
 	/// List of account origins that won't be included.
 	#[serde(rename = "not_origin[]", skip_serializing_if = "Option::is_none")]
-	pub not_origin: Option<Vec<String>>,
+	pub not_origin: Option<Vec<ItemOriginModel>>,
 	/// Order by.
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub order_by: Option<OrderBy>,
@@ -20250,10 +20261,10 @@ pub struct ListOrdersParams {
 	pub login: Option<String>,
 	/// List of account origins.
 	#[serde(rename = "origin[]", skip_serializing_if = "Option::is_none")]
-	pub origin: Option<Vec<String>>,
+	pub origin: Option<Origin>,
 	/// List of account origins that won't be included.
 	#[serde(rename = "not_origin[]", skip_serializing_if = "Option::is_none")]
-	pub not_origin: Option<Vec<String>>,
+	pub not_origin: Option<Vec<ItemOriginModel>>,
 	/// Order by.
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub order_by: Option<OrderBy>,
@@ -20348,10 +20359,10 @@ pub struct ListDownloadParams {
 	pub pmax: Option<i64>,
 	/// List of account origins.
 	#[serde(rename = "origin[]", skip_serializing_if = "Option::is_none")]
-	pub origin: Option<Vec<String>>,
+	pub origin: Option<Origin>,
 	/// List of account origins that won't be included.
 	#[serde(rename = "not_origin[]", skip_serializing_if = "Option::is_none")]
-	pub not_origin: Option<Vec<String>>,
+	pub not_origin: Option<Vec<ItemOriginModel>>,
 	/// Order by.
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub order_by: Option<OrderBy>,
@@ -20423,10 +20434,10 @@ pub struct ListViewedParams {
 	pub pmax: Option<i64>,
 	/// List of account origins.
 	#[serde(rename = "origin[]", skip_serializing_if = "Option::is_none")]
-	pub origin: Option<Vec<String>>,
+	pub origin: Option<Origin>,
 	/// List of account origins that won't be included.
 	#[serde(rename = "not_origin[]", skip_serializing_if = "Option::is_none")]
-	pub not_origin: Option<Vec<String>>,
+	pub not_origin: Option<Vec<ItemOriginModel>>,
 	/// Order by.
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub order_by: Option<OrderBy>,
@@ -21237,9 +21248,9 @@ pub struct ManagingEditBody {
 	/// Account private information (visible only for buyer).
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub information: Option<String>,
-	/// Account origin. Where did you get it from.
+	/// Account origin.
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub item_origin: Option<ManagingItemOrigin>,
+	pub item_origin: Option<ItemOrigin>,
 	/// Current price of account in your currency.
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub price: Option<i64>,
@@ -24123,8 +24134,8 @@ pub struct PublishingAddBody {
 	/// Account private information (visible only for buyer).
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub information: Option<String>,
-	/// Account origin. Where did you get it from.
-	pub item_origin: PublishingItemOrigin,
+	/// Account origin.
+	pub item_origin: ItemOrigin,
 	/// Current price of account in your currency.
 	pub price: f64,
 	/// Proxy id that will be used to check account.
@@ -24184,8 +24195,8 @@ pub struct PublishingFastSellBody {
 	/// Account private information (visible only for buyer).
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub information: Option<String>,
-	/// Account origin. Where did you get it from.
-	pub item_origin: PublishingItemOrigin,
+	/// Account origin.
+	pub item_origin: ItemOrigin,
 	/// Account login (or email).
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub login: Option<String>,

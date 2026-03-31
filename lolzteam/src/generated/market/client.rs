@@ -159,9 +159,7 @@ impl CartApi {
 				}
 			}
 			if let Some(ref v) = p.origin {
-				for item in v {
-					query.push(("origin[]".into(), ParamValue::String(item.to_string())));
-				}
+				query.push(("origin[]".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.not_origin {
 				for item in v {
@@ -292,9 +290,7 @@ impl CategoryApi {
 				}
 			}
 			if let Some(ref v) = p.origin {
-				for item in v {
-					query.push(("origin[]".into(), ParamValue::String(item.to_string())));
-				}
+				query.push(("origin[]".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.not_origin {
 				for item in v {
@@ -406,9 +402,7 @@ impl CategoryApi {
 				}
 			}
 			if let Some(ref v) = p.origin {
-				for item in v {
-					query.push(("origin[]".into(), ParamValue::String(item.to_string())));
-				}
+				query.push(("origin[]".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.not_origin {
 				for item in v {
@@ -601,9 +595,7 @@ impl CategoryApi {
 				}
 			}
 			if let Some(ref v) = p.origin {
-				for item in v {
-					query.push(("origin[]".into(), ParamValue::String(item.to_string())));
-				}
+				query.push(("origin[]".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.not_origin {
 				for item in v {
@@ -766,9 +758,7 @@ impl CategoryApi {
 				}
 			}
 			if let Some(ref v) = p.origin {
-				for item in v {
-					query.push(("origin[]".into(), ParamValue::String(item.to_string())));
-				}
+				query.push(("origin[]".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.not_origin {
 				for item in v {
@@ -1019,9 +1009,7 @@ impl CategoryApi {
 				}
 			}
 			if let Some(ref v) = p.origin {
-				for item in v {
-					query.push(("origin[]".into(), ParamValue::String(item.to_string())));
-				}
+				query.push(("origin[]".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.not_origin {
 				for item in v {
@@ -1214,9 +1202,7 @@ impl CategoryApi {
 				}
 			}
 			if let Some(ref v) = p.origin {
-				for item in v {
-					query.push(("origin[]".into(), ParamValue::String(item.to_string())));
-				}
+				query.push(("origin[]".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.not_origin {
 				for item in v {
@@ -1394,9 +1380,7 @@ impl CategoryApi {
 				}
 			}
 			if let Some(ref v) = p.origin {
-				for item in v {
-					query.push(("origin[]".into(), ParamValue::String(item.to_string())));
-				}
+				query.push(("origin[]".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.not_origin {
 				for item in v {
@@ -1542,9 +1526,7 @@ impl CategoryApi {
 				}
 			}
 			if let Some(ref v) = p.origin {
-				for item in v {
-					query.push(("origin[]".into(), ParamValue::String(item.to_string())));
-				}
+				query.push(("origin[]".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.not_origin {
 				for item in v {
@@ -1837,9 +1819,7 @@ impl CategoryApi {
 				}
 			}
 			if let Some(ref v) = p.origin {
-				for item in v {
-					query.push(("origin[]".into(), ParamValue::String(item.to_string())));
-				}
+				query.push(("origin[]".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.not_origin {
 				for item in v {
@@ -1963,9 +1943,7 @@ impl CategoryApi {
 				}
 			}
 			if let Some(ref v) = p.origin {
-				for item in v {
-					query.push(("origin[]".into(), ParamValue::String(item.to_string())));
-				}
+				query.push(("origin[]".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.not_origin {
 				for item in v {
@@ -2088,9 +2066,7 @@ impl CategoryApi {
 				}
 			}
 			if let Some(ref v) = p.origin {
-				for item in v {
-					query.push(("origin[]".into(), ParamValue::String(item.to_string())));
-				}
+				query.push(("origin[]".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.not_origin {
 				for item in v {
@@ -2250,9 +2226,7 @@ impl CategoryApi {
 				}
 			}
 			if let Some(ref v) = p.origin {
-				for item in v {
-					query.push(("origin[]".into(), ParamValue::String(item.to_string())));
-				}
+				query.push(("origin[]".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.not_origin {
 				for item in v {
@@ -2631,9 +2605,7 @@ impl CategoryApi {
 				}
 			}
 			if let Some(ref v) = p.origin {
-				for item in v {
-					query.push(("origin[]".into(), ParamValue::String(item.to_string())));
-				}
+				query.push(("origin[]".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.not_origin {
 				for item in v {
@@ -2882,9 +2854,7 @@ impl CategoryApi {
 				}
 			}
 			if let Some(ref v) = p.origin {
-				for item in v {
-					query.push(("origin[]".into(), ParamValue::String(item.to_string())));
-				}
+				query.push(("origin[]".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.not_origin {
 				for item in v {
@@ -3207,9 +3177,7 @@ impl CategoryApi {
 				}
 			}
 			if let Some(ref v) = p.origin {
-				for item in v {
-					query.push(("origin[]".into(), ParamValue::String(item.to_string())));
-				}
+				query.push(("origin[]".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.not_origin {
 				for item in v {
@@ -3446,9 +3414,7 @@ impl CategoryApi {
 				}
 			}
 			if let Some(ref v) = p.origin {
-				for item in v {
-					query.push(("origin[]".into(), ParamValue::String(item.to_string())));
-				}
+				query.push(("origin[]".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.not_origin {
 				for item in v {
@@ -3586,9 +3552,7 @@ impl CategoryApi {
 				}
 			}
 			if let Some(ref v) = p.origin {
-				for item in v {
-					query.push(("origin[]".into(), ParamValue::String(item.to_string())));
-				}
+				query.push(("origin[]".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.not_origin {
 				for item in v {
@@ -4027,9 +3991,7 @@ impl CategoryApi {
 				}
 			}
 			if let Some(ref v) = p.origin {
-				for item in v {
-					query.push(("origin[]".into(), ParamValue::String(item.to_string())));
-				}
+				query.push(("origin[]".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.not_origin {
 				for item in v {
@@ -4310,9 +4272,7 @@ impl CategoryApi {
 				}
 			}
 			if let Some(ref v) = p.origin {
-				for item in v {
-					query.push(("origin[]".into(), ParamValue::String(item.to_string())));
-				}
+				query.push(("origin[]".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.not_origin {
 				for item in v {
@@ -4576,9 +4536,7 @@ impl CategoryApi {
 				}
 			}
 			if let Some(ref v) = p.origin {
-				for item in v {
-					query.push(("origin[]".into(), ParamValue::String(item.to_string())));
-				}
+				query.push(("origin[]".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.not_origin {
 				for item in v {
@@ -4740,9 +4698,7 @@ impl CategoryApi {
 				}
 			}
 			if let Some(ref v) = p.origin {
-				for item in v {
-					query.push(("origin[]".into(), ParamValue::String(item.to_string())));
-				}
+				query.push(("origin[]".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.not_origin {
 				for item in v {
@@ -4959,9 +4915,7 @@ impl CategoryApi {
 				}
 			}
 			if let Some(ref v) = p.origin {
-				for item in v {
-					query.push(("origin[]".into(), ParamValue::String(item.to_string())));
-				}
+				query.push(("origin[]".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.not_origin {
 				for item in v {
@@ -5090,9 +5044,7 @@ impl CategoryApi {
 				}
 			}
 			if let Some(ref v) = p.origin {
-				for item in v {
-					query.push(("origin[]".into(), ParamValue::String(item.to_string())));
-				}
+				query.push(("origin[]".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.not_origin {
 				for item in v {
@@ -5234,9 +5186,7 @@ impl CategoryApi {
 				}
 			}
 			if let Some(ref v) = p.origin {
-				for item in v {
-					query.push(("origin[]".into(), ParamValue::String(item.to_string())));
-				}
+				query.push(("origin[]".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.not_origin {
 				for item in v {
@@ -5475,9 +5425,7 @@ impl CategoryApi {
 				}
 			}
 			if let Some(ref v) = p.origin {
-				for item in v {
-					query.push(("origin[]".into(), ParamValue::String(item.to_string())));
-				}
+				query.push(("origin[]".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.not_origin {
 				for item in v {
@@ -5811,9 +5759,7 @@ impl ListApi {
 				query.push(("pmax".into(), ParamValue::Integer(*v)));
 			}
 			if let Some(ref v) = p.origin {
-				for item in v {
-					query.push(("origin[]".into(), ParamValue::String(item.to_string())));
-				}
+				query.push(("origin[]".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.not_origin {
 				for item in v {
@@ -5921,9 +5867,7 @@ impl ListApi {
 				query.push(("login".into(), ParamValue::String(v.clone())));
 			}
 			if let Some(ref v) = p.origin {
-				for item in v {
-					query.push(("origin[]".into(), ParamValue::String(item.to_string())));
-				}
+				query.push(("origin[]".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.not_origin {
 				for item in v {
@@ -6028,9 +5972,7 @@ impl ListApi {
 				query.push(("login".into(), ParamValue::String(v.clone())));
 			}
 			if let Some(ref v) = p.origin {
-				for item in v {
-					query.push(("origin[]".into(), ParamValue::String(item.to_string())));
-				}
+				query.push(("origin[]".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.not_origin {
 				for item in v {
@@ -6108,9 +6050,7 @@ impl ListApi {
 				query.push(("pmax".into(), ParamValue::Integer(*v)));
 			}
 			if let Some(ref v) = p.origin {
-				for item in v {
-					query.push(("origin[]".into(), ParamValue::String(item.to_string())));
-				}
+				query.push(("origin[]".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.not_origin {
 				for item in v {
@@ -6205,9 +6145,7 @@ impl ListApi {
 				query.push(("pmax".into(), ParamValue::Integer(*v)));
 			}
 			if let Some(ref v) = p.origin {
-				for item in v {
-					query.push(("origin[]".into(), ParamValue::String(item.to_string())));
-				}
+				query.push(("origin[]".into(), ParamValue::String(v.to_string())));
 			}
 			if let Some(ref v) = p.not_origin {
 				for item in v {
