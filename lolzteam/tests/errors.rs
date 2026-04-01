@@ -6,11 +6,7 @@ use lolzteam::runtime::{ConfigError, HttpError, LolzteamError};
 
 #[test]
 fn rate_limit_429() {
-	let err = HttpError {
-		status: 429,
-		body: serde_json::json!({"error": "rate limited"}),
-		retry_after: Some(5),
-	};
+	let err = HttpError::new(429, serde_json::json!({"error": "rate limited"}), Some(5));
 	assert!(err.is_rate_limit());
 	assert!(err.is_retryable());
 	assert!(!err.is_server_error());
@@ -22,11 +18,7 @@ fn rate_limit_429() {
 #[test]
 fn retryable_statuses() {
 	for status in [429, 502, 503, 504] {
-		let err = HttpError {
-			status,
-			body: serde_json::Value::Null,
-			retry_after: None,
-		};
+		let err = HttpError::new(status, serde_json::Value::Null, None);
 		assert!(err.is_retryable(), "{status} should be retryable");
 	}
 }
@@ -34,41 +26,28 @@ fn retryable_statuses() {
 #[test]
 fn non_retryable_statuses() {
 	for status in [400, 401, 403, 404, 500, 418] {
-		let err = HttpError {
-			status,
-			body: serde_json::Value::Null,
-			retry_after: None,
-		};
+		let err = HttpError::new(status, serde_json::Value::Null, None);
 		assert!(!err.is_retryable(), "{status} should NOT be retryable");
 	}
 }
 
 #[test]
 fn auth_error_statuses() {
-	for status in [401, 403] {
-		let err = HttpError {
-			status,
-			body: serde_json::Value::Null,
-			retry_after: None,
-		};
-		assert!(err.is_auth_error(), "{status} should be auth error");
-	}
-	// 400 is not an auth error
-	let err = HttpError {
-		status: 400,
-		body: serde_json::Value::Null,
-		retry_after: None,
-	};
+	let err = HttpError::new(401, serde_json::Value::Null, None);
+	assert!(err.is_auth_error(), "401 should be auth error");
+	// 403 is forbidden, not auth
+	let err = HttpError::new(403, serde_json::Value::Null, None);
 	assert!(!err.is_auth_error());
+	assert!(err.is_forbidden(), "403 should be forbidden error");
+	// 400 is neither
+	let err = HttpError::new(400, serde_json::Value::Null, None);
+	assert!(!err.is_auth_error());
+	assert!(!err.is_forbidden());
 }
 
 #[test]
 fn not_found_404() {
-	let err = HttpError {
-		status: 404,
-		body: serde_json::Value::Null,
-		retry_after: None,
-	};
+	let err = HttpError::new(404, serde_json::Value::Null, None);
 	assert!(err.is_not_found());
 	assert!(!err.is_retryable());
 }
@@ -76,28 +55,16 @@ fn not_found_404() {
 #[test]
 fn server_error_5xx() {
 	for status in [500, 501, 502, 503, 504] {
-		let err = HttpError {
-			status,
-			body: serde_json::Value::Null,
-			retry_after: None,
-		};
+		let err = HttpError::new(status, serde_json::Value::Null, None);
 		assert!(err.is_server_error(), "{status} should be server error");
 	}
-	let err = HttpError {
-		status: 499,
-		body: serde_json::Value::Null,
-		retry_after: None,
-	};
+	let err = HttpError::new(499, serde_json::Value::Null, None);
 	assert!(!err.is_server_error());
 }
 
 #[test]
 fn retry_after_none_when_absent() {
-	let err = HttpError {
-		status: 429,
-		body: serde_json::Value::Null,
-		retry_after: None,
-	};
+	let err = HttpError::new(429, serde_json::Value::Null, None);
 	assert_eq!(err.retry_after_secs(), None);
 }
 
@@ -107,11 +74,7 @@ fn retry_after_none_when_absent() {
 
 #[test]
 fn http_error_display_contains_status_and_body() {
-	let err = HttpError {
-		status: 422,
-		body: serde_json::json!({"message": "invalid field"}),
-		retry_after: None,
-	};
+	let err = HttpError::new(422, serde_json::json!({"message": "invalid field"}), None);
 	let msg = format!("{err}");
 	assert!(msg.contains("422"), "display should contain status");
 	assert!(msg.contains("invalid field"), "display should contain body");
@@ -123,11 +86,7 @@ fn http_error_display_contains_status_and_body() {
 
 #[test]
 fn http_error_into_lolzteam_error() {
-	let http_err = HttpError {
-		status: 500,
-		body: serde_json::Value::Null,
-		retry_after: None,
-	};
+	let http_err = HttpError::new(500, serde_json::Value::Null, None);
 	let err: LolzteamError = http_err.into();
 	assert!(matches!(err, LolzteamError::Http(_)));
 }
@@ -151,11 +110,7 @@ fn config_error_into_lolzteam_error() {
 
 #[test]
 fn retry_exhausted_display() {
-	let inner = HttpError {
-		status: 503,
-		body: serde_json::Value::Null,
-		retry_after: None,
-	};
+	let inner = HttpError::new(503, serde_json::Value::Null, None);
 	let err = LolzteamError::RetryExhausted {
 		attempts: 4,
 		last_error: Box::new(LolzteamError::Http(inner)),
@@ -166,11 +121,7 @@ fn retry_exhausted_display() {
 
 #[test]
 fn retry_exhausted_inner_error_accessible() {
-	let inner = HttpError {
-		status: 429,
-		body: serde_json::Value::Null,
-		retry_after: None,
-	};
+	let inner = HttpError::new(429, serde_json::Value::Null, None);
 	let err = LolzteamError::RetryExhausted {
 		attempts: 3,
 		last_error: Box::new(LolzteamError::Http(inner)),

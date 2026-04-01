@@ -221,7 +221,7 @@ async fn server_500_not_retried() {
 	let result: Result<serde_json::Value, LolzteamError> =
 		client.request("GET", "/crash", None, None, false).await;
 
-	assert!(matches!(result.unwrap_err(), LolzteamError::Http(e) if e.status == 500));
+	assert!(matches!(result.unwrap_err(), LolzteamError::Http(e) if e.status() == 500));
 	assert_eq!(call_count.load(Ordering::SeqCst), 1);
 }
 

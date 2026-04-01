@@ -148,7 +148,7 @@ mod tests {
 
 	#[tokio::test]
 	async fn retry_exhausted_after_max_retries() {
-		use crate::runtime::errors::HttpError;
+		use crate::runtime::errors::{HttpError, HttpErrorData};
 		use std::sync::atomic::{AtomicU32, Ordering};
 
 		let config = RetryConfig {
@@ -162,9 +162,11 @@ mod tests {
 		let result: Result<(), LolzteamError> = with_retry(&config, None, "GET", "/test", || {
 			call_count.fetch_add(1, Ordering::SeqCst);
 			async {
-				Err(LolzteamError::Http(HttpError {
-					status: 429,
-					body: serde_json::Value::Null,
+				Err(LolzteamError::Http(HttpError::RateLimit {
+					data: HttpErrorData {
+						status: 429,
+						body: serde_json::Value::Null,
+					},
 					retry_after: None,
 				}))
 			}
@@ -187,7 +189,7 @@ mod tests {
 
 	#[tokio::test]
 	async fn no_retry_exhausted_when_max_retries_zero() {
-		use crate::runtime::errors::HttpError;
+		use crate::runtime::errors::{HttpError, HttpErrorData};
 
 		let config = RetryConfig {
 			max_retries: 0,
@@ -197,9 +199,11 @@ mod tests {
 
 		let result: Result<(), LolzteamError> =
 			with_retry(&config, None, "GET", "/test", || async {
-				Err(LolzteamError::Http(HttpError {
-					status: 429,
-					body: serde_json::Value::Null,
+				Err(LolzteamError::Http(HttpError::RateLimit {
+					data: HttpErrorData {
+						status: 429,
+						body: serde_json::Value::Null,
+					},
 					retry_after: None,
 				}))
 			})

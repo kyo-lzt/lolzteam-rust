@@ -23,18 +23,56 @@ pub enum LolzteamError {
 	},
 }
 
-/// An HTTP error response from the API.
-#[derive(Debug)]
-pub struct HttpError {
+/// Shared fields present on every HTTP error response.
+#[derive(Debug, Clone)]
+pub struct HttpErrorData {
 	/// HTTP status code.
 	pub status: u16,
 	/// Parsed response body (may be an error object or empty object).
 	pub body: serde_json::Value,
-	/// Value of the `Retry-After` header on 429 responses, in seconds.
-	pub retry_after: Option<u64>,
+}
+
+/// An HTTP error response from the API.
+///
+/// Each variant carries [`HttpErrorData`] with the status code and body.
+/// Users can pattern-match on variants or use the convenience `is_*()` methods.
+#[derive(Debug)]
+pub enum HttpError {
+	/// 401 Unauthorized.
+	Auth(HttpErrorData),
+	/// 403 Forbidden.
+	Forbidden(HttpErrorData),
+	/// 404 Not Found.
+	NotFound(HttpErrorData),
+	/// 429 Too Many Requests.
+	RateLimit {
+		data: HttpErrorData,
+		/// Value of the `Retry-After` header, in seconds.
+		retry_after: Option<u64>,
+	},
+	/// 5xx Server Error.
+	Server(HttpErrorData),
+	/// Any other non-2xx status code.
+	Other(HttpErrorData),
 }
 
 impl HttpError {
+	/// Create an `HttpError` from a status code, body, and optional retry-after.
+	///
+	/// Automatically selects the correct variant based on the status code.
+	#[must_use]
+	pub fn new(status: u16, body: serde_json::Value, retry_after: Option<u64>) -> Self {
+		let data = HttpErrorData { status, body };
+		match status {
+			401 => Self::Auth(data),
+			403 => Self::Forbidden(data),
+			404 => Self::NotFound(data),
+			429 => Self::RateLimit { data, retry_after },
+			500..=599 => Self::Server(data),
+			_ => Self::Other(data),
+		}
+	}
+
 	/// Create from a reqwest response (consumes the response).
 	pub async fn from_response(response: reqwest::Response) -> Self {
 		let status = response.status().as_u16();
@@ -57,53 +95,97 @@ impl HttpError {
 			.await
 			.unwrap_or(serde_json::Value::Null);
 
-		Self {
-			status,
-			body,
-			retry_after,
+		let data = HttpErrorData { status, body };
+
+		match status {
+			401 => Self::Auth(data),
+			403 => Self::Forbidden(data),
+			404 => Self::NotFound(data),
+			429 => Self::RateLimit { data, retry_after },
+			500..=599 => Self::Server(data),
+			_ => Self::Other(data),
 		}
+	}
+
+	/// Access the shared error data regardless of variant.
+	#[must_use]
+	pub fn data(&self) -> &HttpErrorData {
+		match self {
+			Self::Auth(d)
+			| Self::Forbidden(d)
+			| Self::NotFound(d)
+			| Self::Server(d)
+			| Self::Other(d) => d,
+			Self::RateLimit { data, .. } => data,
+		}
+	}
+
+	/// HTTP status code.
+	#[must_use]
+	pub fn status(&self) -> u16 {
+		self.data().status
+	}
+
+	/// Parsed response body.
+	#[must_use]
+	pub fn body(&self) -> &serde_json::Value {
+		&self.data().body
 	}
 
 	/// Returns `true` if this is a 429 Too Many Requests response.
 	#[must_use]
 	pub fn is_rate_limit(&self) -> bool {
-		self.status == 429
+		matches!(self, Self::RateLimit { .. })
 	}
 
 	/// Returns `true` if this is a 5xx server error.
 	#[must_use]
 	pub fn is_server_error(&self) -> bool {
-		self.status >= 500
+		matches!(self, Self::Server(_))
 	}
 
-	/// Returns `true` if this is a 401 or 403 authentication/authorization error.
+	/// Returns `true` if this is a 401 authentication error.
 	#[must_use]
 	pub fn is_auth_error(&self) -> bool {
-		self.status == 401 || self.status == 403
+		matches!(self, Self::Auth(_))
+	}
+
+	/// Returns `true` if this is a 403 forbidden error.
+	#[must_use]
+	pub fn is_forbidden(&self) -> bool {
+		matches!(self, Self::Forbidden(_))
 	}
 
 	/// Returns `true` if this is a 404 Not Found response.
 	#[must_use]
 	pub fn is_not_found(&self) -> bool {
-		self.status == 404
+		matches!(self, Self::NotFound(_))
 	}
 
 	/// Returns the Retry-After value in seconds, if present.
 	#[must_use]
 	pub fn retry_after_secs(&self) -> Option<u64> {
-		self.retry_after
+		match self {
+			Self::RateLimit { retry_after, .. } => *retry_after,
+			_ => None,
+		}
 	}
 
 	/// Returns `true` if this error should be retried (429, 502, 503, 504).
 	#[must_use]
 	pub fn is_retryable(&self) -> bool {
-		self.status == 429 || self.status == 502 || self.status == 503 || self.status == 504
+		match self {
+			Self::RateLimit { .. } => true,
+			Self::Server(d) => matches!(d.status, 502..=504),
+			_ => false,
+		}
 	}
 }
 
 impl fmt::Display for HttpError {
 	fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-		write!(f, "HTTP {}: {}", self.status, self.body)
+		let d = self.data();
+		write!(f, "HTTP {}: {}", d.status, d.body)
 	}
 }
 

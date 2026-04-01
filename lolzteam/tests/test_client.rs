@@ -186,11 +186,7 @@ fn config_types_are_clone_and_debug() {
 
 #[test]
 fn http_error_is_rate_limit() {
-	let err = HttpError {
-		status: 429,
-		body: serde_json::json!({"error": "rate limited"}),
-		retry_after: Some(5),
-	};
+	let err = HttpError::new(429, serde_json::json!({"error": "rate limited"}), Some(5));
 	assert!(err.is_rate_limit());
 	assert!(err.is_retryable());
 	assert!(!err.is_server_error());
@@ -202,11 +198,7 @@ fn http_error_is_rate_limit() {
 #[test]
 fn http_error_server_errors() {
 	for status in [500, 502, 503, 504] {
-		let err = HttpError {
-			status,
-			body: serde_json::Value::Null,
-			retry_after: None,
-		};
+		let err = HttpError::new(status, serde_json::Value::Null, None);
 		assert!(
 			err.is_server_error(),
 			"status {status} should be server error"
@@ -221,19 +213,11 @@ fn http_error_retryable_statuses() {
 	let not_retryable = [400, 401, 403, 404, 500];
 
 	for status in retryable {
-		let err = HttpError {
-			status,
-			body: serde_json::Value::Null,
-			retry_after: None,
-		};
+		let err = HttpError::new(status, serde_json::Value::Null, None);
 		assert!(err.is_retryable(), "status {status} should be retryable");
 	}
 	for status in not_retryable {
-		let err = HttpError {
-			status,
-			body: serde_json::Value::Null,
-			retry_after: None,
-		};
+		let err = HttpError::new(status, serde_json::Value::Null, None);
 		assert!(
 			!err.is_retryable(),
 			"status {status} should NOT be retryable"
@@ -243,44 +227,30 @@ fn http_error_retryable_statuses() {
 
 #[test]
 fn http_error_auth_error() {
-	for status in [401, 403] {
-		let err = HttpError {
-			status,
-			body: serde_json::Value::Null,
-			retry_after: None,
-		};
-		assert!(err.is_auth_error(), "status {status} should be auth error");
-	}
+	let err = HttpError::new(401, serde_json::Value::Null, None);
+	assert!(err.is_auth_error(), "401 should be auth error");
+	// 403 is forbidden, not auth
+	let err = HttpError::new(403, serde_json::Value::Null, None);
+	assert!(!err.is_auth_error());
+	assert!(err.is_forbidden(), "403 should be forbidden error");
 }
 
 #[test]
 fn http_error_not_found() {
-	let err = HttpError {
-		status: 404,
-		body: serde_json::Value::Null,
-		retry_after: None,
-	};
+	let err = HttpError::new(404, serde_json::Value::Null, None);
 	assert!(err.is_not_found());
 }
 
 #[test]
 fn http_error_display() {
-	let err = HttpError {
-		status: 422,
-		body: serde_json::json!({"error": "invalid"}),
-		retry_after: None,
-	};
+	let err = HttpError::new(422, serde_json::json!({"error": "invalid"}), None);
 	let display = format!("{err}");
 	assert!(display.contains("422"));
 }
 
 #[test]
 fn http_error_converts_to_lolzteam_error() {
-	let http_err = HttpError {
-		status: 500,
-		body: serde_json::Value::Null,
-		retry_after: None,
-	};
+	let http_err = HttpError::new(500, serde_json::Value::Null, None);
 	let err: LolzteamError = http_err.into();
 	assert!(matches!(err, LolzteamError::Http(_)));
 }
@@ -513,11 +483,7 @@ fn proxy_accepts_valid_socks5() {
 #[test]
 fn network_error_converts_to_lolzteam_error() {
 	// We can't easily construct a reqwest::Error, but we can test the enum pattern
-	let http_err = HttpError {
-		status: 503,
-		body: serde_json::Value::Null,
-		retry_after: None,
-	};
+	let http_err = HttpError::new(503, serde_json::Value::Null, None);
 	let err: LolzteamError = http_err.into();
 	match &err {
 		LolzteamError::Http(h) => {
@@ -530,11 +496,7 @@ fn network_error_converts_to_lolzteam_error() {
 
 #[test]
 fn http_error_429_retry_after_none() {
-	let err = HttpError {
-		status: 429,
-		body: serde_json::Value::Null,
-		retry_after: None,
-	};
+	let err = HttpError::new(429, serde_json::Value::Null, None);
 	assert!(err.is_rate_limit());
 	assert!(err.is_retryable());
 	assert_eq!(err.retry_after_secs(), None);
@@ -542,11 +504,7 @@ fn http_error_429_retry_after_none() {
 
 #[test]
 fn http_error_display_contains_body() {
-	let err = HttpError {
-		status: 400,
-		body: serde_json::json!({"message": "bad request"}),
-		retry_after: None,
-	};
+	let err = HttpError::new(400, serde_json::json!({"message": "bad request"}), None);
 	let display = format!("{err}");
 	assert!(display.contains("400"));
 	assert!(display.contains("bad request"));
@@ -633,7 +591,7 @@ async fn http_mock_401_auth_error() {
 	match &err {
 		LolzteamError::Http(http_err) => {
 			assert!(http_err.is_auth_error());
-			assert_eq!(http_err.status, 401);
+			assert_eq!(http_err.status(), 401);
 		}
 		other => panic!("expected Http error, got: {other:?}"),
 	}
@@ -657,7 +615,7 @@ async fn http_mock_404_not_found() {
 	match &err {
 		LolzteamError::Http(http_err) => {
 			assert!(http_err.is_not_found());
-			assert_eq!(http_err.status, 404);
+			assert_eq!(http_err.status(), 404);
 		}
 		other => panic!("expected Http error, got: {other:?}"),
 	}
