@@ -12,7 +12,7 @@ pub struct BalanceModel {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub balance: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub balance_id: i64,
+	pub balance_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub custom_title: serde_json::Value,
 	#[serde(
@@ -22,7 +22,7 @@ pub struct BalanceModel {
 	)]
 	pub full_title: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub merchant_id: i64,
+	pub merchant_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub title: String,
 	#[serde(
@@ -32,25 +32,25 @@ pub struct BalanceModel {
 	)]
 	pub r#type: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_id: i64,
+	pub user_id: f64,
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct DiscountModel {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub category_id: i64,
+	pub category_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub discount_id: i64,
+	pub discount_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub discount_percent: i64,
+	pub discount_percent: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub discount_user_id: i64,
+	pub discount_user_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub max_price: i64,
+	pub max_price: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub min_price: i64,
+	pub min_price: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_id: i64,
+	pub user_id: f64,
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
@@ -58,27 +58,27 @@ pub struct InvoiceModel {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub additional_data: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub amount: i64,
+	pub amount: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub comment: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub expires_at: i64,
+	pub expires_at: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub invoice_date: i64,
+	pub invoice_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub invoice_id: i64,
+	pub invoice_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub is_test: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub merchant_id: i64,
+	pub merchant_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub paid_date: i64,
+	pub paid_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub payer_user_id: i64,
+	pub payer_user_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub payment_id: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub resend_attempts: i64,
+	pub resend_attempts: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub status: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -88,13 +88,13 @@ pub struct InvoiceModel {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub url_success: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_id: i64,
+	pub user_id: f64,
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct ItemFromListModel {
 	#[serde(default, deserialize_with = "deserialize_lenient_option")]
-	pub allow_ask_discount: Option<i64>,
+	pub allow_ask_discount: Option<f64>,
 	#[serde(
 		rename = "bumpSettings",
 		default,
@@ -186,7 +186,7 @@ pub struct ItemFromListModel {
 	)]
 	pub can_view_login_data: Option<bool>,
 	#[serde(default, deserialize_with = "deserialize_lenient_option")]
-	pub category_id: Option<i64>,
+	pub category_id: Option<f64>,
 	#[serde(default, deserialize_with = "deserialize_lenient_option")]
 	pub description: Option<String>,
 	#[serde(default, deserialize_with = "deserialize_lenient_option")]
@@ -196,7 +196,7 @@ pub struct ItemFromListModel {
 	#[serde(default, deserialize_with = "deserialize_lenient_option")]
 	pub description_html_en: Option<String>,
 	#[serde(default, deserialize_with = "deserialize_lenient_option")]
-	pub extended_guarantee: Option<i64>,
+	pub extended_guarantee: Option<f64>,
 	#[serde(default, deserialize_with = "deserialize_lenient_option")]
 	pub guarantee: Option<bool>,
 	#[serde(
@@ -204,9 +204,9 @@ pub struct ItemFromListModel {
 		default,
 		deserialize_with = "deserialize_lenient_option"
 	)]
-	pub is_ignored: Option<i64>,
+	pub is_ignored: Option<f64>,
 	#[serde(default, deserialize_with = "deserialize_lenient_option")]
-	pub is_sticky: Option<i64>,
+	pub is_sticky: Option<f64>,
 	#[serde(
 		rename = "itemOriginPhrase",
 		default,
@@ -216,7 +216,7 @@ pub struct ItemFromListModel {
 	#[serde(default, deserialize_with = "deserialize_lenient_option")]
 	pub item_domain: Option<String>,
 	#[serde(default, deserialize_with = "deserialize_lenient_option")]
-	pub item_id: Option<i64>,
+	pub item_id: Option<f64>,
 	#[serde(default, deserialize_with = "deserialize_lenient_option")]
 	pub item_origin: Option<String>,
 	#[serde(default, deserialize_with = "deserialize_lenient_option")]
@@ -224,19 +224,19 @@ pub struct ItemFromListModel {
 	#[serde(default, deserialize_with = "deserialize_lenient_option")]
 	pub note_text: Option<String>,
 	#[serde(default, deserialize_with = "deserialize_lenient_option")]
-	pub nsb: Option<i64>,
+	pub nsb: Option<f64>,
 	#[serde(default, deserialize_with = "deserialize_lenient_option")]
-	pub price: Option<i64>,
+	pub price: Option<f64>,
 	#[serde(default, deserialize_with = "deserialize_lenient_option")]
 	pub price_currency: Option<String>,
 	#[serde(default, deserialize_with = "deserialize_lenient_option")]
-	pub published_date: Option<i64>,
+	pub published_date: Option<f64>,
 	#[serde(default, deserialize_with = "deserialize_lenient_option")]
-	pub refreshed_date: Option<i64>,
+	pub refreshed_date: Option<f64>,
 	#[serde(default, deserialize_with = "deserialize_lenient_option")]
 	pub resale_item_origin: Option<String>,
 	#[serde(default, deserialize_with = "deserialize_lenient_option")]
-	pub rub_price: Option<i64>,
+	pub rub_price: Option<f64>,
 	#[serde(default, deserialize_with = "deserialize_lenient_option")]
 	pub seller: Option<ItemFromListModelSeller>,
 	#[serde(
@@ -252,9 +252,9 @@ pub struct ItemFromListModel {
 	#[serde(default, deserialize_with = "deserialize_lenient_option")]
 	pub title_en: Option<String>,
 	#[serde(default, deserialize_with = "deserialize_lenient_option")]
-	pub update_stat_date: Option<i64>,
+	pub update_stat_date: Option<f64>,
 	#[serde(default, deserialize_with = "deserialize_lenient_option")]
-	pub view_count: Option<i64>,
+	pub view_count: Option<f64>,
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
@@ -288,21 +288,21 @@ pub struct ItemFromListModelBumpSettings {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct ItemFromListModelSeller {
 	#[serde(default, deserialize_with = "deserialize_lenient_option")]
-	pub active_item_count: Option<i64>,
+	pub active_item_count: Option<f64>,
 	#[serde(default, deserialize_with = "deserialize_lenient_option")]
-	pub avatar_date: Option<i64>,
+	pub avatar_date: Option<f64>,
 	#[serde(default, deserialize_with = "deserialize_lenient_option")]
-	pub display_style_group_id: Option<i64>,
+	pub display_style_group_id: Option<f64>,
 	#[serde(default, deserialize_with = "deserialize_lenient_option")]
-	pub is_banned: Option<i64>,
+	pub is_banned: Option<f64>,
 	#[serde(default, deserialize_with = "deserialize_lenient_option")]
 	pub restore_data: Option<String>,
 	#[serde(default, deserialize_with = "deserialize_lenient_option")]
-	pub restore_percents: Option<i64>,
+	pub restore_percents: Option<f64>,
 	#[serde(default, deserialize_with = "deserialize_lenient_option")]
-	pub sold_items_count: Option<i64>,
+	pub sold_items_count: Option<f64>,
 	#[serde(default, deserialize_with = "deserialize_lenient_option")]
-	pub user_id: Option<i64>,
+	pub user_id: Option<f64>,
 	#[serde(default, deserialize_with = "deserialize_lenient_option")]
 	pub username: Option<String>,
 }
@@ -324,33 +324,33 @@ pub struct ItemModel {
 	)]
 	pub account_links: Vec<ItemModelAccountLinks>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub account_last_activity: i64,
+	pub account_last_activity: f64,
 	#[serde(
 		rename = "aiPrice",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub ai_price: i64,
+	pub ai_price: f64,
 	#[serde(
 		rename = "aiPriceCheckDate",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub ai_price_check_date: i64,
+	pub ai_price_check_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub allow_ask_discount: i64,
+	pub allow_ask_discount: f64,
 	#[serde(
 		rename = "autoBuyPrice",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub auto_buy_price: i64,
+	pub auto_buy_price: f64,
 	#[serde(
 		rename = "autoBuyPriceCheckDate",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub auto_buy_price_check_date: i64,
+	pub auto_buy_price_check_date: f64,
 	#[serde(
 		rename = "bumpSettings",
 		default,
@@ -360,13 +360,13 @@ pub struct ItemModel {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub buyer: ItemModelBuyer,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub buyer_avatar_date: i64,
+	pub buyer_avatar_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub buyer_display_icon_group_id: i64,
+	pub buyer_display_icon_group_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub buyer_uniq_banner: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub buyer_user_group_id: i64,
+	pub buyer_user_group_id: f64,
 	#[serde(
 		rename = "canAskDiscount",
 		default,
@@ -472,7 +472,7 @@ pub struct ItemModel {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub cart_price: serde_json::Value,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub category_id: i64,
+	pub category_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub content_id: serde_json::Value,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -490,15 +490,15 @@ pub struct ItemModel {
 	)]
 	pub custom_fields: ItemModelCustomFields,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub delete_date: i64,
+	pub delete_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub delete_reason: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub delete_user_id: i64,
+	pub delete_user_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub delete_username: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub deposit: i64,
+	pub deposit: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub description: String,
 	#[serde(
@@ -528,13 +528,13 @@ pub struct ItemModel {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub description_en: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit_date: i64,
+	pub edit_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub email_provider: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub email_type: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub extended_guarantee: i64,
+	pub extended_guarantee: f64,
 	#[serde(
 		rename = "externalAuth",
 		default,
@@ -602,7 +602,7 @@ pub struct ItemModel {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub is_fave: serde_json::Value,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub is_sticky: i64,
+	pub is_sticky: f64,
 	#[serde(
 		rename = "itemOriginPhrase",
 		default,
@@ -612,7 +612,7 @@ pub struct ItemModel {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_domain: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub item_id: i64,
+	pub item_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_origin: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -628,7 +628,7 @@ pub struct ItemModel {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub market_custom_title: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub max_discount_percent: i64,
+	pub max_discount_percent: f64,
 	#[serde(
 		rename = "needToRequireVideoToViewLoginData",
 		default,
@@ -638,11 +638,11 @@ pub struct ItemModel {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub note_text: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub nsb: i64,
+	pub nsb: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub pending_deletion_date: i64,
+	pub pending_deletion_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub price: i64,
+	pub price: f64,
 	#[serde(
 		rename = "priceWithSellerFee",
 		default,
@@ -658,13 +658,13 @@ pub struct ItemModel {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub price_currency: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub published_date: i64,
+	pub published_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub refreshed_date: i64,
+	pub refreshed_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub resale_item_origin: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub rub_price: i64,
+	pub rub_price: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub seller: ItemModelSeller,
 	#[serde(
@@ -688,11 +688,11 @@ pub struct ItemModel {
 	)]
 	pub unique_key_exists: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub update_stat_date: i64,
+	pub update_stat_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_allow_ask_discount: i64,
+	pub user_allow_ask_discount: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub view_count: i64,
+	pub view_count: f64,
 	#[serde(
 		rename = "visitorIsAuthor",
 		default,
@@ -752,21 +752,21 @@ pub struct ItemModelBumpSettings {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct ItemModelBuyer {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub display_icon_group_id: i64,
+	pub display_icon_group_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub display_style_group_id: i64,
+	pub display_style_group_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub is_banned: i64,
+	pub is_banned: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub operation_date: i64,
+	pub operation_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub uniq_banner: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub uniq_username_css: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_group_id: i64,
+	pub user_group_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_id: i64,
+	pub user_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub username: String,
 	#[serde(
@@ -854,7 +854,7 @@ pub struct ItemModelGuarantee {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub class: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub duration: i64,
+	pub duration: f64,
 	#[serde(
 		rename = "durationPhrase",
 		default,
@@ -866,13 +866,13 @@ pub struct ItemModelGuarantee {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub end_date: i64,
+	pub end_date: f64,
 	#[serde(
 		rename = "remainingTime",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub remaining_time: i64,
+	pub remaining_time: f64,
 	#[serde(
 		rename = "remainingTimePhrase",
 		default,
@@ -926,15 +926,15 @@ pub struct ItemModelSellerContacts {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct ItemModelSeller {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub active_items_count: i64,
+	pub active_items_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub avatar_date: i64,
+	pub avatar_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub contacts: ItemModelSellerContacts,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub display_style_group_id: i64,
+	pub display_style_group_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub effective_last_activity: i64,
+	pub effective_last_activity: f64,
 	#[serde(
 		rename = "isOnline",
 		default,
@@ -942,17 +942,17 @@ pub struct ItemModelSeller {
 	)]
 	pub is_online: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub is_banned: i64,
+	pub is_banned: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub joined_date: i64,
+	pub joined_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub restore_data: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub restore_percents: serde_json::Value,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub sold_items_count: i64,
+	pub sold_items_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_id: i64,
+	pub user_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub username: String,
 }
@@ -962,27 +962,27 @@ pub type ItemOriginModel = String;
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct RespSystemInfo {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub log_id: i64,
+	pub log_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub time: i64,
+	pub time: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub visitor_id: i64,
+	pub visitor_id: f64,
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct UserModel {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub active_items_count: i64,
+	pub active_items_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub activity_visible: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub age: i64,
+	pub age: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub balance: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub balances: Vec<UserModelBalances>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub bump_item_period: i64,
+	pub bump_item_period: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub can_edit: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -998,7 +998,7 @@ pub struct UserModel {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub can_warn: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub contest_count: i64,
+	pub contest_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub conv_welcome_message: String,
 	#[serde(
@@ -1006,19 +1006,19 @@ pub struct UserModel {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub converted_balance: i64,
+	pub converted_balance: f64,
 	#[serde(
 		rename = "convertedDeposit",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub converted_deposit: i64,
+	pub converted_deposit: f64,
 	#[serde(
 		rename = "convertedHold",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub converted_hold: i64,
+	pub converted_hold: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub currency: String,
 	#[serde(
@@ -1034,7 +1034,7 @@ pub struct UserModel {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub custom_title: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub deposit: i64,
+	pub deposit: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub dob: UserModelDob,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -1060,47 +1060,47 @@ pub struct UserModel {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub is_super_admin: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub joined_date: i64,
+	pub joined_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub last_activity: i64,
+	pub last_activity: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub like2_count: i64,
+	pub like2_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub like_count: i64,
+	pub like_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub location: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub market_custom_title: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub max_discount_percent: i64,
+	pub max_discount_percent: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub message_count: i64,
+	pub message_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub paid_mail_left: i64,
+	pub paid_mail_left: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub public_tags: Vec<UserModelPublicTags>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub register_date: i64,
+	pub register_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub rendered: UserModelRendered,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub restore_count: i64,
+	pub restore_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub restore_data: serde_json::Value,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub short_link: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub sold_items_count: i64,
+	pub sold_items_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub tags: Vec<UserModelTags>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub telegram_client: UserModelTelegramClient,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub trophy_points: i64,
+	pub trophy_points: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub user_allow_ask_discount: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_id: i64,
+	pub user_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub user_title: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -1110,7 +1110,7 @@ pub struct UserModel {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub visible: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub warning_points: i64,
+	pub warning_points: f64,
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
@@ -1118,7 +1118,7 @@ pub struct UserModelBalances {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub balance: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub balance_id: i64,
+	pub balance_id: f64,
 	#[serde(
 		rename = "convertedBalance",
 		default,
@@ -1134,7 +1134,7 @@ pub struct UserModelBalances {
 	)]
 	pub full_title: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub merchant_id: i64,
+	pub merchant_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub title: String,
 	#[serde(
@@ -1144,7 +1144,7 @@ pub struct UserModelBalances {
 	)]
 	pub r#type: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_id: i64,
+	pub user_id: f64,
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
@@ -1244,11 +1244,11 @@ pub struct UserModelCustomFields {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct UserModelDob {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub day: i64,
+	pub day: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub month: i64,
+	pub month: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub year: i64,
+	pub year: f64,
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
@@ -1258,7 +1258,7 @@ pub struct UserModelImapDataDomainZone {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub imap_server: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub port: i64,
+	pub port: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub secure: bool,
 }
@@ -1278,7 +1278,7 @@ pub struct UserModelPublicTags {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub background_color: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub tag_id: i64,
+	pub tag_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub title: String,
 }
@@ -1330,7 +1330,7 @@ pub struct UserModelTags {
 	)]
 	pub is_default: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub tag_id: i64,
+	pub tag_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub title: String,
 }
@@ -4222,7 +4222,7 @@ pub struct AutoPaymentsCreateBody {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct AutoPaymentsCreateResponse {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub auto_payment_id: i64,
+	pub auto_payment_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub message: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -4371,13 +4371,13 @@ pub struct CartGetResponse {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub items: Vec<ItemFromListModel>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub page: i64,
+	pub page: f64,
 	#[serde(
 		rename = "perPage",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub per_page: i64,
+	pub per_page: f64,
 	#[serde(
 		rename = "searchUrl",
 		default,
@@ -4397,7 +4397,7 @@ pub struct CartGetResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub total_items: i64,
+	pub total_items: f64,
 	#[serde(
 		rename = "totalItemsPrice",
 		default,
@@ -4504,13 +4504,13 @@ pub struct CategoryAllResponse {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub items: Vec<ItemFromListModel>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub page: i64,
+	pub page: f64,
 	#[serde(
 		rename = "perPage",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub per_page: i64,
+	pub per_page: f64,
 	#[serde(
 		rename = "searchUrl",
 		default,
@@ -4530,7 +4530,7 @@ pub struct CategoryAllResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub total_items: i64,
+	pub total_items: f64,
 	#[serde(
 		rename = "totalItemsPrice",
 		default,
@@ -4660,7 +4660,7 @@ pub struct CategoryBattleNetParams {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct CategoryBattleNetItemsBattlenetTransactions {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub date: i64,
+	pub date: f64,
 	#[serde(
 		rename = "formattedTotal",
 		default,
@@ -4714,7 +4714,7 @@ pub struct CategoryBattleNetItemsGuarantee {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub class: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub duration: i64,
+	pub duration: f64,
 	#[serde(
 		rename = "durationPhrase",
 		default,
@@ -4738,21 +4738,21 @@ pub struct CategoryBattleNetItemsGuarantee {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct CategoryBattleNetItemsSeller {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub active_items_count: i64,
+	pub active_items_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub avatar_date: i64,
+	pub avatar_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub display_style_group_id: i64,
+	pub display_style_group_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub is_banned: i64,
+	pub is_banned: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub restore_data: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub restore_percents: i64,
+	pub restore_percents: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub sold_items_count: i64,
+	pub sold_items_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_id: i64,
+	pub user_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub username: String,
 }
@@ -4766,9 +4766,9 @@ pub struct CategoryBattleNetItems {
 	)]
 	pub account_links: Vec<serde_json::Value>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub account_last_activity: i64,
+	pub account_last_activity: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub allow_ask_discount: i64,
+	pub allow_ask_discount: f64,
 	#[serde(
 		rename = "battlenetBans",
 		default,
@@ -4790,23 +4790,23 @@ pub struct CategoryBattleNetItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub battlenet_balance: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub battlenet_can_change_tag: i64,
+	pub battlenet_can_change_tag: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub battlenet_change_full_name: i64,
+	pub battlenet_change_full_name: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub battlenet_converted_balance: i64,
+	pub battlenet_converted_balance: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub battlenet_country: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub battlenet_item_id: i64,
+	pub battlenet_item_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub battlenet_last_activity: i64,
+	pub battlenet_last_activity: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub battlenet_mobile: i64,
+	pub battlenet_mobile: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub battlenet_parent_control: i64,
+	pub battlenet_parent_control: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub battlenet_real_id_enabled: i64,
+	pub battlenet_real_id_enabled: f64,
 	#[serde(
 		rename = "bumpSettings",
 		default,
@@ -4910,7 +4910,7 @@ pub struct CategoryBattleNetItems {
 	)]
 	pub can_view_login_data: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub category_id: i64,
+	pub category_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub description: String,
 	#[serde(
@@ -4946,7 +4946,7 @@ pub struct CategoryBattleNetItems {
 	)]
 	pub display_converted_balance: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit_date: i64,
+	pub edit_date: f64,
 	#[serde(
 		rename = "emailLoginUrl",
 		default,
@@ -4958,7 +4958,7 @@ pub struct CategoryBattleNetItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub email_type: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub extended_guarantee: i64,
+	pub extended_guarantee: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub feedback_data: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -4988,7 +4988,7 @@ pub struct CategoryBattleNetItems {
 	)]
 	pub is_small_exf: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub is_sticky: i64,
+	pub is_sticky: f64,
 	#[serde(
 		rename = "itemOriginPhrase",
 		default,
@@ -4998,7 +4998,7 @@ pub struct CategoryBattleNetItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_domain: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub item_id: i64,
+	pub item_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_origin: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -5006,27 +5006,27 @@ pub struct CategoryBattleNetItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub note_text: serde_json::Value,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub nsb: i64,
+	pub nsb: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub price: i64,
+	pub price: f64,
 	#[serde(
 		rename = "priceWithSellerFee",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub price_with_seller_fee: i64,
+	pub price_with_seller_fee: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub price_currency: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub published_date: i64,
+	pub published_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub refreshed_date: i64,
+	pub refreshed_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub resale_item_origin: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub restore_items_category_count: i64,
+	pub restore_items_category_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub rub_price: i64,
+	pub rub_price: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub seller: CategoryBattleNetItemsSeller,
 	#[serde(
@@ -5036,7 +5036,7 @@ pub struct CategoryBattleNetItems {
 	)]
 	pub show_get_email_code_button: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub sold_items_category_count: i64,
+	pub sold_items_category_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub tags: Vec<serde_json::Value>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -5044,9 +5044,9 @@ pub struct CategoryBattleNetItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub title_en: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub update_stat_date: i64,
+	pub update_stat_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub view_count: i64,
+	pub view_count: f64,
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
@@ -5056,7 +5056,7 @@ pub struct CategoryBattleNetResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub cache_ttl: i64,
+	pub cache_ttl: f64,
 	#[serde(
 		rename = "hasNextPage",
 		default,
@@ -5070,15 +5070,15 @@ pub struct CategoryBattleNetResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub last_modified: i64,
+	pub last_modified: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub page: i64,
+	pub page: f64,
 	#[serde(
 		rename = "perPage",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub per_page: i64,
+	pub per_page: f64,
 	#[serde(
 		rename = "searchUrl",
 		default,
@@ -5090,7 +5090,7 @@ pub struct CategoryBattleNetResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub server_time: i64,
+	pub server_time: f64,
 	#[serde(
 		rename = "stickyItems",
 		default,
@@ -5104,7 +5104,7 @@ pub struct CategoryBattleNetResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub total_items: i64,
+	pub total_items: f64,
 	#[serde(
 		rename = "totalItemsPrice",
 		default,
@@ -5151,7 +5151,7 @@ pub struct CategoryListCategory {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub category_description: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub category_id: i64,
+	pub category_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub category_title: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -5315,21 +5315,21 @@ pub struct CategoryChatGptItemsCopyFormatData {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct CategoryChatGptItemsSeller {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub active_items_count: i64,
+	pub active_items_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub avatar_date: i64,
+	pub avatar_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub display_style_group_id: i64,
+	pub display_style_group_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub is_banned: i64,
+	pub is_banned: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub restore_data: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub restore_percents: serde_json::Value,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub sold_items_count: i64,
+	pub sold_items_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_id: i64,
+	pub user_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub username: String,
 }
@@ -5337,7 +5337,7 @@ pub struct CategoryChatGptItemsSeller {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct CategoryChatGptItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub allow_ask_discount: i64,
+	pub allow_ask_discount: f64,
 	#[serde(
 		rename = "bumpSettings",
 		default,
@@ -5453,21 +5453,21 @@ pub struct CategoryChatGptItems {
 	)]
 	pub can_view_login_data: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub category_id: i64,
+	pub category_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub chatgpt_country: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub chatgpt_item_id: i64,
+	pub chatgpt_item_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub chatgpt_phone: i64,
+	pub chatgpt_phone: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub chatgpt_register_date: i64,
+	pub chatgpt_register_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub chatgpt_subscription: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub chatgpt_subscription_auto_renew: i64,
+	pub chatgpt_subscription_auto_renew: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub chatgpt_subscription_ends: i64,
+	pub chatgpt_subscription_ends: f64,
 	#[serde(
 		rename = "copyFormatData",
 		default,
@@ -5503,7 +5503,7 @@ pub struct CategoryChatGptItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub description_en: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit_date: i64,
+	pub edit_date: f64,
 	#[serde(
 		rename = "emailLoginUrl",
 		default,
@@ -5515,7 +5515,7 @@ pub struct CategoryChatGptItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub email_type: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub extended_guarantee: i64,
+	pub extended_guarantee: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub feedback_data: String,
 	#[serde(
@@ -5545,7 +5545,7 @@ pub struct CategoryChatGptItems {
 	)]
 	pub is_personal_account: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub is_sticky: i64,
+	pub is_sticky: f64,
 	#[serde(
 		rename = "itemOriginPhrase",
 		default,
@@ -5555,7 +5555,7 @@ pub struct CategoryChatGptItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_domain: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub item_id: i64,
+	pub item_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_origin: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -5563,9 +5563,9 @@ pub struct CategoryChatGptItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub note_text: serde_json::Value,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub nsb: i64,
+	pub nsb: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub price: i64,
+	pub price: f64,
 	#[serde(
 		rename = "priceWithSellerFee",
 		default,
@@ -5581,13 +5581,13 @@ pub struct CategoryChatGptItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub price_currency: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub published_date: i64,
+	pub published_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub refreshed_date: i64,
+	pub refreshed_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub resale_item_origin: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub rub_price: i64,
+	pub rub_price: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub seller: CategoryChatGptItemsSeller,
 	#[serde(
@@ -5609,9 +5609,9 @@ pub struct CategoryChatGptItems {
 	)]
 	pub unique_key_exists: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub update_stat_date: i64,
+	pub update_stat_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub view_count: i64,
+	pub view_count: f64,
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
@@ -5621,7 +5621,7 @@ pub struct CategoryChatGptResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub cache_ttl: i64,
+	pub cache_ttl: f64,
 	#[serde(
 		rename = "hasNextPage",
 		default,
@@ -5635,15 +5635,15 @@ pub struct CategoryChatGptResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub last_modified: i64,
+	pub last_modified: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub page: i64,
+	pub page: f64,
 	#[serde(
 		rename = "perPage",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub per_page: i64,
+	pub per_page: f64,
 	#[serde(
 		rename = "searchUrl",
 		default,
@@ -5655,7 +5655,7 @@ pub struct CategoryChatGptResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub server_time: i64,
+	pub server_time: f64,
 	#[serde(
 		rename = "stickyItems",
 		default,
@@ -5669,7 +5669,7 @@ pub struct CategoryChatGptResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub total_items: i64,
+	pub total_items: f64,
 	#[serde(
 		rename = "totalItemsPrice",
 		default,
@@ -5908,21 +5908,21 @@ pub struct CategoryDiscordItemsBumpSettings {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct CategoryDiscordItemsSeller {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub active_items_count: i64,
+	pub active_items_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub avatar_date: i64,
+	pub avatar_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub display_style_group_id: i64,
+	pub display_style_group_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub is_banned: i64,
+	pub is_banned: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub restore_data: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub restore_percents: serde_json::Value,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub sold_items_count: i64,
+	pub sold_items_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_id: i64,
+	pub user_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub username: String,
 }
@@ -5930,7 +5930,7 @@ pub struct CategoryDiscordItemsSeller {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct CategoryDiscordItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub allow_ask_discount: i64,
+	pub allow_ask_discount: f64,
 	#[serde(
 		rename = "bumpSettings",
 		default,
@@ -6034,7 +6034,7 @@ pub struct CategoryDiscordItems {
 	)]
 	pub can_view_login_data: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub category_id: i64,
+	pub category_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub description: String,
 	#[serde(
@@ -6082,33 +6082,33 @@ pub struct CategoryDiscordItems {
 	)]
 	pub discord_nitro_type: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub discord_admin_members_count: i64,
+	pub discord_admin_members_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub discord_admin_servers: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub discord_admin_servers_count: i64,
+	pub discord_admin_servers_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub discord_available_boosts: i64,
+	pub discord_available_boosts: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub discord_billing: i64,
+	pub discord_billing: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub discord_chat_count: i64,
+	pub discord_chat_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub discord_condition: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub discord_gifts: i64,
+	pub discord_gifts: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub discord_item_id: i64,
+	pub discord_item_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub discord_locale: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub discord_nitro_end_date: i64,
+	pub discord_nitro_end_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub discord_register_date: i64,
+	pub discord_register_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub discord_verified: i64,
+	pub discord_verified: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit_date: i64,
+	pub edit_date: f64,
 	#[serde(
 		rename = "emailLoginUrl",
 		default,
@@ -6120,7 +6120,7 @@ pub struct CategoryDiscordItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub email_type: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub extended_guarantee: i64,
+	pub extended_guarantee: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub feedback_data: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -6138,7 +6138,7 @@ pub struct CategoryDiscordItems {
 	)]
 	pub is_ignored: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub is_sticky: i64,
+	pub is_sticky: f64,
 	#[serde(
 		rename = "itemOriginPhrase",
 		default,
@@ -6148,7 +6148,7 @@ pub struct CategoryDiscordItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_domain: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub item_id: i64,
+	pub item_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_origin: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -6156,25 +6156,25 @@ pub struct CategoryDiscordItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub note_text: serde_json::Value,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub nsb: i64,
+	pub nsb: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub price: i64,
+	pub price: f64,
 	#[serde(
 		rename = "priceWithSellerFee",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub price_with_seller_fee: i64,
+	pub price_with_seller_fee: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub price_currency: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub published_date: i64,
+	pub published_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub refreshed_date: i64,
+	pub refreshed_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub resale_item_origin: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub rub_price: i64,
+	pub rub_price: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub seller: CategoryDiscordItemsSeller,
 	#[serde(
@@ -6190,9 +6190,9 @@ pub struct CategoryDiscordItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub title_en: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub update_stat_date: i64,
+	pub update_stat_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub view_count: i64,
+	pub view_count: f64,
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
@@ -6202,7 +6202,7 @@ pub struct CategoryDiscordResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub cache_ttl: i64,
+	pub cache_ttl: f64,
 	#[serde(
 		rename = "hasNextPage",
 		default,
@@ -6216,15 +6216,15 @@ pub struct CategoryDiscordResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub last_modified: i64,
+	pub last_modified: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub page: i64,
+	pub page: f64,
 	#[serde(
 		rename = "perPage",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub per_page: i64,
+	pub per_page: f64,
 	#[serde(
 		rename = "searchUrl",
 		default,
@@ -6236,7 +6236,7 @@ pub struct CategoryDiscordResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub server_time: i64,
+	pub server_time: f64,
 	#[serde(
 		rename = "stickyItems",
 		default,
@@ -6250,7 +6250,7 @@ pub struct CategoryDiscordResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub total_items: i64,
+	pub total_items: f64,
 	#[serde(
 		rename = "totalItemsPrice",
 		default,
@@ -6450,11 +6450,11 @@ pub struct CategoryEaItemsEaGamesApexLegends {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub img: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub last_activity: i64,
+	pub last_activity: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub title: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub total_played: i64,
+	pub total_played: f64,
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
@@ -6470,21 +6470,21 @@ pub struct CategoryEaItemsEaGames {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct CategoryEaItemsSeller {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub active_items_count: i64,
+	pub active_items_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub avatar_date: i64,
+	pub avatar_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub display_style_group_id: i64,
+	pub display_style_group_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub is_banned: i64,
+	pub is_banned: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub restore_data: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub restore_percents: i64,
+	pub restore_percents: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub sold_items_count: i64,
+	pub sold_items_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_id: i64,
+	pub user_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub username: String,
 }
@@ -6504,7 +6504,7 @@ pub struct CategoryEaItems {
 	)]
 	pub account_links: Vec<CategoryEaItemsAccountLinks>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub allow_ask_discount: i64,
+	pub allow_ask_discount: f64,
 	#[serde(
 		rename = "bumpSettings",
 		default,
@@ -6608,7 +6608,7 @@ pub struct CategoryEaItems {
 	)]
 	pub can_view_login_data: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub category_id: i64,
+	pub category_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub description: String,
 	#[serde(
@@ -6638,39 +6638,39 @@ pub struct CategoryEaItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub description_en: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub ea_al_level: i64,
+	pub ea_al_level: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub ea_al_rank_score: i64,
+	pub ea_al_rank_score: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub ea_bans: Vec<serde_json::Value>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub ea_country: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub ea_game_count: i64,
+	pub ea_game_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub ea_games: CategoryEaItemsEaGames,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub ea_has_ban: i64,
+	pub ea_has_ban: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub ea_id: i64,
+	pub ea_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub ea_item_id: i64,
+	pub ea_item_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub ea_last_activity: i64,
+	pub ea_last_activity: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub ea_psn_connected: i64,
+	pub ea_psn_connected: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub ea_steam_connected: i64,
+	pub ea_steam_connected: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub ea_subscription: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub ea_subscription_end_date: i64,
+	pub ea_subscription_end_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub ea_username: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub ea_xbox_connected: i64,
+	pub ea_xbox_connected: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit_date: i64,
+	pub edit_date: f64,
 	#[serde(
 		rename = "emailLoginUrl",
 		default,
@@ -6682,7 +6682,7 @@ pub struct CategoryEaItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub email_type: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub extended_guarantee: i64,
+	pub extended_guarantee: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub feedback_data: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -6700,7 +6700,7 @@ pub struct CategoryEaItems {
 	)]
 	pub is_ignored: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub is_sticky: i64,
+	pub is_sticky: f64,
 	#[serde(
 		rename = "itemOriginPhrase",
 		default,
@@ -6710,7 +6710,7 @@ pub struct CategoryEaItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_domain: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub item_id: i64,
+	pub item_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_origin: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -6718,27 +6718,27 @@ pub struct CategoryEaItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub note_text: serde_json::Value,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub nsb: i64,
+	pub nsb: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub price: i64,
+	pub price: f64,
 	#[serde(
 		rename = "priceWithSellerFee",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub price_with_seller_fee: i64,
+	pub price_with_seller_fee: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub price_currency: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub published_date: i64,
+	pub published_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub refreshed_date: i64,
+	pub refreshed_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub resale_item_origin: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub restore_items_category_count: i64,
+	pub restore_items_category_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub rub_price: i64,
+	pub rub_price: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub seller: CategoryEaItemsSeller,
 	#[serde(
@@ -6748,7 +6748,7 @@ pub struct CategoryEaItems {
 	)]
 	pub show_get_email_code_button: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub sold_items_category_count: i64,
+	pub sold_items_category_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub tags: Vec<serde_json::Value>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -6756,9 +6756,9 @@ pub struct CategoryEaItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub title_en: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub update_stat_date: i64,
+	pub update_stat_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub view_count: i64,
+	pub view_count: f64,
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
@@ -6768,7 +6768,7 @@ pub struct CategoryEaResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub cache_ttl: i64,
+	pub cache_ttl: f64,
 	#[serde(
 		rename = "hasNextPage",
 		default,
@@ -6782,15 +6782,15 @@ pub struct CategoryEaResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub last_modified: i64,
+	pub last_modified: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub page: i64,
+	pub page: f64,
 	#[serde(
 		rename = "perPage",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub per_page: i64,
+	pub per_page: f64,
 	#[serde(
 		rename = "searchUrl",
 		default,
@@ -6802,7 +6802,7 @@ pub struct CategoryEaResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub server_time: i64,
+	pub server_time: f64,
 	#[serde(
 		rename = "stickyItems",
 		default,
@@ -6816,7 +6816,7 @@ pub struct CategoryEaResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub total_items: i64,
+	pub total_items: f64,
 	#[serde(
 		rename = "totalItemsPrice",
 		default,
@@ -6986,7 +6986,7 @@ pub struct CategoryEpicGamesItemsBumpSettings {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct CategoryEpicGamesItemsEgTransactions {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub date: i64,
+	pub date: f64,
 	#[serde(
 		rename = "orderType",
 		default,
@@ -7006,21 +7006,21 @@ pub struct CategoryEpicGamesItemsEgTransactions {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct CategoryEpicGamesItemsSeller {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub active_items_count: i64,
+	pub active_items_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub avatar_date: i64,
+	pub avatar_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub display_style_group_id: i64,
+	pub display_style_group_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub is_banned: i64,
+	pub is_banned: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub restore_data: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub restore_percents: i64,
+	pub restore_percents: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub sold_items_count: i64,
+	pub sold_items_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_id: i64,
+	pub user_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub username: String,
 }
@@ -7034,7 +7034,7 @@ pub struct CategoryEpicGamesItems {
 	)]
 	pub account_links: Vec<serde_json::Value>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub allow_ask_discount: i64,
+	pub allow_ask_discount: f64,
 	#[serde(
 		rename = "bumpSettings",
 		default,
@@ -7138,7 +7138,7 @@ pub struct CategoryEpicGamesItems {
 	)]
 	pub can_view_login_data: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub category_id: i64,
+	pub category_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub description: String,
 	#[serde(
@@ -7168,7 +7168,7 @@ pub struct CategoryEpicGamesItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub description_en: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit_date: i64,
+	pub edit_date: f64,
 	#[serde(
 		rename = "egBalance",
 		default,
@@ -7180,7 +7180,7 @@ pub struct CategoryEpicGamesItems {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub eg_game_count: i64,
+	pub eg_game_count: f64,
 	#[serde(
 		rename = "egTransactions",
 		default,
@@ -7188,9 +7188,9 @@ pub struct CategoryEpicGamesItems {
 	)]
 	pub eg_transactions: Vec<CategoryEpicGamesItemsEgTransactions>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub eg_can_update_display_name: i64,
+	pub eg_can_update_display_name: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub eg_change_email: i64,
+	pub eg_change_email: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub eg_code_redemption_history: Vec<serde_json::Value>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -7200,19 +7200,19 @@ pub struct CategoryEpicGamesItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub eg_games: serde_json::Value,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub eg_item_id: i64,
+	pub eg_item_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub eg_last_activity: i64,
+	pub eg_last_activity: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub eg_next_change_email_date: i64,
+	pub eg_next_change_email_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub eg_payment_methods: Vec<serde_json::Value>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub eg_rewards_balance: i64,
+	pub eg_rewards_balance: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub eg_rewards_expiration_date: i64,
+	pub eg_rewards_expiration_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub eg_rl_purchases: i64,
+	pub eg_rl_purchases: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub eg_username: String,
 	#[serde(
@@ -7226,7 +7226,7 @@ pub struct CategoryEpicGamesItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub email_type: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub extended_guarantee: i64,
+	pub extended_guarantee: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub feedback_data: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -7244,7 +7244,7 @@ pub struct CategoryEpicGamesItems {
 	)]
 	pub is_ignored: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub is_sticky: i64,
+	pub is_sticky: f64,
 	#[serde(
 		rename = "itemOriginPhrase",
 		default,
@@ -7254,7 +7254,7 @@ pub struct CategoryEpicGamesItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_domain: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub item_id: i64,
+	pub item_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_origin: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -7262,27 +7262,27 @@ pub struct CategoryEpicGamesItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub note_text: serde_json::Value,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub nsb: i64,
+	pub nsb: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub price: i64,
+	pub price: f64,
 	#[serde(
 		rename = "priceWithSellerFee",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub price_with_seller_fee: i64,
+	pub price_with_seller_fee: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub price_currency: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub published_date: i64,
+	pub published_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub refreshed_date: i64,
+	pub refreshed_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub resale_item_origin: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub restore_items_category_count: i64,
+	pub restore_items_category_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub rub_price: i64,
+	pub rub_price: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub seller: CategoryEpicGamesItemsSeller,
 	#[serde(
@@ -7292,7 +7292,7 @@ pub struct CategoryEpicGamesItems {
 	)]
 	pub show_get_email_code_button: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub sold_items_category_count: i64,
+	pub sold_items_category_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub tags: Vec<serde_json::Value>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -7300,9 +7300,9 @@ pub struct CategoryEpicGamesItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub title_en: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub update_stat_date: i64,
+	pub update_stat_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub view_count: i64,
+	pub view_count: f64,
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
@@ -7312,7 +7312,7 @@ pub struct CategoryEpicGamesResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub cache_ttl: i64,
+	pub cache_ttl: f64,
 	#[serde(
 		rename = "hasNextPage",
 		default,
@@ -7326,15 +7326,15 @@ pub struct CategoryEpicGamesResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub last_modified: i64,
+	pub last_modified: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub page: i64,
+	pub page: f64,
 	#[serde(
 		rename = "perPage",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub per_page: i64,
+	pub per_page: f64,
 	#[serde(
 		rename = "searchUrl",
 		default,
@@ -7346,7 +7346,7 @@ pub struct CategoryEpicGamesResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub server_time: i64,
+	pub server_time: f64,
 	#[serde(
 		rename = "stickyItems",
 		default,
@@ -7360,7 +7360,7 @@ pub struct CategoryEpicGamesResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub total_items: i64,
+	pub total_items: f64,
 	#[serde(
 		rename = "totalItemsPrice",
 		default,
@@ -7509,21 +7509,21 @@ pub struct CategoryEscapeFromTarkovItemsBumpSettings {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct CategoryEscapeFromTarkovItemsSeller {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub active_items_count: i64,
+	pub active_items_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub avatar_date: i64,
+	pub avatar_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub display_style_group_id: i64,
+	pub display_style_group_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub is_banned: i64,
+	pub is_banned: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub restore_data: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub restore_percents: i64,
+	pub restore_percents: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub sold_items_count: i64,
+	pub sold_items_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_id: i64,
+	pub user_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub username: String,
 }
@@ -7537,7 +7537,7 @@ pub struct CategoryEscapeFromTarkovItems {
 	)]
 	pub account_domain: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub allow_ask_discount: i64,
+	pub allow_ask_discount: f64,
 	#[serde(
 		rename = "bumpSettings",
 		default,
@@ -7641,7 +7641,7 @@ pub struct CategoryEscapeFromTarkovItems {
 	)]
 	pub can_view_login_data: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub category_id: i64,
+	pub category_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub description: String,
 	#[serde(
@@ -7671,7 +7671,7 @@ pub struct CategoryEscapeFromTarkovItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub description_en: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit_date: i64,
+	pub edit_date: f64,
 	#[serde(
 		rename = "emailLoginUrl",
 		default,
@@ -7683,7 +7683,7 @@ pub struct CategoryEscapeFromTarkovItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub email_type: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub extended_guarantee: i64,
+	pub extended_guarantee: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub feedback_data: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -7701,7 +7701,7 @@ pub struct CategoryEscapeFromTarkovItems {
 	)]
 	pub is_ignored: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub is_sticky: i64,
+	pub is_sticky: f64,
 	#[serde(
 		rename = "itemOriginPhrase",
 		default,
@@ -7711,7 +7711,7 @@ pub struct CategoryEscapeFromTarkovItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_domain: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub item_id: i64,
+	pub item_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_origin: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -7719,27 +7719,27 @@ pub struct CategoryEscapeFromTarkovItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub note_text: serde_json::Value,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub nsb: i64,
+	pub nsb: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub price: i64,
+	pub price: f64,
 	#[serde(
 		rename = "priceWithSellerFee",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub price_with_seller_fee: i64,
+	pub price_with_seller_fee: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub price_currency: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub published_date: i64,
+	pub published_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub refreshed_date: i64,
+	pub refreshed_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub resale_item_origin: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub restore_items_category_count: i64,
+	pub restore_items_category_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub rub_price: i64,
+	pub rub_price: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub seller: CategoryEscapeFromTarkovItemsSeller,
 	#[serde(
@@ -7749,7 +7749,7 @@ pub struct CategoryEscapeFromTarkovItems {
 	)]
 	pub show_get_email_code_button: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub sold_items_category_count: i64,
+	pub sold_items_category_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub tags: Vec<serde_json::Value>,
 	#[serde(
@@ -7763,7 +7763,7 @@ pub struct CategoryEscapeFromTarkovItems {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub tarkov_kd: i64,
+	pub tarkov_kd: f64,
 	#[serde(
 		rename = "tarkovRegionPhrase",
 		default,
@@ -7777,39 +7777,39 @@ pub struct CategoryEscapeFromTarkovItems {
 	)]
 	pub tarkov_secured_container: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub tarkov_deaths: i64,
+	pub tarkov_deaths: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub tarkov_dollars: i64,
+	pub tarkov_dollars: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub tarkov_euros: i64,
+	pub tarkov_euros: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub tarkov_exp: i64,
+	pub tarkov_exp: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub tarkov_game_version: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub tarkov_item_id: i64,
+	pub tarkov_item_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub tarkov_kills: i64,
+	pub tarkov_kills: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub tarkov_last_activity: i64,
+	pub tarkov_last_activity: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub tarkov_level: i64,
+	pub tarkov_level: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub tarkov_mail_forwarding: i64,
+	pub tarkov_mail_forwarding: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub tarkov_purchase_date: i64,
+	pub tarkov_purchase_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub tarkov_region: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub tarkov_register_date: i64,
+	pub tarkov_register_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub tarkov_rubles: i64,
+	pub tarkov_rubles: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub tarkov_sessions: i64,
+	pub tarkov_sessions: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub tarkov_side: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub tarkov_total_in_game: i64,
+	pub tarkov_total_in_game: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub tarkov_username: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -7817,9 +7817,9 @@ pub struct CategoryEscapeFromTarkovItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub title_en: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub update_stat_date: i64,
+	pub update_stat_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub view_count: i64,
+	pub view_count: f64,
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
@@ -7829,7 +7829,7 @@ pub struct CategoryEscapeFromTarkovResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub cache_ttl: i64,
+	pub cache_ttl: f64,
 	#[serde(
 		rename = "hasNextPage",
 		default,
@@ -7843,15 +7843,15 @@ pub struct CategoryEscapeFromTarkovResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub last_modified: i64,
+	pub last_modified: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub page: i64,
+	pub page: f64,
 	#[serde(
 		rename = "perPage",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub per_page: i64,
+	pub per_page: f64,
 	#[serde(
 		rename = "searchUrl",
 		default,
@@ -7863,7 +7863,7 @@ pub struct CategoryEscapeFromTarkovResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub server_time: i64,
+	pub server_time: f64,
 	#[serde(
 		rename = "stickyItems",
 		default,
@@ -7877,7 +7877,7 @@ pub struct CategoryEscapeFromTarkovResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub total_items: i64,
+	pub total_items: f64,
 	#[serde(
 		rename = "totalItemsPrice",
 		default,
@@ -8158,7 +8158,7 @@ pub struct CategoryFortniteItemsBumpSettings {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct CategoryFortniteItemsFortniteDance {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub from_shop: i64,
+	pub from_shop: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub id: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -8176,7 +8176,7 @@ pub struct CategoryFortniteItemsFortniteDance {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct CategoryFortniteItemsFortniteGliders {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub from_shop: i64,
+	pub from_shop: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub id: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -8198,31 +8198,31 @@ pub struct CategoryFortniteItemsFortnitePastSeasons {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub book_level: i64,
+	pub book_level: f64,
 	#[serde(
 		rename = "numHighBracket",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub num_high_bracket: i64,
+	pub num_high_bracket: f64,
 	#[serde(
 		rename = "numLowBracket",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub num_low_bracket: i64,
+	pub num_low_bracket: f64,
 	#[serde(
 		rename = "numRoyalRoyales",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub num_royal_royales: i64,
+	pub num_royal_royales: f64,
 	#[serde(
 		rename = "numWins",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub num_wins: i64,
+	pub num_wins: f64,
 	#[serde(
 		rename = "purchasedVIP",
 		default,
@@ -8234,37 +8234,37 @@ pub struct CategoryFortniteItemsFortnitePastSeasons {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub season_level: i64,
+	pub season_level: f64,
 	#[serde(
 		rename = "seasonNumber",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub season_number: i64,
+	pub season_number: f64,
 	#[serde(
 		rename = "seasonXp",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub season_xp: i64,
+	pub season_xp: f64,
 	#[serde(
 		rename = "survivorPrestige",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub survivor_prestige: i64,
+	pub survivor_prestige: f64,
 	#[serde(
 		rename = "survivorTier",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub survivor_tier: i64,
+	pub survivor_tier: f64,
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct CategoryFortniteItemsFortnitePickaxe {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub from_shop: i64,
+	pub from_shop: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub id: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -8282,7 +8282,7 @@ pub struct CategoryFortniteItemsFortnitePickaxe {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct CategoryFortniteItemsFortniteSkins {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub from_shop: i64,
+	pub from_shop: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub id: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -8300,7 +8300,7 @@ pub struct CategoryFortniteItemsFortniteSkins {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct CategoryFortniteItemsFortniteTransactions {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub date: i64,
+	pub date: f64,
 	#[serde(
 		rename = "orderType",
 		default,
@@ -8320,21 +8320,21 @@ pub struct CategoryFortniteItemsFortniteTransactions {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct CategoryFortniteItemsSeller {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub active_items_count: i64,
+	pub active_items_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub avatar_date: i64,
+	pub avatar_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub display_style_group_id: i64,
+	pub display_style_group_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub is_banned: i64,
+	pub is_banned: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub restore_data: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub restore_percents: i64,
+	pub restore_percents: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub sold_items_count: i64,
+	pub sold_items_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_id: i64,
+	pub user_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub username: String,
 }
@@ -8346,25 +8346,25 @@ pub struct CategoryFortniteItemsShopCounts {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub shop_dances_count: i64,
+	pub shop_dances_count: f64,
 	#[serde(
 		rename = "shopGlidersCount",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub shop_gliders_count: i64,
+	pub shop_gliders_count: f64,
 	#[serde(
 		rename = "shopPickaxesCount",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub shop_pickaxes_count: i64,
+	pub shop_pickaxes_count: f64,
 	#[serde(
 		rename = "shopSkinsCount",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub shop_skins_count: i64,
+	pub shop_skins_count: f64,
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
@@ -8376,9 +8376,9 @@ pub struct CategoryFortniteItems {
 	)]
 	pub account_links: Vec<serde_json::Value>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub account_last_activity: i64,
+	pub account_last_activity: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub allow_ask_discount: i64,
+	pub allow_ask_discount: f64,
 	#[serde(
 		rename = "bumpSettings",
 		default,
@@ -8482,7 +8482,7 @@ pub struct CategoryFortniteItems {
 	)]
 	pub can_view_login_data: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub category_id: i64,
+	pub category_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub description: String,
 	#[serde(
@@ -8514,7 +8514,7 @@ pub struct CategoryFortniteItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub domain: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit_date: i64,
+	pub edit_date: f64,
 	#[serde(
 		rename = "emailLoginUrl",
 		default,
@@ -8526,7 +8526,7 @@ pub struct CategoryFortniteItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub email_type: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub extended_guarantee: i64,
+	pub extended_guarantee: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub feedback_data: String,
 	#[serde(
@@ -8566,53 +8566,53 @@ pub struct CategoryFortniteItems {
 	)]
 	pub fortnite_transactions: Vec<CategoryFortniteItemsFortniteTransactions>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub fortnite_balance: i64,
+	pub fortnite_balance: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub fortnite_book_level: i64,
+	pub fortnite_book_level: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub fortnite_books_purchased: i64,
+	pub fortnite_books_purchased: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub fortnite_change_email: i64,
+	pub fortnite_change_email: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub fortnite_dance_count: i64,
+	pub fortnite_dance_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub fortnite_glider_count: i64,
+	pub fortnite_glider_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub fortnite_item_id: i64,
+	pub fortnite_item_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub fortnite_last_activity: i64,
+	pub fortnite_last_activity: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub fortnite_last_trans_date: i64,
+	pub fortnite_last_trans_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub fortnite_level: i64,
+	pub fortnite_level: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub fortnite_lifetime_wins: i64,
+	pub fortnite_lifetime_wins: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub fortnite_next_change_email_date: i64,
+	pub fortnite_next_change_email_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub fortnite_pickaxe_count: i64,
+	pub fortnite_pickaxe_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub fortnite_platform: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub fortnite_psn_linkable: i64,
+	pub fortnite_psn_linkable: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub fortnite_register_date: i64,
+	pub fortnite_register_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub fortnite_rl_purchases: i64,
+	pub fortnite_rl_purchases: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub fortnite_season_num: i64,
+	pub fortnite_season_num: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub fortnite_shop_dances_count: i64,
+	pub fortnite_shop_dances_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub fortnite_shop_gliders_count: i64,
+	pub fortnite_shop_gliders_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub fortnite_shop_pickaxes_count: i64,
+	pub fortnite_shop_pickaxes_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub fortnite_shop_skins_count: i64,
+	pub fortnite_shop_skins_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub fortnite_skin_count: i64,
+	pub fortnite_skin_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub fortnite_xbox_linkable: i64,
+	pub fortnite_xbox_linkable: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub guarantee: serde_json::Value,
 	#[serde(
@@ -8634,7 +8634,7 @@ pub struct CategoryFortniteItems {
 	)]
 	pub is_small_exf: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub is_sticky: i64,
+	pub is_sticky: f64,
 	#[serde(
 		rename = "itemOriginPhrase",
 		default,
@@ -8644,7 +8644,7 @@ pub struct CategoryFortniteItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_domain: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub item_id: i64,
+	pub item_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_origin: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -8652,27 +8652,27 @@ pub struct CategoryFortniteItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub note_text: serde_json::Value,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub nsb: i64,
+	pub nsb: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub price: i64,
+	pub price: f64,
 	#[serde(
 		rename = "priceWithSellerFee",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub price_with_seller_fee: i64,
+	pub price_with_seller_fee: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub price_currency: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub published_date: i64,
+	pub published_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub refreshed_date: i64,
+	pub refreshed_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub resale_item_origin: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub restore_items_category_count: i64,
+	pub restore_items_category_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub rub_price: i64,
+	pub rub_price: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub seller: CategoryFortniteItemsSeller,
 	#[serde(
@@ -8688,7 +8688,7 @@ pub struct CategoryFortniteItems {
 	)]
 	pub show_get_email_code_button: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub sold_items_category_count: i64,
+	pub sold_items_category_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub tags: Vec<serde_json::Value>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -8696,9 +8696,9 @@ pub struct CategoryFortniteItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub title_en: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub update_stat_date: i64,
+	pub update_stat_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub view_count: i64,
+	pub view_count: f64,
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
@@ -8708,7 +8708,7 @@ pub struct CategoryFortniteResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub cache_ttl: i64,
+	pub cache_ttl: f64,
 	#[serde(
 		rename = "hasNextPage",
 		default,
@@ -8722,15 +8722,15 @@ pub struct CategoryFortniteResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub last_modified: i64,
+	pub last_modified: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub page: i64,
+	pub page: f64,
 	#[serde(
 		rename = "perPage",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub per_page: i64,
+	pub per_page: f64,
 	#[serde(
 		rename = "searchUrl",
 		default,
@@ -8742,7 +8742,7 @@ pub struct CategoryFortniteResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub server_time: i64,
+	pub server_time: f64,
 	#[serde(
 		rename = "stickyItems",
 		default,
@@ -8756,7 +8756,7 @@ pub struct CategoryFortniteResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub total_items: i64,
+	pub total_items: f64,
 	#[serde(
 		rename = "totalItemsPrice",
 		default,
@@ -8884,21 +8884,21 @@ pub struct CategoryGiftsItemsBumpSettings {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct CategoryGiftsItemsSeller {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub active_items_count: i64,
+	pub active_items_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub avatar_date: i64,
+	pub avatar_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub display_style_group_id: i64,
+	pub display_style_group_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub is_banned: i64,
+	pub is_banned: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub restore_data: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub restore_percents: serde_json::Value,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub sold_items_count: i64,
+	pub sold_items_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_id: i64,
+	pub user_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub username: String,
 }
@@ -8906,7 +8906,7 @@ pub struct CategoryGiftsItemsSeller {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct CategoryGiftsItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub allow_ask_discount: i64,
+	pub allow_ask_discount: f64,
 	#[serde(
 		rename = "bumpSettings",
 		default,
@@ -9010,7 +9010,7 @@ pub struct CategoryGiftsItems {
 	)]
 	pub can_view_login_data: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub category_id: i64,
+	pub category_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub description: String,
 	#[serde(
@@ -9040,13 +9040,13 @@ pub struct CategoryGiftsItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub description_en: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit_date: i64,
+	pub edit_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub email_provider: serde_json::Value,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub email_type: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub extended_guarantee: i64,
+	pub extended_guarantee: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub feedback_data: String,
 	#[serde(
@@ -9062,9 +9062,9 @@ pub struct CategoryGiftsItems {
 	)]
 	pub gifts_subscription_name: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub gifts_duration: i64,
+	pub gifts_duration: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub gifts_item_id: i64,
+	pub gifts_item_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub gifts_service: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -9084,7 +9084,7 @@ pub struct CategoryGiftsItems {
 	)]
 	pub is_ignored: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub is_sticky: i64,
+	pub is_sticky: f64,
 	#[serde(
 		rename = "itemOriginPhrase",
 		default,
@@ -9094,7 +9094,7 @@ pub struct CategoryGiftsItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_domain: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub item_id: i64,
+	pub item_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_origin: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -9102,25 +9102,25 @@ pub struct CategoryGiftsItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub note_text: serde_json::Value,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub nsb: i64,
+	pub nsb: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub price: i64,
+	pub price: f64,
 	#[serde(
 		rename = "priceWithSellerFee",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub price_with_seller_fee: i64,
+	pub price_with_seller_fee: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub price_currency: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub published_date: i64,
+	pub published_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub refreshed_date: i64,
+	pub refreshed_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub resale_item_origin: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub rub_price: i64,
+	pub rub_price: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub seller: CategoryGiftsItemsSeller,
 	#[serde(
@@ -9136,9 +9136,9 @@ pub struct CategoryGiftsItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub title_en: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub update_stat_date: i64,
+	pub update_stat_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub view_count: i64,
+	pub view_count: f64,
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
@@ -9148,7 +9148,7 @@ pub struct CategoryGiftsResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub cache_ttl: i64,
+	pub cache_ttl: f64,
 	#[serde(
 		rename = "hasNextPage",
 		default,
@@ -9162,15 +9162,15 @@ pub struct CategoryGiftsResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub last_modified: i64,
+	pub last_modified: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub page: i64,
+	pub page: f64,
 	#[serde(
 		rename = "perPage",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub per_page: i64,
+	pub per_page: f64,
 	#[serde(
 		rename = "searchUrl",
 		default,
@@ -9182,7 +9182,7 @@ pub struct CategoryGiftsResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub server_time: i64,
+	pub server_time: f64,
 	#[serde(
 		rename = "stickyItems",
 		default,
@@ -9196,7 +9196,7 @@ pub struct CategoryGiftsResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub total_items: i64,
+	pub total_items: f64,
 	#[serde(
 		rename = "totalItemsPrice",
 		default,
@@ -9296,7 +9296,7 @@ pub struct CategoryHytaleParams {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct CategoryHytaleItemsCategory {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub category_id: i64,
+	pub category_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub category_name: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -9314,21 +9314,21 @@ pub struct CategoryHytaleItemsCopyFormatData {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct CategoryHytaleItemsSeller {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub active_items_count: i64,
+	pub active_items_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub avatar_date: i64,
+	pub avatar_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub display_style_group_id: i64,
+	pub display_style_group_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub is_banned: i64,
+	pub is_banned: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub restore_data: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub restore_percents: serde_json::Value,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub sold_items_count: i64,
+	pub sold_items_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_id: i64,
+	pub user_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub username: String,
 }
@@ -9336,9 +9336,9 @@ pub struct CategoryHytaleItemsSeller {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct CategoryHytaleItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub allow_ask_discount: i64,
+	pub allow_ask_discount: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub auto_bump_period: i64,
+	pub auto_bump_period: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub buyer: serde_json::Value,
 	#[serde(
@@ -9470,7 +9470,7 @@ pub struct CategoryHytaleItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub category: CategoryHytaleItemsCategory,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub category_id: i64,
+	pub category_id: f64,
 	#[serde(
 		rename = "copyFormatData",
 		default,
@@ -9508,7 +9508,7 @@ pub struct CategoryHytaleItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub discount: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit_date: i64,
+	pub edit_date: f64,
 	#[serde(
 		rename = "emailLoginUrl",
 		default,
@@ -9520,7 +9520,7 @@ pub struct CategoryHytaleItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub email_type: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub extended_guarantee: i64,
+	pub extended_guarantee: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub feedback_data: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -9534,9 +9534,9 @@ pub struct CategoryHytaleItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub hytale_edition: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub hytale_item_id: i64,
+	pub hytale_item_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub hytale_profiles: i64,
+	pub hytale_profiles: f64,
 	#[serde(
 		rename = "imagePreviewLinks",
 		default,
@@ -9556,7 +9556,7 @@ pub struct CategoryHytaleItems {
 	)]
 	pub is_personal_account: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub is_sticky: i64,
+	pub is_sticky: f64,
 	#[serde(
 		rename = "itemOriginPhrase",
 		default,
@@ -9566,21 +9566,21 @@ pub struct CategoryHytaleItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_domain: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub item_id: i64,
+	pub item_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_origin: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_state: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub max_discount_percent: i64,
+	pub max_discount_percent: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub note_text: serde_json::Value,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub nsb: i64,
+	pub nsb: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub pending_deletion_date: i64,
+	pub pending_deletion_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub price: i64,
+	pub price: f64,
 	#[serde(
 		rename = "priceWithSellerFee",
 		default,
@@ -9598,13 +9598,13 @@ pub struct CategoryHytaleItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub public_tag: serde_json::Value,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub published_date: i64,
+	pub published_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub refreshed_date: i64,
+	pub refreshed_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub resale_item_origin: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub rub_price: i64,
+	pub rub_price: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub seller: CategoryHytaleItemsSeller,
 	#[serde(
@@ -9626,9 +9626,9 @@ pub struct CategoryHytaleItems {
 	)]
 	pub unique_key_exists: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub update_stat_date: i64,
+	pub update_stat_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub view_count: i64,
+	pub view_count: f64,
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
@@ -9638,7 +9638,7 @@ pub struct CategoryHytaleResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub cache_ttl: i64,
+	pub cache_ttl: f64,
 	#[serde(
 		rename = "hasNextPage",
 		default,
@@ -9652,15 +9652,15 @@ pub struct CategoryHytaleResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub last_modified: i64,
+	pub last_modified: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub page: i64,
+	pub page: f64,
 	#[serde(
 		rename = "perPage",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub per_page: i64,
+	pub per_page: f64,
 	#[serde(
 		rename = "searchUrl",
 		default,
@@ -9672,7 +9672,7 @@ pub struct CategoryHytaleResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub server_time: i64,
+	pub server_time: f64,
 	#[serde(
 		rename = "stickyItems",
 		default,
@@ -9686,7 +9686,7 @@ pub struct CategoryHytaleResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub total_items: i64,
+	pub total_items: f64,
 	#[serde(
 		rename = "totalItemsPrice",
 		default,
@@ -9858,21 +9858,21 @@ pub struct CategoryInstagramItemsBumpSettings {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct CategoryInstagramItemsSeller {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub active_items_count: i64,
+	pub active_items_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub avatar_date: i64,
+	pub avatar_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub display_style_group_id: i64,
+	pub display_style_group_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub is_banned: i64,
+	pub is_banned: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub restore_data: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub restore_percents: serde_json::Value,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub sold_items_count: i64,
+	pub sold_items_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_id: i64,
+	pub user_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub username: String,
 }
@@ -9892,7 +9892,7 @@ pub struct CategoryInstagramItems {
 	)]
 	pub account_links: Vec<CategoryInstagramItemsAccountLinks>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub allow_ask_discount: i64,
+	pub allow_ask_discount: f64,
 	#[serde(
 		rename = "bumpSettings",
 		default,
@@ -9996,7 +9996,7 @@ pub struct CategoryInstagramItems {
 	)]
 	pub can_view_login_data: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub category_id: i64,
+	pub category_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub description: String,
 	#[serde(
@@ -10026,7 +10026,7 @@ pub struct CategoryInstagramItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub description_en: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit_date: i64,
+	pub edit_date: f64,
 	#[serde(
 		rename = "emailLoginUrl",
 		default,
@@ -10038,7 +10038,7 @@ pub struct CategoryInstagramItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub email_type: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub extended_guarantee: i64,
+	pub extended_guarantee: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub feedback_data: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -10052,23 +10052,23 @@ pub struct CategoryInstagramItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub instagram_country: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub instagram_follow_count: i64,
+	pub instagram_follow_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub instagram_follower_count: i64,
+	pub instagram_follower_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub instagram_has_cookies: i64,
+	pub instagram_has_cookies: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub instagram_id: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub instagram_item_id: i64,
+	pub instagram_item_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub instagram_login_without_cookies: i64,
+	pub instagram_login_without_cookies: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub instagram_mobile: i64,
+	pub instagram_mobile: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub instagram_post_count: i64,
+	pub instagram_post_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub instagram_register_date: i64,
+	pub instagram_register_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub instagram_username: String,
 	#[serde(
@@ -10078,7 +10078,7 @@ pub struct CategoryInstagramItems {
 	)]
 	pub is_ignored: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub is_sticky: i64,
+	pub is_sticky: f64,
 	#[serde(
 		rename = "itemOriginPhrase",
 		default,
@@ -10088,7 +10088,7 @@ pub struct CategoryInstagramItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_domain: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub item_id: i64,
+	pub item_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_origin: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -10096,25 +10096,25 @@ pub struct CategoryInstagramItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub note_text: serde_json::Value,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub nsb: i64,
+	pub nsb: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub price: i64,
+	pub price: f64,
 	#[serde(
 		rename = "priceWithSellerFee",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub price_with_seller_fee: i64,
+	pub price_with_seller_fee: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub price_currency: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub published_date: i64,
+	pub published_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub refreshed_date: i64,
+	pub refreshed_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub resale_item_origin: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub rub_price: i64,
+	pub rub_price: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub seller: CategoryInstagramItemsSeller,
 	#[serde(
@@ -10130,9 +10130,9 @@ pub struct CategoryInstagramItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub title_en: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub update_stat_date: i64,
+	pub update_stat_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub view_count: i64,
+	pub view_count: f64,
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
@@ -10142,7 +10142,7 @@ pub struct CategoryInstagramResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub cache_ttl: i64,
+	pub cache_ttl: f64,
 	#[serde(
 		rename = "hasNextPage",
 		default,
@@ -10156,15 +10156,15 @@ pub struct CategoryInstagramResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub last_modified: i64,
+	pub last_modified: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub page: i64,
+	pub page: f64,
 	#[serde(
 		rename = "perPage",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub per_page: i64,
+	pub per_page: f64,
 	#[serde(
 		rename = "searchUrl",
 		default,
@@ -10176,7 +10176,7 @@ pub struct CategoryInstagramResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub server_time: i64,
+	pub server_time: f64,
 	#[serde(
 		rename = "stickyItems",
 		default,
@@ -10190,7 +10190,7 @@ pub struct CategoryInstagramResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub total_items: i64,
+	pub total_items: f64,
 	#[serde(
 		rename = "totalItemsPrice",
 		default,
@@ -10514,43 +10514,43 @@ pub struct CategoryMihoyoItemsGenshinCharactersReliquaries {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub icon: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub id: i64,
+	pub id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub level: i64,
+	pub level: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub name: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub pos: i64,
+	pub pos: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub pos_name: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub rarity: i64,
+	pub rarity: f64,
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct CategoryMihoyoItemsGenshinCharactersWeapon {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub affix_level: i64,
+	pub affix_level: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub desc: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub icon: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub id: i64,
+	pub id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub level: i64,
+	pub level: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub name: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub promote_level: i64,
+	pub promote_level: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub rarity: i64,
+	pub rarity: f64,
 	#[serde(
 		rename = "type",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub r#type: i64,
+	pub r#type: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub type_name: String,
 }
@@ -10558,7 +10558,7 @@ pub struct CategoryMihoyoItemsGenshinCharactersWeapon {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct CategoryMihoyoItemsGenshinCharacters {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub actived_constellation_num: i64,
+	pub actived_constellation_num: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub background: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -10568,19 +10568,19 @@ pub struct CategoryMihoyoItemsGenshinCharacters {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub external: serde_json::Value,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub fetter: i64,
+	pub fetter: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub icon: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub id: i64,
+	pub id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub image: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub level: i64,
+	pub level: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub name: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub rarity: i64,
+	pub rarity: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub reliquaries: Vec<CategoryMihoyoItemsGenshinCharactersReliquaries>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -10594,23 +10594,23 @@ pub struct CategoryMihoyoItemsHonkaiCharactersEquip {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub icon: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub id: i64,
+	pub id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub level: i64,
+	pub level: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub name: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub rank: i64,
+	pub rank: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub rarity: i64,
+	pub rarity: f64,
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct CategoryMihoyoItemsHonkaiCharactersOrnamentsMainProperty {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub property_type: i64,
+	pub property_type: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub times: i64,
+	pub times: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub value: String,
 }
@@ -10618,9 +10618,9 @@ pub struct CategoryMihoyoItemsHonkaiCharactersOrnamentsMainProperty {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct CategoryMihoyoItemsHonkaiCharactersOrnamentsProperties {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub property_type: i64,
+	pub property_type: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub times: i64,
+	pub times: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub value: String,
 }
@@ -10632,27 +10632,27 @@ pub struct CategoryMihoyoItemsHonkaiCharactersOrnaments {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub icon: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub id: i64,
+	pub id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub level: i64,
+	pub level: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub main_property: CategoryMihoyoItemsHonkaiCharactersOrnamentsMainProperty,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub name: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub pos: i64,
+	pub pos: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub properties: Vec<CategoryMihoyoItemsHonkaiCharactersOrnamentsProperties>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub rarity: i64,
+	pub rarity: f64,
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct CategoryMihoyoItemsHonkaiCharactersRelicsMainProperty {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub property_type: i64,
+	pub property_type: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub times: i64,
+	pub times: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub value: String,
 }
@@ -10660,9 +10660,9 @@ pub struct CategoryMihoyoItemsHonkaiCharactersRelicsMainProperty {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct CategoryMihoyoItemsHonkaiCharactersRelicsProperties {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub property_type: i64,
+	pub property_type: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub times: i64,
+	pub times: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub value: String,
 }
@@ -10674,25 +10674,25 @@ pub struct CategoryMihoyoItemsHonkaiCharactersRelics {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub icon: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub id: i64,
+	pub id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub level: i64,
+	pub level: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub main_property: CategoryMihoyoItemsHonkaiCharactersRelicsMainProperty,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub name: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub pos: i64,
+	pub pos: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub properties: Vec<CategoryMihoyoItemsHonkaiCharactersRelicsProperties>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub rarity: i64,
+	pub rarity: f64,
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct CategoryMihoyoItemsHonkaiCharacters {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub base_type: i64,
+	pub base_type: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub element: String,
 	#[serde(
@@ -10708,19 +10708,19 @@ pub struct CategoryMihoyoItemsHonkaiCharacters {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub icon: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub id: i64,
+	pub id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub image: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub level: i64,
+	pub level: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub name: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub ornaments: Vec<CategoryMihoyoItemsHonkaiCharactersOrnaments>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub rank: i64,
+	pub rank: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub rarity: i64,
+	pub rarity: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub relics: Vec<CategoryMihoyoItemsHonkaiCharactersRelics>,
 }
@@ -10736,21 +10736,21 @@ pub struct CategoryMihoyoItemsMihoyoLinkedAccounts {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct CategoryMihoyoItemsSeller {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub active_items_count: i64,
+	pub active_items_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub avatar_date: i64,
+	pub avatar_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub display_style_group_id: i64,
+	pub display_style_group_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub is_banned: i64,
+	pub is_banned: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub restore_data: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub restore_percents: i64,
+	pub restore_percents: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub sold_items_count: i64,
+	pub sold_items_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_id: i64,
+	pub user_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub username: String,
 }
@@ -10760,7 +10760,7 @@ pub struct CategoryMihoyoItemsZenlessCharactersWeaponMainProperties {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub base: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub property_id: i64,
+	pub property_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub property_name: String,
 }
@@ -10770,7 +10770,7 @@ pub struct CategoryMihoyoItemsZenlessCharactersWeaponProperties {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub base: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub property_id: i64,
+	pub property_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub property_name: String,
 }
@@ -10780,19 +10780,19 @@ pub struct CategoryMihoyoItemsZenlessCharactersWeapon {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub icon: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub id: i64,
+	pub id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub level: i64,
+	pub level: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub main_properties: Vec<CategoryMihoyoItemsZenlessCharactersWeaponMainProperties>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub name: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub profession: i64,
+	pub profession: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub properties: Vec<CategoryMihoyoItemsZenlessCharactersWeaponProperties>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub rarity: i64,
+	pub rarity: f64,
 	#[serde(
 		rename = "rarityIcon",
 		default,
@@ -10800,7 +10800,7 @@ pub struct CategoryMihoyoItemsZenlessCharactersWeapon {
 	)]
 	pub rarity_icon: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub star: i64,
+	pub star: f64,
 	#[serde(
 		rename = "starIcon",
 		default,
@@ -10816,7 +10816,7 @@ pub struct CategoryMihoyoItemsZenlessCharactersWeapon {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct CategoryMihoyoItemsZenlessCharacters {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub avatar_profession: i64,
+	pub avatar_profession: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub camp_name_mi18n: String,
 	#[serde(
@@ -10826,13 +10826,13 @@ pub struct CategoryMihoyoItemsZenlessCharacters {
 	)]
 	pub element_icon: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub element_type: i64,
+	pub element_type: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub full_name_mi18n: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub id: i64,
+	pub id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub level: i64,
+	pub level: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub name: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -10844,9 +10844,9 @@ pub struct CategoryMihoyoItemsZenlessCharacters {
 	)]
 	pub profession_icon: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub rank: i64,
+	pub rank: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub rarity: i64,
+	pub rarity: f64,
 	#[serde(
 		rename = "rarityIcon",
 		default,
@@ -10872,7 +10872,7 @@ pub struct CategoryMihoyoItems {
 	)]
 	pub account_links: Vec<CategoryMihoyoItemsAccountLinks>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub allow_ask_discount: i64,
+	pub allow_ask_discount: f64,
 	#[serde(
 		rename = "bumpSettings",
 		default,
@@ -10976,7 +10976,7 @@ pub struct CategoryMihoyoItems {
 	)]
 	pub can_view_login_data: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub category_id: i64,
+	pub category_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub description: String,
 	#[serde(
@@ -11006,7 +11006,7 @@ pub struct CategoryMihoyoItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub description_en: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit_date: i64,
+	pub edit_date: f64,
 	#[serde(
 		rename = "emailLoginUrl",
 		default,
@@ -11018,7 +11018,7 @@ pub struct CategoryMihoyoItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub email_type: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub extended_guarantee: i64,
+	pub extended_guarantee: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub feedback_data: String,
 	#[serde(
@@ -11048,7 +11048,7 @@ pub struct CategoryMihoyoItems {
 	)]
 	pub is_ignored: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub is_sticky: i64,
+	pub is_sticky: f64,
 	#[serde(
 		rename = "itemOriginPhrase",
 		default,
@@ -11058,7 +11058,7 @@ pub struct CategoryMihoyoItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_domain: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub item_id: i64,
+	pub item_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_origin: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -11082,95 +11082,95 @@ pub struct CategoryMihoyoItems {
 	)]
 	pub mihoyo_region_phrase: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub mihoyo_email: i64,
+	pub mihoyo_email: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub mihoyo_genshin_abyss_process: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub mihoyo_genshin_achievement_count: i64,
+	pub mihoyo_genshin_achievement_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub mihoyo_genshin_activity_days: i64,
+	pub mihoyo_genshin_activity_days: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub mihoyo_genshin_character_count: i64,
+	pub mihoyo_genshin_character_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub mihoyo_genshin_constellations_count: i64,
+	pub mihoyo_genshin_constellations_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub mihoyo_genshin_currency: i64,
+	pub mihoyo_genshin_currency: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub mihoyo_genshin_legendary_characters_count: i64,
+	pub mihoyo_genshin_legendary_characters_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub mihoyo_genshin_legendary_weapons_count: i64,
+	pub mihoyo_genshin_legendary_weapons_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub mihoyo_genshin_level: i64,
+	pub mihoyo_genshin_level: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub mihoyo_has_linked_accounts: i64,
+	pub mihoyo_has_linked_accounts: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub mihoyo_honkai_abyss_process: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub mihoyo_honkai_achievement_count: i64,
+	pub mihoyo_honkai_achievement_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub mihoyo_honkai_activity_days: i64,
+	pub mihoyo_honkai_activity_days: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub mihoyo_honkai_character_count: i64,
+	pub mihoyo_honkai_character_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub mihoyo_honkai_currency: i64,
+	pub mihoyo_honkai_currency: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub mihoyo_honkai_eidolons_count: i64,
+	pub mihoyo_honkai_eidolons_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub mihoyo_honkai_legendary_characters_count: i64,
+	pub mihoyo_honkai_legendary_characters_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub mihoyo_honkai_legendary_weapons_count: i64,
+	pub mihoyo_honkai_legendary_weapons_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub mihoyo_honkai_level: i64,
+	pub mihoyo_honkai_level: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub mihoyo_id: i64,
+	pub mihoyo_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub mihoyo_item_id: i64,
+	pub mihoyo_item_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub mihoyo_last_activity: i64,
+	pub mihoyo_last_activity: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub mihoyo_region: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub mihoyo_zenless_abyss_process: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub mihoyo_zenless_achievement_count: i64,
+	pub mihoyo_zenless_achievement_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub mihoyo_zenless_activity_days: i64,
+	pub mihoyo_zenless_activity_days: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub mihoyo_zenless_character_count: i64,
+	pub mihoyo_zenless_character_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub mihoyo_zenless_cinemas_count: i64,
+	pub mihoyo_zenless_cinemas_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub mihoyo_zenless_currency: i64,
+	pub mihoyo_zenless_currency: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub mihoyo_zenless_legendary_characters_count: i64,
+	pub mihoyo_zenless_legendary_characters_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub mihoyo_zenless_legendary_weapons_count: i64,
+	pub mihoyo_zenless_legendary_weapons_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub mihoyo_zenless_level: i64,
+	pub mihoyo_zenless_level: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub note_text: serde_json::Value,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub nsb: i64,
+	pub nsb: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub price: i64,
+	pub price: f64,
 	#[serde(
 		rename = "priceWithSellerFee",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub price_with_seller_fee: i64,
+	pub price_with_seller_fee: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub price_currency: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub published_date: i64,
+	pub published_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub refreshed_date: i64,
+	pub refreshed_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub resale_item_origin: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub restore_items_category_count: i64,
+	pub restore_items_category_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub rub_price: i64,
+	pub rub_price: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub seller: CategoryMihoyoItemsSeller,
 	#[serde(
@@ -11180,7 +11180,7 @@ pub struct CategoryMihoyoItems {
 	)]
 	pub show_get_email_code_button: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub sold_items_category_count: i64,
+	pub sold_items_category_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub tags: Vec<serde_json::Value>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -11188,9 +11188,9 @@ pub struct CategoryMihoyoItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub title_en: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub update_stat_date: i64,
+	pub update_stat_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub view_count: i64,
+	pub view_count: f64,
 	#[serde(
 		rename = "zenlessCharacters",
 		default,
@@ -11206,7 +11206,7 @@ pub struct CategoryMihoyoResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub cache_ttl: i64,
+	pub cache_ttl: f64,
 	#[serde(
 		rename = "hasNextPage",
 		default,
@@ -11220,15 +11220,15 @@ pub struct CategoryMihoyoResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub last_modified: i64,
+	pub last_modified: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub page: i64,
+	pub page: f64,
 	#[serde(
 		rename = "perPage",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub per_page: i64,
+	pub per_page: f64,
 	#[serde(
 		rename = "searchUrl",
 		default,
@@ -11240,7 +11240,7 @@ pub struct CategoryMihoyoResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub server_time: i64,
+	pub server_time: f64,
 	#[serde(
 		rename = "stickyItems",
 		default,
@@ -11254,7 +11254,7 @@ pub struct CategoryMihoyoResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub total_items: i64,
+	pub total_items: f64,
 	#[serde(
 		rename = "totalItemsPrice",
 		default,
@@ -11492,21 +11492,21 @@ pub struct CategoryMinecraftItemsBumpSettings {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct CategoryMinecraftItemsSeller {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub active_items_count: i64,
+	pub active_items_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub avatar_date: i64,
+	pub avatar_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub display_style_group_id: i64,
+	pub display_style_group_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub is_banned: i64,
+	pub is_banned: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub restore_data: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub restore_percents: serde_json::Value,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub sold_items_count: i64,
+	pub sold_items_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_id: i64,
+	pub user_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub username: String,
 }
@@ -11526,7 +11526,7 @@ pub struct CategoryMinecraftItems {
 	)]
 	pub account_links: Vec<CategoryMinecraftItemsAccountLinks>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub allow_ask_discount: i64,
+	pub allow_ask_discount: f64,
 	#[serde(
 		rename = "bumpSettings",
 		default,
@@ -11630,7 +11630,7 @@ pub struct CategoryMinecraftItems {
 	)]
 	pub can_view_login_data: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub category_id: i64,
+	pub category_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub description: String,
 	#[serde(
@@ -11660,7 +11660,7 @@ pub struct CategoryMinecraftItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub description_en: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit_date: i64,
+	pub edit_date: f64,
 	#[serde(
 		rename = "emailLoginUrl",
 		default,
@@ -11672,7 +11672,7 @@ pub struct CategoryMinecraftItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub email_type: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub extended_guarantee: i64,
+	pub extended_guarantee: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub feedback_data: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -11690,7 +11690,7 @@ pub struct CategoryMinecraftItems {
 	)]
 	pub is_ignored: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub is_sticky: i64,
+	pub is_sticky: f64,
 	#[serde(
 		rename = "itemOriginPhrase",
 		default,
@@ -11700,7 +11700,7 @@ pub struct CategoryMinecraftItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_domain: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub item_id: i64,
+	pub item_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_origin: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -11712,77 +11712,77 @@ pub struct CategoryMinecraftItems {
 	)]
 	pub minecraft_has_paid_license: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub minecraft_bedrock: i64,
+	pub minecraft_bedrock: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub minecraft_can_change_nickname: i64,
+	pub minecraft_can_change_nickname: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub minecraft_capes: Vec<serde_json::Value>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub minecraft_capes_count: i64,
+	pub minecraft_capes_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub minecraft_country: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub minecraft_created_at: i64,
+	pub minecraft_created_at: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub minecraft_dungeons: i64,
+	pub minecraft_dungeons: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub minecraft_email_reset_date: i64,
+	pub minecraft_email_reset_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub minecraft_hypixel_achievement: i64,
+	pub minecraft_hypixel_achievement: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub minecraft_hypixel_ban: i64,
+	pub minecraft_hypixel_ban: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub minecraft_hypixel_ban_reason: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub minecraft_hypixel_last_login: i64,
+	pub minecraft_hypixel_last_login: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub minecraft_hypixel_level: i64,
+	pub minecraft_hypixel_level: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub minecraft_hypixel_rank: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub minecraft_hypixel_skyblock_level: i64,
+	pub minecraft_hypixel_skyblock_level: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub minecraft_hypixel_skyblock_net_worth: i64,
+	pub minecraft_hypixel_skyblock_net_worth: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub minecraft_id: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub minecraft_item_id: i64,
+	pub minecraft_item_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub minecraft_java: i64,
+	pub minecraft_java: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub minecraft_legends: i64,
+	pub minecraft_legends: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub minecraft_nickname: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub minecraft_skin: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub minecraft_subscription_auto_renew: i64,
+	pub minecraft_subscription_auto_renew: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub minecraft_subscription_ends: i64,
+	pub minecraft_subscription_ends: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub minecraft_subscription_name: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub note_text: serde_json::Value,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub nsb: i64,
+	pub nsb: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub price: i64,
+	pub price: f64,
 	#[serde(
 		rename = "priceWithSellerFee",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub price_with_seller_fee: i64,
+	pub price_with_seller_fee: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub price_currency: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub published_date: i64,
+	pub published_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub refreshed_date: i64,
+	pub refreshed_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub resale_item_origin: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub rub_price: i64,
+	pub rub_price: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub seller: CategoryMinecraftItemsSeller,
 	#[serde(
@@ -11798,9 +11798,9 @@ pub struct CategoryMinecraftItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub title_en: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub update_stat_date: i64,
+	pub update_stat_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub view_count: i64,
+	pub view_count: f64,
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
@@ -11810,7 +11810,7 @@ pub struct CategoryMinecraftResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub cache_ttl: i64,
+	pub cache_ttl: f64,
 	#[serde(
 		rename = "hasNextPage",
 		default,
@@ -11824,15 +11824,15 @@ pub struct CategoryMinecraftResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub last_modified: i64,
+	pub last_modified: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub page: i64,
+	pub page: f64,
 	#[serde(
 		rename = "perPage",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub per_page: i64,
+	pub per_page: f64,
 	#[serde(
 		rename = "searchUrl",
 		default,
@@ -11844,7 +11844,7 @@ pub struct CategoryMinecraftResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub server_time: i64,
+	pub server_time: f64,
 	#[serde(
 		rename = "stickyItems",
 		default,
@@ -11858,7 +11858,7 @@ pub struct CategoryMinecraftResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub total_items: i64,
+	pub total_items: f64,
 	#[serde(
 		rename = "totalItemsPrice",
 		default,
@@ -12172,33 +12172,33 @@ pub struct CategoryRiotItemsLolInventory {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub champion: Vec<i64>,
+	pub champion: Vec<f64>,
 	#[serde(
 		rename = "Skin",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub skin: Vec<i64>,
+	pub skin: Vec<f64>,
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct CategoryRiotItemsSeller {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub active_items_count: i64,
+	pub active_items_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub avatar_date: i64,
+	pub avatar_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub display_style_group_id: i64,
+	pub display_style_group_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub is_banned: i64,
+	pub is_banned: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub restore_data: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub restore_percents: i64,
+	pub restore_percents: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub sold_items_count: i64,
+	pub sold_items_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_id: i64,
+	pub user_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub username: String,
 }
@@ -12240,9 +12240,9 @@ pub struct CategoryRiotItems {
 	)]
 	pub account_links: Vec<CategoryRiotItemsAccountLinks>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub account_last_activity: i64,
+	pub account_last_activity: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub allow_ask_discount: i64,
+	pub allow_ask_discount: f64,
 	#[serde(
 		rename = "bumpSettings",
 		default,
@@ -12346,7 +12346,7 @@ pub struct CategoryRiotItems {
 	)]
 	pub can_view_login_data: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub category_id: i64,
+	pub category_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub description: String,
 	#[serde(
@@ -12376,7 +12376,7 @@ pub struct CategoryRiotItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub description_en: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit_date: i64,
+	pub edit_date: f64,
 	#[serde(
 		rename = "emailLoginUrl",
 		default,
@@ -12388,7 +12388,7 @@ pub struct CategoryRiotItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub email_type: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub extended_guarantee: i64,
+	pub extended_guarantee: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub feedback_data: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -12412,7 +12412,7 @@ pub struct CategoryRiotItems {
 	)]
 	pub is_small_exf: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub is_sticky: i64,
+	pub is_sticky: f64,
 	#[serde(
 		rename = "itemOriginPhrase",
 		default,
@@ -12422,7 +12422,7 @@ pub struct CategoryRiotItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_domain: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub item_id: i64,
+	pub item_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_origin: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -12442,91 +12442,91 @@ pub struct CategoryRiotItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub note_text: serde_json::Value,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub nsb: i64,
+	pub nsb: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub price: i64,
+	pub price: f64,
 	#[serde(
 		rename = "priceWithSellerFee",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub price_with_seller_fee: i64,
+	pub price_with_seller_fee: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub price_currency: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub published_date: i64,
+	pub published_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub refreshed_date: i64,
+	pub refreshed_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub resale_item_origin: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub restore_items_category_count: i64,
+	pub restore_items_category_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub riot_account_verified: i64,
+	pub riot_account_verified: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub riot_country: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub riot_email_verified: i64,
+	pub riot_email_verified: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub riot_id: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub riot_item_id: i64,
+	pub riot_item_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub riot_last_activity: i64,
+	pub riot_last_activity: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub riot_lol_champion_count: i64,
+	pub riot_lol_champion_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub riot_lol_level: i64,
+	pub riot_lol_level: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub riot_lol_rank: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub riot_lol_rank_win_rate: i64,
+	pub riot_lol_rank_win_rate: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub riot_lol_region: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub riot_lol_skin_count: i64,
+	pub riot_lol_skin_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub riot_lol_wallet_blue: i64,
+	pub riot_lol_wallet_blue: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub riot_lol_wallet_mythic: i64,
+	pub riot_lol_wallet_mythic: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub riot_lol_wallet_orange: i64,
+	pub riot_lol_wallet_orange: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub riot_lol_wallet_riot: i64,
+	pub riot_lol_wallet_riot: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub riot_password_change: i64,
+	pub riot_password_change: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub riot_phone_verified: i64,
+	pub riot_phone_verified: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub riot_username: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub riot_valorant_agent_count: i64,
+	pub riot_valorant_agent_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub riot_valorant_inventory_value: i64,
+	pub riot_valorant_inventory_value: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub riot_valorant_knife: i64,
+	pub riot_valorant_knife: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub riot_valorant_last_rank: i64,
+	pub riot_valorant_last_rank: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub riot_valorant_level: i64,
+	pub riot_valorant_level: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub riot_valorant_previous_rank: i64,
+	pub riot_valorant_previous_rank: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub riot_valorant_rank: i64,
+	pub riot_valorant_rank: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub riot_valorant_rank_type: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub riot_valorant_region: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub riot_valorant_skin_count: i64,
+	pub riot_valorant_skin_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub riot_valorant_wallet_fa: i64,
+	pub riot_valorant_wallet_fa: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub riot_valorant_wallet_rp: i64,
+	pub riot_valorant_wallet_rp: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub riot_valorant_wallet_vp: i64,
+	pub riot_valorant_wallet_vp: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub rub_price: i64,
+	pub rub_price: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub seller: CategoryRiotItemsSeller,
 	#[serde(
@@ -12536,7 +12536,7 @@ pub struct CategoryRiotItems {
 	)]
 	pub show_get_email_code_button: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub sold_items_category_count: i64,
+	pub sold_items_category_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub tags: Vec<serde_json::Value>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -12544,7 +12544,7 @@ pub struct CategoryRiotItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub title_en: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub update_stat_date: i64,
+	pub update_stat_date: f64,
 	#[serde(
 		rename = "valorantInventory",
 		default,
@@ -12582,7 +12582,7 @@ pub struct CategoryRiotItems {
 	)]
 	pub valorant_region_phrase: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub view_count: i64,
+	pub view_count: f64,
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
@@ -12592,7 +12592,7 @@ pub struct CategoryRiotResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub cache_ttl: i64,
+	pub cache_ttl: f64,
 	#[serde(
 		rename = "hasNextPage",
 		default,
@@ -12606,15 +12606,15 @@ pub struct CategoryRiotResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub last_modified: i64,
+	pub last_modified: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub page: i64,
+	pub page: f64,
 	#[serde(
 		rename = "perPage",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub per_page: i64,
+	pub per_page: f64,
 	#[serde(
 		rename = "searchUrl",
 		default,
@@ -12626,7 +12626,7 @@ pub struct CategoryRiotResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub server_time: i64,
+	pub server_time: f64,
 	#[serde(
 		rename = "stickyItems",
 		default,
@@ -12640,7 +12640,7 @@ pub struct CategoryRiotResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub total_items: i64,
+	pub total_items: f64,
 	#[serde(
 		rename = "totalItemsPrice",
 		default,
@@ -12884,9 +12884,9 @@ pub struct CategoryRobloxItemsBumpSettings {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct CategoryRobloxItemsRobloxGameDonations {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub amount: i64,
+	pub amount: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub id: i64,
+	pub id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub title: String,
 }
@@ -12894,7 +12894,7 @@ pub struct CategoryRobloxItemsRobloxGameDonations {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct CategoryRobloxItemsRobloxGameDonationsDetails {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub amount: i64,
+	pub amount: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub product: String,
 	#[serde(
@@ -12908,21 +12908,21 @@ pub struct CategoryRobloxItemsRobloxGameDonationsDetails {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct CategoryRobloxItemsSeller {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub active_items_count: i64,
+	pub active_items_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub avatar_date: i64,
+	pub avatar_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub display_style_group_id: i64,
+	pub display_style_group_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub is_banned: i64,
+	pub is_banned: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub restore_data: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub restore_percents: i64,
+	pub restore_percents: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub sold_items_count: i64,
+	pub sold_items_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_id: i64,
+	pub user_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub username: String,
 }
@@ -12942,7 +12942,7 @@ pub struct CategoryRobloxItems {
 	)]
 	pub account_links: Vec<CategoryRobloxItemsAccountLinks>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub allow_ask_discount: i64,
+	pub allow_ask_discount: f64,
 	#[serde(
 		rename = "bumpSettings",
 		default,
@@ -13046,7 +13046,7 @@ pub struct CategoryRobloxItems {
 	)]
 	pub can_view_login_data: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub category_id: i64,
+	pub category_id: f64,
 	#[serde(
 		rename = "creditBalance",
 		default,
@@ -13082,7 +13082,7 @@ pub struct CategoryRobloxItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub description_en: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit_date: i64,
+	pub edit_date: f64,
 	#[serde(
 		rename = "emailLoginUrl",
 		default,
@@ -13094,7 +13094,7 @@ pub struct CategoryRobloxItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub email_type: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub extended_guarantee: i64,
+	pub extended_guarantee: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub feedback_data: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -13112,7 +13112,7 @@ pub struct CategoryRobloxItems {
 	)]
 	pub is_ignored: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub is_sticky: i64,
+	pub is_sticky: f64,
 	#[serde(
 		rename = "itemOriginPhrase",
 		default,
@@ -13122,7 +13122,7 @@ pub struct CategoryRobloxItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_domain: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub item_id: i64,
+	pub item_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_origin: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -13130,25 +13130,25 @@ pub struct CategoryRobloxItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub note_text: serde_json::Value,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub nsb: i64,
+	pub nsb: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub price: i64,
+	pub price: f64,
 	#[serde(
 		rename = "priceWithSellerFee",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub price_with_seller_fee: i64,
+	pub price_with_seller_fee: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub price_currency: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub published_date: i64,
+	pub published_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub refreshed_date: i64,
+	pub refreshed_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub resale_item_origin: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub restore_items_category_count: i64,
+	pub restore_items_category_count: f64,
 	#[serde(
 		rename = "robloxGameDonations",
 		default,
@@ -13168,51 +13168,51 @@ pub struct CategoryRobloxItems {
 	)]
 	pub roblox_linked_accounts: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub roblox_age_verified: i64,
+	pub roblox_age_verified: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub roblox_country: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub roblox_credit_balance: i64,
+	pub roblox_credit_balance: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub roblox_email_verified: i64,
+	pub roblox_email_verified: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub roblox_followers: i64,
+	pub roblox_followers: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub roblox_friends: i64,
+	pub roblox_friends: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub roblox_game_pass_total_robux: i64,
+	pub roblox_game_pass_total_robux: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub roblox_id: i64,
+	pub roblox_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub roblox_incoming_robux_total: i64,
+	pub roblox_incoming_robux_total: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub roblox_inventory_price: i64,
+	pub roblox_inventory_price: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub roblox_item_id: i64,
+	pub roblox_item_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub roblox_limited_price: i64,
+	pub roblox_limited_price: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub roblox_psn_connected: i64,
+	pub roblox_psn_connected: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub roblox_register_date: i64,
+	pub roblox_register_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub roblox_robux: i64,
+	pub roblox_robux: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub roblox_subscription: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub roblox_subscription_auto_renew: i64,
+	pub roblox_subscription_auto_renew: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub roblox_subscription_end_date: i64,
+	pub roblox_subscription_end_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub roblox_ugc_limited_price: i64,
+	pub roblox_ugc_limited_price: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub roblox_username: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub roblox_verified: i64,
+	pub roblox_verified: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub roblox_xbox_connected: i64,
+	pub roblox_xbox_connected: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub rub_price: i64,
+	pub rub_price: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub seller: CategoryRobloxItemsSeller,
 	#[serde(
@@ -13222,7 +13222,7 @@ pub struct CategoryRobloxItems {
 	)]
 	pub show_get_email_code_button: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub sold_items_category_count: i64,
+	pub sold_items_category_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub tags: Vec<serde_json::Value>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -13230,9 +13230,9 @@ pub struct CategoryRobloxItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub title_en: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub update_stat_date: i64,
+	pub update_stat_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub view_count: i64,
+	pub view_count: f64,
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
@@ -13242,7 +13242,7 @@ pub struct CategoryRobloxResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub cache_ttl: i64,
+	pub cache_ttl: f64,
 	#[serde(
 		rename = "hasNextPage",
 		default,
@@ -13256,15 +13256,15 @@ pub struct CategoryRobloxResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub last_modified: i64,
+	pub last_modified: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub page: i64,
+	pub page: f64,
 	#[serde(
 		rename = "perPage",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub per_page: i64,
+	pub per_page: f64,
 	#[serde(
 		rename = "searchUrl",
 		default,
@@ -13276,7 +13276,7 @@ pub struct CategoryRobloxResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub server_time: i64,
+	pub server_time: f64,
 	#[serde(
 		rename = "stickyItems",
 		default,
@@ -13290,7 +13290,7 @@ pub struct CategoryRobloxResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub total_items: i64,
+	pub total_items: f64,
 	#[serde(
 		rename = "totalItemsPrice",
 		default,
@@ -13433,21 +13433,21 @@ pub struct CategorySocialClubItemsBumpSettings {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct CategorySocialClubItemsSeller {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub active_items_count: i64,
+	pub active_items_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub avatar_date: i64,
+	pub avatar_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub display_style_group_id: i64,
+	pub display_style_group_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub is_banned: i64,
+	pub is_banned: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub restore_data: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub restore_percents: serde_json::Value,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub sold_items_count: i64,
+	pub sold_items_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_id: i64,
+	pub user_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub username: String,
 }
@@ -13459,7 +13459,7 @@ pub struct CategorySocialClubItemsSocialclubGames {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub app_id: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub category_id: i64,
+	pub category_id: f64,
 	#[serde(
 		rename = "defaultPlatform",
 		default,
@@ -13467,11 +13467,11 @@ pub struct CategorySocialClubItemsSocialclubGames {
 	)]
 	pub default_platform: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub id: i64,
+	pub id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub img: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub internal_game_id: i64,
+	pub internal_game_id: f64,
 	#[serde(
 		rename = "lastSeen",
 		default,
@@ -13499,9 +13499,9 @@ pub struct CategorySocialClubItems {
 	)]
 	pub account_links: Vec<serde_json::Value>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub account_last_activity: i64,
+	pub account_last_activity: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub allow_ask_discount: i64,
+	pub allow_ask_discount: f64,
 	#[serde(
 		rename = "bumpSettings",
 		default,
@@ -13605,7 +13605,7 @@ pub struct CategorySocialClubItems {
 	)]
 	pub can_view_login_data: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub category_id: i64,
+	pub category_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub description: String,
 	#[serde(
@@ -13635,7 +13635,7 @@ pub struct CategorySocialClubItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub description_en: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit_date: i64,
+	pub edit_date: f64,
 	#[serde(
 		rename = "emailLoginUrl",
 		default,
@@ -13647,7 +13647,7 @@ pub struct CategorySocialClubItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub email_type: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub extended_guarantee: i64,
+	pub extended_guarantee: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub feedback_data: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -13671,7 +13671,7 @@ pub struct CategorySocialClubItems {
 	)]
 	pub is_small_exf: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub is_sticky: i64,
+	pub is_sticky: f64,
 	#[serde(
 		rename = "itemOriginPhrase",
 		default,
@@ -13681,7 +13681,7 @@ pub struct CategorySocialClubItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_domain: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub item_id: i64,
+	pub item_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_origin: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -13689,25 +13689,25 @@ pub struct CategorySocialClubItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub note_text: serde_json::Value,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub nsb: i64,
+	pub nsb: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub price: i64,
+	pub price: f64,
 	#[serde(
 		rename = "priceWithSellerFee",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub price_with_seller_fee: i64,
+	pub price_with_seller_fee: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub price_currency: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub published_date: i64,
+	pub published_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub refreshed_date: i64,
+	pub refreshed_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub resale_item_origin: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub rub_price: i64,
+	pub rub_price: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub seller: CategorySocialClubItemsSeller,
 	#[serde(
@@ -13717,21 +13717,21 @@ pub struct CategorySocialClubItems {
 	)]
 	pub show_get_email_code_button: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub socialclub_bank_cash: i64,
+	pub socialclub_bank_cash: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub socialclub_cash: i64,
+	pub socialclub_cash: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub socialclub_games: Vec<CategorySocialClubItemsSocialclubGames>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub socialclub_has_gtav: i64,
+	pub socialclub_has_gtav: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub socialclub_has_rdr2: i64,
+	pub socialclub_has_rdr2: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub socialclub_item_id: i64,
+	pub socialclub_item_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub socialclub_last_activity: i64,
+	pub socialclub_last_activity: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub socialclub_level: i64,
+	pub socialclub_level: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub tags: Vec<serde_json::Value>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -13739,9 +13739,9 @@ pub struct CategorySocialClubItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub title_en: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub update_stat_date: i64,
+	pub update_stat_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub view_count: i64,
+	pub view_count: f64,
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
@@ -13751,7 +13751,7 @@ pub struct CategorySocialClubResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub cache_ttl: i64,
+	pub cache_ttl: f64,
 	#[serde(
 		rename = "hasNextPage",
 		default,
@@ -13765,15 +13765,15 @@ pub struct CategorySocialClubResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub last_modified: i64,
+	pub last_modified: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub page: i64,
+	pub page: f64,
 	#[serde(
 		rename = "perPage",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub per_page: i64,
+	pub per_page: f64,
 	#[serde(
 		rename = "searchUrl",
 		default,
@@ -13785,7 +13785,7 @@ pub struct CategorySocialClubResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub server_time: i64,
+	pub server_time: f64,
 	#[serde(
 		rename = "stickyItems",
 		default,
@@ -13799,7 +13799,7 @@ pub struct CategorySocialClubResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub total_items: i64,
+	pub total_items: f64,
 	#[serde(
 		rename = "totalItemsPrice",
 		default,
@@ -14358,7 +14358,7 @@ pub struct CategorySteamItemsGuarantee {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub class: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub duration: i64,
+	pub duration: f64,
 	#[serde(
 		rename = "durationPhrase",
 		default,
@@ -14382,21 +14382,21 @@ pub struct CategorySteamItemsGuarantee {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct CategorySteamItemsSeller {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub active_items_count: i64,
+	pub active_items_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub avatar_date: i64,
+	pub avatar_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub display_style_group_id: i64,
+	pub display_style_group_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub is_banned: i64,
+	pub is_banned: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub restore_data: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub restore_percents: i64,
+	pub restore_percents: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub sold_items_count: i64,
+	pub sold_items_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_id: i64,
+	pub user_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub username: String,
 }
@@ -14430,7 +14430,7 @@ pub struct CategorySteamItemsSteamFullGames {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub list: serde_json::Value,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub total: i64,
+	pub total: f64,
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
@@ -14448,9 +14448,9 @@ pub struct CategorySteamItems {
 	)]
 	pub account_links: Vec<CategorySteamItemsAccountLinks>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub account_last_activity: i64,
+	pub account_last_activity: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub allow_ask_discount: i64,
+	pub allow_ask_discount: f64,
 	#[serde(
 		rename = "bumpSettings",
 		default,
@@ -14554,7 +14554,7 @@ pub struct CategorySteamItems {
 	)]
 	pub can_view_login_data: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub category_id: i64,
+	pub category_id: f64,
 	#[serde(
 		rename = "chineseAccount",
 		default,
@@ -14620,7 +14620,7 @@ pub struct CategorySteamItems {
 	)]
 	pub dota2_calibration_warning: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit_date: i64,
+	pub edit_date: f64,
 	#[serde(
 		rename = "emailLoginUrl",
 		default,
@@ -14632,7 +14632,7 @@ pub struct CategorySteamItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub email_type: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub extended_guarantee: i64,
+	pub extended_guarantee: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub feedback_data: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -14698,7 +14698,7 @@ pub struct CategorySteamItems {
 	)]
 	pub is_small_exf: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub is_sticky: i64,
+	pub is_sticky: f64,
 	#[serde(
 		rename = "itemOriginPhrase",
 		default,
@@ -14708,7 +14708,7 @@ pub struct CategorySteamItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_domain: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub item_id: i64,
+	pub item_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_origin: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -14716,27 +14716,27 @@ pub struct CategorySteamItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub note_text: serde_json::Value,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub nsb: i64,
+	pub nsb: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub price: i64,
+	pub price: f64,
 	#[serde(
 		rename = "priceWithSellerFee",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub price_with_seller_fee: i64,
+	pub price_with_seller_fee: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub price_currency: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub published_date: i64,
+	pub published_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub refreshed_date: i64,
+	pub refreshed_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub resale_item_origin: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub restore_items_category_count: i64,
+	pub restore_items_category_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub rub_price: i64,
+	pub rub_price: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub seller: CategorySteamItemsSeller,
 	#[serde(
@@ -14746,7 +14746,7 @@ pub struct CategorySteamItems {
 	)]
 	pub show_get_email_code_button: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub sold_items_category_count: i64,
+	pub sold_items_category_count: f64,
 	#[serde(
 		rename = "steamCs2Medals",
 		default,
@@ -14764,7 +14764,7 @@ pub struct CategorySteamItems {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub steam_dota2_win_rate: i64,
+	pub steam_dota2_win_rate: f64,
 	#[serde(
 		rename = "steamLifetimeTradeBan",
 		default,
@@ -14776,7 +14776,7 @@ pub struct CategorySteamItems {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub steam_relevant_game_count: i64,
+	pub steam_relevant_game_count: f64,
 	#[serde(
 		rename = "steamTransactions",
 		default,
@@ -14788,119 +14788,119 @@ pub struct CategorySteamItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub steam_bans: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub steam_cards_count: i64,
+	pub steam_cards_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub steam_cards_games: i64,
+	pub steam_cards_games: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub steam_community_ban: i64,
+	pub steam_community_ban: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub steam_converted_balance: i64,
+	pub steam_converted_balance: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub steam_country: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub steam_cs2_ban_date: i64,
+	pub steam_cs2_ban_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub steam_cs2_ban_date_active: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub steam_cs2_ban_type: i64,
+	pub steam_cs2_ban_type: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub steam_cs2_inv_value: i64,
+	pub steam_cs2_inv_value: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub steam_cs2_last_activity: i64,
+	pub steam_cs2_last_activity: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub steam_cs2_last_launched: i64,
+	pub steam_cs2_last_launched: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub steam_cs2_premier_elo: i64,
+	pub steam_cs2_premier_elo: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub steam_cs2_profile_rank: i64,
+	pub steam_cs2_profile_rank: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub steam_cs2_rank_id: i64,
+	pub steam_cs2_rank_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub steam_cs2_win_count: i64,
+	pub steam_cs2_win_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub steam_cs2_wingman_rank_id: i64,
+	pub steam_cs2_wingman_rank_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub steam_dota2_behavior: i64,
+	pub steam_dota2_behavior: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub steam_dota2_game_count: i64,
+	pub steam_dota2_game_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub steam_dota2_inv_value: i64,
+	pub steam_dota2_inv_value: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub steam_dota2_last_match_date: i64,
+	pub steam_dota2_last_match_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub steam_dota2_lose_count: i64,
+	pub steam_dota2_lose_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub steam_dota2_solo_mmr: i64,
+	pub steam_dota2_solo_mmr: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub steam_dota2_win_count: i64,
+	pub steam_dota2_win_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub steam_dst_inv_value: i64,
+	pub steam_dst_inv_value: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub steam_faceit_level: i64,
+	pub steam_faceit_level: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub steam_friend_count: i64,
+	pub steam_friend_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub steam_full_games: CategorySteamItemsSteamFullGames,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub steam_game_count: i64,
+	pub steam_game_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub steam_gift_count: i64,
+	pub steam_gift_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub steam_has_activated_keys: i64,
+	pub steam_has_activated_keys: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub steam_hours_played_recently: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub steam_inv_value: i64,
+	pub steam_inv_value: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub steam_is_limited: i64,
+	pub steam_is_limited: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub steam_item_id: i64,
+	pub steam_item_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub steam_kf2_inv_value: i64,
+	pub steam_kf2_inv_value: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub steam_last_activity: i64,
+	pub steam_last_activity: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub steam_last_transaction_date: i64,
+	pub steam_last_transaction_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub steam_level: i64,
+	pub steam_level: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub steam_limit_spent: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub steam_market: i64,
+	pub steam_market: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub steam_market_ban_end_date: i64,
+	pub steam_market_ban_end_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub steam_market_restrictions: i64,
+	pub steam_market_restrictions: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub steam_mfa: i64,
+	pub steam_mfa: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub steam_points: i64,
+	pub steam_points: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub steam_pubg_inv_value: i64,
+	pub steam_pubg_inv_value: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub steam_register_date: i64,
+	pub steam_register_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub steam_rust_deaths: i64,
+	pub steam_rust_deaths: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub steam_rust_inv_value: i64,
+	pub steam_rust_inv_value: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub steam_rust_kill_player: i64,
+	pub steam_rust_kill_player: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub steam_steam_inv_value: i64,
+	pub steam_steam_inv_value: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub steam_tf2_inv_value: i64,
+	pub steam_tf2_inv_value: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub steam_total_games_rub: i64,
+	pub steam_total_games_rub: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub steam_total_gifts_rub: i64,
+	pub steam_total_gifts_rub: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub steam_total_ingame_rub: i64,
+	pub steam_total_ingame_rub: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub steam_total_purchased_rub: i64,
+	pub steam_total_purchased_rub: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub steam_total_refunds_rub: i64,
+	pub steam_total_refunds_rub: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub steam_unturned_inv_value: i64,
+	pub steam_unturned_inv_value: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub tags: Vec<serde_json::Value>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -14908,9 +14908,9 @@ pub struct CategorySteamItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub title_en: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub update_stat_date: i64,
+	pub update_stat_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub view_count: i64,
+	pub view_count: f64,
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
@@ -14920,7 +14920,7 @@ pub struct CategorySteamResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub cache_ttl: i64,
+	pub cache_ttl: f64,
 	#[serde(
 		rename = "hasNextPage",
 		default,
@@ -14934,15 +14934,15 @@ pub struct CategorySteamResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub last_modified: i64,
+	pub last_modified: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub page: i64,
+	pub page: f64,
 	#[serde(
 		rename = "perPage",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub per_page: i64,
+	pub per_page: f64,
 	#[serde(
 		rename = "searchUrl",
 		default,
@@ -14954,7 +14954,7 @@ pub struct CategorySteamResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub server_time: i64,
+	pub server_time: f64,
 	#[serde(
 		rename = "stickyItems",
 		default,
@@ -14968,7 +14968,7 @@ pub struct CategorySteamResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub total_items: i64,
+	pub total_items: f64,
 	#[serde(
 		rename = "totalItemsPrice",
 		default,
@@ -15254,21 +15254,21 @@ pub struct CategorySupercellItemsBumpSettings {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct CategorySupercellItemsSeller {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub active_items_count: i64,
+	pub active_items_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub avatar_date: i64,
+	pub avatar_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub display_style_group_id: i64,
+	pub display_style_group_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub is_banned: i64,
+	pub is_banned: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub restore_data: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub restore_percents: serde_json::Value,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub sold_items_count: i64,
+	pub sold_items_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_id: i64,
+	pub user_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub username: String,
 }
@@ -15288,7 +15288,7 @@ pub struct CategorySupercellItems {
 	)]
 	pub account_links: Vec<CategorySupercellItemsAccountLinks>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub allow_ask_discount: i64,
+	pub allow_ask_discount: f64,
 	#[serde(
 		rename = "bumpSettings",
 		default,
@@ -15392,7 +15392,7 @@ pub struct CategorySupercellItems {
 	)]
 	pub can_view_login_data: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub category_id: i64,
+	pub category_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub description: String,
 	#[serde(
@@ -15422,7 +15422,7 @@ pub struct CategorySupercellItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub description_en: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit_date: i64,
+	pub edit_date: f64,
 	#[serde(
 		rename = "emailLoginUrl",
 		default,
@@ -15434,7 +15434,7 @@ pub struct CategorySupercellItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub email_type: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub extended_guarantee: i64,
+	pub extended_guarantee: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub feedback_data: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -15458,7 +15458,7 @@ pub struct CategorySupercellItems {
 	)]
 	pub is_small_exf: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub is_sticky: i64,
+	pub is_sticky: f64,
 	#[serde(
 		rename = "itemOriginPhrase",
 		default,
@@ -15468,7 +15468,7 @@ pub struct CategorySupercellItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_domain: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub item_id: i64,
+	pub item_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_origin: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -15476,25 +15476,25 @@ pub struct CategorySupercellItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub note_text: serde_json::Value,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub nsb: i64,
+	pub nsb: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub price: i64,
+	pub price: f64,
 	#[serde(
 		rename = "priceWithSellerFee",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub price_with_seller_fee: i64,
+	pub price_with_seller_fee: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub price_currency: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub published_date: i64,
+	pub published_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub refreshed_date: i64,
+	pub refreshed_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub resale_item_origin: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub rub_price: i64,
+	pub rub_price: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub seller: CategorySupercellItemsSeller,
 	#[serde(
@@ -15512,61 +15512,61 @@ pub struct CategorySupercellItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub supercell_arena: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub supercell_brawler_count: i64,
+	pub supercell_brawler_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub supercell_builder_hall_cup_count: i64,
+	pub supercell_builder_hall_cup_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub supercell_builder_hall_level: i64,
+	pub supercell_builder_hall_level: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub supercell_id: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub supercell_item_id: i64,
+	pub supercell_item_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub supercell_king_level: i64,
+	pub supercell_king_level: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub supercell_laser_battle_pass: i64,
+	pub supercell_laser_battle_pass: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub supercell_laser_level: i64,
+	pub supercell_laser_level: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub supercell_laser_trophies: i64,
+	pub supercell_laser_trophies: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub supercell_laser_victories: i64,
+	pub supercell_laser_victories: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub supercell_last_activity: i64,
+	pub supercell_last_activity: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub supercell_legendary_brawler_count: i64,
+	pub supercell_legendary_brawler_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub supercell_magic_battle_pass: i64,
+	pub supercell_magic_battle_pass: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub supercell_magic_level: i64,
+	pub supercell_magic_level: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub supercell_magic_trophies: i64,
+	pub supercell_magic_trophies: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub supercell_magic_victories: i64,
+	pub supercell_magic_victories: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub supercell_phone: i64,
+	pub supercell_phone: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub supercell_scroll_battle_pass: i64,
+	pub supercell_scroll_battle_pass: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub supercell_scroll_level: i64,
+	pub supercell_scroll_level: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub supercell_scroll_trophies: i64,
+	pub supercell_scroll_trophies: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub supercell_scroll_victories: i64,
+	pub supercell_scroll_victories: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub supercell_systems: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub supercell_total_builder_heroes_level: i64,
+	pub supercell_total_builder_heroes_level: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub supercell_total_builder_troops_level: i64,
+	pub supercell_total_builder_troops_level: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub supercell_total_heroes_level: i64,
+	pub supercell_total_heroes_level: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub supercell_total_spells_level: i64,
+	pub supercell_total_spells_level: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub supercell_total_troops_level: i64,
+	pub supercell_total_troops_level: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub supercell_town_hall_level: i64,
+	pub supercell_town_hall_level: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub tags: Vec<serde_json::Value>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -15574,9 +15574,9 @@ pub struct CategorySupercellItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub title_en: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub update_stat_date: i64,
+	pub update_stat_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub view_count: i64,
+	pub view_count: f64,
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
@@ -15586,7 +15586,7 @@ pub struct CategorySupercellResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub cache_ttl: i64,
+	pub cache_ttl: f64,
 	#[serde(
 		rename = "hasNextPage",
 		default,
@@ -15600,15 +15600,15 @@ pub struct CategorySupercellResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub last_modified: i64,
+	pub last_modified: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub page: i64,
+	pub page: f64,
 	#[serde(
 		rename = "perPage",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub per_page: i64,
+	pub per_page: f64,
 	#[serde(
 		rename = "searchUrl",
 		default,
@@ -15620,7 +15620,7 @@ pub struct CategorySupercellResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub server_time: i64,
+	pub server_time: f64,
 	#[serde(
 		rename = "stickyItems",
 		default,
@@ -15634,7 +15634,7 @@ pub struct CategorySupercellResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub total_items: i64,
+	pub total_items: f64,
 	#[serde(
 		rename = "totalItemsPrice",
 		default,
@@ -15891,21 +15891,21 @@ pub struct CategoryTelegramItemsBumpSettings {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct CategoryTelegramItemsSeller {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub active_items_count: i64,
+	pub active_items_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub avatar_date: i64,
+	pub avatar_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub display_style_group_id: i64,
+	pub display_style_group_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub is_banned: i64,
+	pub is_banned: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub restore_data: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub restore_percents: serde_json::Value,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub sold_items_count: i64,
+	pub sold_items_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_id: i64,
+	pub user_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub username: String,
 }
@@ -15913,13 +15913,13 @@ pub struct CategoryTelegramItemsSeller {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct CategoryTelegramItemsTelegramGroupCounters {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub admin: i64,
+	pub admin: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub channels: i64,
+	pub channels: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub chats: i64,
+	pub chats: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub conversations: i64,
+	pub conversations: f64,
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
@@ -15931,7 +15931,7 @@ pub struct CategoryTelegramItems {
 	)]
 	pub account_links: Vec<serde_json::Value>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub allow_ask_discount: i64,
+	pub allow_ask_discount: f64,
 	#[serde(
 		rename = "bumpSettings",
 		default,
@@ -16035,7 +16035,7 @@ pub struct CategoryTelegramItems {
 	)]
 	pub can_view_login_data: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub category_id: i64,
+	pub category_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub description: String,
 	#[serde(
@@ -16065,13 +16065,13 @@ pub struct CategoryTelegramItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub description_en: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit_date: i64,
+	pub edit_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub email_provider: serde_json::Value,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub email_type: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub extended_guarantee: i64,
+	pub extended_guarantee: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub feedback_data: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -16089,7 +16089,7 @@ pub struct CategoryTelegramItems {
 	)]
 	pub is_ignored: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub is_sticky: i64,
+	pub is_sticky: f64,
 	#[serde(
 		rename = "itemOriginPhrase",
 		default,
@@ -16099,7 +16099,7 @@ pub struct CategoryTelegramItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_domain: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub item_id: i64,
+	pub item_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_origin: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -16107,25 +16107,25 @@ pub struct CategoryTelegramItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub note_text: serde_json::Value,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub nsb: i64,
+	pub nsb: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub price: i64,
+	pub price: f64,
 	#[serde(
 		rename = "priceWithSellerFee",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub price_with_seller_fee: i64,
+	pub price_with_seller_fee: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub price_currency: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub published_date: i64,
+	pub published_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub refreshed_date: i64,
+	pub refreshed_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub resale_item_origin: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub rub_price: i64,
+	pub rub_price: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub seller: CategoryTelegramItemsSeller,
 	#[serde(
@@ -16137,47 +16137,47 @@ pub struct CategoryTelegramItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub tags: Vec<serde_json::Value>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub telegram_admin_count: i64,
+	pub telegram_admin_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub telegram_admin_subs_count: i64,
+	pub telegram_admin_subs_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub telegram_birthday: i64,
+	pub telegram_birthday: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub telegram_channels_count: i64,
+	pub telegram_channels_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub telegram_chats_count: i64,
+	pub telegram_chats_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub telegram_contacts_count: i64,
+	pub telegram_contacts_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub telegram_conversations_count: i64,
+	pub telegram_conversations_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub telegram_country: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub telegram_group_counters: CategoryTelegramItemsTelegramGroupCounters,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub telegram_id_count: i64,
+	pub telegram_id_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub telegram_item_id: i64,
+	pub telegram_item_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub telegram_last_seen: i64,
+	pub telegram_last_seen: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub telegram_password: i64,
+	pub telegram_password: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub telegram_premium: i64,
+	pub telegram_premium: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub telegram_premium_expires: i64,
+	pub telegram_premium_expires: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub telegram_spam_block: serde_json::Value,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub telegram_stars_count: i64,
+	pub telegram_stars_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub title: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub title_en: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub update_stat_date: i64,
+	pub update_stat_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub view_count: i64,
+	pub view_count: f64,
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
@@ -16187,7 +16187,7 @@ pub struct CategoryTelegramResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub cache_ttl: i64,
+	pub cache_ttl: f64,
 	#[serde(
 		rename = "hasNextPage",
 		default,
@@ -16201,15 +16201,15 @@ pub struct CategoryTelegramResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub last_modified: i64,
+	pub last_modified: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub page: i64,
+	pub page: f64,
 	#[serde(
 		rename = "perPage",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub per_page: i64,
+	pub per_page: f64,
 	#[serde(
 		rename = "searchUrl",
 		default,
@@ -16221,7 +16221,7 @@ pub struct CategoryTelegramResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub server_time: i64,
+	pub server_time: f64,
 	#[serde(
 		rename = "stickyItems",
 		default,
@@ -16235,7 +16235,7 @@ pub struct CategoryTelegramResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub total_items: i64,
+	pub total_items: f64,
 	#[serde(
 		rename = "totalItemsPrice",
 		default,
@@ -16416,21 +16416,21 @@ pub struct CategoryTikTokItemsBumpSettings {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct CategoryTikTokItemsSeller {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub active_items_count: i64,
+	pub active_items_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub avatar_date: i64,
+	pub avatar_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub display_style_group_id: i64,
+	pub display_style_group_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub is_banned: i64,
+	pub is_banned: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub restore_data: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub restore_percents: i64,
+	pub restore_percents: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub sold_items_count: i64,
+	pub sold_items_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_id: i64,
+	pub user_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub username: String,
 }
@@ -16450,7 +16450,7 @@ pub struct CategoryTikTokItems {
 	)]
 	pub account_links: Vec<CategoryTikTokItemsAccountLinks>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub allow_ask_discount: i64,
+	pub allow_ask_discount: f64,
 	#[serde(
 		rename = "bumpSettings",
 		default,
@@ -16554,7 +16554,7 @@ pub struct CategoryTikTokItems {
 	)]
 	pub can_view_login_data: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub category_id: i64,
+	pub category_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub description: String,
 	#[serde(
@@ -16584,13 +16584,13 @@ pub struct CategoryTikTokItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub description_en: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit_date: i64,
+	pub edit_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub email_provider: serde_json::Value,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub email_type: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub extended_guarantee: i64,
+	pub extended_guarantee: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub feedback_data: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -16608,7 +16608,7 @@ pub struct CategoryTikTokItems {
 	)]
 	pub is_ignored: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub is_sticky: i64,
+	pub is_sticky: f64,
 	#[serde(
 		rename = "itemOriginPhrase",
 		default,
@@ -16618,7 +16618,7 @@ pub struct CategoryTikTokItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_domain: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub item_id: i64,
+	pub item_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_origin: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -16626,27 +16626,27 @@ pub struct CategoryTikTokItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub note_text: serde_json::Value,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub nsb: i64,
+	pub nsb: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub price: i64,
+	pub price: f64,
 	#[serde(
 		rename = "priceWithSellerFee",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub price_with_seller_fee: i64,
+	pub price_with_seller_fee: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub price_currency: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub published_date: i64,
+	pub published_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub refreshed_date: i64,
+	pub refreshed_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub resale_item_origin: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub restore_items_category_count: i64,
+	pub restore_items_category_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub rub_price: i64,
+	pub rub_price: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub seller: CategoryTikTokItemsSeller,
 	#[serde(
@@ -16656,7 +16656,7 @@ pub struct CategoryTikTokItems {
 	)]
 	pub show_get_email_code_button: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub sold_items_category_count: i64,
+	pub sold_items_category_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub tags: Vec<serde_json::Value>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -16664,9 +16664,9 @@ pub struct CategoryTikTokItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub title_en: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub tt_coins: i64,
+	pub tt_coins: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub tt_cookie_login: i64,
+	pub tt_cookie_login: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub tt_countries: String,
 	#[serde(
@@ -16674,35 +16674,35 @@ pub struct CategoryTikTokItems {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub tt_create_time: i64,
+	pub tt_create_time: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub tt_followers: i64,
+	pub tt_followers: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub tt_following: i64,
+	pub tt_following: f64,
 	#[serde(
 		rename = "tt_hasEmail",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub tt_has_email: i64,
+	pub tt_has_email: f64,
 	#[serde(
 		rename = "tt_hasLivePermission",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub tt_has_live_permission: i64,
+	pub tt_has_live_permission: f64,
 	#[serde(
 		rename = "tt_hasMobile",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub tt_has_mobile: i64,
+	pub tt_has_mobile: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub tt_id: i64,
+	pub tt_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub tt_item_id: i64,
+	pub tt_item_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub tt_likes: i64,
+	pub tt_likes: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub tt_permalink: String,
 	#[serde(
@@ -16710,7 +16710,7 @@ pub struct CategoryTikTokItems {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub tt_private_account: i64,
+	pub tt_private_account: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub tt_screen_name: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -16722,13 +16722,13 @@ pub struct CategoryTikTokItems {
 	)]
 	pub tt_unique_id: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub tt_verified: i64,
+	pub tt_verified: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub tt_videos: i64,
+	pub tt_videos: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub update_stat_date: i64,
+	pub update_stat_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub view_count: i64,
+	pub view_count: f64,
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
@@ -16738,7 +16738,7 @@ pub struct CategoryTikTokResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub cache_ttl: i64,
+	pub cache_ttl: f64,
 	#[serde(
 		rename = "hasNextPage",
 		default,
@@ -16752,15 +16752,15 @@ pub struct CategoryTikTokResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub last_modified: i64,
+	pub last_modified: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub page: i64,
+	pub page: f64,
 	#[serde(
 		rename = "perPage",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub per_page: i64,
+	pub per_page: f64,
 	#[serde(
 		rename = "searchUrl",
 		default,
@@ -16772,7 +16772,7 @@ pub struct CategoryTikTokResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub server_time: i64,
+	pub server_time: f64,
 	#[serde(
 		rename = "stickyItems",
 		default,
@@ -16786,7 +16786,7 @@ pub struct CategoryTikTokResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub total_items: i64,
+	pub total_items: f64,
 	#[serde(
 		rename = "totalItemsPrice",
 		default,
@@ -17005,21 +17005,21 @@ pub struct CategoryUplayItemsR6Operators {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct CategoryUplayItemsSeller {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub active_items_count: i64,
+	pub active_items_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub avatar_date: i64,
+	pub avatar_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub display_style_group_id: i64,
+	pub display_style_group_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub is_banned: i64,
+	pub is_banned: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub restore_data: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub restore_percents: i64,
+	pub restore_percents: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub sold_items_count: i64,
+	pub sold_items_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_id: i64,
+	pub user_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub username: String,
 }
@@ -17041,13 +17041,13 @@ pub struct CategoryUplayItemsUplayGamesFfffffffFfffFfffFfffFfffffffffff {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub pve_time_played: i64,
+	pub pve_time_played: f64,
 	#[serde(
 		rename = "pvpTimePlayed",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub pvp_time_played: i64,
+	pub pvp_time_played: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub title: String,
 }
@@ -17066,9 +17066,9 @@ pub struct CategoryUplayItemsUplayGames {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct CategoryUplayItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub account_last_activity: i64,
+	pub account_last_activity: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub allow_ask_discount: i64,
+	pub allow_ask_discount: f64,
 	#[serde(
 		rename = "bumpSettings",
 		default,
@@ -17172,7 +17172,7 @@ pub struct CategoryUplayItems {
 	)]
 	pub can_view_login_data: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub category_id: i64,
+	pub category_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub description: String,
 	#[serde(
@@ -17202,7 +17202,7 @@ pub struct CategoryUplayItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub description_en: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit_date: i64,
+	pub edit_date: f64,
 	#[serde(
 		rename = "emailLoginUrl",
 		default,
@@ -17214,7 +17214,7 @@ pub struct CategoryUplayItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub email_type: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub extended_guarantee: i64,
+	pub extended_guarantee: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub feedback_data: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -17238,7 +17238,7 @@ pub struct CategoryUplayItems {
 	)]
 	pub is_small_exf: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub is_sticky: i64,
+	pub is_sticky: f64,
 	#[serde(
 		rename = "itemOriginPhrase",
 		default,
@@ -17248,7 +17248,7 @@ pub struct CategoryUplayItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_domain: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub item_id: i64,
+	pub item_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_origin: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -17256,19 +17256,19 @@ pub struct CategoryUplayItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub note_text: serde_json::Value,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub nsb: i64,
+	pub nsb: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub price: i64,
+	pub price: f64,
 	#[serde(
 		rename = "priceWithSellerFee",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub price_with_seller_fee: i64,
+	pub price_with_seller_fee: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub price_currency: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub published_date: i64,
+	pub published_date: f64,
 	#[serde(
 		rename = "r6Operators",
 		default,
@@ -17282,13 +17282,13 @@ pub struct CategoryUplayItems {
 	)]
 	pub r6_skins: Vec<serde_json::Value>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub refreshed_date: i64,
+	pub refreshed_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub resale_item_origin: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub restore_items_category_count: i64,
+	pub restore_items_category_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub rub_price: i64,
+	pub rub_price: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub seller: CategoryUplayItemsSeller,
 	#[serde(
@@ -17298,7 +17298,7 @@ pub struct CategoryUplayItems {
 	)]
 	pub show_get_email_code_button: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub sold_items_category_count: i64,
+	pub sold_items_category_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub tags: Vec<serde_json::Value>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -17306,7 +17306,7 @@ pub struct CategoryUplayItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub title_en: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub update_stat_date: i64,
+	pub update_stat_date: f64,
 	#[serde(
 		rename = "uplayLinkedAccounts",
 		default,
@@ -17322,47 +17322,47 @@ pub struct CategoryUplayItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub uplay_country: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub uplay_created_date: i64,
+	pub uplay_created_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub uplay_game_count: i64,
+	pub uplay_game_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub uplay_games: CategoryUplayItemsUplayGames,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub uplay_item_id: i64,
+	pub uplay_item_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub uplay_last_activity: i64,
+	pub uplay_last_activity: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub uplay_psn_connected: i64,
+	pub uplay_psn_connected: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub uplay_r6: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub uplay_r6_ban: i64,
+	pub uplay_r6_ban: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub uplay_r6_ban_active: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub uplay_r6_external_warning: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub uplay_r6_level: i64,
+	pub uplay_r6_level: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub uplay_r6_operators: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub uplay_r6_operators_count: i64,
+	pub uplay_r6_operators_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub uplay_r6_skins: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub uplay_r6_skins_count: i64,
+	pub uplay_r6_skins_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub uplay_r6_steam_warning: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub uplay_steam_connected: i64,
+	pub uplay_steam_connected: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub uplay_subscription: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub uplay_subscription_end_date: i64,
+	pub uplay_subscription_end_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub uplay_xbox_connected: i64,
+	pub uplay_xbox_connected: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub view_count: i64,
+	pub view_count: f64,
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
@@ -17372,7 +17372,7 @@ pub struct CategoryUplayResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub cache_ttl: i64,
+	pub cache_ttl: f64,
 	#[serde(
 		rename = "hasNextPage",
 		default,
@@ -17386,15 +17386,15 @@ pub struct CategoryUplayResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub last_modified: i64,
+	pub last_modified: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub page: i64,
+	pub page: f64,
 	#[serde(
 		rename = "perPage",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub per_page: i64,
+	pub per_page: f64,
 	#[serde(
 		rename = "searchUrl",
 		default,
@@ -17406,7 +17406,7 @@ pub struct CategoryUplayResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub server_time: i64,
+	pub server_time: f64,
 	#[serde(
 		rename = "stickyItems",
 		default,
@@ -17420,7 +17420,7 @@ pub struct CategoryUplayResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub total_items: i64,
+	pub total_items: f64,
 	#[serde(
 		rename = "totalItemsPrice",
 		default,
@@ -17551,21 +17551,21 @@ pub struct CategoryVpnItemsBumpSettings {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct CategoryVpnItemsSeller {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub active_items_count: i64,
+	pub active_items_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub avatar_date: i64,
+	pub avatar_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub display_style_group_id: i64,
+	pub display_style_group_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub is_banned: i64,
+	pub is_banned: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub restore_data: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub restore_percents: i64,
+	pub restore_percents: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub sold_items_count: i64,
+	pub sold_items_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_id: i64,
+	pub user_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub username: String,
 }
@@ -17573,7 +17573,7 @@ pub struct CategoryVpnItemsSeller {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct CategoryVpnItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub allow_ask_discount: i64,
+	pub allow_ask_discount: f64,
 	#[serde(
 		rename = "bumpSettings",
 		default,
@@ -17677,7 +17677,7 @@ pub struct CategoryVpnItems {
 	)]
 	pub can_view_login_data: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub category_id: i64,
+	pub category_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub description: String,
 	#[serde(
@@ -17707,13 +17707,13 @@ pub struct CategoryVpnItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub description_en: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit_date: i64,
+	pub edit_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub email_provider: serde_json::Value,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub email_type: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub extended_guarantee: i64,
+	pub extended_guarantee: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub feedback_data: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -17731,7 +17731,7 @@ pub struct CategoryVpnItems {
 	)]
 	pub is_ignored: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub is_sticky: i64,
+	pub is_sticky: f64,
 	#[serde(
 		rename = "itemOriginPhrase",
 		default,
@@ -17741,7 +17741,7 @@ pub struct CategoryVpnItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_domain: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub item_id: i64,
+	pub item_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_origin: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -17749,27 +17749,27 @@ pub struct CategoryVpnItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub note_text: serde_json::Value,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub nsb: i64,
+	pub nsb: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub price: i64,
+	pub price: f64,
 	#[serde(
 		rename = "priceWithSellerFee",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub price_with_seller_fee: i64,
+	pub price_with_seller_fee: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub price_currency: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub published_date: i64,
+	pub published_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub refreshed_date: i64,
+	pub refreshed_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub resale_item_origin: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub restore_items_category_count: i64,
+	pub restore_items_category_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub rub_price: i64,
+	pub rub_price: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub seller: CategoryVpnItemsSeller,
 	#[serde(
@@ -17779,7 +17779,7 @@ pub struct CategoryVpnItems {
 	)]
 	pub show_get_email_code_button: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub sold_items_category_count: i64,
+	pub sold_items_category_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub tags: Vec<serde_json::Value>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -17787,9 +17787,9 @@ pub struct CategoryVpnItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub title_en: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub update_stat_date: i64,
+	pub update_stat_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub view_count: i64,
+	pub view_count: f64,
 	#[serde(
 		rename = "vpnProductTitle",
 		default,
@@ -17797,11 +17797,11 @@ pub struct CategoryVpnItems {
 	)]
 	pub vpn_product_title: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub vpn_expire_date: i64,
+	pub vpn_expire_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub vpn_item_id: i64,
+	pub vpn_item_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub vpn_renewable: i64,
+	pub vpn_renewable: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub vpn_service: String,
 }
@@ -17813,7 +17813,7 @@ pub struct CategoryVpnResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub cache_ttl: i64,
+	pub cache_ttl: f64,
 	#[serde(
 		rename = "hasNextPage",
 		default,
@@ -17827,15 +17827,15 @@ pub struct CategoryVpnResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub last_modified: i64,
+	pub last_modified: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub page: i64,
+	pub page: f64,
 	#[serde(
 		rename = "perPage",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub per_page: i64,
+	pub per_page: f64,
 	#[serde(
 		rename = "searchUrl",
 		default,
@@ -17847,7 +17847,7 @@ pub struct CategoryVpnResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub server_time: i64,
+	pub server_time: f64,
 	#[serde(
 		rename = "stickyItems",
 		default,
@@ -17861,7 +17861,7 @@ pub struct CategoryVpnResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub total_items: i64,
+	pub total_items: f64,
 	#[serde(
 		rename = "totalItemsPrice",
 		default,
@@ -18010,21 +18010,21 @@ pub struct CategoryWarfaceItemsBumpSettings {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct CategoryWarfaceItemsSeller {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub active_items_count: i64,
+	pub active_items_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub avatar_date: i64,
+	pub avatar_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub display_style_group_id: i64,
+	pub display_style_group_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub is_banned: i64,
+	pub is_banned: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub restore_data: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub restore_percents: i64,
+	pub restore_percents: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub sold_items_count: i64,
+	pub sold_items_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_id: i64,
+	pub user_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub username: String,
 }
@@ -18032,9 +18032,9 @@ pub struct CategoryWarfaceItemsSeller {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct CategoryWarfaceItemsWfServers {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub id: i64,
+	pub id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub rank: i64,
+	pub rank: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub title: String,
 }
@@ -18042,9 +18042,9 @@ pub struct CategoryWarfaceItemsWfServers {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct CategoryWarfaceItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub account_last_activity: i64,
+	pub account_last_activity: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub allow_ask_discount: i64,
+	pub allow_ask_discount: f64,
 	#[serde(
 		rename = "bumpSettings",
 		default,
@@ -18148,7 +18148,7 @@ pub struct CategoryWarfaceItems {
 	)]
 	pub can_view_login_data: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub category_id: i64,
+	pub category_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub description: String,
 	#[serde(
@@ -18180,13 +18180,13 @@ pub struct CategoryWarfaceItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub domain: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit_date: i64,
+	pub edit_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub email_provider: serde_json::Value,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub email_type: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub extended_guarantee: i64,
+	pub extended_guarantee: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub feedback_data: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -18210,7 +18210,7 @@ pub struct CategoryWarfaceItems {
 	)]
 	pub is_small_exf: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub is_sticky: i64,
+	pub is_sticky: f64,
 	#[serde(
 		rename = "itemOriginPhrase",
 		default,
@@ -18220,7 +18220,7 @@ pub struct CategoryWarfaceItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_domain: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub item_id: i64,
+	pub item_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_origin: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -18228,27 +18228,27 @@ pub struct CategoryWarfaceItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub note_text: serde_json::Value,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub nsb: i64,
+	pub nsb: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub price: i64,
+	pub price: f64,
 	#[serde(
 		rename = "priceWithSellerFee",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub price_with_seller_fee: i64,
+	pub price_with_seller_fee: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub price_currency: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub published_date: i64,
+	pub published_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub refreshed_date: i64,
+	pub refreshed_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub resale_item_origin: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub restore_items_category_count: i64,
+	pub restore_items_category_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub rub_price: i64,
+	pub rub_price: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub seller: CategoryWarfaceItemsSeller,
 	#[serde(
@@ -18258,7 +18258,7 @@ pub struct CategoryWarfaceItems {
 	)]
 	pub show_get_email_code_button: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub sold_items_category_count: i64,
+	pub sold_items_category_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub tags: Vec<serde_json::Value>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -18266,33 +18266,33 @@ pub struct CategoryWarfaceItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub title_en: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub update_stat_date: i64,
+	pub update_stat_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub view_count: i64,
+	pub view_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub wf_active_loan: i64,
+	pub wf_active_loan: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub wf_bonus_rank: i64,
+	pub wf_bonus_rank: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub wf_item_id: i64,
+	pub wf_item_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub wf_last_game_date: i64,
+	pub wf_last_game_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub wf_loan: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub wf_mail_mobile: i64,
+	pub wf_mail_mobile: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub wf_mobile: i64,
+	pub wf_mobile: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub wf_players: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub wf_rank: i64,
+	pub wf_rank: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub wf_server_1: i64,
+	pub wf_server_1: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub wf_server_2: i64,
+	pub wf_server_2: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub wf_server_3: i64,
+	pub wf_server_3: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub wf_servers: Vec<CategoryWarfaceItemsWfServers>,
 }
@@ -18304,7 +18304,7 @@ pub struct CategoryWarfaceResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub cache_ttl: i64,
+	pub cache_ttl: f64,
 	#[serde(
 		rename = "hasNextPage",
 		default,
@@ -18318,15 +18318,15 @@ pub struct CategoryWarfaceResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub last_modified: i64,
+	pub last_modified: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub page: i64,
+	pub page: f64,
 	#[serde(
 		rename = "perPage",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub per_page: i64,
+	pub per_page: f64,
 	#[serde(
 		rename = "searchUrl",
 		default,
@@ -18338,7 +18338,7 @@ pub struct CategoryWarfaceResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub server_time: i64,
+	pub server_time: f64,
 	#[serde(
 		rename = "stickyItems",
 		default,
@@ -18352,7 +18352,7 @@ pub struct CategoryWarfaceResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub total_items: i64,
+	pub total_items: f64,
 	#[serde(
 		rename = "totalItemsPrice",
 		default,
@@ -18576,21 +18576,21 @@ pub struct CategoryWotItemsBumpSettings {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct CategoryWotItemsSeller {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub active_items_count: i64,
+	pub active_items_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub avatar_date: i64,
+	pub avatar_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub display_style_group_id: i64,
+	pub display_style_group_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub is_banned: i64,
+	pub is_banned: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub restore_data: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub restore_percents: i64,
+	pub restore_percents: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub sold_items_count: i64,
+	pub sold_items_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_id: i64,
+	pub user_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub username: String,
 }
@@ -18604,9 +18604,9 @@ pub struct CategoryWotItems {
 	)]
 	pub account_links: Vec<serde_json::Value>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub account_last_activity: i64,
+	pub account_last_activity: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub allow_ask_discount: i64,
+	pub allow_ask_discount: f64,
 	#[serde(
 		rename = "bumpSettings",
 		default,
@@ -18710,7 +18710,7 @@ pub struct CategoryWotItems {
 	)]
 	pub can_view_login_data: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub category_id: i64,
+	pub category_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub description: String,
 	#[serde(
@@ -18740,13 +18740,13 @@ pub struct CategoryWotItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub description_en: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit_date: i64,
+	pub edit_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub email_provider: serde_json::Value,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub email_type: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub extended_guarantee: i64,
+	pub extended_guarantee: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub feedback_data: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -18770,7 +18770,7 @@ pub struct CategoryWotItems {
 	)]
 	pub is_small_exf: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub is_sticky: i64,
+	pub is_sticky: f64,
 	#[serde(
 		rename = "itemOriginPhrase",
 		default,
@@ -18780,7 +18780,7 @@ pub struct CategoryWotItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_domain: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub item_id: i64,
+	pub item_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_origin: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -18788,27 +18788,27 @@ pub struct CategoryWotItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub note_text: serde_json::Value,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub nsb: i64,
+	pub nsb: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub price: i64,
+	pub price: f64,
 	#[serde(
 		rename = "priceWithSellerFee",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub price_with_seller_fee: i64,
+	pub price_with_seller_fee: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub price_currency: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub published_date: i64,
+	pub published_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub refreshed_date: i64,
+	pub refreshed_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub resale_item_origin: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub restore_items_category_count: i64,
+	pub restore_items_category_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub rub_price: i64,
+	pub rub_price: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub seller: CategoryWotItemsSeller,
 	#[serde(
@@ -18818,7 +18818,7 @@ pub struct CategoryWotItems {
 	)]
 	pub show_get_email_code_button: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub sold_items_category_count: i64,
+	pub sold_items_category_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub tags: Vec<serde_json::Value>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -18826,9 +18826,9 @@ pub struct CategoryWotItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub title_en: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub update_stat_date: i64,
+	pub update_stat_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub view_count: i64,
+	pub view_count: f64,
 	#[serde(
 		rename = "wotLauncherTitle",
 		default,
@@ -18840,7 +18840,7 @@ pub struct CategoryWotItems {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub wot_premium_tank_count: i64,
+	pub wot_premium_tank_count: f64,
 	#[serde(
 		rename = "wotPremiumTanks",
 		default,
@@ -18858,7 +18858,7 @@ pub struct CategoryWotItems {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub wot_tank_count: i64,
+	pub wot_tank_count: f64,
 	#[serde(
 		rename = "wotTanks",
 		default,
@@ -18878,35 +18878,35 @@ pub struct CategoryWotItems {
 	)]
 	pub wot_top_tanks: serde_json::Value,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub wot_battle_count: i64,
+	pub wot_battle_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub wot_blitz: i64,
+	pub wot_blitz: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub wot_credits: i64,
+	pub wot_credits: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub wot_gold: i64,
+	pub wot_gold: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub wot_has_clan: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub wot_item_id: i64,
+	pub wot_item_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub wot_last_activity: i64,
+	pub wot_last_activity: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub wot_loss_count: i64,
+	pub wot_loss_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub wot_mobile: i64,
+	pub wot_mobile: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub wot_premium: i64,
+	pub wot_premium: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub wot_premium_expires: i64,
+	pub wot_premium_expires: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub wot_region: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub wot_register_date: i64,
+	pub wot_register_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub wot_win_count: i64,
+	pub wot_win_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub wot_win_count_percents: i64,
+	pub wot_win_count_percents: f64,
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
@@ -18916,7 +18916,7 @@ pub struct CategoryWotResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub cache_ttl: i64,
+	pub cache_ttl: f64,
 	#[serde(
 		rename = "hasNextPage",
 		default,
@@ -18930,15 +18930,15 @@ pub struct CategoryWotResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub last_modified: i64,
+	pub last_modified: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub page: i64,
+	pub page: f64,
 	#[serde(
 		rename = "perPage",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub per_page: i64,
+	pub per_page: f64,
 	#[serde(
 		rename = "searchUrl",
 		default,
@@ -18950,7 +18950,7 @@ pub struct CategoryWotResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub server_time: i64,
+	pub server_time: f64,
 	#[serde(
 		rename = "stickyItems",
 		default,
@@ -18964,7 +18964,7 @@ pub struct CategoryWotResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub total_items: i64,
+	pub total_items: f64,
 	#[serde(
 		rename = "totalItemsPrice",
 		default,
@@ -19188,21 +19188,21 @@ pub struct CategoryWotBlitzItemsBumpSettings {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct CategoryWotBlitzItemsSeller {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub active_items_count: i64,
+	pub active_items_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub avatar_date: i64,
+	pub avatar_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub display_style_group_id: i64,
+	pub display_style_group_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub is_banned: i64,
+	pub is_banned: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub restore_data: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub restore_percents: i64,
+	pub restore_percents: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub sold_items_count: i64,
+	pub sold_items_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_id: i64,
+	pub user_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub username: String,
 }
@@ -19216,9 +19216,9 @@ pub struct CategoryWotBlitzItems {
 	)]
 	pub account_links: Vec<serde_json::Value>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub account_last_activity: i64,
+	pub account_last_activity: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub allow_ask_discount: i64,
+	pub allow_ask_discount: f64,
 	#[serde(
 		rename = "bumpSettings",
 		default,
@@ -19322,7 +19322,7 @@ pub struct CategoryWotBlitzItems {
 	)]
 	pub can_view_login_data: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub category_id: i64,
+	pub category_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub description: String,
 	#[serde(
@@ -19352,13 +19352,13 @@ pub struct CategoryWotBlitzItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub description_en: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit_date: i64,
+	pub edit_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub email_provider: serde_json::Value,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub email_type: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub extended_guarantee: i64,
+	pub extended_guarantee: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub feedback_data: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -19382,7 +19382,7 @@ pub struct CategoryWotBlitzItems {
 	)]
 	pub is_small_exf: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub is_sticky: i64,
+	pub is_sticky: f64,
 	#[serde(
 		rename = "itemOriginPhrase",
 		default,
@@ -19392,7 +19392,7 @@ pub struct CategoryWotBlitzItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_domain: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub item_id: i64,
+	pub item_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_origin: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -19400,27 +19400,27 @@ pub struct CategoryWotBlitzItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub note_text: serde_json::Value,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub nsb: i64,
+	pub nsb: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub price: i64,
+	pub price: f64,
 	#[serde(
 		rename = "priceWithSellerFee",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub price_with_seller_fee: i64,
+	pub price_with_seller_fee: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub price_currency: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub published_date: i64,
+	pub published_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub refreshed_date: i64,
+	pub refreshed_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub resale_item_origin: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub restore_items_category_count: i64,
+	pub restore_items_category_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub rub_price: i64,
+	pub rub_price: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub seller: CategoryWotBlitzItemsSeller,
 	#[serde(
@@ -19430,7 +19430,7 @@ pub struct CategoryWotBlitzItems {
 	)]
 	pub show_get_email_code_button: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub sold_items_category_count: i64,
+	pub sold_items_category_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub tags: Vec<serde_json::Value>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -19438,9 +19438,9 @@ pub struct CategoryWotBlitzItems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub title_en: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub update_stat_date: i64,
+	pub update_stat_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub view_count: i64,
+	pub view_count: f64,
 	#[serde(
 		rename = "wotLauncherTitle",
 		default,
@@ -19452,7 +19452,7 @@ pub struct CategoryWotBlitzItems {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub wot_premium_tank_count: i64,
+	pub wot_premium_tank_count: f64,
 	#[serde(
 		rename = "wotPremiumTanks",
 		default,
@@ -19470,7 +19470,7 @@ pub struct CategoryWotBlitzItems {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub wot_tank_count: i64,
+	pub wot_tank_count: f64,
 	#[serde(
 		rename = "wotTanks",
 		default,
@@ -19490,35 +19490,35 @@ pub struct CategoryWotBlitzItems {
 	)]
 	pub wot_top_tanks: serde_json::Value,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub wot_battle_count: i64,
+	pub wot_battle_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub wot_blitz: i64,
+	pub wot_blitz: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub wot_credits: i64,
+	pub wot_credits: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub wot_gold: i64,
+	pub wot_gold: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub wot_has_clan: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub wot_item_id: i64,
+	pub wot_item_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub wot_last_activity: i64,
+	pub wot_last_activity: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub wot_loss_count: i64,
+	pub wot_loss_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub wot_mobile: i64,
+	pub wot_mobile: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub wot_premium: i64,
+	pub wot_premium: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub wot_premium_expires: i64,
+	pub wot_premium_expires: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub wot_region: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub wot_register_date: i64,
+	pub wot_register_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub wot_win_count: i64,
+	pub wot_win_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub wot_win_count_percents: i64,
+	pub wot_win_count_percents: f64,
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
@@ -19528,7 +19528,7 @@ pub struct CategoryWotBlitzResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub cache_ttl: i64,
+	pub cache_ttl: f64,
 	#[serde(
 		rename = "hasNextPage",
 		default,
@@ -19542,15 +19542,15 @@ pub struct CategoryWotBlitzResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub last_modified: i64,
+	pub last_modified: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub page: i64,
+	pub page: f64,
 	#[serde(
 		rename = "perPage",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub per_page: i64,
+	pub per_page: f64,
 	#[serde(
 		rename = "searchUrl",
 		default,
@@ -19562,7 +19562,7 @@ pub struct CategoryWotBlitzResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub server_time: i64,
+	pub server_time: f64,
 	#[serde(
 		rename = "stickyItems",
 		default,
@@ -19576,7 +19576,7 @@ pub struct CategoryWotBlitzResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub total_items: i64,
+	pub total_items: f64,
 	#[serde(
 		rename = "totalItemsPrice",
 		default,
@@ -19598,7 +19598,7 @@ pub struct CategoryGamesGames {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub app_id: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub category_id: i64,
+	pub category_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub img: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -19620,15 +19620,15 @@ pub struct CategoryGamesResponse {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct CategoryParamsCategory {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub account_price_min: i64,
+	pub account_price_min: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub add_item_available: i64,
+	pub add_item_available: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub available_temp_email: i64,
+	pub available_temp_email: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub buy_without_validation: i64,
+	pub buy_without_validation: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub can_be_resold: i64,
+	pub can_be_resold: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub category_description_html: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -19636,57 +19636,57 @@ pub struct CategoryParamsCategory {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub category_h1_html_en: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub category_id: i64,
+	pub category_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub category_login_url: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub category_name: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub category_order: i64,
+	pub category_order: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub category_title: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub category_url: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub check_button_enabled: i64,
+	pub check_button_enabled: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub checker_enabled: i64,
+	pub checker_enabled: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub cookies: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub display_in_list: i64,
+	pub display_in_list: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub guest_hidden: i64,
+	pub guest_hidden: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub has_account_link: i64,
+	pub has_account_link: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub has_guarantee: i64,
+	pub has_guarantee: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub login_type: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub mass_upload_item_available: i64,
+	pub mass_upload_item_available: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub max_invalid_upload_tries: i64,
+	pub max_invalid_upload_tries: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub recovery_link: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub require_eld_for_native_accs: i64,
+	pub require_eld_for_native_accs: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub require_email_login_data: i64,
+	pub require_email_login_data: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub require_temp_email: i64,
+	pub require_temp_email: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub require_video_recording: i64,
+	pub require_video_recording: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub resale_duration_limit_days: i64,
+	pub resale_duration_limit_days: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub sub_category_id: i64,
+	pub sub_category_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub support_email_login_data: i64,
+	pub support_email_login_data: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub support_personal_proxy: i64,
+	pub support_personal_proxy: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub support_temp_email: i64,
+	pub support_temp_email: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub top_queries: String,
 }
@@ -19738,7 +19738,7 @@ pub struct CustomDiscountsGetResponse {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub system_info: RespSystemInfo,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub total: i64,
+	pub total: f64,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -19765,7 +19765,7 @@ pub struct CustomDiscountsCreateResponse {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub system_info: RespSystemInfo,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub total: i64,
+	pub total: f64,
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
@@ -19790,7 +19790,7 @@ pub struct CustomDiscountsEditResponse {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub system_info: RespSystemInfo,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub total: i64,
+	pub total: f64,
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
@@ -19882,13 +19882,13 @@ pub struct ListFavoritesResponse {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub items: Vec<ItemFromListModel>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub page: i64,
+	pub page: f64,
 	#[serde(
 		rename = "perPage",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub per_page: i64,
+	pub per_page: f64,
 	#[serde(
 		rename = "searchUrl",
 		default,
@@ -19908,7 +19908,7 @@ pub struct ListFavoritesResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub total_items: i64,
+	pub total_items: f64,
 	#[serde(
 		rename = "totalItemsPrice",
 		default,
@@ -19927,7 +19927,7 @@ pub struct ListStatesParams {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct ListStatesUserItemStatesActive {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub item_count: i64,
+	pub item_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_state: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -19937,7 +19937,7 @@ pub struct ListStatesUserItemStatesActive {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct ListStatesUserItemStatesAutoBump {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub item_count: i64,
+	pub item_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_state: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -19947,7 +19947,7 @@ pub struct ListStatesUserItemStatesAutoBump {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct ListStatesUserItemStatesAwaiting {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub item_count: i64,
+	pub item_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_state: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -19957,7 +19957,7 @@ pub struct ListStatesUserItemStatesAwaiting {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct ListStatesUserItemStatesClosed {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub item_count: i64,
+	pub item_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_state: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -19967,7 +19967,7 @@ pub struct ListStatesUserItemStatesClosed {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct ListStatesUserItemStatesClosedInactive {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub item_count: i64,
+	pub item_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_state: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -19977,7 +19977,7 @@ pub struct ListStatesUserItemStatesClosedInactive {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct ListStatesUserItemStatesDeleted {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub item_count: i64,
+	pub item_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_state: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -19987,7 +19987,7 @@ pub struct ListStatesUserItemStatesDeleted {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct ListStatesUserItemStatesDiscountRequest {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub item_count: i64,
+	pub item_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_state: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -19997,7 +19997,7 @@ pub struct ListStatesUserItemStatesDiscountRequest {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct ListStatesUserItemStatesInBuyersFavorites {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub item_count: i64,
+	pub item_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_state: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -20007,7 +20007,7 @@ pub struct ListStatesUserItemStatesInBuyersFavorites {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct ListStatesUserItemStatesPaid {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub item_count: i64,
+	pub item_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_state: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -20017,7 +20017,7 @@ pub struct ListStatesUserItemStatesPaid {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct ListStatesUserItemStatesPendingDeletion {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub item_count: i64,
+	pub item_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_state: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -20027,7 +20027,7 @@ pub struct ListStatesUserItemStatesPendingDeletion {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct ListStatesUserItemStatesPreActive {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub item_count: i64,
+	pub item_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_state: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -20037,7 +20037,7 @@ pub struct ListStatesUserItemStatesPreActive {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct ListStatesUserItemStatesPreUpload {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub item_count: i64,
+	pub item_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_state: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -20047,7 +20047,7 @@ pub struct ListStatesUserItemStatesPreUpload {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct ListStatesUserItemStatesStickied {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub item_count: i64,
+	pub item_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_state: String,
 	#[serde(
@@ -20055,7 +20055,7 @@ pub struct ListStatesUserItemStatesStickied {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub sticky_limit: i64,
+	pub sticky_limit: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub title: String,
 }
@@ -20198,13 +20198,13 @@ pub struct ListUserResponse {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub items: Vec<ItemFromListModel>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub page: i64,
+	pub page: f64,
 	#[serde(
 		rename = "perPage",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub per_page: i64,
+	pub per_page: f64,
 	#[serde(
 		rename = "searchUrl",
 		default,
@@ -20224,7 +20224,7 @@ pub struct ListUserResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub total_items: i64,
+	pub total_items: f64,
 	#[serde(
 		rename = "totalItemsPrice",
 		default,
@@ -20293,13 +20293,13 @@ pub struct ListOrdersResponse {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub items: Vec<ItemFromListModel>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub page: i64,
+	pub page: f64,
 	#[serde(
 		rename = "perPage",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub per_page: i64,
+	pub per_page: f64,
 	#[serde(
 		rename = "searchUrl",
 		default,
@@ -20319,7 +20319,7 @@ pub struct ListOrdersResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub total_items: i64,
+	pub total_items: f64,
 	#[serde(
 		rename = "totalItemsPrice",
 		default,
@@ -20466,13 +20466,13 @@ pub struct ListViewedResponse {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub items: Vec<ItemFromListModel>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub page: i64,
+	pub page: f64,
 	#[serde(
 		rename = "perPage",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub per_page: i64,
+	pub per_page: f64,
 	#[serde(
 		rename = "searchUrl",
 		default,
@@ -20492,7 +20492,7 @@ pub struct ListViewedResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub total_items: i64,
+	pub total_items: f64,
 	#[serde(
 		rename = "totalItemsPrice",
 		default,
@@ -20516,7 +20516,7 @@ pub struct ManagingBulkGetResponse {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub items: Vec<serde_json::Value>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub left_item_id: Vec<i64>,
+	pub left_item_id: Vec<f64>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub system_info: RespSystemInfo,
 }
@@ -20538,21 +20538,21 @@ pub struct ManagingCreateClaimBody {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct ManagingCreateClaimSystemInfo {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub time: i64,
+	pub time: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub visitor_id: i64,
+	pub visitor_id: f64,
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct ManagingCreateClaimThreadFirstPostLikeUsers {
 	#[serde(default, deserialize_with = "deserialize_lenient_option")]
-	pub display_style_group_id: Option<i64>,
+	pub display_style_group_id: Option<f64>,
 	#[serde(default, deserialize_with = "deserialize_lenient_option")]
-	pub is_banned: Option<i64>,
+	pub is_banned: Option<f64>,
 	#[serde(default, deserialize_with = "deserialize_lenient_option")]
 	pub uniq_username_css: Option<String>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_id: i64,
+	pub user_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub username: String,
 }
@@ -20604,7 +20604,7 @@ pub struct ManagingCreateClaimThreadFirstPost {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub permissions: ManagingCreateClaimThreadFirstPostPermissions,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_attachment_count: i64,
+	pub post_attachment_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub post_body: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -20612,9 +20612,9 @@ pub struct ManagingCreateClaimThreadFirstPost {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub post_body_plain_text: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_create_date: i64,
+	pub post_create_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_id: i64,
+	pub post_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub post_is_deleted: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -20622,11 +20622,11 @@ pub struct ManagingCreateClaimThreadFirstPost {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub post_is_published: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_like_count: i64,
+	pub post_like_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub post_update_date: i64,
+	pub post_update_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub poster_user_id: i64,
+	pub poster_user_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub poster_username: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -20636,7 +20636,7 @@ pub struct ManagingCreateClaimThreadFirstPost {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub signature_plain_text: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_id: i64,
+	pub thread_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub user_is_ignored: bool,
 }
@@ -20644,7 +20644,7 @@ pub struct ManagingCreateClaimThreadFirstPost {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct ManagingCreateClaimThreadForumForumPrefixesGroupPrefixes {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub prefix_id: i64,
+	pub prefix_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub prefix_title: String,
 }
@@ -20704,15 +20704,15 @@ pub struct ManagingCreateClaimThreadForum {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub forum_description: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_id: i64,
+	pub forum_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub forum_is_followed: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_post_count: i64,
+	pub forum_post_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub forum_prefixes: Vec<ManagingCreateClaimThreadForumForumPrefixes>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_thread_count: i64,
+	pub forum_thread_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub forum_title: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -20720,7 +20720,7 @@ pub struct ManagingCreateClaimThreadForum {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub permissions: ManagingCreateClaimThreadForumPermissions,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_default_prefix_id: i64,
+	pub thread_default_prefix_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub thread_prefix_is_required: bool,
 }
@@ -20768,7 +20768,7 @@ pub struct ManagingCreateClaimThreadPermissions {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct ManagingCreateClaimThread {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub creator_user_id: i64,
+	pub creator_user_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub creator_username: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -20776,15 +20776,15 @@ pub struct ManagingCreateClaimThread {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub forum: ManagingCreateClaimThreadForum,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub forum_id: i64,
+	pub forum_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub links: ManagingCreateClaimThreadLinks,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub permissions: ManagingCreateClaimThreadPermissions,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_create_date: i64,
+	pub thread_create_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_id: i64,
+	pub thread_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub thread_is_deleted: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -20794,7 +20794,7 @@ pub struct ManagingCreateClaimThread {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub thread_is_sticky: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_post_count: i64,
+	pub thread_post_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub thread_prefixes: Vec<serde_json::Value>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -20802,9 +20802,9 @@ pub struct ManagingCreateClaimThread {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub thread_title: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_update_date: i64,
+	pub thread_update_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_view_count: i64,
+	pub thread_view_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub user_is_ignored: bool,
 }
@@ -20836,7 +20836,7 @@ pub struct ManagingGetLetters2Params {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct ManagingGetLetters2Letters {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub date: i64,
+	pub date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub from: String,
 	#[serde(
@@ -20883,7 +20883,7 @@ pub struct ManagingSteamValueData {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub app_id: i64,
+	pub app_id: f64,
 	#[serde(
 		rename = "appTitle",
 		default,
@@ -20903,7 +20903,7 @@ pub struct ManagingSteamValueData {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub item_count: i64,
+	pub item_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub items: serde_json::Value,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -20913,11 +20913,11 @@ pub struct ManagingSteamValueData {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub marketable_item_count: i64,
+	pub marketable_item_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub steam_id: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub time: i64,
+	pub time: f64,
 	#[serde(
 		rename = "totalValue",
 		default,
@@ -20933,7 +20933,7 @@ pub struct ManagingSteamValueResponse {
 		default,
 		deserialize_with = "deserialize_lenient_option"
 	)]
-	pub app_id: Option<i64>,
+	pub app_id: Option<f64>,
 	#[serde(default, deserialize_with = "deserialize_lenient_option")]
 	pub data: Option<ManagingSteamValueData>,
 	#[serde(default, deserialize_with = "deserialize_lenient_option")]
@@ -21070,13 +21070,13 @@ pub struct ManagingGetResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub same_items_count: i64,
+	pub same_items_count: f64,
 	#[serde(
 		rename = "sameItemsIds",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub same_items_ids: Vec<i64>,
+	pub same_items_ids: Vec<f64>,
 	#[serde(
 		rename = "showToFavouritesButton",
 		default,
@@ -21090,7 +21090,7 @@ pub struct ManagingGetResponse {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct ManagingAiPriceResponse {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub price: i64,
+	pub price: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub system_info: RespSystemInfo,
 }
@@ -21124,7 +21124,7 @@ pub struct ManagingAutoBumpResponse {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct ManagingAutoBuyPriceResponse {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub price: i64,
+	pub price: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub system_info: RespSystemInfo,
 }
@@ -21280,7 +21280,7 @@ pub struct ManagingEmailCodeCodeData {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub code: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub date: i64,
+	pub date: f64,
 	#[serde(
 		rename = "textPlain",
 		default,
@@ -21306,7 +21306,7 @@ pub struct ManagingSteamMafileCodeCodeData {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub code: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub date: i64,
+	pub date: f64,
 	#[serde(
 		rename = "textPlain",
 		default,
@@ -21355,7 +21355,7 @@ pub struct ManagingSteamInventoryValueData {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub app_id: i64,
+	pub app_id: f64,
 	#[serde(
 		rename = "appTitle",
 		default,
@@ -21375,7 +21375,7 @@ pub struct ManagingSteamInventoryValueData {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub item_count: i64,
+	pub item_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub items: serde_json::Value,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -21385,11 +21385,11 @@ pub struct ManagingSteamInventoryValueData {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub marketable_item_count: i64,
+	pub marketable_item_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub steam_id: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub time: i64,
+	pub time: f64,
 	#[serde(
 		rename = "totalValue",
 		default,
@@ -21405,7 +21405,7 @@ pub struct ManagingSteamInventoryValueResponse {
 		default,
 		deserialize_with = "deserialize_lenient_option"
 	)]
-	pub app_id: Option<i64>,
+	pub app_id: Option<f64>,
 	#[serde(default, deserialize_with = "deserialize_lenient_option")]
 	pub data: Option<ManagingSteamInventoryValueData>,
 	#[serde(default, deserialize_with = "deserialize_lenient_option")]
@@ -21481,7 +21481,7 @@ pub struct ManagingSteamGetMafileMaFile {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub secret_1: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub serial_number: i64,
+	pub serial_number: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub shared_secret: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -21564,7 +21564,7 @@ pub struct ManagingPublicUntagTag {
 	)]
 	pub is_default: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub tag_id: i64,
+	pub tag_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub title: String,
 }
@@ -21576,19 +21576,19 @@ pub struct ManagingPublicUntagResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub added_tag_id: i64,
+	pub added_tag_id: f64,
 	#[serde(
 		rename = "deleteTags",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub delete_tags: Vec<i64>,
+	pub delete_tags: Vec<f64>,
 	#[serde(
 		rename = "itemId",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub item_id: i64,
+	pub item_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub system_info: RespSystemInfo,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -21618,7 +21618,7 @@ pub struct ManagingPublicTagTag {
 	)]
 	pub is_default: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub tag_id: i64,
+	pub tag_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub title: String,
 }
@@ -21630,19 +21630,19 @@ pub struct ManagingPublicTagResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub added_tag_id: i64,
+	pub added_tag_id: f64,
 	#[serde(
 		rename = "deleteTags",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub delete_tags: Vec<i64>,
+	pub delete_tags: Vec<f64>,
 	#[serde(
 		rename = "itemId",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub item_id: i64,
+	pub item_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub system_info: RespSystemInfo,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -21731,7 +21731,7 @@ pub struct ManagingUntagTag {
 	)]
 	pub is_default: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub tag_id: i64,
+	pub tag_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub title: String,
 }
@@ -21743,19 +21743,19 @@ pub struct ManagingUntagResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub added_tag_id: i64,
+	pub added_tag_id: f64,
 	#[serde(
 		rename = "deleteTags",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub delete_tags: Vec<i64>,
+	pub delete_tags: Vec<f64>,
 	#[serde(
 		rename = "itemId",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub item_id: i64,
+	pub item_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub system_info: RespSystemInfo,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -21785,7 +21785,7 @@ pub struct ManagingTagTag {
 	)]
 	pub is_default: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub tag_id: i64,
+	pub tag_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub title: String,
 }
@@ -21797,19 +21797,19 @@ pub struct ManagingTagResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub added_tag_id: i64,
+	pub added_tag_id: f64,
 	#[serde(
 		rename = "deleteTags",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub delete_tags: Vec<i64>,
+	pub delete_tags: Vec<f64>,
 	#[serde(
 		rename = "itemId",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub item_id: i64,
+	pub item_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub system_info: RespSystemInfo,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -21821,7 +21821,7 @@ pub struct ManagingTelegramCodeCodes {
 	#[serde(default, deserialize_with = "deserialize_lenient_option")]
 	pub code: Option<String>,
 	#[serde(default, deserialize_with = "deserialize_lenient_option")]
-	pub date: Option<i64>,
+	pub date: Option<f64>,
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
@@ -21886,7 +21886,7 @@ pub struct PaymentsBalanceListFromBalance {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub converted_balance: i64,
+	pub converted_balance: f64,
 	#[serde(
 		rename = "fullTitle",
 		default,
@@ -21950,7 +21950,7 @@ pub struct PaymentsBalanceExchangeFromBalance {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub converted_balance: i64,
+	pub converted_balance: f64,
 	#[serde(
 		rename = "fullTitle",
 		default,
@@ -22248,9 +22248,9 @@ pub struct PaymentsPayoutServicesSystems {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub is_unavailable: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub max: i64,
+	pub max: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub min: i64,
+	pub min: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub p2p: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -22340,19 +22340,19 @@ pub struct PaymentsFeeCalculator {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub commission_amount: i64,
+	pub commission_amount: f64,
 	#[serde(
 		rename = "inputAmount",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub input_amount: i64,
+	pub input_amount: f64,
 	#[serde(
 		rename = "totalOutputAmount",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub total_output_amount: i64,
+	pub total_output_amount: f64,
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
@@ -22360,13 +22360,13 @@ pub struct PaymentsFeeResponse {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub calculator: PaymentsFeeCalculator,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub commission_percentage: i64,
+	pub commission_percentage: f64,
 	#[serde(
 		rename = "spentCurrentMonth",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub spent_current_month: i64,
+	pub spent_current_month: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub system_info: RespSystemInfo,
 }
@@ -23068,7 +23068,7 @@ pub struct PaymentsCurrencyCurrencyListRub {
 	)]
 	pub formatted_rate: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub rate: i64,
+	pub rate: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub symbol: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -23484,7 +23484,7 @@ pub struct PaymentsCurrencyResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub last_update: i64,
+	pub last_update: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub system_info: RespSystemInfo,
 	#[serde(
@@ -23583,17 +23583,17 @@ pub struct PaymentsInvoiceListParams {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct PaymentsInvoiceListResponse {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub count: i64,
+	pub count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub invoices: Vec<InvoiceModel>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub page: i64,
+	pub page: f64,
 	#[serde(
 		rename = "perPage",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub per_page: i64,
+	pub per_page: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub system_info: RespSystemInfo,
 }
@@ -23650,7 +23650,7 @@ pub struct PaymentsHistoryParams {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct PaymentsHistoryInput {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub category_id: i64,
+	pub category_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub comment: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -23664,9 +23664,9 @@ pub struct PaymentsHistoryInput {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub is_hold: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub operation_id_lt: i64,
+	pub operation_id_lt: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub page: i64,
+	pub page: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub period_label: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -23690,7 +23690,7 @@ pub struct PaymentsHistoryInput {
 	)]
 	pub r#type: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_id: i64,
+	pub user_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub wallet: String,
 }
@@ -23738,7 +23738,7 @@ pub struct PaymentsHistoryResponse {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub last_operation_id: i64,
+	pub last_operation_id: f64,
 	#[serde(
 		rename = "nextPageHref",
 		default,
@@ -23746,7 +23746,7 @@ pub struct PaymentsHistoryResponse {
 	)]
 	pub next_page_href: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub page: i64,
+	pub page: f64,
 	#[serde(
 		rename = "pageNavLink",
 		default,
@@ -23850,23 +23850,23 @@ pub struct ProfileClaimsClaimsAuthor {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub ban_reason: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub contest_count: i64,
+	pub contest_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub custom_title: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub fields: Vec<ProfileClaimsClaimsAuthorFields>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub is_banned: i64,
+	pub is_banned: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub links: ProfileClaimsClaimsAuthorLinks,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub permissions: ProfileClaimsClaimsAuthorPermissions,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub trophy_count: i64,
+	pub trophy_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_group_id: i64,
+	pub user_group_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_id: i64,
+	pub user_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub user_is_followed: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -23878,15 +23878,15 @@ pub struct ProfileClaimsClaimsAuthor {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub user_is_visitor: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_last_seen_date: i64,
+	pub user_last_seen_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_like2_count: i64,
+	pub user_like2_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_like_count: i64,
+	pub user_like_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_message_count: i64,
+	pub user_message_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_register_date: i64,
+	pub user_register_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub user_title: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -23902,37 +23902,37 @@ pub struct ProfileClaimsClaims {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub author: ProfileClaimsClaimsAuthor,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub claim_date: i64,
+	pub claim_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub claim_state: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub message_body: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub thread_id: i64,
+	pub thread_id: f64,
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct ProfileClaimsStatsMarket {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub rejected: i64,
+	pub rejected: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub settled: i64,
+	pub settled: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub solved: i64,
+	pub solved: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub total: i64,
+	pub total: f64,
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct ProfileClaimsStatsNoMarket {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub rejected: i64,
+	pub rejected: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub settled: i64,
+	pub settled: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub solved: i64,
+	pub solved: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub total: i64,
+	pub total: f64,
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
@@ -24049,17 +24049,17 @@ pub struct ProxyGetProxiesProxy {
 	)]
 	pub proxy_string: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub proxy_id: i64,
+	pub proxy_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub proxy_ip: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub proxy_pass: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub proxy_port: i64,
+	pub proxy_port: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub proxy_user: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_id: i64,
+	pub user_id: f64,
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
@@ -24341,17 +24341,17 @@ pub struct PublishingCheckItemBumpSettings {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct PublishingCheckItemBuyer {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub display_style_group_id: i64,
+	pub display_style_group_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub is_banned: i64,
+	pub is_banned: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub operation_date: i64,
+	pub operation_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub uniq_username_css: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_group_id: i64,
+	pub user_group_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_id: i64,
+	pub user_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub username: String,
 	#[serde(
@@ -24413,7 +24413,7 @@ pub struct PublishingCheckItemGuarantee {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub class: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub duration: i64,
+	pub duration: f64,
 	#[serde(
 		rename = "durationPhrase",
 		default,
@@ -24425,13 +24425,13 @@ pub struct PublishingCheckItemGuarantee {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub end_date: i64,
+	pub end_date: f64,
 	#[serde(
 		rename = "remainingTime",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub remaining_time: i64,
+	pub remaining_time: f64,
 	#[serde(
 		rename = "remainingTimePhrase",
 		default,
@@ -24477,11 +24477,11 @@ pub struct PublishingCheckItemLoginData {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct PublishingCheckItemSeller {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub active_items_count: i64,
+	pub active_items_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub avatar_date: i64,
+	pub avatar_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub display_style_group_id: i64,
+	pub display_style_group_id: f64,
 	#[serde(
 		rename = "isOnline",
 		default,
@@ -24489,17 +24489,17 @@ pub struct PublishingCheckItemSeller {
 	)]
 	pub is_online: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub is_banned: i64,
+	pub is_banned: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub joined_date: i64,
+	pub joined_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub restore_data: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub restore_percents: i64,
+	pub restore_percents: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub sold_items_count: i64,
+	pub sold_items_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_id: i64,
+	pub user_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub username: String,
 }
@@ -24519,9 +24519,9 @@ pub struct PublishingCheckItem {
 	)]
 	pub account_links: Vec<PublishingCheckItemAccountLinks>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub account_last_activity: i64,
+	pub account_last_activity: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub allow_ask_discount: i64,
+	pub allow_ask_discount: f64,
 	#[serde(
 		rename = "bumpSettings",
 		default,
@@ -24531,9 +24531,9 @@ pub struct PublishingCheckItem {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub buyer: PublishingCheckItemBuyer,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub buyer_avatar_date: i64,
+	pub buyer_avatar_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub buyer_user_group_id: i64,
+	pub buyer_user_group_id: f64,
 	#[serde(
 		rename = "canAskDiscount",
 		default,
@@ -24601,7 +24601,7 @@ pub struct PublishingCheckItem {
 	)]
 	pub can_view_login_data: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub category_id: i64,
+	pub category_id: f64,
 	#[serde(
 		rename = "customFields",
 		default,
@@ -24609,7 +24609,7 @@ pub struct PublishingCheckItem {
 	)]
 	pub custom_fields: Vec<serde_json::Value>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub deposit: i64,
+	pub deposit: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub description: String,
 	#[serde(
@@ -24645,7 +24645,7 @@ pub struct PublishingCheckItem {
 	)]
 	pub display_converted_balance: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit_date: i64,
+	pub edit_date: f64,
 	#[serde(
 		rename = "emailLoginData",
 		default,
@@ -24663,7 +24663,7 @@ pub struct PublishingCheckItem {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub email_type: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub extended_guarantee: i64,
+	pub extended_guarantee: f64,
 	#[serde(
 		rename = "externalAuth",
 		default,
@@ -24715,7 +24715,7 @@ pub struct PublishingCheckItem {
 	)]
 	pub is_trusted: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub is_sticky: i64,
+	pub is_sticky: f64,
 	#[serde(
 		rename = "itemOriginPhrase",
 		default,
@@ -24725,7 +24725,7 @@ pub struct PublishingCheckItem {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_domain: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub item_id: i64,
+	pub item_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_origin: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -24741,7 +24741,7 @@ pub struct PublishingCheckItem {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub market_custom_title: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub max_discount_percent: i64,
+	pub max_discount_percent: f64,
 	#[serde(
 		rename = "needToRequireVideoToViewLoginData",
 		default,
@@ -24749,27 +24749,27 @@ pub struct PublishingCheckItem {
 	)]
 	pub need_to_require_video_to_view_login_data: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub nsb: i64,
+	pub nsb: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub price: i64,
+	pub price: f64,
 	#[serde(
 		rename = "priceWithSellerFee",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub price_with_seller_fee: i64,
+	pub price_with_seller_fee: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub price_currency: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub published_date: i64,
+	pub published_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub refreshed_date: i64,
+	pub refreshed_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub resale_item_origin: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub restore_items_category_count: i64,
+	pub restore_items_category_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub rub_price: i64,
+	pub rub_price: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub seller: PublishingCheckItemSeller,
 	#[serde(
@@ -24779,7 +24779,7 @@ pub struct PublishingCheckItem {
 	)]
 	pub show_get_email_code_button: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub sold_items_category_count: i64,
+	pub sold_items_category_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub tags: serde_json::Value,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -24789,11 +24789,11 @@ pub struct PublishingCheckItem {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub title_en: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub update_stat_date: i64,
+	pub update_stat_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_allow_ask_discount: i64,
+	pub user_allow_ask_discount: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub view_count: i64,
+	pub view_count: f64,
 	#[serde(
 		rename = "visitorIsAuthor",
 		default,
@@ -24871,7 +24871,7 @@ pub struct PurchasingCheckItemGuarantee {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub class: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub duration: i64,
+	pub duration: f64,
 	#[serde(
 		rename = "durationPhrase",
 		default,
@@ -24895,11 +24895,11 @@ pub struct PurchasingCheckItemGuarantee {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct PurchasingCheckItemSeller {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub active_items_count: i64,
+	pub active_items_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub avatar_date: i64,
+	pub avatar_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub display_style_group_id: i64,
+	pub display_style_group_id: f64,
 	#[serde(
 		rename = "isOnline",
 		default,
@@ -24907,17 +24907,17 @@ pub struct PurchasingCheckItemSeller {
 	)]
 	pub is_online: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub is_banned: i64,
+	pub is_banned: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub joined_date: i64,
+	pub joined_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub restore_data: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub restore_percents: serde_json::Value,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub sold_items_count: i64,
+	pub sold_items_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_id: i64,
+	pub user_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub username: String,
 }
@@ -24937,9 +24937,9 @@ pub struct PurchasingCheckItem {
 	)]
 	pub account_links: Vec<PurchasingCheckItemAccountLinks>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub account_last_activity: i64,
+	pub account_last_activity: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub allow_ask_discount: i64,
+	pub allow_ask_discount: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub ask_date: serde_json::Value,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -24947,7 +24947,7 @@ pub struct PurchasingCheckItem {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub ask_user_id: serde_json::Value,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub available_temp_email: i64,
+	pub available_temp_email: f64,
 	#[serde(
 		rename = "bumpSettings",
 		default,
@@ -24955,7 +24955,7 @@ pub struct PurchasingCheckItem {
 	)]
 	pub bump_settings: PurchasingCheckItemBumpSettings,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub buy_without_validation: i64,
+	pub buy_without_validation: f64,
 	#[serde(
 		rename = "canAskDiscount",
 		default,
@@ -25023,19 +25023,19 @@ pub struct PurchasingCheckItem {
 	)]
 	pub can_view_login_data: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub can_be_resold: i64,
+	pub can_be_resold: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub category_id: i64,
+	pub category_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub category_prefix_id: i64,
+	pub category_prefix_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub category_title: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub category_url: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub check_button_enabled: i64,
+	pub check_button_enabled: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub checker_enabled: i64,
+	pub checker_enabled: f64,
 	#[serde(
 		rename = "customFields",
 		default,
@@ -25043,7 +25043,7 @@ pub struct PurchasingCheckItem {
 	)]
 	pub custom_fields: Vec<serde_json::Value>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub deposit: i64,
+	pub deposit: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub description: String,
 	#[serde(
@@ -25077,7 +25077,7 @@ pub struct PurchasingCheckItem {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub discount_price: serde_json::Value,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit_date: i64,
+	pub edit_date: f64,
 	#[serde(
 		rename = "emailLoginUrl",
 		default,
@@ -25089,7 +25089,7 @@ pub struct PurchasingCheckItem {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub email_type: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub extended_guarantee: i64,
+	pub extended_guarantee: f64,
 	#[serde(
 		rename = "externalAuth",
 		default,
@@ -25107,7 +25107,7 @@ pub struct PurchasingCheckItem {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub guarantee: PurchasingCheckItemGuarantee,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub has_guarantee: i64,
+	pub has_guarantee: f64,
 	#[serde(
 		rename = "isBirthdayToday",
 		default,
@@ -25139,7 +25139,7 @@ pub struct PurchasingCheckItem {
 	)]
 	pub is_trusted: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub is_sticky: i64,
+	pub is_sticky: f64,
 	#[serde(
 		rename = "itemOriginPhrase",
 		default,
@@ -25149,7 +25149,7 @@ pub struct PurchasingCheckItem {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_domain: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub item_id: i64,
+	pub item_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_origin: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -25159,11 +25159,11 @@ pub struct PurchasingCheckItem {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub market_custom_title: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub max_discount_percent: i64,
+	pub max_discount_percent: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub message: serde_json::Value,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub min_price: i64,
+	pub min_price: f64,
 	#[serde(
 		rename = "needToRequireVideoToViewLoginData",
 		default,
@@ -25171,31 +25171,31 @@ pub struct PurchasingCheckItem {
 	)]
 	pub need_to_require_video_to_view_login_data: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub nsb: i64,
+	pub nsb: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub price: i64,
+	pub price: f64,
 	#[serde(
 		rename = "priceWithSellerFee",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub price_with_seller_fee: i64,
+	pub price_with_seller_fee: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub price_currency: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub published_date: i64,
+	pub published_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub refreshed_date: i64,
+	pub refreshed_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub require_email_login_data: i64,
+	pub require_email_login_data: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub require_temp_email: i64,
+	pub require_temp_email: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub require_video_recording: i64,
+	pub require_video_recording: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub resale_item_origin: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub rub_price: i64,
+	pub rub_price: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub seller: PurchasingCheckItemSeller,
 	#[serde(
@@ -25211,13 +25211,13 @@ pub struct PurchasingCheckItem {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub title_en: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub update_stat_date: i64,
+	pub update_stat_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub user_alerted: serde_json::Value,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_allow_ask_discount: i64,
+	pub user_allow_ask_discount: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub view_count: i64,
+	pub view_count: f64,
 	#[serde(
 		rename = "visitorIsAuthor",
 		default,
@@ -25396,17 +25396,17 @@ pub struct PurchasingFastBuyItemBumpSettings {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct PurchasingFastBuyItemBuyer {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub display_style_group_id: i64,
+	pub display_style_group_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub is_banned: i64,
+	pub is_banned: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub operation_date: i64,
+	pub operation_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub uniq_username_css: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_group_id: i64,
+	pub user_group_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_id: i64,
+	pub user_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub username: String,
 	#[serde(
@@ -25468,7 +25468,7 @@ pub struct PurchasingFastBuyItemGuarantee {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub class: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub duration: i64,
+	pub duration: f64,
 	#[serde(
 		rename = "durationPhrase",
 		default,
@@ -25480,13 +25480,13 @@ pub struct PurchasingFastBuyItemGuarantee {
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub end_date: i64,
+	pub end_date: f64,
 	#[serde(
 		rename = "remainingTime",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub remaining_time: i64,
+	pub remaining_time: f64,
 	#[serde(
 		rename = "remainingTimePhrase",
 		default,
@@ -25532,11 +25532,11 @@ pub struct PurchasingFastBuyItemLoginData {
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct PurchasingFastBuyItemSeller {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub active_items_count: i64,
+	pub active_items_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub avatar_date: i64,
+	pub avatar_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub display_style_group_id: i64,
+	pub display_style_group_id: f64,
 	#[serde(
 		rename = "isOnline",
 		default,
@@ -25544,17 +25544,17 @@ pub struct PurchasingFastBuyItemSeller {
 	)]
 	pub is_online: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub is_banned: i64,
+	pub is_banned: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub joined_date: i64,
+	pub joined_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub restore_data: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub restore_percents: i64,
+	pub restore_percents: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub sold_items_count: i64,
+	pub sold_items_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_id: i64,
+	pub user_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub username: String,
 }
@@ -25574,9 +25574,9 @@ pub struct PurchasingFastBuyItem {
 	)]
 	pub account_links: Vec<PurchasingFastBuyItemAccountLinks>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub account_last_activity: i64,
+	pub account_last_activity: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub allow_ask_discount: i64,
+	pub allow_ask_discount: f64,
 	#[serde(
 		rename = "bumpSettings",
 		default,
@@ -25586,9 +25586,9 @@ pub struct PurchasingFastBuyItem {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub buyer: PurchasingFastBuyItemBuyer,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub buyer_avatar_date: i64,
+	pub buyer_avatar_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub buyer_user_group_id: i64,
+	pub buyer_user_group_id: f64,
 	#[serde(
 		rename = "canAskDiscount",
 		default,
@@ -25656,7 +25656,7 @@ pub struct PurchasingFastBuyItem {
 	)]
 	pub can_view_login_data: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub category_id: i64,
+	pub category_id: f64,
 	#[serde(
 		rename = "customFields",
 		default,
@@ -25664,7 +25664,7 @@ pub struct PurchasingFastBuyItem {
 	)]
 	pub custom_fields: Vec<serde_json::Value>,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub deposit: i64,
+	pub deposit: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub description: String,
 	#[serde(
@@ -25700,7 +25700,7 @@ pub struct PurchasingFastBuyItem {
 	)]
 	pub display_converted_balance: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub edit_date: i64,
+	pub edit_date: f64,
 	#[serde(
 		rename = "emailLoginData",
 		default,
@@ -25718,7 +25718,7 @@ pub struct PurchasingFastBuyItem {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub email_type: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub extended_guarantee: i64,
+	pub extended_guarantee: f64,
 	#[serde(
 		rename = "externalAuth",
 		default,
@@ -25770,7 +25770,7 @@ pub struct PurchasingFastBuyItem {
 	)]
 	pub is_trusted: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub is_sticky: i64,
+	pub is_sticky: f64,
 	#[serde(
 		rename = "itemOriginPhrase",
 		default,
@@ -25780,7 +25780,7 @@ pub struct PurchasingFastBuyItem {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_domain: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub item_id: i64,
+	pub item_id: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub item_origin: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -25796,7 +25796,7 @@ pub struct PurchasingFastBuyItem {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub market_custom_title: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub max_discount_percent: i64,
+	pub max_discount_percent: f64,
 	#[serde(
 		rename = "needToRequireVideoToViewLoginData",
 		default,
@@ -25804,27 +25804,27 @@ pub struct PurchasingFastBuyItem {
 	)]
 	pub need_to_require_video_to_view_login_data: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub nsb: i64,
+	pub nsb: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub price: i64,
+	pub price: f64,
 	#[serde(
 		rename = "priceWithSellerFee",
 		default,
 		deserialize_with = "deserialize_null_default"
 	)]
-	pub price_with_seller_fee: i64,
+	pub price_with_seller_fee: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub price_currency: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub published_date: i64,
+	pub published_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub refreshed_date: i64,
+	pub refreshed_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub resale_item_origin: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub restore_items_category_count: i64,
+	pub restore_items_category_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub rub_price: i64,
+	pub rub_price: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub seller: PurchasingFastBuyItemSeller,
 	#[serde(
@@ -25834,7 +25834,7 @@ pub struct PurchasingFastBuyItem {
 	)]
 	pub show_get_email_code_button: bool,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub sold_items_category_count: i64,
+	pub sold_items_category_count: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub tags: serde_json::Value,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
@@ -25844,11 +25844,11 @@ pub struct PurchasingFastBuyItem {
 	#[serde(default, deserialize_with = "deserialize_null_default")]
 	pub title_en: String,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub update_stat_date: i64,
+	pub update_stat_date: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub user_allow_ask_discount: i64,
+	pub user_allow_ask_discount: f64,
 	#[serde(default, deserialize_with = "deserialize_null_default")]
-	pub view_count: i64,
+	pub view_count: f64,
 	#[serde(
 		rename = "visitorIsAuthor",
 		default,
