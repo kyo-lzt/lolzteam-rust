@@ -43,6 +43,8 @@ pub struct MethodDef {
 	pub body_params: Vec<ParamDef>,
 	/// Whether this method has a request body
 	pub has_body: bool,
+	/// Whether the request body is required (from `requestBody.required`)
+	pub body_required: bool,
 	/// Whether the body is a raw JSON value (e.g. array-typed body like POST /batch)
 	pub is_raw_body: bool,
 	/// Body content encoding

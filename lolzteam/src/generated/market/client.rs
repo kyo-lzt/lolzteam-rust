@@ -223,9 +223,9 @@ impl CartApi {
 	/// Add Item to Cart
 	///
 	/// Adds item to your cart.
-	pub async fn add(&self, body: Option<&CartAddBody>) -> Result<CartAddResponse, LolzteamError> {
+	pub async fn add(&self, body: &CartAddBody) -> Result<CartAddResponse, LolzteamError> {
 		self.http
-			.request_json("POST", "/cart", None, body, false)
+			.request_json("POST", "/cart", None, Some(body), false)
 			.await
 	}
 }
@@ -6198,10 +6198,10 @@ impl ManagingApi {
 	/// Bulk get up to 250 accounts.
 	pub async fn bulk_get(
 		&self,
-		body: Option<&ManagingBulkGetBody>,
+		body: &ManagingBulkGetBody,
 	) -> Result<ManagingBulkGetResponse, LolzteamError> {
 		self.http
-			.request_json("POST", "/bulk/items", None, body, false)
+			.request_json("POST", "/bulk/items", None, Some(body), false)
 			.await
 	}
 
@@ -7223,12 +7223,9 @@ impl ProxyApi {
 	///
 	///
 	/// + proxy_row (required) - proxy list in String format ip:port:user:pass. Each proxy must be start with new line (use \n separator)
-	pub async fn add(
-		&self,
-		body: Option<&ProxyAddBody>,
-	) -> Result<ProxyAddResponse, LolzteamError> {
+	pub async fn add(&self, body: &ProxyAddBody) -> Result<ProxyAddResponse, LolzteamError> {
 		self.http
-			.request_json("POST", "/proxy", None, body, false)
+			.request_json("POST", "/proxy", None, Some(body), false)
 			.await
 	}
 }

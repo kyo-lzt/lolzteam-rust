@@ -161,6 +161,8 @@ pub struct BodyParamsResult {
 	pub is_raw_body: bool,
 	/// Discriminated union body (oneOf with detectable discriminator), if present.
 	pub one_of_body: Option<OneOfBody>,
+	/// Whether the request body is required (from `requestBody.required`).
+	pub body_required: bool,
 }
 
 /// Extract body parameters from the request body schema.
@@ -170,12 +172,18 @@ pub fn extract_body_params(root: &Value, operation: &Value) -> BodyParamsResult 
 		encoding: BodyEncoding::FormUrlEncoded,
 		is_raw_body: false,
 		one_of_body: None,
+		body_required: false,
 	};
 
 	let request_body = match operation.get("requestBody") {
 		Some(rb) => deref::deref(root, rb),
 		None => return default_result,
 	};
+
+	let body_required = request_body
+		.get("required")
+		.and_then(|v| v.as_bool())
+		.unwrap_or(false);
 
 	let content = match request_body.get("content") {
 		Some(c) => c,
@@ -209,6 +217,7 @@ pub fn extract_body_params(root: &Value, operation: &Value) -> BodyParamsResult 
 				encoding,
 				is_raw_body: false,
 				one_of_body: None,
+				body_required,
 			}
 		}
 	};
@@ -222,6 +231,7 @@ pub fn extract_body_params(root: &Value, operation: &Value) -> BodyParamsResult 
 			encoding: BodyEncoding::Json,
 			is_raw_body: true,
 			one_of_body: None,
+			body_required,
 		};
 	}
 
@@ -234,6 +244,7 @@ pub fn extract_body_params(root: &Value, operation: &Value) -> BodyParamsResult 
 			encoding,
 			is_raw_body: false,
 			one_of_body,
+			body_required,
 		};
 	}
 
@@ -242,6 +253,7 @@ pub fn extract_body_params(root: &Value, operation: &Value) -> BodyParamsResult 
 		encoding,
 		is_raw_body: false,
 		one_of_body: None,
+		body_required,
 	}
 }
 

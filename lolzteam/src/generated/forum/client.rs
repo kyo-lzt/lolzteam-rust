@@ -1197,12 +1197,10 @@ impl OAuthApi {
 	/// - Authorization Code
 	/// - Refresh Token
 	/// - Password
-	pub async fn token(
-		&self,
-		body: Option<&OAuthTokenBody>,
-	) -> Result<OAuthTokenResponse, LolzteamError> {
+	pub async fn token(&self, body: &OAuthTokenBody) -> Result<OAuthTokenResponse, LolzteamError> {
 		let mut parts = Vec::new();
-		if let Some(b) = body {
+		{
+			let b = body;
 			match b {
 				OAuthTokenBody::ClientCredentials {
 					client_id,
@@ -2320,10 +2318,10 @@ impl ThreadsApi {
 	/// + post
 	pub async fn create_contest(
 		&self,
-		body: Option<&ThreadsCreateContestBody>,
+		body: &ThreadsCreateContestBody,
 	) -> Result<ThreadsCreateContestResponse, LolzteamError> {
 		self.http
-			.request_json("POST", "/contests", None, body, false)
+			.request_json("POST", "/contests", None, Some(body), false)
 			.await
 	}
 
@@ -3158,11 +3156,11 @@ impl UsersApi {
 	pub async fn background_crop(
 		&self,
 		user_id: StringOrInt,
-		body: Option<&UsersBackgroundCropBody>,
+		body: &UsersBackgroundCropBody,
 	) -> Result<UsersBackgroundCropResponse, LolzteamError> {
 		let path = format!("/users/{user_id}/background/crop");
 		self.http
-			.request_json("POST", &path, None, body, false)
+			.request_json("POST", &path, None, Some(body), false)
 			.await
 	}
 

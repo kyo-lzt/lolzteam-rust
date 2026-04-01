@@ -1001,6 +1001,8 @@ fn emit_method(
 	// Body
 	if method.is_raw_body {
 		write!(out, ", body: serde_json::Value").unwrap();
+	} else if method.has_body && method.body_required {
+		write!(out, ", body: &{prefix}Body").unwrap();
 	} else if method.has_body {
 		write!(out, ", body: Option<&{prefix}Body>").unwrap();
 	}
@@ -1053,7 +1055,14 @@ fn emit_method(
 		BodyEncoding::Multipart if method.has_body && !method.is_raw_body => {
 			writeln!(out, "\t\tlet mut parts = Vec::new();").unwrap();
 			if let Some(ref one_of) = method.one_of_body {
-				emit_one_of_multipart_match(out, &prefix, one_of, "\t\t");
+				emit_one_of_multipart_match(out, &prefix, one_of, "\t\t", method.body_required);
+			} else if method.body_required {
+				writeln!(out, "\t\t{{").unwrap();
+				writeln!(out, "\t\t\tlet b = body;").unwrap();
+				for param in &method.body_params {
+					emit_multipart_part_push(out, param, "\t\t\t", enum_map);
+				}
+				writeln!(out, "\t\t}}").unwrap();
 			} else {
 				writeln!(out, "\t\tif let Some(b) = body {{").unwrap();
 				for param in &method.body_params {
@@ -1064,11 +1073,20 @@ fn emit_method(
 		}
 		BodyEncoding::FormUrlEncoded if method.has_body && !method.is_raw_body && !has_one_of => {
 			writeln!(out, "\t\tlet mut form = Vec::new();").unwrap();
-			writeln!(out, "\t\tif let Some(b) = body {{").unwrap();
-			for param in &method.body_params {
-				emit_param_push(out, "form", param, "\t\t\t", enum_map);
+			if method.body_required {
+				writeln!(out, "\t\t{{").unwrap();
+				writeln!(out, "\t\t\tlet b = body;").unwrap();
+				for param in &method.body_params {
+					emit_param_push(out, "form", param, "\t\t\t", enum_map);
+				}
+				writeln!(out, "\t\t}}").unwrap();
+			} else {
+				writeln!(out, "\t\tif let Some(b) = body {{").unwrap();
+				for param in &method.body_params {
+					emit_param_push(out, "form", param, "\t\t\t", enum_map);
+				}
+				writeln!(out, "\t\t}}").unwrap();
 			}
-			writeln!(out, "\t\t}}").unwrap();
 		}
 		BodyEncoding::Json if method.has_body && !method.is_raw_body => {
 			// JSON body is passed directly as a serializable struct — no vec building needed
@@ -1124,7 +1142,9 @@ fn emit_method(
 		} else {
 			"None"
 		};
-		let body_arg = if method.has_body {
+		let body_arg = if method.has_body && method.body_required {
+			"Some(body)"
+		} else if method.has_body {
 			"body"
 		} else {
 			"None::<&()>"
@@ -1456,9 +1476,20 @@ fn emit_multipart_part_push(
 }
 
 /// Emit a match block that destructures a oneOf enum into multipart parts.
-fn emit_one_of_multipart_match(out: &mut String, prefix: &str, one_of: &OneOfBody, indent: &str) {
+fn emit_one_of_multipart_match(
+	out: &mut String,
+	prefix: &str,
+	one_of: &OneOfBody,
+	indent: &str,
+	body_required: bool,
+) {
 	let type_name = format!("{prefix}Body");
-	writeln!(out, "{indent}if let Some(b) = body {{").unwrap();
+	if body_required {
+		writeln!(out, "{indent}{{").unwrap();
+		writeln!(out, "{indent}\tlet b = body;").unwrap();
+	} else {
+		writeln!(out, "{indent}if let Some(b) = body {{").unwrap();
+	}
 	writeln!(out, "{indent}\tmatch b {{").unwrap();
 	for variant in &one_of.variants {
 		// Build destructure pattern

@@ -45,26 +45,34 @@ pub fn build_method_def(
 
 	// GET requests must not have a body — move body params to query params instead
 	let is_get = http_method.eq_ignore_ascii_case("get");
-	let (final_query_params, final_body_params, final_has_body, final_is_raw_body, final_encoding) =
-		if is_get && !body_result.params.is_empty() {
-			let mut merged_query = query_params.clone();
-			merged_query.extend(body_result.params.iter().cloned());
-			(
-				merged_query,
-				Vec::new(),
-				false,
-				false,
-				BodyEncoding::FormUrlEncoded,
-			)
-		} else {
-			(
-				query_params.clone(),
-				body_result.params.clone(),
-				!body_result.params.is_empty() || body_result.is_raw_body,
-				body_result.is_raw_body,
-				body_result.encoding,
-			)
-		};
+	let (
+		final_query_params,
+		final_body_params,
+		final_has_body,
+		final_is_raw_body,
+		final_encoding,
+		final_body_required,
+	) = if is_get && !body_result.params.is_empty() {
+		let mut merged_query = query_params.clone();
+		merged_query.extend(body_result.params.iter().cloned());
+		(
+			merged_query,
+			Vec::new(),
+			false,
+			false,
+			BodyEncoding::FormUrlEncoded,
+			false,
+		)
+	} else {
+		(
+			query_params.clone(),
+			body_result.params.clone(),
+			!body_result.params.is_empty() || body_result.is_raw_body,
+			body_result.is_raw_body,
+			body_result.encoding,
+			body_result.body_required,
+		)
+	};
 
 	MethodDef {
 		name: method_name.to_string(),
@@ -74,6 +82,7 @@ pub fn build_method_def(
 		query_params: final_query_params,
 		body_params: final_body_params,
 		has_body: final_has_body,
+		body_required: final_body_required,
 		is_raw_body: final_is_raw_body,
 		body_encoding: final_encoding,
 		response_schema,
